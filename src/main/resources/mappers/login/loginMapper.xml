@@ -2,14 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.LoginMapper">
 
-    <select id="findByUserId" parameterType="string" resultType="CustomMap">
+    <select id="findByUserId" parameterType="string" resultType="UserVO">
         SELECT SEQ,
                USER_ID,
                USER_PWD,
                USER_NM,
                USER_EMAIL,
                USER_PHONE,
-               ROLE_TYPE
+               ROLE_TYPE,
+               USE_AT,
+               CREATE_DATE,
+               UPDATE_DATE
           FROM USERS
          WHERE USER_ID = #{userId}
     </select>
