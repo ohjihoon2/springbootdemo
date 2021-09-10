@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.LoginMapper">
+
+    <select id="findByUserId" parameterType="string" resultType="CustomMap">
+        SELECT SEQ,
+               USER_ID,
+               USER_PWD,
+               USER_NM,
+               USER_EMAIL,
+               USER_PHONE,
+               ROLE_TYPE
+          FROM USERS
+         WHERE USER_ID = #{userId}
+    </select>
+
+    <insert id="saveUser" parameterType="UserSaveForm">
+        INSERT INTO USERS
+            (
+                 USER_ID,
+                 USER_PWD,
+                 USER_NM,
+                 USER_EMAIL,
+                 USER_PHONE,
+                 ROLE_TYPE,
+                 USE_AT,
+                 CREATE_DATE,
+             )
+        VALUES
+            (
+                #{userId},
+                #{userPwd},
+                #{userNm},
+                #{userEmail},
+                #{userPhone},
+                #{roleType},
+                #{useAt},
+                #{createDate}
+             )
+
+    </insert>
+
+    <insert id="saveUserTest" parameterType="map">
+        INSERT INTO USERS
+            (
+                 USER_ID,
+                 USER_PWD,
+                 USER_NM,
+                 USER_EMAIL,
+                 ROLE_TYPE,
+                 USE_AT,
+                 CREATE_DATE
+             )
+        VALUES
+            (
+                #{userId},
+                #{userPwd},
+                '최고관리자',
+                '',
+                'ROLE_ADMIN',
+                'Y',
+                SYSDATE()
+             )
+
+    </insert>
+
+    <select id="countByUserId" parameterType="string" resultType="int">
+        SELECT COUNT(*)
+          FROM USERS
+         WHERE user_id = #{userId}
+    </select>
+
+    <select id="findByEmailAndUserNm" parameterType="string" resultType="UserVO">
+        SELECT SEQ,
+               USER_ID,
+               USER_PWD,
+               USER_NM,
+               USER_EMAIL,
+               USER_PHONE,
+               ROLE_TYPE
+               USE_AT,
+               CREATE_DATE,
+               UPDATE_DATE
+          FROM USERS
+         WHERE USER_NM = #{userNm}
+           AND USER_EMAIL = #{email}
+    </select>
+
+    <select id="findByUserNmAndUserId" parameterType="string" resultType="UserVO">
+        SELECT SEQ,
+               USER_ID,
+               USER_PWD,
+               USER_NM,
+               USER_EMAIL,
+               USER_PHONE,
+               ROLE_TYPE
+               USE_AT,
+               CREATE_DATE,
+               UPDATE_DATE
+          FROM USERS
+         WHERE USER_NM = #{userNm}
+           AND USER_ID = #{userId}
+    </select>
+
+    <update id="updateUserPwd" parameterType="map">
+        UPDATE USERS
+           SET USER_PWD = #{userPwd}
+         WHERE USER_ID = #{userId}
+    </update>
+</mapper>

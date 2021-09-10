@@ -1,0 +1,110 @@
+spring:
+  profiles:
+    active: dev
+---
+# 개발 서버 설정
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  # 데이터베이스 설정
+  datasource:
+    driverClassName : net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:mariadb://localhost:3306/test1
+    username: root
+    password: root
+  messages:
+    basename: errors
+server:
+  port: 8080
+
+---
+# 실제 서버 설정
+spring:
+  config:
+    activate:
+      on-profile: real
+
+  # 데이터베이스 설정
+#  datasource:
+#    driverClassName: org.mariadb.jdbc.Driver
+#    url: jdbc:mariadb://182.208.254.170:3306/plasma
+#    username: plasma
+#    password: plasma@admin
+
+server:
+  port: 10010
+---
+
+# Mybatis 설정
+mybatis:
+  # mybatis 매핑 type을 짧게 쓰기 위한 설정
+  type-aliases-package: com.example.demo.vo, com.example.demo.form ,com.example.demo.util
+  # mapper.xml 위치 지정
+  mapper-locations: mappers/**/*.xml
+  configuration:
+    # under score 를 camel case 로 변환
+    map-underscore-to-camel-case: true
+    # 한 개의 구문에서 여러 개의 ResultSet 을 허용
+    multiple-result-sets-enabled: true
+
+# Thymeleaf 설정
+spring:
+  thymeleaf:
+    # thymeleaf에 대한 캐시를 남기지 않는다. cache=false 설정(운영시는 true)
+    cache: false
+    # templates 디렉토리에 파일이 있는지 없는지 체크, 없으면 에러를 발생시킨다.
+    check-template-location: true
+    order: 0
+    prefix: classpath:/templates/
+    suffix: .html
+
+  # 정적 리소스 경로
+  web:
+    resources:
+      static-locations: classpath:/static/assets/
+      # 캐시 유효기간 1년
+      cache:
+        cachecontrol:
+          max-age: 31536000
+          version: 2021-08-09
+
+      #  Fixed Version Strategy
+      chain:
+        cache: true
+
+  # 정적 리소스에 변화가 있을 때 바로 반영한다.
+  devtools:
+    livereload:
+      enabled: true
+
+# 로그 설정
+logging:
+  level:
+    com.example.demo : debug
+    jdbc: off
+    jdbc.audit: off
+    jdbc.resultset : off
+    jdbc.connection: off
+    jdbc.sqltiming: info
+    jdbc.resultsettable: info
+  file:
+    path: D:/logs/demo.log
+
+# mail 설정
+spring.mail:
+  host: smtp.gmail.com
+  port: 587
+  username: koko5793@gmail.com
+  password: wlgns5793
+  properties:
+    mail.smtp.auth: true
+    mail.smtp.starttls.enable: true
+
+# paging 설정
+#pagehelper:
+#  # 사용할 DB 설정
+#  helper-dialect: mariadb
+#  # 범위를 넘어가는 pageNum가 들어올 때 가능할 값으로 변경
+#  reasonable: true
