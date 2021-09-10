@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+    <div th:fragment="pagination" id="pagination" class="pagination">
+        <ul>
+            <li th:classappend="${list.getPageNum() == 1} ? disabled">
+                <a data-val="1">《</a>
+            </li>
+            <li th:classappend="${list.getPageNum() == 1} ? disabled">
+                <a th:data-val="${list.getPageNum() - 1}">〈</a>
+            </li>
+            <li class="on" th:if="${list.getPages() == 0}">
+                <a data-val="1">1</a>
+            </li>
+            <li th:each="num : ${#numbers.sequence(list.getPageNum()/10*10, list.getPageNum()/10*10+9)}" th:if="${list.getPages() > num}" th:classappend="${list.getPageNum() == (num + 1)} ? on">
+                <a th:text="${num + 1}" th:data-val="${num + 1}"></a>
+            </li>
+            <li th:classappend="${list.getPageNum() == list.getPages()} ? disabled">
+                <a th:data-val="${list.getPageNum() + 1}">〉</a>
+            </li>
+            <li th:classappend="${list.getPageNum() == list.getPages()} ? disabled">
+                <a th:data-val="${list.getPages()}">》</a>
+            </li>
+        </ul>
+    </div>
+</html>
