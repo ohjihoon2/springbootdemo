@@ -52,18 +52,6 @@ public class LoginController {
     }
 
     /**
-     * 회원가입 페이지
-     * @param
-     * @return
-     */
-    @GetMapping(value = "/signup")
-    public String signupView(Model model) {
-        model.addAttribute("user", new UserSaveForm());
-        return "/login/signup";
-    }
-
-
-    /**
      * 회원가입 요청
      * @param userSaveForm
      * @return
