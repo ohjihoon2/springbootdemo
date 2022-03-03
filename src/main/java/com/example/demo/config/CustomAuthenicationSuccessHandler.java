@@ -13,7 +13,7 @@ public class CustomAuthenicationSuccessHandler extends SavedRequestAwareAuthenti
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         System.out.println("CustomAccessSuccessHandler.onAuthenticationSuccess");
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        response.sendRedirect("/index");
+        response.sendRedirect("/");
     }
 
 }

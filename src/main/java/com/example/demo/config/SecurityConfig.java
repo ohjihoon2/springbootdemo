@@ -26,8 +26,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
-//    @Autowired
-//    private LoginService loginService;
+    @Autowired
+    private LoginService loginService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -52,12 +52,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     @Bean
     public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
         System.out.println("SecurityConfig.customAuthenticationFilter");
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter("/loginProc");
+//        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(customAuthenticationManager());
 
 //        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter();
+
+        // 지우면 되냐 왜 ?????????
 //        customAuthenticationFilter.setFilterProcessesUrl("/loginProc");
 
-        customAuthenticationFilter.setAuthenticationManager(customAuthenticationManager());
+//        customAuthenticationFilter.setAuthenticationManager(customAuthenticationManager());
         customAuthenticationFilter.setAuthenticationSuccessHandler(customAuthenicationSuccessHandler());
         customAuthenticationFilter.setAuthenticationFailureHandler(customAuthenticationFailureHandler());
 
@@ -110,7 +113,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
          */
         http.formLogin()
                 .loginPage("/login") // loginPage("path") - 커스텀 로그인 페이지 경로와 로그인 인증 경로를 등록
-//                .loginProcessingUrl("/login") // 인증처리를 수행하는 필터가 호출 - Form action 경로와 일치
+                .loginProcessingUrl("/loginProc") // 인증처리를 수행하는 필터가 호출 - Form action 경로와 일치
                 .defaultSuccessUrl("/")  //defaultSuccessUrl("path") - 로그인 인증을 성공하면 이동하는 페이지를 등록
                 .permitAll()
                 .usernameParameter("userId") //login form에서 username에 parameter value 값 수정
@@ -165,6 +168,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
      * AuthenticationManager를 생성합니다. AuthenticationManager는 사용자 인증을 담당
      */
 /*
+
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         // 커스텀한 AuthenticationProvider 를 AuthenticationManager 에 등록
@@ -174,5 +178,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         auth.userDetailsService(loginService).passwordEncoder(passwordEncoder());
     }
 */
+
 
 }
