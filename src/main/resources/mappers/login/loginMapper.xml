@@ -43,7 +43,7 @@
 
     </insert>
 
-    <insert id="saveUserTest" parameterType="map">
+    <insert id="saveAdminTest" parameterType="map">
         INSERT INTO USERS
             (
                  USER_ID,
@@ -64,6 +64,30 @@
                 'Y',
                 SYSDATE()
              )
+
+    </insert>
+
+    <insert id="saveUserTest" parameterType="map">
+        INSERT INTO USERS
+        (
+            USER_ID,
+            USER_PWD,
+            USER_NM,
+            USER_EMAIL,
+            ROLE_TYPE,
+            USE_AT,
+            CREATE_DATE
+        )
+        VALUES
+            (
+                #{userId},
+                #{userPwd},
+                '테스트유저',
+                '',
+                'ROLE_USER',
+                'Y',
+                SYSDATE()
+            )
 
     </insert>
 

@@ -8,7 +8,9 @@ import com.example.demo.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +18,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +46,7 @@ public class LoginController {
      * @param userVO
      * @return
      */
-    @GetMapping(value = "/loginProc")
+    @GetMapping(value = "/loginSuccess")
     public String loginProc(UserVO userVO, Authentication auth) {
 
         log.debug("auth.getAuthorities(): {}",auth.getAuthorities());
@@ -117,11 +121,10 @@ public class LoginController {
             String email = userVO.getUserEmail();
 
             String to = email;
-            String subject = "플라즈마 임시 비밀번호 발급";
+            String subject = "OO 임시 비밀번호 발급";
             String text = "안녕하세요.<br>" +
                     "요청하신 이메일 주소로 임시 비밀번호를 발급하였습니다.<br>" +
                     "비밀번호는 <b>[" + ranPw + "]</b> 입니다. ";
-
             boolean res = emailService.sendMail(to, subject, text);
 
             if (res) {
@@ -151,6 +154,15 @@ public class LoginController {
         } else {
             return "FAIL";
         }
+    }
+
+    @PostMapping(value = "/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/";
     }
 
 }

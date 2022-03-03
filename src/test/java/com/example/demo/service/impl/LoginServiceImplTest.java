@@ -33,6 +33,24 @@ class LoginServiceImplTest {
         map.put("userId",userId);
         map.put("userPwd",passwordEncoder.encode(userPwd));
         log.debug("map = {}",map);
+        int result = loginMapper.saveAdminTest(map);
+
+        log.debug(String.valueOf(result));
+
+    }
+
+    @Test
+    public void USER_생성() {
+        String userId = "TEST";
+        String userPwd ="1234";
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        Map<String,Object> map = new HashMap<>();
+
+        map.put("userId",userId);
+        map.put("userPwd",passwordEncoder.encode(userPwd));
+        log.debug("map = {}",map);
         int result = loginMapper.saveUserTest(map);
 
         log.debug(String.valueOf(result));

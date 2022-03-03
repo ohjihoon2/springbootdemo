@@ -24,19 +24,19 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public UserDetails loadUserByUsername(String userId) {
+        System.out.println("LoginServiceImpl.loadUserByUsername");
+        System.out.println("userId = " + userId);
         UserVO userVO = loginMapper.findByUserId(userId);
+        System.out.println("userVO.toString() = " + userVO.toString());
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if (userVO.getRoleType().equals("ROLE_SUPER")) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_SUPER"));
-            userVO.setRoleType("ROLE_SUPER");
-        } else if (userVO.getRoleType().equals("ROLE_MAIN")) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_MAIN"));
-            userVO.setRoleType("ROLE_MAIN");
-        } else if (userVO.getRoleType().equals("ROLE_SUB")) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_SUB"));
-            userVO.setRoleType("ROLE_SUB");
+        if (userVO.getRoleType().equals("ROLE_ADMIN")) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            userVO.setRoleType("ROLE_ADMIN");
+        } else if (userVO.getRoleType().equals("ROLE_USER")) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+            userVO.setRoleType("ROLE_USER");
         } else if (userVO.getRoleType().equals("ROLE_GENERAL")) {
             authorities.add(new SimpleGrantedAuthority("ROLE_GENERAL"));
             userVO.setRoleType("ROLE_GENERAL");

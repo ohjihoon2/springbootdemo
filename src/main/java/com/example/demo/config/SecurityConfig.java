@@ -4,26 +4,18 @@ import com.example.demo.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 
 /** 해당 클래스를 Configuration으로 등록 */
@@ -34,19 +26,51 @@ import java.io.IOException;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
-    @Autowired
-    private LoginService loginService;
+//    @Autowired
+//    private LoginService loginService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /* * AccessDeniedHandler bean register */
     @Bean
-    public AccessDeniedHandler accessDeniedHandler(){
+    public CustomAuthenticationFailureHandler customAuthenticationFailureHandler(){
+        return new CustomAuthenticationFailureHandler("/login");
+    }
+
+    @Bean
+    public CustomAccessDeniedHandler customAccessDeniedHandler(){
         return new CustomAccessDeniedHandler();
     }
+
+    @Bean
+    public CustomAuthenicationSuccessHandler customAuthenicationSuccessHandler() {
+        return new CustomAuthenicationSuccessHandler();
+    }
+
+    @Bean
+    public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
+        System.out.println("SecurityConfig.customAuthenticationFilter");
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter("/loginProc");
+
+//        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter();
+//        customAuthenticationFilter.setFilterProcessesUrl("/loginProc");
+
+        customAuthenticationFilter.setAuthenticationManager(customAuthenticationManager());
+        customAuthenticationFilter.setAuthenticationSuccessHandler(customAuthenicationSuccessHandler());
+        customAuthenticationFilter.setAuthenticationFailureHandler(customAuthenticationFailureHandler());
+
+        customAuthenticationFilter.afterPropertiesSet();
+        return customAuthenticationFilter;
+    }
+
+    @Bean
+    public CustomAuthenticationManager customAuthenticationManager() {
+        System.out.println("SecurityConfig.customAuthenticationManager");
+        return new CustomAuthenticationManager();
+    }
+
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -61,6 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
          * http 요청에 대해서 모든 사용자가 /** 경로로 요청할 수 있지만, /member/** , /admin/** 경로는 인증된 사용자만 요청이 가능
          */
         http.authorizeRequests() //HttpServletRequest 요청 URL에 따라 접근 권한을 설정
+//                .antMatchers("/login**").permitAll()
 //                .antMatchers("/login/member/**").authenticated() // antMatchers("pathPattern") - 요청 URL 경로 패턴을 지정
 //                .antMatchers("/login/admin/**").authenticated() // authenticated() - 인증된 유저만 접근을 허용
                 .antMatchers("/admin/**").hasAnyRole("SUPER","MAIN","SUB") // authenticated() - 인증된 유저만 접근을 허용
@@ -74,7 +99,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 //                .csrf().ignoringAntMatchers("/adm/deviceMonitor/deviceMng/serialNoCompare/{serialNo}") //csrf 예외 처리
 //                .and()
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()); // @EnableWebSecurity 어노테이션을 활성화하면 추가적인 필요 없음
-
 //                .and()                                       // 크로스 도메인 사용시
 //                .cors()
 //                .configurationSource(configurationSource());
@@ -86,10 +110,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
          */
         http.formLogin()
                 .loginPage("/login") // loginPage("path") - 커스텀 로그인 페이지 경로와 로그인 인증 경로를 등록
-                .defaultSuccessUrl("/loginProc")  //defaultSuccessUrl("path") - 로그인 인증을 성공하면 이동하는 페이지를 등록
+//                .loginProcessingUrl("/login") // 인증처리를 수행하는 필터가 호출 - Form action 경로와 일치
+                .defaultSuccessUrl("/")  //defaultSuccessUrl("path") - 로그인 인증을 성공하면 이동하는 페이지를 등록
                 .permitAll()
                 .usernameParameter("userId") //login form에서 username에 parameter value 값 수정
-                .passwordParameter("userPwd");
+                .passwordParameter("userPwd")
+                .and()
+                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                // UsernamePasswordAuthenticationFilter - 기본 인증 처리 담당 필터
+                // UsernamePasswordAuthenticationFilter 이전에 custom Filter 추가
+                // -> override 개념이 아니라 custom filter로 인증 처리 되면 UsernamePasswordAuthenticationFilter 인증 자연스레 통과하는 구조
 
         /**
          * 로그아웃 설정을 진행
@@ -103,7 +133,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
          * 권한이 없는 사용자가 접근했을 경우 이동할 경로
          */
         http.exceptionHandling()
-                .accessDeniedHandler(accessDeniedHandler());
+                .accessDeniedHandler(customAccessDeniedHandler());
     }
 
 
@@ -130,22 +160,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     }
     */
 
-    private class CustomAccessDeniedHandler implements AccessDeniedHandler{
-
-        @Override
-        public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            response.sendRedirect(request.getContextPath() + "/");
-        }
-    }
-
     /**
      * AuthenticationManagerBuilder
      * AuthenticationManager를 생성합니다. AuthenticationManager는 사용자 인증을 담당
      */
+/*
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // 커스텀한 AuthenticationProvider 를 AuthenticationManager 에 등록
+//        authenticationManagerBuilder.authenticationProvider(customAuthenticationProvider())
+//        auth.authenticationProvider()
+        System.out.println("SecurityConfig.configure");
         auth.userDetailsService(loginService).passwordEncoder(passwordEncoder());
     }
+*/
 
 }

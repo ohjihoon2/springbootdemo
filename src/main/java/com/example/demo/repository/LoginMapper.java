@@ -16,6 +16,8 @@ public interface LoginMapper {
 
     int saveUser(UserSaveForm userSaveForm);
 
+    int saveAdminTest(Map<String,Object> paramMap);
+
     int saveUserTest(Map<String,Object> paramMap);
 
     UserVO findByEmailAndUserNm(String email, String userNm);

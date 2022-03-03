@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
@@ -20,12 +19,7 @@ public class UserSaveForm {
     @Email
     private String userEmail;
     private String userPhone;
-    private String authNo;
-    private String bookmark;
     private String roleType;
-    private String jobPosition;
-    private String depart;
-    private String withdrawalAt;
     private String useAt;
     private Date createDate;
 }
