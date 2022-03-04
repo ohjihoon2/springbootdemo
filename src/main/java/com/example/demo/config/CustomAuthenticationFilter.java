@@ -15,25 +15,15 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Enumeration;
 
+
+/**
+ * UsernamePasswordAuthenticationFilter
+ * 역할 = username / password 로 로그인을 하려고 하는지 체크하여 승인이 되면 Authentication을 부여하고 이동 할 페이지로 이동
+ */
+
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-//    public CustomAuthenticationFilter(String defaultFilterProcessesUrl, AuthenticationManager authenticationManager) {
-
-//    public CustomAuthenticationFilter(CustomAuthenticationManager authenticationManager) {
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
-        System.out.println("CustomAuthenticationFilter.CustomAuthenticationFilter");
-//        this.authenticationManager = authenticationManager;
-        super.setAuthenticationManager(authenticationManager);
-
-    }
-/*
-
-    public CustomAuthenticationFilter(String defaultFilterProcessesUrl) {
-        super.setFilterProcessesUrl(defaultFilterProcessesUrl);
-//        super(defaultFilterProcessesUrl);
-    }
-*/
-
+    public CustomAuthenticationFilter() {}
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -46,7 +36,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             String pName = (String)eParam.nextElement();
             String pValue = request.getParameter(pName);
 
-            System.out.println(pName + " : " + pValue + "<br>");
+            System.out.println(pName + " : " + pValue);
         }
         System.out.println(" -------------------------------");
         System.out.println("request.getParameter(\"userId\") = " + request.getParameter("userId"));

@@ -52,20 +52,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     @Bean
     public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
         System.out.println("SecurityConfig.customAuthenticationFilter");
-//        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(customAuthenticationManager());
 
-//        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter();
-
-        // 지우면 되냐 왜 ?????????
-//        customAuthenticationFilter.setFilterProcessesUrl("/loginProc");
-
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter();
+        customAuthenticationFilter.setAuthenticationManager(authenticationManager());
 //        customAuthenticationFilter.setAuthenticationManager(customAuthenticationManager());
         customAuthenticationFilter.setAuthenticationSuccessHandler(customAuthenicationSuccessHandler());
         customAuthenticationFilter.setAuthenticationFailureHandler(customAuthenticationFailureHandler());
-
         customAuthenticationFilter.afterPropertiesSet();
+
+        //Get방식으로 Login할 때 어떤 URL을 사용할지 등록
+//        customAuthenticationFilter.setFilterProcessesUrl("/login");
+
         return customAuthenticationFilter;
+    }
+
+    @Bean
+    public CustomAuthenticationProvider authProvider() {
+        CustomAuthenticationProvider authenticationProvider = new CustomAuthenticationProvider();
+        return authenticationProvider;
     }
 
     @Bean
@@ -167,17 +171,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
      * AuthenticationManagerBuilder
      * AuthenticationManager를 생성합니다. AuthenticationManager는 사용자 인증을 담당
      */
-/*
-
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        System.out.println("SecurityConfig.configure");
+        auth.authenticationProvider(authProvider());
+
         // 커스텀한 AuthenticationProvider 를 AuthenticationManager 에 등록
 //        authenticationManagerBuilder.authenticationProvider(customAuthenticationProvider())
-//        auth.authenticationProvider()
-        System.out.println("SecurityConfig.configure");
         auth.userDetailsService(loginService).passwordEncoder(passwordEncoder());
     }
-*/
-
 
 }
