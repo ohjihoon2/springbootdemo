@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 
     @Bean
     public CustomAuthenticationFailureHandler customAuthenticationFailureHandler(){
-        return new CustomAuthenticationFailureHandler("/login");
+        return new CustomAuthenticationFailureHandler();
     }
 
     @Bean
@@ -102,10 +102,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .antMatchers("/**").permitAll() // permitAll() - 모든 유저에게 접근을 허용
                 // anonymous() - 인증되지 않은 유저만 허용합니다.
                 .anyRequest().authenticated() // 그 외의 모든 요청은 인증된 사용자만 접근가능
-                .and()
+                .and();
+
+
 //                .csrf().ignoringAntMatchers("/adm/deviceMonitor/deviceMng/serialNoCompare/{serialNo}") //csrf 예외 처리
 //                .and()
-                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()); // @EnableWebSecurity 어노테이션을 활성화하면 추가적인 필요 없음
+
+        http.csrf()
+                .ignoringAntMatchers("/login**")
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()); // @EnableWebSecurity 어노테이션을 활성화하면 추가적인 필요 없음
 //                .and()                                       // 크로스 도메인 사용시
 //                .cors()
 //                .configurationSource(configurationSource());

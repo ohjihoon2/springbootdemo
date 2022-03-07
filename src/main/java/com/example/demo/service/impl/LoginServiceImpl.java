@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +26,11 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public UserDetails loadUserByUsername(String userId) {
         System.out.println("LoginServiceImpl.loadUserByUsername");
-        System.out.println("userId = " + userId);
         UserVO userVO = loginMapper.findByUserId(userId);
-        System.out.println("userVO.toString() = " + userVO.toString());
+
+        if (userVO == null) {
+            throw new UsernameNotFoundException(userId + "is not found.");
+        }
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 

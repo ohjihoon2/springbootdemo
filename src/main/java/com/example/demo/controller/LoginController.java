@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,8 +37,8 @@ public class LoginController {
      * @param userVO
      * @return
      */
-    @GetMapping(value = "/login")
-    public String loginView(UserVO userVO) {
+    @RequestMapping(value = "/login")
+    public String loginView(UserVO userVO, HttpServletResponse response, HttpServletRequest request) {
         return "/login/login";
     }
 
