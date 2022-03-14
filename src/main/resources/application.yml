@@ -11,7 +11,7 @@ spring:
   # 데이터베이스 설정
   datasource:
     driverClassName : net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:mariadb://localhost:3306/demo
+    url: jdbc:log4jdbc:mariadb://192.168.0.128:3306/demo
     username: root
     password: root
   messages:

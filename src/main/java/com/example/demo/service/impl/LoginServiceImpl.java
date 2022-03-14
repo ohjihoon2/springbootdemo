@@ -25,13 +25,10 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public UserDetails loadUserByUsername(String userId) {
-        System.out.println("LoginServiceImpl.loadUserByUsername");
         UserVO userVO = loginMapper.findByUserId(userId);
-        System.out.println("여기를 지나가나??????????11111111111");
         if (userVO == null) {
             throw new UsernameNotFoundException(userId + "is not found.");
         }
-        System.out.println("여기를 지나가나??????????22222222222");
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         if (userVO.getRoleType().equals("ROLE_ADMIN")) {
