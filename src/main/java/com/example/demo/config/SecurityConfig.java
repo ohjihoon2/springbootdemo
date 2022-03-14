@@ -92,18 +92,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
          * http 요청에 대해서 모든 사용자가 /** 경로로 요청할 수 있지만, /member/** , /admin/** 경로는 인증된 사용자만 요청이 가능
          */
         http.authorizeRequests() //HttpServletRequest 요청 URL에 따라 접근 권한을 설정
-//                .antMatchers("/login**").permitAll()
-//                .antMatchers("/login/member/**").authenticated() // antMatchers("pathPattern") - 요청 URL 경로 패턴을 지정
-//                .antMatchers("/login/admin/**").authenticated() // authenticated() - 인증된 유저만 접근을 허용
-                .antMatchers("/admin/**").hasAnyRole("SUPER","MAIN","SUB") // authenticated() - 인증된 유저만 접근을 허용
-                .antMatchers("/mypage/**").hasAnyRole("GENERAL") // authenticated() - 인증된 유저만 접근을 허용
-                .antMatchers("/test/**").hasAnyRole("MAIN") //
+                .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers("/user/**").hasAnyRole("USER")
 //                .antMatchers("/login/member/**").hasRole("MANAGER") // authenticated() - 인증된 유저만 접근을 허용
                 .antMatchers("/**").permitAll() // permitAll() - 모든 유저에게 접근을 허용
                 // anonymous() - 인증되지 않은 유저만 허용합니다.
                 .anyRequest().authenticated() // 그 외의 모든 요청은 인증된 사용자만 접근가능
                 .and();
-
 
 //                .csrf().ignoringAntMatchers("/adm/deviceMonitor/deviceMng/serialNoCompare/{serialNo}") //csrf 예외 처리
 //                .and()
