@@ -20,10 +20,8 @@ public class CustomAuthenicationSuccessHandler extends SavedRequestAwareAuthenti
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        System.out.println("CustomAccessSuccessHandler.onAuthenticationSuccess");
         SecurityContextHolder.getContext().setAuthentication(authentication);
         HttpSession session = request.getSession();
-        System.out.println("authentication.getPrincipal() = " + authentication.getPrincipal());
         String userId =  authentication.getPrincipal().toString();
         String userNicknm = loginService.findUserNicknmByUserId(userId);
 
