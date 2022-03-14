@@ -17,4 +17,6 @@ public interface LoginService extends UserDetailsService {
     void updateUserPwd(Map<String, Object> map);
 
     UserVO checkUserByUserId(String userId);
+
+    String findUserNicknmByUserId(String userId);
 }

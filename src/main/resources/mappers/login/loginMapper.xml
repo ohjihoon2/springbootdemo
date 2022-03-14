@@ -143,4 +143,11 @@
            SET USER_PWD = #{userPwd}
          WHERE USER_ID = #{userId}
     </update>
+
+    <select id="findUserNicknmByUserId" parameterType="string" resultType="string">
+        SELECT USER_NICKNM
+          FROM USERS
+         WHERE USER_ID = #{userId}
+    </select>
+
 </mapper>

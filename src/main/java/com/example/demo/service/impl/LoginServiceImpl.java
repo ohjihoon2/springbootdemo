@@ -87,4 +87,9 @@ public class LoginServiceImpl implements LoginService {
     public UserVO checkUserByUserId(String userId) {
         return loginMapper.findByUserId(userId);
     }
+
+    @Override
+    public String findUserNicknmByUserId(String userId) {
+        return loginMapper.findUserNicknmByUserId(userId);
+    }
 }

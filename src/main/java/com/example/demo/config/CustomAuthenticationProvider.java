@@ -51,12 +51,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                 throw new BadCredentialsException("invalid login details");
             }
         } catch (UsernameNotFoundException exception) {
-            System.out.println("exception = " + exception);
             throw new UsernameNotFoundException("invalid login details");
         }
-//        catch (BadCredentialsException exception){
-//            throw new UsernameNotFoundException("invalid login details");
-//        }
 
         return createSuccessfulAuthentication(authentication, user);
     }

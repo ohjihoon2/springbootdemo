@@ -25,4 +25,6 @@ public interface LoginMapper {
     UserVO findByUserNmAndUserId(String userNm, String userId);
 
     void updateUserPwd(Map<String, Object> map);
+
+    String findUserNicknmByUserId(String userId);
 }
