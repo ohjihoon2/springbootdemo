@@ -16,6 +16,7 @@ public class UserSaveForm {
     private String userPwdConfirm;
     @NotBlank
     private String userNm;
+    private String userNicknm;
     @Email
     private String userEmail;
     private String userPhone;

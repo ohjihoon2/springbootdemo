@@ -12,6 +12,7 @@ public class UserVO {
     private String userId;
     private String userPwd;
     private String userNm;
+    private String userNicknm;
     private String userEmail;
     private String userPhone;
     private String roleType;

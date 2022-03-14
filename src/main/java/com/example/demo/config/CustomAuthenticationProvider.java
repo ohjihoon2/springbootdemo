@@ -47,9 +47,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             String password = (String) authentication.getCredentials();
             String encodePassword = user.getPassword();
 
-//            if ( !passwordEncoder.matches(password, encodePassword)) {
-//                throw new BadCredentialsException("invalid login details");
-//            }
+            if ( !passwordEncoder.matches(password, encodePassword)) {
+                throw new BadCredentialsException("invalid login details");
+            }
         } catch (UsernameNotFoundException exception) {
             System.out.println("exception = " + exception);
             throw new UsernameNotFoundException("invalid login details");

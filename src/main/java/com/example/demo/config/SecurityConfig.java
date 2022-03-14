@@ -92,8 +92,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
          * http 요청에 대해서 모든 사용자가 /** 경로로 요청할 수 있지만, /member/** , /admin/** 경로는 인증된 사용자만 요청이 가능
          */
         http.authorizeRequests() //HttpServletRequest 요청 URL에 따라 접근 권한을 설정
-                .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
-                .antMatchers("/user/**").hasAnyRole("USER")
+                .antMatchers("/adm/**").hasAnyAuthority("ROLE_ADMIN")
+//                .antMatchers("/user/**").hasAnyRole("USER")
 //                .antMatchers("/login/member/**").hasRole("MANAGER") // authenticated() - 인증된 유저만 접근을 허용
                 .antMatchers("/**").permitAll() // permitAll() - 모든 유저에게 접근을 허용
                 // anonymous() - 인증되지 않은 유저만 허용합니다.

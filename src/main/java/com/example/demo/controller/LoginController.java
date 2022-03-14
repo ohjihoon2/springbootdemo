@@ -67,17 +67,6 @@ public class LoginController {
         return "redirect:/";
     }
 
-    @GetMapping(value = "/user/userPage")
-    public String userPage(UserVO userVO, HttpServletResponse response, HttpServletRequest request) {
-        return "/user/user";
-    }
-
-
-    @GetMapping(value = "/admin/adminPage")
-    public String adminPage(UserVO userVO, HttpServletResponse response, HttpServletRequest request) {
-        return "/admin/admin";
-    }
-
     /**
      * 회원가입 요청
      * @param userSaveForm
