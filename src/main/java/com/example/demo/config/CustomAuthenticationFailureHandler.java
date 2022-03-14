@@ -13,7 +13,6 @@ import java.io.IOException;
 
 @NoArgsConstructor
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
-        private String defaultFailureUrl = "login";
 
         @Override
         public void onAuthenticationFailure(HttpServletRequest request,
@@ -21,6 +20,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
                                             AuthenticationException exception) throws IOException, ServletException {
             System.out.println("CustomAuthenticationFailureHandler.onAuthenticationFailure");
 
+            System.out.println("exception.toString() = " + exception.toString());
             // 실패로그를 남긴다
              if(exception instanceof BadCredentialsException) {
                 request.setAttribute("loginFailMsg", "아이디 또는 비밀번호가 틀립니다.");
@@ -38,9 +38,8 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
                 request.setAttribute("loginFailMsg", "비밀번호가 만료되었습니다.");
             }
 
-            // 실패이벤트를 발송한다
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/login");
+            // 실패이벤트를 발송한다 - forword post 형식
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/login-error");
             dispatcher.forward(request,response);
-//            response.sendRedirect(defaultFailureUrl);
         }
 }

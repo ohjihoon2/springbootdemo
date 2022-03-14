@@ -1,6 +1,7 @@
 package com.example.demo.config;
 
 import com.example.demo.service.LoginService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,14 +10,15 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 
+@RequiredArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-    @Resource
-    LoginService loginService;
+    private final PasswordEncoder passwordEncoder;
 
     @Resource
     UserDetailsService userDetailsService;
@@ -31,19 +33,30 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         System.out.println("CustomAuthenticationProvider.authenticate");
-
+        //username / password 가 유효한지 검사
         final String username = (authentication.getPrincipal() == null) ? "NONE_PROVIDED" : authentication.getName();
         // 1. username null check
         if (ObjectUtils.isEmpty(username)) {
             throw new BadCredentialsException("invalid login details");
         }
+
         // get user details using Spring security user details service
         UserDetails user = null;
         try {
             user = userDetailsService.loadUserByUsername(username);
+            String password = (String) authentication.getCredentials();
+            String encodePassword = user.getPassword();
+
+//            if ( !passwordEncoder.matches(password, encodePassword)) {
+//                throw new BadCredentialsException("invalid login details");
+//            }
         } catch (UsernameNotFoundException exception) {
+            System.out.println("exception = " + exception);
             throw new UsernameNotFoundException("invalid login details");
         }
+//        catch (BadCredentialsException exception){
+//            throw new UsernameNotFoundException("invalid login details");
+//        }
 
         return createSuccessfulAuthentication(authentication, user);
     }

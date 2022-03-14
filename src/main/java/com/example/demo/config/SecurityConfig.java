@@ -68,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 
     @Bean
     public CustomAuthenticationProvider authProvider() {
-        CustomAuthenticationProvider authenticationProvider = new CustomAuthenticationProvider();
+        CustomAuthenticationProvider authenticationProvider = new CustomAuthenticationProvider(passwordEncoder());
         return authenticationProvider;
     }
 
@@ -109,7 +109,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 //                .and()
 
         http.csrf()
-                .ignoringAntMatchers("/login**")
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()); // @EnableWebSecurity 어노테이션을 활성화하면 추가적인 필요 없음
 //                .and()                                       // 크로스 도메인 사용시
 //                .cors()

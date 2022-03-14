@@ -37,8 +37,20 @@ public class LoginController {
      * @param userVO
      * @return
      */
-    @RequestMapping(value = "/login")
+    @GetMapping(value = "/login")
     public String loginView(UserVO userVO, HttpServletResponse response, HttpServletRequest request) {
+        return "/login/login";
+    }
+
+    /**
+     * 로그인 에러 페이지
+     * @param userVO
+     * @param response
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/login-error")
+    public String loginErrorView(UserVO userVO, HttpServletResponse response, HttpServletRequest request) {
         return "/login/login";
     }
 
