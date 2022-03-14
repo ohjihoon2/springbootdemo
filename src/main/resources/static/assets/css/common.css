@@ -1,100 +1,136 @@
 @charset "utf-8";
 
-@font-face {
-    font-family:'NotoSans';
-    font-weight:100;
-    font-style:normal;
-    src:url('../font/noto-sans-kr-v13-latin_korean-100.woff2') format('woff2'), url('../font/noto-sans-kr-v13-latin_korean-100.woff') format('woff');
+/* 헤더 */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: 20%;
+    height: 100%;
+    background-color: #00A5B1;
 }
 
-@font-face {
-    font-family:'NotoSans';
-    font-weight:300;
-    font-style:normal;
-    src:url('../font/noto-sans-kr-v13-latin_korean-300.woff2') format('woff2'), url('../font/noto-sans-kr-v13-latin_korean-300.woff') format('woff');
-}
-@font-face {
-    font-family:'NotoSans';
-    font-weight:400;
-    font-style:normal;
-    src:url('../font/noto-sans-kr-v13-latin_korean-regular.woff2') format('woff2'), url('../font/noto-sans-kr-v13-latin_korean-regular.woff') format('woff');
-}
-@font-face {
-    font-family:'NotoSans';
-    font-weight:500;
-    font-style:normal;
-    src:url('../font/noto-sans-kr-v13-latin_korean-500.woff2') format('woff2'), url('../font/noto-sans-kr-v13-latin_korean-500.woff') format('woff');
-}
-@font-face {
-    font-family:'NotoSans';
-    font-weight:700;
-    font-style:normal;
-    src:url('../font/noto-sans-kr-v13-latin_korean-700.woff2') format('woff2'), url('../font/noto-sans-kr-v13-latin_korean-700.woff') format('woff');
-}
-@font-face {
-    font-family:'NotoSans';
-    font-weight:900;
-    font-style:normal;
-    src:url('../font/noto-sans-kr-v13-latin_korean-900.woff2') format('woff2'), url('../font/noto-sans-kr-v13-latin_korean-900.woff') format('woff');
+.header-wrap {
+    width: 100%;
+    max-width: 260px;
+    margin: 70px auto;
+
 }
 
-/* reset */
-html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
-html,body{width:100%;height:100%;-webkit-overflow-scrolling:touch !important;overflow:auto !important; font-size: 14px; font-family: 'Notosans';}
-body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,th,td,fieldset,legend,textarea,p,pre,button,input,select{margin:0;padding:0;box-sizing:border-box;word-break:keep-all;-webkit-text-size-adjust:none;}
-input,textarea{border-radius:0;background:transparent url('');resize:none;}
-input:focus,textarea:focus {outline: none;}
-select:focus {outline: none;}
-div:focus {outline: none;}
-body,h1,h2,h3,h4,h5,h6,input,button,select,textarea{font-family:'NotoSans', sans-serif;}
-caption,legend{font-size:0;line-height:0;text-indent:-5000px;}
-img,fieldset,iframe{border:0;vertical-align:top;}
-fieldset{font-size:0;}
-ul,ol{list-style:none;}
-a{color:#000;text-decoration:none;}
-pre,i,em,address{font-style:normal;}
-table{border-collapse:collapse;border-spacing:0;}
-hr{display:none;}
-button{background-color: transparent; border: 0;}
-/*section {width: 100%; max-width: 812px; margin: 0 auto; position: relative;}*/
-/*header {position: fixed; width:100%; max-width: 812px; z-index: 9999;}*/
-/*footer {background-color: #404040; margin-top: -1px; padding: 15px 12px;}*/
-h2{font-size: 18px; margin: 5px 2px 10px;}
-h3{font-size: 16px;}
-h4{fint-size: 14px;}
+.header-wrap .header-phrases {
+    text-align: right;
+    margin-bottom: 5px;
+}
 
-/* margin */
-.ml0{margin-left:0px !important;}
-.ml5{margin-left:5px !important;}
-.ml10{margin-left:10px !important;}
-.ml20{margin-left:20px !important;}
-.ml30{margin-left:30px !important;}
+.header-wrap .logo-wrap {
+    padding: 5px 0;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+}
 
-.mr5{margin-right:5px !important;}
+.header-search form {
+    display: flex;
+    width: 100%;
+    margin: auto;
+}
 
-.mt0{margin-top:0px !important}
-.mt5{margin-top:5px !important}
-.mt10{margin-top:10px !important}
-.mt20{margin-top:20px !important}
-.mt25{margin-top:25px !important}
-.mt30{margin-top:30px !important}
-.mt40{margin-top:40px !important}
-.mt50{margin-top:50px !important}
-.mt60{margin-top:60px !important}
-.mt70{margin-top:70px !important}
-.mt80{margin-top:80px !important}
-.mt90{margin-top:90px !important}
-.mt100{margin-top:100px !important}
+.header-search input {
+    width: 100%;
+    height: 45px;
+    padding: 5px 15px;
+    border-radius: 25px 0 0 25px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(250, 250, 250, 0.1);
+    border-right: none;
+    outline: none;
+    font-size: 1em;
+}
 
-.mb0{margin-bottom:0px !important}
-.mb5{margin-bottom:5px !important}
-.mb10{margin-bottom:10px !important}
-.mb15{margin-bottom:15px !important}
-.mb20{margin-bottom:20px !important}
+.header-search button {
+    width: 40px;
+    height: 45px;
+    padding-right: 20px;
+    border: 1px solid rgba(250, 250, 250, 0.1);
+    border-radius: 0 25px 25px 0;
+    border-left: none;
+    background: rgba(0, 0, 0, 0.3);
+    font-size: 1.125em;
+    text-align: center;
+    cursor: pointer;
+}
 
-/* common */
+.header-menu ul {
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+}
 
-/* search */
+.header-menu ul li {
+    position: relative;
+    z-index: 1;
+    padding: 12px 15px;
+    border-bottom: 1px solid #000;
+}
 
-/* footer */
+.header-menu div {
+    display: flex;
+    font-size: 0;
+}
 
+.header-menu div a {
+    font-size: 16px;
+    padding: 10px;
+    text-align: center;
+    background: rgba(0,0,0,0.3);
+}
+
+.header-menu div a:not(:nth-last-child(1)) {
+    margin-right: 10px;
+}
+
+.header-menu div a:first-child:nth-last-child(1),
+.header-menu div a:first-child:nth-last-child(1) ~ a {width: 100%;}
+.header-menu div a:first-child:nth-last-child(2),
+.header-menu div a:first-child:nth-last-child(2) ~ a {width: 50%;}
+.header-menu div a:first-child:nth-last-child(3),
+.header-menu div a:first-child:nth-last-child(3) ~ a {width: 33.3%;}
+.header-menu div a:first-child:nth-last-child(4),
+.header-menu div a:first-child:nth-last-child(4) ~ a {width: 25%;}
+.header-menu div a:first-child:nth-last-child(5),
+.header-menu div a:first-child:nth-last-child(5) ~ a {width: 20%;}
+
+/* 본문 */
+section {
+    width: 80%;
+    position: relative;
+    top: 0;
+    left: 20%;
+    min-height: calc(100% - 210px);
+    word-break: keep-all;
+}
+
+/* 컨텐츠, 풋터 */
+.section-wrap, .footer-wrap {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+}
+
+/* 풋터 */
+footer{
+    width: 80%;
+    position: relative;
+    top: 0;
+    left: 20%;
+    word-break: keep-all;
+    background-color: #555;
+}
+
+.footer-wrap{
+    text-align: center;
+}
+
+.footer-wrap .logo-wrap{
+    text-align: center;
+    border-bottom: 1px solid #000;
+}
