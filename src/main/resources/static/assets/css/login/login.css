@@ -1,4 +1,80 @@
 @charset "utf-8";
 
+.login-wrap {
+    width: 550px;
+    margin: 0 auto;
+}
 
+.prev_btn a {
+    color: #999;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+}
 
+.login-box {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    background-color: #fff;
+    box-shadow: 0px 0px 20px rgb(0 0 0 / 10%);
+    padding: 30px;
+}
+
+.login-box h2 {
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    text-align: center;
+    border-bottom: 1px solid #ededed;
+}
+
+.login-box h2 img {
+    width: 30%;
+}
+
+.login-box h3 {
+    width: 100%;
+    font-size: 26px;
+}
+
+.login-form input {
+    width: 100%;
+    height: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid #e2e2e2;
+    border-radius: 7px;
+    outline: none;
+    font-size: 16px;
+}
+
+.login-forminput::placeholder {
+    color: #999;
+}
+
+.login-btn {
+    width: 100%;
+    line-height: 50px;
+    background-color: #96D4D4;
+    border-radius: 7px;
+    text-align: center;
+    border: 0;
+}
+
+.login-ul {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 10px auto;
+}
+
+.login-ul li a {
+    font-size: 14px;
+    color: #999;
+}
+
+.login-msg {
+    font-size: 14px;
+    color: #999;
+}
