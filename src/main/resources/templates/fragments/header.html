@@ -2,8 +2,7 @@
 <html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:th="http://www.thymeleaf.org"
                 xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <header>
-
+    <header th:fragment="header">
         <div class="header-wrap">
             <p class="header-phrases">[[${session.userNicknm != null ? session.userNicknm + ' 님 환영합니다.' : '&nbsp'}]]</p>
             <div class="logo-wrap mb50">
@@ -28,7 +27,38 @@
                 <div>
                     <a th:href="${#authorization.expr('isAuthenticated()') ? '' : '/login'}">[[${#authorization.expr('isAuthenticated()') ? '내정보' : '로그인'}]]</a>
                     <a th:href="${#authorization.expr('isAuthenticated()') ? '/logout' : ''}">[[${#authorization.expr('isAuthenticated()') ? '로그아웃' : '회원가입'}]]</a>
-                    <a sec:authorize="hasRole('ADMIN')">관리자</a>
+                    <a href="/adm/admIndex" sec:authorize="hasRole('ADMIN')">관리자</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <header th:fragment="admHeader">
+        <div class="header-wrap">
+            <p class="header-phrases">[[${session.userNicknm != null ? session.userNicknm + ' 님 환영합니다.' : '&nbsp'}]]</p>
+            <div class="logo-wrap mb50">
+                <img th:src="@{/img/common/logo_b.png}" width="100%;">
+            </div>
+            <div class="header-search mb50">
+                <form class="">
+                    <input type="text" placeholder="검색어를 입력하세요">
+                    <button type="submit" class="search-btn">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="header-menu mb50">
+                <ul class="mb20">
+                    <li><a>메뉴 1</a></li>
+                    <li><a>메뉴 2</a></li>
+                    <li><a>메뉴 3</a></li>
+                    <li><a>메뉴 4</a></li>
+                    <li><a>메뉴 5</a></li>
+                </ul>
+                <div>
+                    <a th:href="${#authorization.expr('isAuthenticated()') ? '' : '/login'}">[[${#authorization.expr('isAuthenticated()') ? '내정보' : '로그인'}]]</a>
+                    <a th:href="${#authorization.expr('isAuthenticated()') ? '/logout' : ''}">[[${#authorization.expr('isAuthenticated()') ? '로그아웃' : '회원가입'}]]</a>
+                    <a href="/adm/admIndex" sec:authorize="hasRole('ADMIN')">관리자</a>
                 </div>
             </div>
         </div>

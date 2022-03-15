@@ -22,9 +22,10 @@
 
                     <button class="login-btn" type="submit">로그인</button>
                 </form>
-                <div class="login-msg mt10" th:text="${#request.getAttribute('loginFailMsg')}">message here</div>
+                <div class="login-msg mt20" th:text="${#request.getAttribute('loginFailMsg')}">message here</div>
             </div>
         </div>
 
+        <th:block th:replace="/fragments/footer.html :: js"></th:block>
     </body>
 </html>
