@@ -7,28 +7,32 @@
         <th:block th:replace="/fragments/header.html :: header"></th:block>
         <section>
             <div class="section-wrap">
-                <h2>초기 페이지입니다.</h2>
+                <h2>메인 페이지입니다.</h2>
+<!--                <span th:text="${#authentication.authorities}">  </span>-->
 
-                <span th:text="${session.userNicknm}"> USER_ID </span>
 
+<!--                <a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="btn btn-outline-danger my-2 my-sm-0 btn-sm">Logout</a>-->
+<!--                <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-outline-info my-2 my-sm-0 btn-sm">Login</a>-->
 
-                <a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="btn btn-outline-danger my-2 my-sm-0 btn-sm">Logout</a>
-                <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-outline-info my-2 my-sm-0 btn-sm">Login</a>
+<!--                <div sec:authentication="principal"></div>-->
+<!--                <div sec:authentication="name"></div>-->
+<!--                <div sec:authentication="authorities"></div>-->
 
-                <div sec:authentication="principal"></div>
-                <div sec:authentication="name"></div>
-                <div sec:authentication="authorities"></div>
+<!--                <div th:if="${#authorization.expr('isAuthenticated()')}">-->
+<!--                    <h2 th:text="${#authentication.name}">Name</h2>-->
+<!--                    <a href="/logout" th:href="@{/logout}">Logout</a>-->
+<!--                </div>-->
 
-                <!--ROLE_USER 권한을 갖는다면 이 글이 보임-->
-                <h1 sec:authorize="hasRole('ADMIN')">Has admin Role</h1>
+<!--                &lt;!&ndash;ROLE_USER 권한을 갖는다면 이 글이 보임&ndash;&gt;-->
+<!--                <h1 sec:authorize="hasRole('ADMIN')">Has admin Role</h1>-->
 
-                <!--ROLE_ADMIN 권한을 갖는다면 이 글이 보임-->
-                <h1 sec:authorize="hasRole('USER')">Has user Role</h1>
+<!--                &lt;!&ndash;ROLE_ADMIN 권한을 갖는다면 이 글이 보임&ndash;&gt;-->
+<!--                <h1 sec:authorize="hasRole('USER')">Has user Role</h1>-->
 
-                <!--어떤 권한이건 상관없이 인증이 되었다면 이 글이 보임-->
-                <div sec:authorize="isAuthenticated()">
-                    Only Authenticated user can see this Text
-                </div>
+<!--                &lt;!&ndash;어떤 권한이건 상관없이 인증이 되었다면 이 글이 보임&ndash;&gt;-->
+<!--                <div sec:authorize="isAuthenticated()">-->
+<!--                    Only Authenticated user can see this Text-->
+<!--                </div>-->
             </div>
         </section>
         <th:block th:replace="/fragments/footer.html"></th:block>

@@ -18,6 +18,6 @@ public class AdminController {
 
     @GetMapping(value = "/admIndex")
     public String adminPage(UserVO userVO, HttpServletResponse response, HttpServletRequest request) {
-        return "/admin/admin";
+        return "/adm/admIndex";
     }
 }
