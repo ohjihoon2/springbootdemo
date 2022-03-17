@@ -6,18 +6,10 @@
     <body ondragstart="return false" onselectstart="return false">
         <th:block th:replace="/fragments/header.html :: thAdmHeader"></th:block>
         <section>
-            <h2>관리자 페이지입니다.</h2>
+            <div class="section-wrap">
+                <h2>관리자 페이지입니다.</h2>
+            </div>
         </section>
-
-        <a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="btn btn-outline-danger my-2 my-sm-0 btn-sm">Logout</a>
-
-        <div sec:authentication="principal"></div>
-        <div sec:authentication="name"></div>
-        <div sec:authentication="authorities"></div>
-
-        <!--ROLE_USER 권한을 갖는다면 이 글이 보임-->
-        <h1 sec:authorize="hasRole('ADMIN')">Has admin Role</h1>
-
         <th:block th:replace="/fragments/footer.html :: thAdmJs"></th:block>
     </body>
 </html>

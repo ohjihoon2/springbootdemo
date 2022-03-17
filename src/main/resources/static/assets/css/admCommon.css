@@ -30,8 +30,18 @@ header {
 }
 
 .header-list {
-    height: 90%;
-    overflow-y: scroll;
+    height: 93%;
+    overflow-y: auto;
+}
+
+.header-list::-webkit-scrollbar {
+    width: 5px;
+}
+.header-list::-webkit-scrollbar-thumb {
+    background-color: #d6d6d6;
+}
+.header-list::-webkit-scrollbar-track {
+    background-color: #ededed;
 }
 
 .header-list > ul > li {
@@ -41,6 +51,16 @@ header {
     text-indent: 1.4em;
     padding: 0;
     line-height: 3em;
+    cursor: pointer;
+}
+
+.header-list > ul > li:after {
+    position: absolute;
+    content: '';
+    top: 21px;
+    right: 20px;
+    width: 19px;
+    height: 19px;
 }
 
 .header-list > ul > li.on:after {
@@ -49,6 +69,10 @@ header {
 
 .header-list > ul > li.off:after {
     background: no-repeat 0 -25px / 100% url(../img/adm/menu_arr.png);
+}
+
+.header-list > ul > li.on > ul {
+    display: block;
 }
 
 .header-list > ul > li.off > ul {
@@ -63,11 +87,33 @@ header {
     line-height: 3.4em;
 }
 
+.header-foot {
+    height: 7%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+}
+
 /* 본문 */
 section {
-    width: calc(100% - 300px);
+    width: calc(100% - 340px);
     position: relative;
     top: 0;
     left: 300px;
     word-break: keep-all;
+    min-height: calc(100% - 40px);
+    background: #ededed;
+    padding: 20px;
+}
+
+.section-wrap {
+    width: 100%;
+    background: #fff;
+    min-height: calc(100vh - 40px);
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgb(0 0 0 / 20%);
+    padding: 20px;
 }
