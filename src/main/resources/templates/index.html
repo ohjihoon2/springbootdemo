@@ -2,9 +2,9 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
                 xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-    <th:block th:replace="/fragments/head.html :: head(pageCss='')"></th:block>
+    <th:block th:replace="/fragments/head.html :: thHead(pageCss='')"></th:block>
     <body ondragstart="return false" onselectstart="return false">
-        <th:block th:replace="/fragments/header.html :: header"></th:block>
+        <th:block th:replace="/fragments/header.html :: thHeader"></th:block>
         <section>
             <div class="section-wrap">
                 <h2>메인 페이지입니다.</h2>
@@ -35,6 +35,6 @@
 <!--                </div>-->
             </div>
         </section>
-        <th:block th:replace="/fragments/footer.html"></th:block>
+        <th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
     </body>
 </html>

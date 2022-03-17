@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-    <th:block th:replace="/fragments/head.html :: head(pageCss='/css/login/login.css')"></th:block>
+    <th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/login/login.css')"></th:block>
     <body>
         <div class="login-wrap">
-            <div class="prev_btn pt50 pb15">
+            <div class="prev_btn pt80 pb15">
                 <a href="javascript:history.back()"><img th:src="@{/img/login/prev_arrow.png}" alt="화살표" class="mr5"> 뒤로가기</a>
             </div>
             <div class="login-box">
@@ -26,6 +26,6 @@
             </div>
         </div>
 
-        <th:block th:replace="/fragments/footer.html :: js"></th:block>
+        <th:block th:replace="/fragments/footer.html :: thJs"></th:block>
     </body>
 </html>

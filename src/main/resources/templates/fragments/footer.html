@@ -1,23 +1,33 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <footer>
-        <div class="footer-wrap">
-            <div class="logo-wrap pt20 pb20">
-                <img th:src="@{/img/common/logo_w.png}">
+    <th:block th:fragment="thFooter">
+        <footer>
+            <div class="footer-wrap">
+                <div class="logo-wrap pt20 pb20">
+                    <img th:src="@{/img/common/logo_w.png}">
+                </div>
+                <div class="footer-content pt20 pb20">
+                    <ul>
+                        <li>부산 동구 자성로141번길 11 삼환이피스텔 1층 / 개발팀 전화: 070-4690-6902</li>
+                        <li>개발자: 김보검, 오지훈 / 기획·담당: 개발팀 / 개발사: (주)빛솔커뮤니케이션</li>
+                        <li>≪빛솔, CMS≫의 저작권은 (주)빛솔커뮤니케이션 에 있습니다.</li>
+                    </ul>
+                    <div></div>
+                </div>
             </div>
-            <div class="footer-content pt20 pb20">
-                <ul>
-                    <li>부산 동구 자성로141번길 11 삼환이피스텔 1층 / 개발팀 전화: 070-4690-6902</li>
-                    <li>개발자: 김보검, 오지훈 / 기획·담당: 개발팀 / 개발사: (주)빛솔커뮤니케이션</li>
-                    <li>≪빛솔, CMS≫의 저작권은 (주)빛솔커뮤니케이션 에 있습니다.</li>
-                </ul>
-                <div></div>
-            </div>
-        </div>
-    </footer>
-    <th:block th:fragment="js">
+        </footer>
+        <th:block th:fragment="thJs">
+            <script th:src="@{/js/externalLib/jquery/jquery-3.6.0.min.js}"></script>
+            <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+            <script th:src="@{/js/util.js}"></script>
+            <script th:src="@{/js/common.js}"></script>
+        </th:block>
+    </th:block>
+
+    <th:block th:fragment="thAdmJs">
         <script th:src="@{/js/externalLib/jquery/jquery-3.6.0.min.js}"></script>
         <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+        <script th:src="@{/js/util.js}"></script>
         <script th:src="@{/js/common.js}"></script>
     </th:block>
 </html>

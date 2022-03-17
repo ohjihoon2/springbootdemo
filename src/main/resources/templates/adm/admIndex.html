@@ -2,9 +2,9 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
                 xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-    <th:block th:replace="/fragments/head.html :: admHead(pageCss='')"></th:block>
+    <th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='')"></th:block>
     <body ondragstart="return false" onselectstart="return false">
-        <th:block th:replace="/fragments/header.html :: admHeader"></th:block>
+        <th:block th:replace="/fragments/header.html :: thAdmHeader"></th:block>
         <section>
             <h2>관리자 페이지입니다.</h2>
         </section>
@@ -18,8 +18,6 @@
         <!--ROLE_USER 권한을 갖는다면 이 글이 보임-->
         <h1 sec:authorize="hasRole('ADMIN')">Has admin Role</h1>
 
-        <th:block th:replace="/fragments/footer.html :: footer"></th:block>
-        <script th:src="@{/js/externalLib/jquery/jquery-3.6.0.min.js}"></script>
-        <script th:src="@{/js/common.js}"></script>
+        <th:block th:replace="/fragments/footer.html :: thAdmJs"></th:block>
     </body>
 </html>

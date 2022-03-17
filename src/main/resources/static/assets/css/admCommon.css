@@ -1,0 +1,73 @@
+@charset "utf-8";
+
+
+/* 헤더 */
+header {
+    position: fixed;
+    width: 300px;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #fff;
+    z-index: 99;
+    color: #0f192a;
+}
+
+.header-top {
+    position: relative;
+    width: 100%;
+    height: 65px;
+    border-bottom: 2px solid #EDEDED;
+    padding: 15px;
+}
+
+.header-top a img {
+    width: 90px;
+}
+
+.header-bot {
+    height: calc(100% - 65px);
+}
+
+.header-list {
+    height: 90%;
+    overflow-y: scroll;
+}
+
+.header-list > ul > li {
+    position: relative;
+    width: 100%;
+    font-weight: 600;
+    text-indent: 1.4em;
+    padding: 0;
+    line-height: 3em;
+}
+
+.header-list > ul > li.on:after {
+    background: no-repeat 0 -5px / 100% url(../img/adm/menu_arr.png);
+}
+
+.header-list > ul > li.off:after {
+    background: no-repeat 0 -25px / 100% url(../img/adm/menu_arr.png);
+}
+
+.header-list > ul > li.off > ul {
+    display: none;
+}
+
+.header-list > ul > li > ul > li {
+    font-weight: 500;
+    background: #ededed;
+    font-size: 0.8em;
+    text-indent: 2em;
+    line-height: 3.4em;
+}
+
+/* 본문 */
+section {
+    width: calc(100% - 300px);
+    position: relative;
+    top: 0;
+    left: 300px;
+    word-break: keep-all;
+}
