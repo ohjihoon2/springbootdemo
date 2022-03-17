@@ -26,6 +26,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
+    // 1.LoginService 자동주입
     @Autowired
     private LoginService loginService;
 
@@ -51,7 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 
     @Bean
     public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
-        System.out.println("SecurityConfig.customAuthenticationFilter");
 
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter();
         customAuthenticationFilter.setAuthenticationManager(authenticationManager());
@@ -67,14 +67,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     }
 
     @Bean
-    public CustomAuthenticationProvider authProvider() {
+    public CustomAuthenticationProvider customAuthenticationProvider() {
         CustomAuthenticationProvider authenticationProvider = new CustomAuthenticationProvider(passwordEncoder());
         return authenticationProvider;
     }
 
     @Bean
     public CustomAuthenticationManager customAuthenticationManager() {
-        System.out.println("SecurityConfig.customAuthenticationManager");
         return new CustomAuthenticationManager();
     }
 
@@ -108,7 +107,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 //                .and()                                       // 크로스 도메인 사용시
 //                .cors()
 //                .configurationSource(configurationSource());
-
+        http.headers(headers -> headers
+                    .cacheControl(cache -> cache.disable())
+                    );
 
 
         /**
@@ -116,7 +117,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
          */
         http.formLogin()
                 .loginPage("/login") // loginPage("path") - 커스텀 로그인 페이지 경로와 로그인 인증 경로를 등록
-                .loginProcessingUrl("/loginProc") // 인증처리를 수행하는 필터가 호출 - Form action 경로와 일치
+                .loginProcessingUrl("/loginAjax") // 인증처리를 수행하는 필터가 호출 - Form action 경로와 일치
                 .defaultSuccessUrl("/")  //defaultSuccessUrl("path") - 로그인 인증을 성공하면 이동하는 페이지를 등록
                 .permitAll()
                 .usernameParameter("userId") //login form에서 username에 parameter value 값 수정
@@ -167,17 +168,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     */
 
     /**
-     * AuthenticationManagerBuilder
+     * 2. UserDetailService를 설정
      * AuthenticationManager를 생성합니다. AuthenticationManager는 사용자 인증을 담당
      */
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        System.out.println("SecurityConfig.configure");
-        auth.authenticationProvider(authProvider());
+        // 사용자 세부 서비스를 설정
+        auth.userDetailsService(loginService).passwordEncoder(passwordEncoder());
 
         // 커스텀한 AuthenticationProvider 를 AuthenticationManager 에 등록
-//        authenticationManagerBuilder.authenticationProvider(customAuthenticationProvider())
-        auth.userDetailsService(loginService).passwordEncoder(passwordEncoder());
+        auth.authenticationProvider(customAuthenticationProvider());
+
     }
+
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        CacheControl cacheControl = CacheControl
+//                .maxAge(60, TimeUnit.SECONDS)
+//                .mustRevalidate();
+//        registry.addResourceHandler("**/*.js")
+//                .addResourceLocations("classpath:/template/login/**")
+//                .setCacheControl(cacheControl)
+//        ;
+//    }
 
 }

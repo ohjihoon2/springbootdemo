@@ -32,7 +32,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
      */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        System.out.println("CustomAuthenticationProvider.authenticate");
         //username / password 가 유효한지 검사
         final String username = (authentication.getPrincipal() == null) ? "NONE_PROVIDED" : authentication.getName();
         // 1. username null check

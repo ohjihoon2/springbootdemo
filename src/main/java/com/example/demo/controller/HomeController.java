@@ -30,10 +30,6 @@ public class HomeController {
 //            name = ((MemberInfo)principal).getName();
 //        }
 
-
-        if(principal != null){
-            System.out.println("principal.toString() = " + principal.toString());
-        }
         mav.addObject("auth",auth);
         mav.setViewName("index");
 

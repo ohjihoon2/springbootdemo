@@ -37,22 +37,22 @@ public class LoginController {
      * @param userVO
      * @return
      */
+//    @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
     @GetMapping(value = "/login")
     public String loginView(UserVO userVO, HttpServletResponse response, HttpServletRequest request) {
+        String referrer = request.getHeader("Referer");
+        request.getSession().setAttribute("prevPage", referrer);
+
         return "/login/login";
     }
 
-    /**
-     * 로그인 에러 페이지
-     * @param userVO
-     * @param response
-     * @param request
-     * @return
-     */
-    @PostMapping(value = "/login-error")
-    public String loginErrorView(UserVO userVO, HttpServletResponse response, HttpServletRequest request) {
-        return "/login/login";
-    }
+    /*@PostMapping(value = "/loginAjax")
+    @ResponseBody
+    public String loginAjax(@RequestBody HashMap<String, Object> param) {
+        System.out.println("LoginController.loginAjax");
+        System.out.println("param = " + param);
+        return param.toString();
+    }*/
 
     /**
      * 로그인 성공페이지
