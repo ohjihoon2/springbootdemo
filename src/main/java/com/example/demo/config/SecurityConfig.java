@@ -10,12 +10,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Arrays;
 
 
 /** 해당 클래스를 Configuration으로 등록 */
@@ -29,6 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     // 1.LoginService 자동주입
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -52,16 +61,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 
     @Bean
     public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
-
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter();
         customAuthenticationFilter.setAuthenticationManager(authenticationManager());
 //        customAuthenticationFilter.setAuthenticationManager(customAuthenticationManager());
         customAuthenticationFilter.setAuthenticationSuccessHandler(customAuthenicationSuccessHandler());
         customAuthenticationFilter.setAuthenticationFailureHandler(customAuthenticationFailureHandler());
         customAuthenticationFilter.afterPropertiesSet();
-
-        //Get방식으로 Login할 때 어떤 URL을 사용할지 등록
-//        customAuthenticationFilter.setFilterProcessesUrl("/login");
 
         return customAuthenticationFilter;
     }
@@ -103,10 +108,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 //                .and()
 
         http.csrf()
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()); // @EnableWebSecurity 어노테이션을 활성화하면 추가적인 필요 없음
-//                .and()                                       // 크로스 도메인 사용시
-//                .cors()
-//                .configurationSource(configurationSource());
+//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()); // @EnableWebSecurity 어노테이션을 활성화하면 추가적인 필요 없음
+                .and()                                       // 크로스 도메인 사용시
+                .cors()
+                .configurationSource(configurationSource());
         http.headers(headers -> headers
                     .cacheControl(cache -> cache.disable())
                     );
@@ -128,6 +133,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 // UsernamePasswordAuthenticationFilter 이전에 custom Filter 추가
                 // -> override 개념이 아니라 custom filter로 인증 처리 되면 UsernamePasswordAuthenticationFilter 인증 자연스레 통과하는 구조
 
+
+        http.rememberMe()
+                .key("bitsol")
+                .rememberMeParameter("remember-me")
+                .tokenValiditySeconds(86400 * 30)
+                .alwaysRemember(false)
+                .userDetailsService(userDetailsService);
+
+//                .authenticationSuccessHandler(customAuthenicationSuccessHandler());
         /**
          * 로그아웃 설정을 진행
          */
@@ -136,6 +150,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .logoutSuccessUrl("/") // 로그아웃 성공 시 이동할 경로를 지정
                 .invalidateHttpSession(true); // 로그아웃 성공 시 세션을 제거
 
+
         /**
          * 권한이 없는 사용자가 접근했을 경우 이동할 경로
          */
@@ -143,11 +158,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .accessDeniedHandler(customAccessDeniedHandler());
     }
 
-
     /**
      * 크로스 도메인 사용시
      */
-    /*
     private CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(Arrays.asList("*"));
@@ -165,7 +178,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-    */
 
     /**
      * 2. UserDetailService를 설정

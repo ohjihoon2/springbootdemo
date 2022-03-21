@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -27,7 +28,6 @@ public class CustomAuthenicationSuccessHandler extends SavedRequestAwareAuthenti
         String userNicknm = loginService.findUserNicknmByUserId(userId);
 
         session.setAttribute("userNicknm", userNicknm);
-
         JSONObject jsonObj = new JSONObject();
 
         jsonObj.put("result","success");

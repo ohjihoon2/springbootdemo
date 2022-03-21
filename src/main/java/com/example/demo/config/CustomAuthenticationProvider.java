@@ -21,7 +21,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     private final PasswordEncoder passwordEncoder;
 
     @Resource
-    UserDetailsService userDetailsService;
+    LoginService loginService;
 
     /**
      * <p> The authenticate method to authenticate the request. We will get the username from the Authentication object and will
@@ -42,7 +42,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         // get user details using Spring security user details service
         UserDetails user = null;
         try {
-            user = userDetailsService.loadUserByUsername(username);
+            user = loginService.loadUserByUsername(username);
             String password = (String) authentication.getCredentials();
             String encodePassword = user.getPassword();
 

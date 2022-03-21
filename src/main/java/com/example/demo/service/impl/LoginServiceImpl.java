@@ -25,6 +25,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public UserDetails loadUserByUsername(String userId) {
+        System.out.println("LoginServiceImpl.loadUserByUsername");
         UserVO userVO = loginMapper.findByUserId(userId);
         if (userVO == null) {
             throw new UsernameNotFoundException(userId + "is not found.");
@@ -41,7 +42,6 @@ public class LoginServiceImpl implements LoginService {
             authorities.add(new SimpleGrantedAuthority("ROLE_GENERAL"));
             userVO.setRoleType("ROLE_GENERAL");
         }
-
         return new User(userVO.getUserId(), userVO.getUserPwd(), authorities);
     }
 
