@@ -38,7 +38,7 @@
     font-size: 26px;
 }
 
-.login-form input {
+.login-form input[type="text"], .login-form input[type="password"] {
     width: 100%;
     height: 50px;
     padding-left: 10px;
@@ -60,6 +60,7 @@
     border-radius: 7px;
     text-align: center;
     border: 0;
+    color: #fff;
 }
 
 .login-ul {
@@ -69,10 +70,23 @@
     margin: 10px auto;
 }
 
-.login-ul li a {
+.login-ul ul li {
+    display: inline-block;
+}
+
+.login-ul ul li input[type="checkbox"] {
+    margin-bottom: 2px;
+}
+
+.login-ul ul li a, .login-ul ul li .check-label {
     font-size: 14px;
     color: #999;
 }
+
+.login-ul ul li .check-label {
+    margin-left: 5px;
+}
+
 
 .login-msg {
     text-align: center;
