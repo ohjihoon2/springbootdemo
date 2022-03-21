@@ -28,43 +28,6 @@
         </div>
 
         <th:block th:replace="/fragments/footer.html :: thJs"></th:block>
-        <script>
-            $(function(){
-                var csrfHeader = $('meta[name="_csrf_header"]').attr('content')
-                var csrfToken = $('meta[name="_csrf"]').attr('content')
-
-                $('#login-form').submit(function(event){
-                    event.preventDefault();
-                    // var params = "userId=" + $('#userId').val() + "&userPwd=" + $('#userPwd').val()
-                    // var params = {
-                    //     'userId' : $("#userId").val(),
-                    //     'userPwd' : $("#userPwd").val()
-                    // }
-                    var queryString = $("form[name=login-form]").serialize() ;
-                    $.ajax({
-                        url : "/loginAjax",
-                        type : "post",
-                        // contentType: "application/json",
-                        // dataType:'json',
-                        // data : JSON.stringify(params),
-                        data : queryString,
-                        // beforeSend: function(xhr) {
-                        //     xhr.setRequestHeader(csrfHeader, csrfToken);
-                        // },
-                        success : function(response) {
-                            if(response.result == "success") {
-                                location.href = "/";
-                            }else{
-                                alert(response.message);
-                            }
-                        }, error : function(jqXHR, status, e) {
-                            console.error(status + " : " + e);
-                        }
-
-                    });
-                });
-            });
-
-        </script>
+        <script th:src="@{/js/login/login.js}"></script>
     </body>
 </html>

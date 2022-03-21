@@ -124,28 +124,29 @@
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
+            var res;
             $.ajax({
                 type: "POST",
                 url: url,
-                data: JSON.stringify(param),
-                contentType: "application/json",
-                // 토큰 사용시
+                data: param,
+                async: false,
+                // contentType: "application/json",
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
                 },
-                success: function (res) {
-                    if(res == 1) {
-                        alert(msg);
-                        window.history.back();
-                    }
-                    else if(res == 0) {
-                        alert("수정을 실패하였습니다.");
-                    }
+                success: function (response) {
+                    res = response;
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    return alert("네트워크 통신을 실패하였습니다.");
+                    if(msg == undefined) {
+                        alert("네트워크 통신을 실패하였습니다.");
+                    }
+                    else {
+                        alert(msg);
+                    }
                 }
             });
+            return res;
         },
     }
 
