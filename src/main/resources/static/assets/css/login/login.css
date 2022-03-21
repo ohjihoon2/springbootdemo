@@ -74,8 +74,12 @@
     display: inline-block;
 }
 
+.login-ul ul li:not(:nth-last-child(1)) {
+    margin-right: 5px;
+}
+
 .login-ul ul li input[type="checkbox"] {
-    margin-bottom: 1px;
+    margin-bottom: 2px;
 }
 
 .login-ul ul li a, .login-ul ul li .check-label {
@@ -85,6 +89,7 @@
 
 .login-ul ul li .check-label {
     margin-left: 4px;
+    cursor: pointer;
 }
 
 
