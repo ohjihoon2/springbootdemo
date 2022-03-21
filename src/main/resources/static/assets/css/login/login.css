@@ -75,7 +75,7 @@
 }
 
 .login-ul ul li input[type="checkbox"] {
-    margin-bottom: 2px;
+    margin-bottom: 1px;
 }
 
 .login-ul ul li a, .login-ul ul li .check-label {
@@ -84,7 +84,7 @@
 }
 
 .login-ul ul li .check-label {
-    margin-left: 5px;
+    margin-left: 4px;
 }
 
 
