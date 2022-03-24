@@ -4,6 +4,7 @@ $(function(){
         event.preventDefault();
 
         var data = $("form[name=login-form]").serialize();
+
         var res = $ajax.postAjax('/loginAjax', data);
 
         if(res.result == "success") {

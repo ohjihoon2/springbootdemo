@@ -24,7 +24,7 @@ public class LoginServiceImpl implements LoginService {
     private final LoginMapper loginMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String userId) {
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException{
         System.out.println("LoginServiceImpl.loadUserByUsername");
         UserVO userVO = loginMapper.findByUserId(userId);
         if (userVO == null) {

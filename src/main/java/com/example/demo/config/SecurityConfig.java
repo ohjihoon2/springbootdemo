@@ -10,17 +10,21 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 
 
@@ -37,11 +41,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     private LoginService loginService;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private DataSource dataSource;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+
+    @Bean
+    public PersistentTokenRepository tokenRepository(){
+        System.out.println("SecurityConfig.tokenRepository");
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        return jdbcTokenRepository;
+    }
+
+    @Bean
+    public PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices() {
+        System.out.println("SecurityConfig.persistentTokenBasedRememberMeServices");
+        String key = "bitsol";
+        PersistentTokenBasedRememberMeServices persistenceTokenBasedservice = new PersistentTokenBasedRememberMeServices(key, loginService, tokenRepository());
+        persistenceTokenBasedservice.setAlwaysRemember(false);
+        persistenceTokenBasedservice.setTokenValiditySeconds(60 * 60 * 24 * 7);		// 토큰 유효시간 1주일 설정
+        return persistenceTokenBasedservice;
     }
 
     @Bean
@@ -63,7 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter();
         customAuthenticationFilter.setAuthenticationManager(authenticationManager());
-//        customAuthenticationFilter.setAuthenticationManager(customAuthenticationManager());
+        customAuthenticationFilter.setRememberMeServices(persistentTokenBasedRememberMeServices());
         customAuthenticationFilter.setAuthenticationSuccessHandler(customAuthenicationSuccessHandler());
         customAuthenticationFilter.setAuthenticationFailureHandler(customAuthenticationFailureHandler());
         customAuthenticationFilter.afterPropertiesSet();
@@ -123,7 +146,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         http.formLogin()
                 .loginPage("/login") // loginPage("path") - 커스텀 로그인 페이지 경로와 로그인 인증 경로를 등록
                 .loginProcessingUrl("/loginAjax") // 인증처리를 수행하는 필터가 호출 - Form action 경로와 일치
-                .defaultSuccessUrl("/")  //defaultSuccessUrl("path") - 로그인 인증을 성공하면 이동하는 페이지를 등록
+//                .defaultSuccessUrl("/loginSuccess")  //defaultSuccessUrl("path") - 로그인 인증을 성공하면 이동하는 페이지를 등록
                 .permitAll()
                 .usernameParameter("userId") //login form에서 username에 parameter value 값 수정
                 .passwordParameter("userPwd")
@@ -133,22 +156,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 // UsernamePasswordAuthenticationFilter 이전에 custom Filter 추가
                 // -> override 개념이 아니라 custom filter로 인증 처리 되면 UsernamePasswordAuthenticationFilter 인증 자연스레 통과하는 구조
 
+        /**
+         * 자동로그인 설정
+         */
+        http.rememberMe().alwaysRemember(false);
 
-        http.rememberMe()
-                .key("bitsol")
-                .rememberMeParameter("remember-me")
-                .tokenValiditySeconds(86400 * 30)
-                .alwaysRemember(false)
-                .userDetailsService(userDetailsService);
-
-//                .authenticationSuccessHandler(customAuthenicationSuccessHandler());
         /**
          * 로그아웃 설정을 진행
          */
         http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // 로그아웃 경로를 지정
                 .logoutSuccessUrl("/") // 로그아웃 성공 시 이동할 경로를 지정
-                .invalidateHttpSession(true); // 로그아웃 성공 시 세션을 제거
+                .invalidateHttpSession(true) // 로그아웃 성공 시 세션을 제거
+                .deleteCookies("JSESSIONID", "remember-me");
 
 
         /**
@@ -186,22 +206,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         // 사용자 세부 서비스를 설정
-        auth.userDetailsService(loginService).passwordEncoder(passwordEncoder());
+//        auth.userDetailsService(loginService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(loginService);
 
         // 커스텀한 AuthenticationProvider 를 AuthenticationManager 에 등록
         auth.authenticationProvider(customAuthenticationProvider());
 
     }
-
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        CacheControl cacheControl = CacheControl
-//                .maxAge(60, TimeUnit.SECONDS)
-//                .mustRevalidate();
-//        registry.addResourceHandler("**/*.js")
-//                .addResourceLocations("classpath:/template/login/**")
-//                .setCacheControl(cacheControl)
-//        ;
-//    }
 
 }

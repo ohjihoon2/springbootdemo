@@ -162,6 +162,7 @@ public class LoginController {
     @PostMapping(value = "/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
