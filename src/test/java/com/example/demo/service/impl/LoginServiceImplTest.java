@@ -20,6 +20,7 @@ import java.util.Map;
 class LoginServiceImplTest {
     @Autowired
     private LoginMapper loginMapper;
+/*
 
     @Test
     public void ADMIN_생성() {
@@ -38,10 +39,11 @@ class LoginServiceImplTest {
         log.debug(String.valueOf(result));
 
     }
+*/
 
     @Test
     public void USER_생성() {
-        String userId = "TEST";
+        String userId = "USER";
         String userPwd ="1234";
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -56,9 +58,10 @@ class LoginServiceImplTest {
         log.debug(String.valueOf(result));
 
     }
+
     @Test
     public void 비밀번호_바꾸기() {
-        String userId = "admin";
+        String userId = "test";
         String userPwd ="1234";
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

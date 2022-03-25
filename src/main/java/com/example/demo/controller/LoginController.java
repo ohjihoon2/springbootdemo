@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
@@ -58,6 +59,38 @@ public class LoginController {
         return "redirect:/";
     }
 
+
+    @PostMapping(value = "/sendVerificationMail")
+    @ResponseBody
+    public String sendVerificationMail(@RequestBody Map<String, Object> map, HttpServletRequest request){
+        String result = "";
+        String ranPw = RandomString.randomStr();
+        System.out.println("map = " + map);
+
+        String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");
+
+        String userId = map.get("userId").toString();
+        String to = map.get("email").toString();
+        String subject = "OO 인증 처리";
+        String text = "안녕하세요.<br>" +
+                "하단에 링크 클릭 시 인증 처리 됩니다. <br>" +
+                "<b><a href=\""+domain+"/verifyMail?id="+userId+"&code="+ranPw+"\">링크</a></b> 입니다.";
+
+        boolean res = emailService.sendMail(to, subject, text);
+        System.out.println("res = " + res);
+        Map<String,Object> paraMap = new HashMap<>();
+
+        if (res) {
+            if(loginService.updateVerificationCode(paraMap)){
+                result = "Y";
+            }else {
+                result = "N";
+            }
+        } else {
+            result = "N";
+        }
+        return result;
+    }
     /**
      * 회원가입 요청
      * @param userSaveForm
@@ -102,8 +135,7 @@ public class LoginController {
      */
     @PostMapping(value = "/forgetPwd")
     @ResponseBody
-    public String forgetPwd(@RequestBody Map<String,Object> paraMap) {
-
+    public String forgetPwd(@RequestBody Map<String,Object> paraMap) throws MessagingException {
         String result ="";
         String userNm = (String) paraMap.get("userNm");
         String userId = (String) paraMap.get("userId");

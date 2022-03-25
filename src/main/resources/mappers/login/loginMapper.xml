@@ -11,7 +11,8 @@
                USER_EMAIL,
                USER_PHONE,
                ROLE_TYPE,
-               USE_AT,
+               VERIFICATION_CODE,
+               IS_VERIFIED,
                CREATE_DATE,
                UPDATE_DATE
           FROM USERS
@@ -27,6 +28,8 @@
                  USER_NICKNM,
                  USER_EMAIL,
                  USER_PHONE,
+                 VERIFICATION_CODE,
+                 IS_VERIFIED,
                  ROLE_TYPE,
                  USE_AT,
                  CREATE_DATE,
@@ -39,6 +42,8 @@
                 #{userNicknm},
                 #{userEmail},
                 #{userPhone},
+                #{verificationCode},
+                #{isVerified},
                 #{roleType},
                 #{useAt},
                 #{createDate}
@@ -55,6 +60,8 @@
                  USER_NICKNM,
                  USER_EMAIL,
                  ROLE_TYPE,
+                 VERIFICATION_CODE,
+                 IS_VERIFIED,
                  USE_AT,
                  CREATE_DATE
              )
@@ -66,6 +73,8 @@
                 '최고관리자',
                 '',
                 'ROLE_ADMIN',
+                #{verificationCode},
+                #{isVerified},
                 'Y',
                 SYSDATE()
              )
@@ -81,6 +90,8 @@
             USER_NICKNM,
             USER_EMAIL,
             ROLE_TYPE,
+            VERIFICATION_CODE,
+            IS_VERIFIED,
             USE_AT,
             CREATE_DATE
         )
@@ -89,9 +100,11 @@
                 #{userId},
                 #{userPwd},
                 '테스트유저',
-                '테스트1'
+                '테스트1',
                 '',
                 'ROLE_USER',
+                #{verificationCode},
+                #{isVerified},
                 'Y',
                 SYSDATE()
             )
@@ -112,7 +125,9 @@
                USER_NICKNM,
                USER_EMAIL,
                USER_PHONE,
-               ROLE_TYPE
+               ROLE_TYPE,
+               VERIFICATION_CODE,
+               IS_VERIFIED,
                USE_AT,
                CREATE_DATE,
                UPDATE_DATE
@@ -129,7 +144,9 @@
                USER_NICKNM,
                USER_EMAIL,
                USER_PHONE,
-               ROLE_TYPE
+               ROLE_TYPE,
+               VERIFICATION_CODE,
+               IS_VERIFIED,
                USE_AT,
                CREATE_DATE,
                UPDATE_DATE
@@ -150,4 +167,9 @@
          WHERE USER_ID = #{userId}
     </select>
 
+    <update id="updateVerificationCode" parameterType="map">
+        UPDATE USERS
+           SET VERIFICATION_CODE = #{VerificationCode}
+         WHERE USER_ID = #{userId}
+    </update>
 </mapper>

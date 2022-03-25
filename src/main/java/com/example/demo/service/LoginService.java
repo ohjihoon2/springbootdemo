@@ -19,4 +19,6 @@ public interface LoginService extends UserDetailsService {
     UserVO checkUserByUserId(String userId);
 
     String findUserNicknmByUserId(String userId);
+
+    boolean updateVerificationCode(Map<String,Object> paramMap);
 }

@@ -92,4 +92,9 @@ public class LoginServiceImpl implements LoginService {
     public String findUserNicknmByUserId(String userId) {
         return loginMapper.findUserNicknmByUserId(userId);
     }
+
+    @Override
+    public boolean updateVerificationCode(Map<String,Object> paramMap) {
+        return loginMapper.updateVerificationCode(paramMap);
+    }
 }

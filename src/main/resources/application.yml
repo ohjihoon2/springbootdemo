@@ -96,8 +96,8 @@ logging:
 spring.mail:
   host: smtp.gmail.com
   port: 587
-  username: id@gmail.com
-  password: password
+  username: koko5793@gmail.com
+  password: dlsgkr21
   properties:
     mail.smtp.auth: true
     mail.smtp.starttls.enable: true
@@ -107,9 +107,21 @@ server:
   servlet:
     session:
       timeout: 60m
+
 # paging 설정
 #pagehelper:
 #  # 사용할 DB 설정
 #  helper-dialect: mariadb
 #  # 범위를 넘어가는 pageNum가 들어올 때 가능할 값으로 변경
 #  reasonable: true
+
+
+# 파일 경로
+custom:
+  path:
+    upload-images: 'D:/dev/upload-images/'
+
+resources:
+  location: D:/upload/@project.name@
+  uri_path: /upload
+

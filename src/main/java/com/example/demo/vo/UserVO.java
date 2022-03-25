@@ -16,6 +16,8 @@ public class UserVO {
     private String userEmail;
     private String userPhone;
     private String roleType;
+    private String verificationCode;
+    private String isVerified;
     private String useAt;
     private Date createDate;
     private Date updateDate;
