@@ -112,6 +112,14 @@ public class LoginController {
 
     }
 
+    @GetMapping(value = "/signup")
+    public String signupView(UserVO userVO, HttpServletResponse response, HttpServletRequest request) {
+        String referrer = request.getHeader("Referer");
+        request.getSession().setAttribute("prevPage", referrer);
+
+        return "/login/signup";
+    }
+
     /**
      * 아이디 찾기
      * @param paraMap

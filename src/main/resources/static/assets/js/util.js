@@ -120,7 +120,7 @@
         },
 
         // post 에이작스
-        postAjax : function (url, param, msg) {
+        postAjax : function (url, param, async=false, msg='네트워크 통신을 실패하였습니다.') {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -129,7 +129,7 @@
                 type: "POST",
                 url: url,
                 data: param,
-                async: false,
+                async: async,
                 // contentType: "application/json",
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
@@ -138,12 +138,7 @@
                     res = response;
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    if(msg == undefined) {
-                        alert("네트워크 통신을 실패하였습니다.");
-                    }
-                    else {
                         alert(msg);
-                    }
                 }
             });
             return res;

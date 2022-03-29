@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/login/signup.css')"></th:block>
+    <body>
+        <div class="signup-wrap">
+            <div class="prev_btn pt80 pb15">
+                <a href="javascript:history.back()"><img th:src="@{/img/login/prev_arrow.png}" alt="화살표" class="mr5"> 뒤로가기</a>
+            </div>
+            <div class="signup-box mb70">
+                <h2><img th:src="@{/img/common/logo_b.png}"></h2>
+                <h3 class="mt20 mb20">회원가입</h3>
+                <form class="signup-form" name="signupForm" id="signupForm" action="/loginAjax" method="post">
+                    <ul class="under">
+                        <li>
+                            <label class="mb10">
+                                <th:block th:replace="/fragments/util.html :: thCheck"></th:block>
+                                아이디
+                            </label>
+                            <input class="mb10" type="text" id="userId" name="userId">
+                        </li>
+                        <li id="idMsg">
+                        </li>
+                        <li>
+                            <label class="mb10">
+                                <th:block th:replace="/fragments/util.html :: thCheck"></th:block>
+                                비밀번호
+                            </label>
+                            <input class="mb10" type="password" id="userPwd" name="userPwd" placeholder="[영문 / 숫자 / 특수문자 모두 조합, 8~16자]">
+                        </li>
+                        <li>
+                            <label>
+                                <th:block th:replace="/fragments/util.html :: thCheck"></th:block>
+                                비밀번호 확인
+                            </label>
+                            <input type="password" id="userPwdChk" name="userPwdChk">
+                        </li>
+                    </ul>
+                    <h4 class="mt30 mb20">개인정보 입력</h4>
+                    <ul class="under">
+                        <li>
+                            <label class="mb10">
+                                <th:block th:replace="/fragments/util.html :: thCheck"></th:block>
+                                이름
+                            </label>
+                            <input class="mb10" type="text" id="userNm" name="userNm">
+                        </li>
+                        <li>
+                            <label class="mb10">
+                                <th:block th:replace="/fragments/util.html :: thCheck"></th:block>
+                                닉네임
+                            </label>
+                            <input class="mb10" type="text" id="userNicknm" name="userNicknm">
+                        </li>
+                        <li>
+                            <label class="mb10">
+                                <th:block th:replace="/fragments/util.html :: thCheck"></th:block>
+                                이메일
+                            </label>
+                            <input class="mb10" type="text" id="userEmail1" name="userEmail1" placeholder="메일인증 후 로그인 가능합니다.">
+                        </li>
+                        <li>
+                            <label class="mb10"></label>
+                            <span class="mb10">@</span>
+                            <input class="mb10" type="text" id="userEmail2" name="userEmail2">
+                            <select name="emailGroup" id="emailGroup">
+                                <option value="" selected>직접입력</option>
+                                <option value="naver.com">네이버</option>
+                                <option value="gmail.com">구글</option>
+                                <option value="daum.net">다음</option>
+                                <option value="kakao.com">카카오</option>
+                                <option value="hanmail.net">한메일</option>
+                            </select>
+                        </li>
+                        <li class="signup-phone">
+                            <label class="mb10">
+                                <th:block th:replace="/fragments/util.html :: thCheck"></th:block>
+                                연락처
+                            </label>
+                            <input class="mb10" type="text" id="userPhone1" name="userPhone1">
+                            <span class="mb10">-</span>
+                            <input class="mb10" type="text" id="userPhone2" name="userPhone2">
+                            <span class="mb10">-</span>
+                            <input class="mb10" type="text" id="userPhone3" name="userPhone3">
+                        </li>
+                    </ul>
+                    <h4 class="mt30 mb30">약관동의</h4>
+                    <div id="agreeBox" class="agree-box mb30">
+                        <label for="agreeAll" class="agree-all">
+                            <input type="checkbox" name="agree_all" id="agreeAll" class="mr5">
+                            <span>전체동의</span>
+                        </label>
+                        <label for="agree1" class="mt-15">
+                            <input type="checkbox" name="agree1" id="agree1" value="1" class="mr5">
+                            <span>이메일 인증메일 수신동의 <span class="txt-green">(필수)</span></span>
+                        </label>
+                        <label for="agree2">
+                            <input type="checkbox" name="agree2" id="agree2" value="2" class="mr5">
+                            <span>이용 약관 <span class="txt-green">(필수)</span></span>
+                        </label>
+                        <label for="agree3">
+                            <input type="checkbox" name="agree3" id="agree3" value="3" class="mr5">
+                            <span>개인정보 수집 및 이용 동의 <span class="txt-green">(필수)</span></span>
+                        </label>
+<!--                        <label for="agree">-->
+<!--                            <input type="checkbox" id="marketing_agree" name="agree" value="4" class="mr5">-->
+<!--                            <span>이벤트, 프로모션 알림 메일 및 SMS 수신</span>-->
+<!--                        </label>-->
+                    </div>
+
+
+                    <button class="signup-btn" type="submit">SIGN UP</button>
+                </form>
+                <div id="signupMsg" class="signup-msg mt20"></div>
+            </div>
+        </div>
+
+        <th:block th:replace="/fragments/footer.html :: thJs"></th:block>
+        <script th:src="@{/js/login/signup.js}"></script>
+    </body>
+</html>

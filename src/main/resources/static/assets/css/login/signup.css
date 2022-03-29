@@ -1,0 +1,136 @@
+@charset "utf-8";
+
+.signup-wrap {
+    width: 550px;
+    margin: 0 auto;
+}
+
+.prev_btn a {
+    color: #999;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+}
+
+.signup-box {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 0px 20px rgb(0 0 0 / 10%);
+    padding: 30px 30px 20px;
+}
+
+.signup-box h2 {
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    text-align: center;
+    border-bottom: 1px solid #ededed;
+}
+
+.signup-box h2 img {
+    width: 30%;
+}
+
+.signup-box h4 {
+    color: #777;
+    font-weight: 300;
+}
+
+.signup-form ul li {
+    display: flex;
+    width: 100%;
+}
+
+.signup-form ul li label {
+    width: 25%;
+    font-size: 12px;
+    padding: 12px 0;
+}
+
+.signup-form ul li span {
+    font-size: 12px;
+    padding: 12px;
+}
+
+.signup-form ul li select {
+    height: 50px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 1px solid #e2e2e2;
+    border-radius: 7px;
+    outline: none;
+    font-size: 16px;
+}
+.signup-form input[type="text"], .signup-form input[type="password"] {
+    width: 75%;
+    height: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid #e2e2e2;
+    border-radius: 7px;
+    outline: none;
+    font-size: 16px;
+}
+
+.signup-form input::placeholder {
+    color: #999;
+}
+
+.signup-btn {
+    width: 100%;
+    line-height: 50px;
+    background-color: #1fb1c7;
+    border-radius: 7px;
+    text-align: center;
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+}
+
+.signup-ul {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 10px auto;
+}
+
+.under {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.signup-phone input {
+    width: 21.2%!important;
+}
+
+.agree-box {
+    width: 100%;
+    height: auto;
+    padding: 15px 25px;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+.agree-box label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.agree-all {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+    font-weight: 700;
+}
+
+.signup-msg {
+    text-align: center;
+    font-size: 14px;
+}
