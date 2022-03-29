@@ -171,7 +171,7 @@ public class LoginController {
     }
 
     /**
-     * 아이디 체크
+     * 아이디 중복 체크
      * @param paraMap
      * @return
      */
@@ -187,6 +187,49 @@ public class LoginController {
         }
     }
 
+
+    /**
+     * 닉네임 중복 체크
+     * @param paraMap
+     * @return
+     */
+    @PostMapping(value = "/checkNicknm")
+    @ResponseBody
+    public String checkNicknm(@RequestBody HashMap<String, String> paraMap) {
+        System.out.println("paraMap" + paraMap.toString());
+        int result = loginService.checkUserByUserNicknm(paraMap.get("userNicknm"));
+        if (result == 0) {
+            return "success";
+        } else {
+            return "fail";
+        }
+    }
+
+
+    /**
+     * 이메일 중복 체크
+     * @param paraMap
+     * @return
+     */
+    @PostMapping(value = "/checkEmail")
+    @ResponseBody
+    public String checkEmail(@RequestBody HashMap<String, String> paraMap) {
+        System.out.println("paraMap" + paraMap.toString());
+        int result = loginService.checkUserByUserEmail(paraMap.get("userEmail"));
+        if (result == 0) {
+            return "success";
+        } else {
+            return "fail";
+        }
+    }
+
+    /**
+     * 로그아웃
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
     @PostMapping(value = "/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

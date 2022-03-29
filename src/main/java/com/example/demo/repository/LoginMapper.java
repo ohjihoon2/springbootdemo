@@ -33,4 +33,8 @@ public interface LoginMapper {
     int findVerificationCodeByUserIdCode(String userId, String code);
 
     int updateIsVerified(String userId, String code);
+
+    int existByUserNicknm(String userNicknm);
+
+    int existByUserEmail(String userEmail);
 }

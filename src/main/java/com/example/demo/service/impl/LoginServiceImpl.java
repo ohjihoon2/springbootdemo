@@ -203,4 +203,14 @@ public class LoginServiceImpl implements LoginService {
 
         return result;
     }
+
+    @Override
+    public int checkUserByUserNicknm(String userNicknm) {
+        return loginMapper.existByUserNicknm(userNicknm);
+    }
+
+    @Override
+    public int checkUserByUserEmail(String userEmail) {
+        return loginMapper.existByUserEmail(userEmail);
+    }
 }

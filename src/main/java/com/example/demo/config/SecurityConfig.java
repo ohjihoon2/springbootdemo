@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -91,13 +92,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 //                .and()
 
         http.csrf()
-//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()); // @EnableWebSecurity 어노테이션을 활성화하면 추가적인 필요 없음
-                .and()                                       // 크로스 도메인 사용시
-                .cors()
-                .configurationSource(configurationSource());
-        http.headers(headers -> headers
-                .cacheControl(cache -> cache.disable())
-        );
+                //csrf 활성화
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                //csrf 비활성화
+//                .disable()
+
+//                .and()                                       // 크로스 도메인 사용시
+//                .cors()
+//                .configurationSource(configurationSource());
+
+//        http.headers(headers -> headers
+//                .cacheControl(cache -> cache.disable())
+//        );
 
 
         /**

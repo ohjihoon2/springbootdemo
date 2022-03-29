@@ -28,4 +28,8 @@ public interface LoginService extends UserDetailsService {
     int sendVerificationMail(HttpServletRequest request, Map<String, Object> map);
 
     int forgetPwd(String userNm, String userId);
+
+    int checkUserByUserNicknm(String userNicknm);
+
+    int checkUserByUserEmail(String userEmail);
 }
