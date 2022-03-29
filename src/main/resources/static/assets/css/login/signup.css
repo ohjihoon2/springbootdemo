@@ -104,6 +104,11 @@
     border-bottom: 1px solid #ddd;
 }
 
+.id_msg {
+    font-size: 13px;
+    color: #1fb1c7;
+}
+
 .signup-phone input {
     width: 21.2%!important;
 }

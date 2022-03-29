@@ -6,8 +6,12 @@ $(function(){
     $('#loginForm').submit(function(event){
         event.preventDefault();
         if(loginBtn) {
-            var data = $("form[name=login-form]").serialize();
 
+            var data = {
+                userId : $('#userId').val(),
+                userPwd : $('#userPwd').val()
+            }
+            console.log(data);
             var res = $ajax.postAjax('/loginAjax', data);
 
             if(res.result == "success") {

@@ -125,10 +125,11 @@
             var header = $("meta[name='_csrf_header']").attr("content");
 
             var res;
+
             $.ajax({
                 type: "POST",
                 url: url,
-                data: param,
+                data: JSON.stringify(param),
                 async: async,
                 // contentType: "application/json",
                 beforeSend: function (xhr) {

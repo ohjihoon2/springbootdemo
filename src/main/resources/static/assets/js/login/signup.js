@@ -57,14 +57,14 @@ function userIdChk() {
     });
 
     $('#userId').focusout(function(){
-        if($('#idMsg').html() == "") {
-            var data = $("form[name=login-form]").serialize();
+        if($('#idMsg').html() == "" && $('#userId').val() != "") {
+            var data = {
+                userId : $('#userId').val(),
+            }
 
-            var res = $ajax.postAjax('/loginAjax', data);
+            var res = $ajax.postAjax('/checkId', data);
 
-            if (res.result == "success") {
-                location.href = "/";
-            } else {
+            if (res == "fail") {
                 $('#idMsg').html("<label class=\"mb10\"></label> 이미 사용중인 아이디입니다.");
             }
         }

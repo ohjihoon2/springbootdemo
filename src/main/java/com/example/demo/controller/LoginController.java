@@ -190,12 +190,12 @@ public class LoginController {
     @PostMapping(value = "/checkId")
     @ResponseBody
     public String checkId(@RequestBody HashMap<String, String> paraMap) {
+        System.out.println("paraMap" + paraMap.toString());
         UserVO user = loginService.checkUserByUserId(paraMap.get("userId"));
-
         if (user == null) {
-            return "SUCCESS";
+            return "success";
         } else {
-            return "FAIL";
+            return "fail";
         }
     }
 
