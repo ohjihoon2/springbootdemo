@@ -3,13 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.form.UserSaveForm;
 import com.example.demo.service.EmailService;
 import com.example.demo.service.LoginService;
-import com.example.demo.util.RandomString;
 import com.example.demo.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +16,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +27,6 @@ import java.util.Map;
 public class LoginController {
 
     private final LoginService loginService;
-    private final EmailService emailService;
 
     /**
      * 로그인 페이지
@@ -59,37 +54,62 @@ public class LoginController {
         return "redirect:/";
     }
 
+    /**
+     * 인증 성공
+     * @return
+     */
+    @GetMapping(value = "/verifySuccess")
+    public String verifySuccess() {
+        return "/login/verifySuccess";
+    }
 
+    /**
+     * 인증 실패
+     * @param msg
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/verifyFailure")
+    public String verifyFailure(@RequestParam String msg, Model model) {
+        model.addAttribute("msg",msg);
+        return "/login/verifyFailure";
+    }
+
+
+
+    /**
+     * 메일 첨부 링크 클릭시 인증 체크
+     * @param userId
+     * @param code
+     * @param redirectAttributes
+     * @return
+     */
+    @GetMapping(value = "/verifyMail")
+    public String verifyMail(@RequestParam String userId, @RequestParam String code,RedirectAttributes redirectAttributes){
+        System.out.println("LoginController.verifyMail");
+
+        Map<String, Object> resultMap = loginService.verifyMail(userId,code);
+
+        if(resultMap.get("result").toString().equals("1")){
+            redirectAttributes.addAttribute("msg",resultMap.get("msg"));
+            return "redirect:/verifySuccess";
+        }else{
+//            model.addAttribute("msg",resultMap.get("msg"));
+            redirectAttributes.addAttribute("msg",resultMap.get("msg"));
+            return "redirect:/verifyFailure";
+        }
+    }
+
+    /**
+     * 인증 코드 메일 보내기
+     * @param map
+     * @param request
+     * @return
+     */
     @PostMapping(value = "/sendVerificationMail")
     @ResponseBody
-    public String sendVerificationMail(@RequestBody Map<String, Object> map, HttpServletRequest request){
-        String result = "";
-        String ranPw = RandomString.randomStr();
-        System.out.println("map = " + map);
-
-        String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");
-
-        String userId = map.get("userId").toString();
-        String to = map.get("email").toString();
-        String subject = "OO 인증 처리";
-        String text = "안녕하세요.<br>" +
-                "하단에 링크 클릭 시 인증 처리 됩니다. <br>" +
-                "<b><a href=\""+domain+"/verifyMail?id="+userId+"&code="+ranPw+"\">링크</a></b> 입니다.";
-
-        boolean res = emailService.sendMail(to, subject, text);
-        System.out.println("res = " + res);
-        Map<String,Object> paraMap = new HashMap<>();
-
-        if (res) {
-            if(loginService.updateVerificationCode(paraMap)){
-                result = "Y";
-            }else {
-                result = "N";
-            }
-        } else {
-            result = "N";
-        }
-        return result;
+    public int sendVerificationMail(@RequestBody Map<String, Object> map, HttpServletRequest request){
+        return loginService.sendVerificationMail(request,map);
     }
     /**
      * 회원가입 요청
@@ -143,43 +163,11 @@ public class LoginController {
      */
     @PostMapping(value = "/forgetPwd")
     @ResponseBody
-    public String forgetPwd(@RequestBody Map<String,Object> paraMap) throws MessagingException {
-        String result ="";
+    public int forgetPwd(@RequestBody Map<String,Object> paraMap) {
         String userNm = (String) paraMap.get("userNm");
         String userId = (String) paraMap.get("userId");
 
-        UserVO userVO = loginService.findByUserNmAndUserId(userNm,userId);
-
-        if(userVO != null) {
-
-            String ranPw = RandomString.randomStrSp();
-
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            userVO.setUserPwd(passwordEncoder.encode(ranPw));
-            Map<String,Object> map = new HashMap<>();
-            map.put("userId",userId);
-            map.put("userPwd",passwordEncoder.encode(ranPw));
-            loginService.updateUserPwd(map);
-
-            String email = userVO.getUserEmail();
-
-            String to = email;
-            String subject = "OO 임시 비밀번호 발급";
-            String text = "안녕하세요.<br>" +
-                    "요청하신 이메일 주소로 임시 비밀번호를 발급하였습니다.<br>" +
-                    "비밀번호는 <b>[" + ranPw + "]</b> 입니다. ";
-            boolean res = emailService.sendMail(to, subject, text);
-
-            if (res) {
-                result = "Y";
-            } else {
-                result = "N";
-            }
-        }else{
-            result="NONE";
-        }
-
-        return result;
+        return loginService.forgetPwd(userNm,userId);
     }
 
     /**

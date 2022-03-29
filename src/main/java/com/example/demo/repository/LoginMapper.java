@@ -29,4 +29,8 @@ public interface LoginMapper {
     String findUserNicknmByUserId(String userId);
 
     boolean updateVerificationCode(Map<String,Object> paramMap);
+
+    int findVerificationCodeByUserIdCode(String userId, String code);
+
+    int updateIsVerified(String userId, String code);
 }

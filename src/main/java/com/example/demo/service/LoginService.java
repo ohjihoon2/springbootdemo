@@ -4,6 +4,7 @@ import com.example.demo.form.UserSaveForm;
 import com.example.demo.vo.UserVO;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public interface LoginService extends UserDetailsService {
@@ -21,4 +22,10 @@ public interface LoginService extends UserDetailsService {
     String findUserNicknmByUserId(String userId);
 
     boolean updateVerificationCode(Map<String,Object> paramMap);
+
+    Map<String, Object> verifyMail(String userId, String code);
+
+    int sendVerificationMail(HttpServletRequest request, Map<String, Object> map);
+
+    int forgetPwd(String userNm, String userId);
 }

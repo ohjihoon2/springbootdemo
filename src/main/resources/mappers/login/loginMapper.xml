@@ -172,4 +172,21 @@
            SET VERIFICATION_CODE = #{VerificationCode}
          WHERE USER_ID = #{userId}
     </update>
+
+
+    <select id="findVerificationCodeByUserIdCode" parameterType="string" resultType="int">
+        SELECT EXISTS(
+                       SELECT VERIFICATION_CODE
+                       FROM USERS
+                       WHERE USER_ID = #{userId}
+                         AND VERIFICATION_CODE = #{code}
+                     ) AS EXIST
+    </select>
+
+    <update id="updateIsVerified" parameterType="string">
+        UPDATE USERS
+           SET IS_VERIFIED = 1
+         WHERE USER_ID = #{userId}
+    </update>
+
 </mapper>
