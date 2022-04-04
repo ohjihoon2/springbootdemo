@@ -1,9 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.form.UserSaveForm;
-import com.example.demo.service.EmailService;
 import com.example.demo.service.LoginService;
-import com.example.demo.vo.UserVO;
+import com.example.demo.vo.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -30,11 +29,11 @@ public class LoginController {
 
     /**
      * 로그인 페이지
-     * @param userVO
+     * @param user
      * @return
      */
     @GetMapping(value = "/login")
-    public String loginView(UserVO userVO, HttpServletResponse response, HttpServletRequest request) {
+    public String loginView(User user, HttpServletResponse response, HttpServletRequest request) {
         String referrer = request.getHeader("Referer");
         request.getSession().setAttribute("prevPage", referrer);
 
@@ -43,11 +42,11 @@ public class LoginController {
 
     /**
      * 로그인 성공페이지
-     * @param userVO
+     * @param user
      * @return
      */
     @GetMapping(value = "/loginSuccess")
-    public String loginProc(UserVO userVO, Authentication auth) {
+    public String loginProc(User user, Authentication auth) {
 
         log.debug("auth.getAuthorities(): {}",auth.getAuthorities());
 
@@ -133,7 +132,7 @@ public class LoginController {
     }
 
     @GetMapping(value = "/signup")
-    public String signupView(UserVO userVO, HttpServletResponse response, HttpServletRequest request) {
+    public String signupView(User user, HttpServletResponse response, HttpServletRequest request) {
         String referrer = request.getHeader("Referer");
         request.getSession().setAttribute("prevPage", referrer);
 
@@ -150,8 +149,8 @@ public class LoginController {
     public String forgetId(@RequestBody Map<String,Object> paraMap) {
         String result ="";
 
-        UserVO userVO = loginService.findByEmailAndUserNm(paraMap);
-        result = userVO.getUserId();
+        User user = loginService.findByEmailAndUserNm(paraMap);
+        result = user.getUserId();
 
         return result;
     }
@@ -179,7 +178,7 @@ public class LoginController {
     @ResponseBody
     public String checkId(@RequestBody HashMap<String, String> paraMap) {
         System.out.println(paraMap.toString());
-        UserVO user = loginService.checkUserByUserId(paraMap.get("userId"));
+        User user = loginService.checkUserByUserId(paraMap.get("userId"));
         if (user == null) {
             return "success";
         } else {

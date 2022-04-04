@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.AdminMapper">
+
+    <insert id="insertMenuTree" parameterType="MenuTree">
+        INSERT INTO menu_tree
+            (
+                 PARENT_IDX,
+                 LVL,
+                 MENU_TYPE,
+                 NAME,
+                 LINK,
+                 SORT_ORDER,
+                 WRITE_ID,
+                 WRITE_DATE,
+                 UPDATE_ID,
+                 UPDATE_DATE,
+                 DEL_YN,
+                 OPEN_YN
+             )
+        VALUES
+            (
+                  #{parentIdx},
+                  #{lvl},
+                  #{menuType},
+                  #{name},
+                  #{link},
+                  #{sortOrder},
+                  #{writeId},
+                  #{writeDate},
+                  #{updateId},
+                  #{updateDate},
+                 'N',
+                 'Y'
+             )
+
+    </insert>
+</mapper>

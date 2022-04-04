@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.util.Date;
 
 @Getter @Setter
-public class UserVO {
+public class User {
 
     private int seq;
     private String userId;

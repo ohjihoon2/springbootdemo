@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.form.UserSaveForm;
-import com.example.demo.vo.UserVO;
+import com.example.demo.vo.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,13 +11,13 @@ public interface LoginService extends UserDetailsService {
 
     int userSave(UserSaveForm userSaveForm);
 
-    UserVO findByEmailAndUserNm(Map<String, Object> paraMap);
+    User findByEmailAndUserNm(Map<String, Object> paraMap);
 
-    UserVO findByUserNmAndUserId(String userNm, String userId);
+    User findByUserNmAndUserId(String userNm, String userId);
 
     void updateUserPwd(Map<String, Object> map);
 
-    UserVO checkUserByUserId(String userId);
+    User checkUserByUserId(String userId);
 
     String findUserNicknmByUserId(String userId);
 

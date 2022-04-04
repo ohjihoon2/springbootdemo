@@ -5,11 +5,10 @@ import com.example.demo.repository.LoginMapper;
 import com.example.demo.service.EmailService;
 import com.example.demo.service.LoginService;
 import com.example.demo.util.RandomString;
-import com.example.demo.vo.UserVO;
+import com.example.demo.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,23 +31,23 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException{
         System.out.println("LoginServiceImpl.loadUserByUsername");
-        UserVO userVO = loginMapper.findByUserId(userId);
-        if (userVO == null) {
+        User user = loginMapper.findByUserId(userId);
+        if (user == null) {
             throw new UsernameNotFoundException(userId + "is not found.");
         }
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if (userVO.getRoleType().equals("ROLE_ADMIN")) {
+        if (user.getRoleType().equals("ROLE_ADMIN")) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            userVO.setRoleType("ROLE_ADMIN");
-        } else if (userVO.getRoleType().equals("ROLE_USER")) {
+            user.setRoleType("ROLE_ADMIN");
+        } else if (user.getRoleType().equals("ROLE_USER")) {
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-            userVO.setRoleType("ROLE_USER");
-        } else if (userVO.getRoleType().equals("ROLE_GENERAL")) {
+            user.setRoleType("ROLE_USER");
+        } else if (user.getRoleType().equals("ROLE_GENERAL")) {
             authorities.add(new SimpleGrantedAuthority("ROLE_GENERAL"));
-            userVO.setRoleType("ROLE_GENERAL");
+            user.setRoleType("ROLE_GENERAL");
         }
-        return new User(userVO.getUserId(), userVO.getUserPwd(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getUserId(), user.getUserPwd(), authorities);
     }
 
     @Override
@@ -69,20 +67,20 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public UserVO findByEmailAndUserNm(Map<String, Object> paraMap) {
+    public User findByEmailAndUserNm(Map<String, Object> paraMap) {
         String email = (String) paraMap.get("email");
         String userNm = (String) paraMap.get("userNm");
 
-        UserVO userVO = loginMapper.findByEmailAndUserNm(email,userNm);
+        User user = loginMapper.findByEmailAndUserNm(email,userNm);
 
-        return userVO;
+        return user;
     }
 
     @Override
-    public UserVO findByUserNmAndUserId(String userNm, String userId) {
-        UserVO userVO = loginMapper.findByUserNmAndUserId(userNm,userId);
+    public User findByUserNmAndUserId(String userNm, String userId) {
+        User user = loginMapper.findByUserNmAndUserId(userNm,userId);
 
-        return userVO;
+        return user;
     }
 
     @Override
@@ -91,7 +89,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public UserVO checkUserByUserId(String userId) {
+    public User checkUserByUserId(String userId) {
         return loginMapper.findByUserId(userId);
     }
 
@@ -171,20 +169,20 @@ public class LoginServiceImpl implements LoginService {
     @Transactional(rollbackFor = Exception.class)
     public int forgetPwd(String userNm, String userId) {
         int result =0;
-        UserVO userVO = findByUserNmAndUserId(userNm,userId);
+        User user = findByUserNmAndUserId(userNm,userId);
 
-        if(userVO != null) {
+        if(user != null) {
 
             String ranPw = RandomString.randomStrSp();
 
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            userVO.setUserPwd(passwordEncoder.encode(ranPw));
+            user.setUserPwd(passwordEncoder.encode(ranPw));
             Map<String,Object> map = new HashMap<>();
             map.put("userId",userId);
             map.put("userPwd",passwordEncoder.encode(ranPw));
             updateUserPwd(map);
 
-            String email = userVO.getUserEmail();
+            String email = user.getUserEmail();
 
             String to = email;
             String subject = "OO 임시 비밀번호 발급";
