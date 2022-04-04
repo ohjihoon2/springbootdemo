@@ -7,11 +7,13 @@ $(function(){
         event.preventDefault();
         if(loginBtn) {
 
-            var data = {
+            /*var data = {
                 userId : $('#userId').val(),
-                userPwd : $('#userPwd').val()
-            }
-            console.log(data);
+                userPwd : $('#userPwd').val(),
+                rememberMe : $('#rememberMe').val()
+            }*/
+
+            var data = $("form[name=loginForm]").serialize();
             var res = $ajax.postAjax('/loginAjax', data);
 
             if(res.result == "success") {

@@ -129,13 +129,14 @@
             $.ajax({
                 type: "POST",
                 url: url,
-                data: JSON.stringify(param),
+                data: param,
                 async: async,
-                // contentType: "application/json",
+                //contentType: "application/json",
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
                 },
                 success: function (response) {
+                    console.log(response);
                     res = response;
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {

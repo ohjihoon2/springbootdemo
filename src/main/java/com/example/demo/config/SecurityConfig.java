@@ -1,6 +1,7 @@
 package com.example.demo.config;
 
 import com.example.demo.service.LoginService;
+import com.example.demo.service.impl.LoginServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -44,6 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     // 1.LoginService 자동주입
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private LoginServiceImpl loginServiceImpl;
 
     @Autowired
     private DataSource dataSource;
@@ -101,9 +105,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 //                .cors()
 //                .configurationSource(configurationSource());
 
-//        http.headers(headers -> headers
-//                .cacheControl(cache -> cache.disable())
-//        );
+        http.headers(headers -> headers
+                .cacheControl(cache -> cache.disable())
+        );
 
 
         /**
@@ -125,7 +129,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         /**
          * 자동로그인 설정
          */
-        http.rememberMe().alwaysRemember(false);
+        http.rememberMe().rememberMeParameter("rememberMe");
 
         /**
          * 로그아웃 설정을 진행
@@ -158,8 +162,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     public PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices() {
         System.out.println("SecurityConfig.persistentTokenBasedRememberMeServices");
         String key = "bitsol";
-        PersistentTokenBasedRememberMeServices persistenceTokenBasedservice = new PersistentTokenBasedRememberMeServices(key, loginService, tokenRepository());
-        persistenceTokenBasedservice.setAlwaysRemember(false);
+        PersistentTokenBasedRememberMeServices persistenceTokenBasedservice = new PersistentTokenBasedRememberMeServices(key, loginServiceImpl, tokenRepository());
+        persistenceTokenBasedservice.setAlwaysRemember(true);
+        persistenceTokenBasedservice.setParameter("remember-me");
         persistenceTokenBasedservice.setTokenValiditySeconds(60 * 60 * 24 * 7);		// 토큰 유효시간 1주일 설정
         return persistenceTokenBasedservice;
     }
