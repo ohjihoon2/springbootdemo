@@ -5,6 +5,7 @@ import com.example.demo.service.LoginService;
 import com.example.demo.vo.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -116,19 +117,18 @@ public class LoginController {
      * @return
      */
     @PostMapping(value = "/signup")
-    public String signupProc(@Validated @ModelAttribute("user") UserSaveForm userSaveForm,
-                             BindingResult bindingResult,
-                             RedirectAttributes redirectAttributes) {
-
-        if (bindingResult.hasErrors()) {
-            log.info("검증 오류 발생 errors={}", bindingResult);
-            return "login/signup";
-        }
+    @ResponseBody
+    public Map<String, Object> signupProc(@Validated @RequestBody UserSaveForm userSaveForm){
+        System.out.println("userSaveForm = " + userSaveForm);
         int result = loginService.userSave(userSaveForm);
-        redirectAttributes.addAttribute("result", result);
-        redirectAttributes.addAttribute("status", true);
-        return "redirect:/";
+        Map<String, Object> resultMap = new HashMap<>();
 
+        if(result == 1) {
+            resultMap.put("result", "success");
+        }else{
+            resultMap.put("result", "fail");
+        }
+        return resultMap;
     }
 
     @GetMapping(value = "/signup")

@@ -9,7 +9,6 @@ public class MenuTree {
     private int idx;
     private int parentIdx;
     private int lvl;
-    private String menuType;
     private String name;
     private String link;
     private String sortOrder;

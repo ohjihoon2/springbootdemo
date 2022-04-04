@@ -7,7 +7,6 @@
             (
                  PARENT_IDX,
                  LVL,
-                 MENU_TYPE,
                  NAME,
                  LINK,
                  SORT_ORDER,
@@ -22,7 +21,6 @@
             (
                   #{parentIdx},
                   #{lvl},
-                  #{menuType},
                   #{name},
                   #{link},
                   #{sortOrder},

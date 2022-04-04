@@ -19,7 +19,7 @@
          WHERE USER_ID = #{userId}
     </select>
 
-    <insert id="saveUser" parameterType="UserSaveForm">
+    <insert id="saveUser" parameterType="map">
         INSERT INTO USERS
             (
                  USER_ID,
@@ -32,7 +32,7 @@
                  IS_VERIFIED,
                  ROLE_TYPE,
                  USE_AT,
-                 CREATE_DATE,
+                 CREATE_DATE
              )
         VALUES
             (

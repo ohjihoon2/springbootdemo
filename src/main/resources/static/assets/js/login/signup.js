@@ -78,7 +78,6 @@ $(function(){
             isVerified : "Y"
         }
         var res = $ajax.postAjax('/signup', data);
-
         if(res.result == "success") {
             location.href = "/";
         }
