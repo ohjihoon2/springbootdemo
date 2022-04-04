@@ -104,13 +104,14 @@
     border-bottom: 1px solid #ddd;
 }
 
-.id_msg {
+.signnb-msg {
     font-size: 13px;
     color: #1fb1c7;
 }
 
 .signup-phone input {
     width: 21.2%!important;
+    text-align: center!important;
 }
 
 .agree-box {
@@ -133,9 +134,4 @@
     border-bottom: 1px solid #ddd;
     padding-bottom: 15px;
     font-weight: 700;
-}
-
-.signup-msg {
-    text-align: center;
-    font-size: 14px;
 }

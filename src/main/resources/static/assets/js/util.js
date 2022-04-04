@@ -1,4 +1,9 @@
 (function(W, D) {
+
+    //인풋숫자만 입력 정규식
+    // oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+
+    //유틸시작
     $(function() {
 
     });
@@ -129,14 +134,13 @@
             $.ajax({
                 type: "POST",
                 url: url,
-                data: param,
+                data: JSON.stringify(param),
                 async: async,
-                //contentType: "application/json",
+                contentType: "application/json",
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
                 },
                 success: function (response) {
-                    console.log(response);
                     res = response;
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -149,34 +153,24 @@
 
     $event = {
         // 벨리데이션
-        validationFocus: function (param) {
+        validationFocus: function (id) {
             var msg = {
-                serialNo: '시리얼 넘버',
-                deviceNm: '장치명',
-                deviceLoc: '장치위치',
-                volume: '용량',
-                ipAddr: 'IP 주소',
-                groupCode: '업체코드',
-                groupName: '업체명',
-                bizNo: '사업자번호',
-                ceoNm: '대표자명',
-                tel: '전화번호',
-                groupType: '업종/업태',
-                addr: '주소',
-                sigungu: '주소',
-                sido: '주소',
-                dong: '주소',
-                addrDetail: '상세주소'
+                userId: '아이디',
+                userPwd: '비밀번호',
+                userPwdChk: '비밀번호 확인',
+                userNicknm: '닉네임',
+                userEmail1: '이메일',
+                userEmail2: '이메일',
+                userPhone1: '연락처',
+                userPhone2: '연락처',
+                userPhone3: '연락처',
             }
 
-            for (var key in param) {
-                if (!param[key].trim()) {
-                    alert(msg[key] + ' 을(를) 입력해주세요.');
-                    $('#' + key).focus();
-                    return false;
-                }
+            if (id.trim()) {
+                alert(msg[id] + ' 을(를) 입력해주세요.');
+                $('#' + id).focus();
+                return true;
             }
-            return true;
         },
     }
 
@@ -203,6 +197,27 @@
             }
             return str;
         },
+
+        //아이디 영문 숫자만
+        isId(asValue) {
+            var regExp = /^[a-z0-9+]*$/;
+            return regExp.test(asValue);
+        },
+
+        //비밀번호 최소 8 자, 하나 이상의 문자와 하나의 숫자
+        isPw(asValue) {
+            var regExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+            return regExp.test(asValue);
+        },
+
+        //닉네임 한글, 영문, 숫자만 가능하며 2-10자리
+        isNn(asValue) {
+            var regExp = /^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{1,10}$/;
+            return regExp.test(asValue);
+        },
+
+
+
 
         // null값 확인
         nullChk : function (str) {

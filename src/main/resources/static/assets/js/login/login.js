@@ -5,25 +5,36 @@ $(function(){
     // 로그인
     $('#loginForm').submit(function(event){
         event.preventDefault();
-        if(loginBtn) {
 
-            /*var data = {
-                userId : $('#userId').val(),
-                userPwd : $('#userPwd').val(),
-                rememberMe : $('#rememberMe').val()
-            }*/
+        //시큐리티로 인한 로그인로직 분리
+        if(loginBtn) {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
 
             var data = $("form[name=loginForm]").serialize();
-            var res = $ajax.postAjax('/loginAjax', data);
 
-            if(res.result == "success") {
-                location.href = "/";
-            }
-            else{
-                $('#loginMsg').text(res.message + " (" + cnt + ")");
-                cnt++;
-                loginBtn = false;
-            }
+            $.ajax({
+                type: "POST",
+                url: '/loginAjax',
+                data: data,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                success: function (response) {
+                    if(response.result == "success") {
+                        location.href = "/";
+                    }
+                    else{
+                        $('#loginMsg').text(response.message + " (" + cnt + ")");
+                        cnt++;
+                        loginBtn = false;
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $('#loginMsg').text('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                    loginBtn = false;
+                }
+            });
         }
     });
 

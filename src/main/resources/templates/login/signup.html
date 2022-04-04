@@ -9,30 +9,32 @@
             <div class="signup-box mb70">
                 <h2><img th:src="@{/img/common/logo_b.png}"></h2>
                 <h3 class="mt20 mb20">회원가입</h3>
-                <form class="signup-form" name="signupForm" id="signupForm" action="/loginAjax" method="post">
+                <form class="signup-form" name="signupForm" id="signupForm">
                     <ul class="under">
                         <li>
                             <label class="mb10">
                                 <th:block th:replace="/fragments/util.html :: thCheck"></th:block>
                                 아이디
                             </label>
-                            <input class="mb10" type="text" id="userId" name="userId">
+                            <input class="mb10" type="text" id="userId" name="userId" maxlength="20" placeholder="영문 소문자/ 숫자 사용 가능, 5~20자">
                         </li>
-                        <li id="idMsg" class="id_msg">
+                        <li id="idMsg" class="signnb-msg">
                         </li>
                         <li>
                             <label class="mb10">
                                 <th:block th:replace="/fragments/util.html :: thCheck"></th:block>
                                 비밀번호
                             </label>
-                            <input class="mb10" type="password" id="userPwd" name="userPwd" placeholder="[영문 / 숫자 / 특수문자 모두 조합, 8~16자]">
+                            <input class="mb10" type="password" id="userPwd" name="userPwd" maxlength="20" placeholder="영문 / 숫자 / 특수문자 모두 조합, 8~16자" autocomplete="new-password">
                         </li>
                         <li>
                             <label>
                                 <th:block th:replace="/fragments/util.html :: thCheck"></th:block>
                                 비밀번호 확인
                             </label>
-                            <input type="password" id="userPwdChk" name="userPwdChk">
+                            <input type="password" id="userPwdChk" name="userPwdChk" maxlength="20" autocomplete="new-password">
+                        </li>
+                        <li id="pwMsg" class="signnb-msg">
                         </li>
                     </ul>
                     <h4 class="mt30 mb20">개인정보 입력</h4>
@@ -42,21 +44,25 @@
                                 <th:block th:replace="/fragments/util.html :: thCheck"></th:block>
                                 이름
                             </label>
-                            <input class="mb10" type="text" id="userNm" name="userNm">
+                            <input class="mb10" type="text" id="userNm" name="userNm" maxlength="10">
                         </li>
                         <li>
                             <label class="mb10">
                                 <th:block th:replace="/fragments/util.html :: thCheck"></th:block>
                                 닉네임
                             </label>
-                            <input class="mb10" type="text" id="userNicknm" name="userNicknm">
+                            <input class="mb10" type="text" id="userNicknm" name="userNicknm" maxlength="10" placeholder="영문 / 한글 / 숫자 사용 가능, 2~10자">
+                        </li>
+                        <li id="nnMsg" class="signnb-msg">
                         </li>
                         <li>
                             <label class="mb10">
                                 <th:block th:replace="/fragments/util.html :: thCheck"></th:block>
                                 이메일
                             </label>
-                            <input class="mb10" type="text" id="userEmail1" name="userEmail1" placeholder="메일인증 후 로그인 가능합니다.">
+                            <input class="mb10" type="text" id="userEmail1" name="userEmail1" placeholder="메일인증 후 로그인 가능">
+                        </li>
+                        <li id="emMsg" class="signnb-msg">
                         </li>
                         <li>
                             <label class="mb10"></label>
@@ -76,11 +82,11 @@
                                 <th:block th:replace="/fragments/util.html :: thCheck"></th:block>
                                 연락처
                             </label>
-                            <input class="mb10" type="text" id="userPhone1" name="userPhone1">
+                            <input class="mb10" type="text" id="userPhone1" name="userPhone1" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="3">
                             <span class="mb10">-</span>
-                            <input class="mb10" type="text" id="userPhone2" name="userPhone2">
+                            <input class="mb10" type="text" id="userPhone2" name="userPhone2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="4">
                             <span class="mb10">-</span>
-                            <input class="mb10" type="text" id="userPhone3" name="userPhone3">
+                            <input class="mb10" type="text" id="userPhone3" name="userPhone3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="4">
                         </li>
                     </ul>
                     <h4 class="mt30 mb30">약관동의</h4>
