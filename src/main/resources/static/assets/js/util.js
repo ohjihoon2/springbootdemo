@@ -152,7 +152,7 @@
     }
 
     $event = {
-        // 벨리데이션
+        // 인풋 빈값 벨리데이션
         validationFocus: function (id) {
             var msg = {
                 userId: '아이디',
@@ -166,9 +166,22 @@
                 userPhone3: '연락처',
             }
 
-            if (id.trim()) {
+            if ($('#' + id).val() == '') {
                 alert(msg[id] + ' 을(를) 입력해주세요.');
                 $('#' + id).focus();
+                return true;
+            }
+        },
+        // 인풋 빈값 벨리데이션
+        validationChk: function (id) {
+            var msg = {
+                agree1: '이메일 인증메일 수신동의',
+                agree2: '이용 약관',
+                agree3: ' 개인정보 수집 및 이용 동의',
+            }
+
+            if (!$('#' + id).is(":checked")) {
+                alert(msg[id] + ' 을(를) 체크해주세요.');
                 return true;
             }
         },
@@ -216,8 +229,17 @@
             return regExp.test(asValue);
         },
 
+        //이메일 유효성 검사
+        isEm(asValue) {
+            var regExp = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+            return regExp.test(asValue);
+        },
 
-
+        //연락처 유효성 검사
+        isPh(asValue) {
+            var regExp = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}/;
+            return regExp.test(asValue);
+        },
 
         // null값 확인
         nullChk : function (str) {

@@ -1,5 +1,5 @@
-var cnt = 1;
-var signupBtn = false;
+// var cnt = 1;
+// var signupBtn = true;
 
 $(function(){
     //아이디 관련
@@ -14,7 +14,10 @@ $(function(){
     //이메일 관련
     userEmChk();
 
-    // 약관동의
+    //연락처 관련
+    userPhChk();
+
+    // 약관동의(전체선택)
     $('#agreeAll').change(function () {
         if($('#agreeAll').is(":checked")) {
             $('#agreeBox input[type=checkbox]').prop("checked", true);
@@ -27,6 +30,8 @@ $(function(){
     // 회원가입
     $('#signupForm').submit(function(event){
         event.preventDefault();
+        
+        //빈값체크
         if($event.validationFocus("userId")) return;
         if($event.validationFocus("userPwd")) return;
         if($event.validationFocus("userPwdChk")) return;
@@ -37,22 +42,49 @@ $(function(){
         if($event.validationFocus("userPhone1")) return;
         if($event.validationFocus("userPhone2")) return;
         if($event.validationFocus("userPhone3")) return;
+        
+        //li별 msg를 통한 밸리데이션
+        var msg = $('.signup-msg').toArray();
 
-        if(signupBtn) {
-            var data = {
-                userId : $('#userId').val(),
-                userPwd : $('#userPwd').val()
+        if(msg.length != 0) {
+            var focus = {
+                idMsg : 'userId',
+                pwMsg : 'userPwd',
+                nnMsg : 'userNicknm',
+                emMsg : 'userEmail1',
             }
-            var res = $ajax.postAjax('/loginAjax', data);
+        }
 
-            if(res.result == "success") {
-                location.href = "/";
+        for(var i = 0; i < msg.length; i++) {
+            if($(msg[i]).html() != '') {
+                $('#' + focus[$(msg[i]).attr('id')]).focus();
+                return;
             }
-            else{
-                $('#loginMsg').text(res.message + " (" + cnt + ")");
-                cnt++;
-                loginBtn = false;
-            }
+        }
+
+
+        if($event.validationChk("agree1")) return;
+        if($event.validationChk("agree2")) return;
+        if($event.validationChk("agree3")) return;
+        
+        //회원가입 신청
+        var data = {
+            userId : $('#userId').val(),
+            userPwd : $('#userPwd').val(),
+            userNm : $('#userNm').val(),
+            userNicknm : $('#userNicknm').val(),
+            userEmail : $('#userEmail1').val() + "@" + $('#userEmail2').val(),
+            userPhone : $('#userPhone1').val() + "-" + $('#userPhone1').val() + "-" + $('#userPhone3').val(),
+            isVerified : "Y"
+        }
+        var res = $ajax.postAjax('/signup', data);
+
+        if(res.result == "success") {
+            location.href = "/";
+        }
+        else{
+            // $('#loginMsg').text(res.message + " (" + cnt + ")");
+            // cnt++;
         }
     });
 });
@@ -91,17 +123,32 @@ function userPwChk() {
     $('#userPwd').keyup(function(){
         $('#pwMsg').html("");
     });
+    $('#userPwdChk').keyup(function(){
+        $('#pwMsg').html("");
+    });
 
     $('#userPwd').focusout(function(){
-        if($('#userPwd').html() == "" && $('#userPwd').val() != "") {
-            if($('#userPwd').val().length < 5) {
-                $('#pwMsg').html("<label class=\"mb10\"></label> 비밀번호를 5자 이상입력해주세요.");
-            }
-            else if(!$util.isPw($('#userPwd').val())) {
-                $('#pwMsg').html("<label class=\"mb10\"></label> 비밀번호는 영문, 숫자, 특수문자 를 포함해야합니다.");
+        detailUserPwChk();
+    });
+    $('#userPwdChk').focusout(function(){
+        detailUserPwChk();
+    });
+}
+// 비밀번호 확인
+function detailUserPwChk() {
+    if($('#userPwd').html() == "" && $('#userPwd').val() != "") {
+        if($('#userPwd').val().length < 5) {
+            $('#pwMsg').html("<label class=\"mb10\"></label> 비밀번호를 5자 이상입력해주세요.");
+        }
+        else if(!$util.isPw($('#userPwd').val())) {
+            $('#pwMsg').html("<label class=\"mb10\"></label> 비밀번호는 영문, 숫자, 특수문자 를 포함해야합니다.");
+        }
+        else if($('#userPwdChk').val() != "") {
+            if($('#userPwd').val() != $('#userPwdChk').val()) {
+                $('#pwMsg').html("<label class=\"mb10\"></label> 비밀번호, 비밀번호 확인 이 일치하지 않습니다.");
             }
         }
-    });
+    }
 }
 
 //유저 닉네임 관련
@@ -142,20 +189,22 @@ function userEmChk() {
         $('#emMsg').html("");
     });
 
-    $('#emailGroup').click(function(){
+    $('#userEmail2').keyup(function(){
         $('#emMsg').html("");
     });
 
     $('#userEmail1').focusout(function(){
-        ajaxuserEmChk()
+        detailUserEmChk();
     });
 
     $('#userEmail2').focusout(function(){
-        ajaxuserEmChk()
+        detailUserEmChk();
     });
 
     // 이메일 선택
     $('#emailGroup').change(function () {
+        $('#emMsg').html("");
+
         $('#userEmail2').val($('#emailGroup').val());
         if($('#userEmail2').val() == "") {
             $("#userEmail2").attr("readonly",false);
@@ -163,22 +212,64 @@ function userEmChk() {
         else {
             $("#userEmail2").attr("readonly",true);
         }
-        ajaxuserEmChk()
+        detailUserEmChk();
     });
 }
 
-// 이메일 중복확인
-function ajaxuserEmChk() {
+// 이메일 유효성검서, 중복확인
+function detailUserEmChk() {
     if($('#userEmail1').val() != "" && $('#userEmail2').val() != "") {
         var data = {
             userEmail : $('#userEmail1').val() + "@" + $('#userEmail2').val(),
         }
-        console.log(data);
 
+        //이메일 유효성검사
+        if (!$util.isEm(data.userEmail)) {
+            $('#emMsg').html("<label class=\"mb10\"></label> 유효하지 않은 이메일입니다.");
+            return;
+        }
+
+        //이메일 중복확인
         var res = $ajax.postAjax('/checkEmail', data);
 
         if (res == "fail") {
             $('#emMsg').html("<label class=\"mb10\"></label> 이미 사용중인 닉네임입니다.");
+        }
+    }
+}
+
+// 이메일 유효성검서, 중복확인
+function userPhChk() {
+    $('#userPhone1').keyup(function () {
+        $('#phMsg').html("");
+    });
+    $('#userPhone2').keyup(function () {
+        $('#phMsg').html("");
+    });
+    $('#userPhone3').keyup(function () {
+        $('#phMsg').html("");
+    });
+
+    $('#userPhone1').focusout(function () {
+        detailUserPhChk();
+    });
+    $('#userPhone2').focusout(function () {
+        detailUserPhChk();
+    });
+    $('#userPhone3').focusout(function () {
+        detailUserPhChk();
+    });
+}
+
+// 휴대전화 유효성검사
+function detailUserPhChk() {
+    if($('#userPhone1').val() != "" && $('#userPhone2').val() != "" && $('#userPhone3').val() != "") {
+        var data = {
+            userPhone : $('#userPhone1').val() + "-" + $('#userPhone2').val() + "-" + $('#userPhone3').val(),
+        }
+
+        if (!$util.isPh(data.userPhone)) {
+            $('#phMsg').html("<label class=\"mb10\"></label> 유효하지 않은 연락처입니다.");
         }
     }
 }

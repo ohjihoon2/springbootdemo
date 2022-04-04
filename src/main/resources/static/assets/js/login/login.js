@@ -31,7 +31,7 @@ $(function(){
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    $('#loginMsg').text('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                    alert('네트워크 통신을 실패하였습니다.');
                     loginBtn = false;
                 }
             });

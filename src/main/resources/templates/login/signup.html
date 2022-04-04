@@ -18,7 +18,7 @@
                             </label>
                             <input class="mb10" type="text" id="userId" name="userId" maxlength="20" placeholder="영문 소문자/ 숫자 사용 가능, 5~20자">
                         </li>
-                        <li id="idMsg" class="signnb-msg">
+                        <li id="idMsg" class="signup-msg">
                         </li>
                         <li>
                             <label class="mb10">
@@ -34,7 +34,7 @@
                             </label>
                             <input type="password" id="userPwdChk" name="userPwdChk" maxlength="20" autocomplete="new-password">
                         </li>
-                        <li id="pwMsg" class="signnb-msg">
+                        <li id="pwMsg" class="signup-msg">
                         </li>
                     </ul>
                     <h4 class="mt30 mb20">개인정보 입력</h4>
@@ -53,7 +53,7 @@
                             </label>
                             <input class="mb10" type="text" id="userNicknm" name="userNicknm" maxlength="10" placeholder="영문 / 한글 / 숫자 사용 가능, 2~10자">
                         </li>
-                        <li id="nnMsg" class="signnb-msg">
+                        <li id="nnMsg" class="signup-msg">
                         </li>
                         <li>
                             <label class="mb10">
@@ -61,8 +61,6 @@
                                 이메일
                             </label>
                             <input class="mb10" type="text" id="userEmail1" name="userEmail1" placeholder="메일인증 후 로그인 가능">
-                        </li>
-                        <li id="emMsg" class="signnb-msg">
                         </li>
                         <li>
                             <label class="mb10"></label>
@@ -77,6 +75,8 @@
                                 <option value="hanmail.net">한메일</option>
                             </select>
                         </li>
+                        <li id="emMsg" class="signup-msg">
+                        </li>
                         <li class="signup-phone">
                             <label class="mb10">
                                 <th:block th:replace="/fragments/util.html :: thCheck"></th:block>
@@ -87,6 +87,8 @@
                             <input class="mb10" type="text" id="userPhone2" name="userPhone2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="4">
                             <span class="mb10">-</span>
                             <input class="mb10" type="text" id="userPhone3" name="userPhone3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="4">
+                        </li>
+                        <li id="phMsg" class="signup-msg">
                         </li>
                     </ul>
                     <h4 class="mt30 mb30">약관동의</h4>
@@ -100,11 +102,11 @@
                             <span>이메일 인증메일 수신동의 <span class="txt-green">(필수)</span></span>
                         </label>
                         <label for="agree2">
-                            <input type="checkbox" name="agree2" id="agree2" value="2" class="mr5">
+                            <input type="checkbox" name="agree2" id="agree2" value="1" class="mr5">
                             <span>이용 약관 <span class="txt-green">(필수)</span></span>
                         </label>
                         <label for="agree3">
-                            <input type="checkbox" name="agree3" id="agree3" value="3" class="mr5">
+                            <input type="checkbox" name="agree3" id="agree3" value="1" class="mr5">
                             <span>개인정보 수집 및 이용 동의 <span class="txt-green">(필수)</span></span>
                         </label>
 <!--                        <label for="agree">-->
@@ -114,9 +116,8 @@
                     </div>
 
 
-                    <button class="signup-btn" type="submit">SIGN UP</button>
+                    <button id="signupBtn" class="signup-btn" type="submit">SIGN UP</button>
                 </form>
-                <div id="signupMsg" class="signup-msg mt20"></div>
             </div>
         </div>
 
