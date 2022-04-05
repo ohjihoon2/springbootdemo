@@ -32,8 +32,7 @@
                  IS_VERIFIED,
                  ROLE_TYPE,
                  USE_YN,
-                 CREATE_DATE,
-                 UPDATE_DATE
+                 CREATE_DATE
              )
         VALUES
             (
@@ -47,7 +46,6 @@
                 #{isVerified},
                 #{roleType},
                 #{useYn},
-                SYSDATE(),
                 SYSDATE()
              )
 
