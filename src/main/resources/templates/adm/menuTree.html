@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <h1>메뉴트리</h1>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='')"></th:block>
+<body ondragstart="return false" onselectstart="return false">
+    <th:block th:replace="/fragments/header.html :: thAdmHeader"></th:block>
+    <section>
+        <div class="section-wrap">
+            <h2>메뉴설정</h2>
+        </div>
+    </section>
+    <th:block th:replace="/fragments/footer.html :: thAdmJs"></th:block>
 </body>
 </html>

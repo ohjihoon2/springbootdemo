@@ -37,9 +37,11 @@ public class AdminController {
     @GetMapping(value = "/menuTree")
     public String menuTreeDetails(HttpServletResponse response, HttpServletRequest request,Model model) {
         List<Map<String,Object>> resultMap = adminService.findAllMenuTree();
-        System.out.println("resultMap = " + resultMap);
 
         model.addAttribute("resultMap", resultMap);
+
+        String[] split = request.getRequestURI().split("/");
+        model.addAttribute("page",split[2]);
         return "/adm/menuTree";
     }
 
