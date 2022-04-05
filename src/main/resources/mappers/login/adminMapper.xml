@@ -12,8 +12,6 @@
                        SORT_ORDER,
                        WRITE_ID,
                        WRITE_DATE,
-                       UPDATE_ID,
-                       UPDATE_DATE,
                        OPEN_YN
                   FROM MENU_TREE
                  WHERE LVL = 1
@@ -25,8 +23,6 @@
                        SORT_ORDER,
                        WRITE_ID,
                        WRITE_DATE,
-                       UPDATE_ID,
-                       UPDATE_DATE,
                        OPEN_YN
                   FROM MENU_TREE
                  WHERE IDX != PARENT_IDX
@@ -55,9 +51,6 @@
                  SORT_ORDER,
                  WRITE_ID,
                  CREATE_DATE,
-                 UPDATE_ID,
-                 UPDATE_DATE,
-                 DEL_YN,
                  OPEN_YN
              )
         VALUES
@@ -69,9 +62,6 @@
                   #{sortOrder},
                   #{writeId},
                   SYSDATE(),
-                  #{updateId},
-                  SYSDATE(),
-                 'N',
                  'Y'
              )
 

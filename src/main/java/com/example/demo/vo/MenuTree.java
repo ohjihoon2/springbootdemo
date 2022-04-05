@@ -14,8 +14,5 @@ public class MenuTree {
     private String sortOrder;
     private String writeId;
     private Date createDate;
-    private String updateId;
-    private Date updateDate;
-    private String delYn;
     private String openYn;
 }
