@@ -75,7 +75,7 @@ $(function(){
             userNicknm : $('#userNicknm').val(),
             userEmail : $('#userEmail1').val() + "@" + $('#userEmail2').val(),
             userPhone : $('#userPhone1').val() + "-" + $('#userPhone1').val() + "-" + $('#userPhone3').val(),
-            isVerified : "Y"
+            verificationYn : "Y"
         }
         var res = $ajax.postAjax('/signup', data);
         if(res.result == "success") {

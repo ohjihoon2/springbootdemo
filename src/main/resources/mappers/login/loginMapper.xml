@@ -12,7 +12,7 @@
                USER_PHONE,
                ROLE_TYPE,
                VERIFICATION_CODE,
-               IS_VERIFIED,
+               VERIFICATION_YN,
                CREATE_DATE,
                UPDATE_DATE
           FROM USERS
@@ -29,7 +29,7 @@
                  USER_EMAIL,
                  USER_PHONE,
                  VERIFICATION_CODE,
-                 IS_VERIFIED,
+                 VERIFICATION_YN,
                  ROLE_TYPE,
                  USE_YN,
                  CREATE_DATE
@@ -43,7 +43,7 @@
                 #{userEmail},
                 #{userPhone},
                 #{verificationCode},
-                #{isVerified},
+                #{verificationYn},
                 #{roleType},
                 #{useYn},
                 SYSDATE()
@@ -61,7 +61,7 @@
                  USER_EMAIL,
                  ROLE_TYPE,
                  VERIFICATION_CODE,
-                 IS_VERIFIED,
+                 VERIFICATION_YN,
                  USE_YN,
                  CREATE_DATE
              )
@@ -74,7 +74,7 @@
                 '',
                 'ROLE_ADMIN',
                 #{verificationCode},
-                #{isVerified},
+                #{verificationYn},
                 'Y',
                 SYSDATE()
              )
@@ -90,8 +90,7 @@
             USER_NICKNM,
             USER_EMAIL,
             ROLE_TYPE,
-            VERIFICATION_CODE,
-            IS_VERIFIED,
+            VERIFICATION_YN,
             USE_YN,
             CREATE_DATE
         )
@@ -103,8 +102,7 @@
                 '테스트1',
                 '',
                 'ROLE_USER',
-                #{verificationCode},
-                #{isVerified},
+                'Y',
                 'Y',
                 SYSDATE()
             )
@@ -127,7 +125,7 @@
                USER_PHONE,
                ROLE_TYPE,
                VERIFICATION_CODE,
-               IS_VERIFIED,
+               VERIFICATION_YN,
                USE_YN,
                CREATE_DATE,
                UPDATE_DATE
@@ -146,7 +144,7 @@
                USER_PHONE,
                ROLE_TYPE,
                VERIFICATION_CODE,
-               IS_VERIFIED,
+               VERIFICATION_YN,
                USE_YN,
                CREATE_DATE,
                UPDATE_DATE
@@ -185,9 +183,9 @@
                      ) AS EXIST
     </select>
 
-    <update id="updateIsVerified" parameterType="string">
+    <update id="updateverificationYn" parameterType="string">
         UPDATE USERS
-           SET IS_VERIFIED = 1,
+           SET VERIFICATION_YN = 'Y',
                UPDATE_DATE = SYSDATE()
          WHERE USER_ID = #{userId}
     </update>

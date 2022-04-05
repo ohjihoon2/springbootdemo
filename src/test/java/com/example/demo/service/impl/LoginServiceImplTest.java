@@ -43,7 +43,7 @@ class LoginServiceImplTest {
 
     @Test
     public void USER_생성() {
-        String userId = "USER";
+        String userId = "test";
         String userPwd ="1234";
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

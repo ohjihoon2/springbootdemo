@@ -22,7 +22,7 @@ public class UserSaveForm {
     private String userPhone;
     private String roleType;
     private String verificationCode;
-    private String isVerified;
+    private String verificationYn;
     private String useYn;
     private Date createDate;
 }

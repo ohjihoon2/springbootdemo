@@ -110,8 +110,8 @@ public class LoginServiceImpl implements LoginService {
         String msg = "";
         //VerificationCode 일치
         if(loginMapper.findVerificationCodeByUserIdCode(userId, code) == 1){
-            // isVerified 업데이트
-            if(loginMapper.updateIsVerified(userId,code) == 1){
+            // verificationYn 업데이트
+            if(loginMapper.updateverificationYn(userId,code) == 1){
                 //성공
                 result = 1;
                 msg = "Success";
