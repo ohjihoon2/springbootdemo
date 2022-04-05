@@ -3,7 +3,7 @@
 <mapper namespace="com.example.demo.repository.LoginMapper">
 
     <select id="findByUserId" parameterType="string" resultType="User">
-        SELECT SEQ,
+        SELECT IDX,
                USER_ID,
                USER_PWD,
                USER_NM,
@@ -116,7 +116,7 @@
     </select>
 
     <select id="findByEmailAndUserNm" parameterType="string" resultType="User">
-        SELECT SEQ,
+        SELECT IDX,
                USER_ID,
                USER_PWD,
                USER_NM,
@@ -135,7 +135,7 @@
     </select>
 
     <select id="findByUserNmAndUserId" parameterType="string" resultType="User">
-        SELECT SEQ,
+        SELECT IDX,
                USER_ID,
                USER_PWD,
                USER_NM,

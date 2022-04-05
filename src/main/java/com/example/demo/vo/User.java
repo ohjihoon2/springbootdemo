@@ -8,7 +8,7 @@ import java.util.Date;
 @Getter @Setter
 public class User {
 
-    private int seq;
+    private int idx;
     private String userId;
     private String userPwd;
     private String userNm;
