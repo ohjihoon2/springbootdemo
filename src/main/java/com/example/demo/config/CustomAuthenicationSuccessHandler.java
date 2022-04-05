@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Map;
 
 public class CustomAuthenicationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
@@ -25,9 +26,10 @@ public class CustomAuthenicationSuccessHandler extends SavedRequestAwareAuthenti
         HttpSession session = request.getSession();
 
         String userId =  authentication.getPrincipal().toString();
-        String userNicknm = loginService.findUserNicknmByUserId(userId);
-
-        session.setAttribute("userNicknm", userNicknm);
+        Map<String, Object> sessionMap = loginService.findUserNicknmVerificationYnByUserId(userId);
+        System.out.println("sessionMap = " + sessionMap);
+        session.setAttribute("userNicknm", sessionMap.get("userNicknm"));
+        session.setAttribute("verificationYn", sessionMap.get("verificationYn"));
         JSONObject jsonObj = new JSONObject();
 
         jsonObj.put("result","success");
