@@ -34,8 +34,6 @@
                SORT_ORDER,
                WRITE_ID,
                WRITE_DATE,
-               UPDATE_ID,
-               UPDATE_DATE,
                OPEN_YN
           FROM CTE
          ORDER BY PARENT_IDX, IDX
