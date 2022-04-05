@@ -2,6 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.AdminMapper">
 
+    <select id="findAllMenuTree" resultType="MenuTree">
+
+    </select>
+
     <insert id="insertMenuTree" parameterType="MenuTree">
         INSERT INTO menu_tree
             (
@@ -11,7 +15,7 @@
                  LINK,
                  SORT_ORDER,
                  WRITE_ID,
-                 WRITE_DATE,
+                 CREATE_DATE,
                  UPDATE_ID,
                  UPDATE_DATE,
                  DEL_YN,
@@ -25,9 +29,9 @@
                   #{link},
                   #{sortOrder},
                   #{writeId},
-                  #{writeDate},
+                  SYSDATE(),
                   #{updateId},
-                  #{updateDate},
+                  SYSDATE(),
                  'N',
                  'Y'
              )

@@ -13,7 +13,7 @@ public class MenuTree {
     private String link;
     private String sortOrder;
     private String writeId;
-    private Date writeDate;
+    private Date createDate;
     private String updateId;
     private Date updateDate;
     private String delYn;

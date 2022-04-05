@@ -23,6 +23,6 @@ public class UserSaveForm {
     private String roleType;
     private String verificationCode;
     private String isVerified;
-    private String useAt;
+    private String useYn;
     private Date createDate;
 }

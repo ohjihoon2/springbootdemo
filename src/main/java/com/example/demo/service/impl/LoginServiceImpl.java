@@ -52,14 +52,13 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public int userSave(UserSaveForm userSaveForm) {
-        userSaveForm.setRoleType("ROLE_MAIN");
 
         int cnt = loginMapper.countByUserId(userSaveForm.getUserId());
 
         if(cnt == 0){
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             userSaveForm.setUserPwd(passwordEncoder.encode(userSaveForm.getUserPwd()));
-            userSaveForm.setUseAt("Y");
+            userSaveForm.setUseYn("Y");
             return loginMapper.saveUser(userSaveForm);
         }
 

@@ -31,8 +31,9 @@
                  VERIFICATION_CODE,
                  IS_VERIFIED,
                  ROLE_TYPE,
-                 USE_AT,
-                 CREATE_DATE
+                 USE_YN,
+                 CREATE_DATE,
+                 UPDATE_DATE
              )
         VALUES
             (
@@ -45,8 +46,9 @@
                 #{verificationCode},
                 #{isVerified},
                 #{roleType},
-                #{useAt},
-                #{createDate}
+                #{useYn},
+                SYSDATE(),
+                SYSDATE()
              )
 
     </insert>
@@ -62,7 +64,7 @@
                  ROLE_TYPE,
                  VERIFICATION_CODE,
                  IS_VERIFIED,
-                 USE_AT,
+                 USE_YN,
                  CREATE_DATE
              )
         VALUES
@@ -92,7 +94,7 @@
             ROLE_TYPE,
             VERIFICATION_CODE,
             IS_VERIFIED,
-            USE_AT,
+            USE_YN,
             CREATE_DATE
         )
         VALUES
@@ -128,7 +130,7 @@
                ROLE_TYPE,
                VERIFICATION_CODE,
                IS_VERIFIED,
-               USE_AT,
+               USE_YN,
                CREATE_DATE,
                UPDATE_DATE
           FROM USERS
@@ -147,7 +149,7 @@
                ROLE_TYPE,
                VERIFICATION_CODE,
                IS_VERIFIED,
-               USE_AT,
+               USE_YN,
                CREATE_DATE,
                UPDATE_DATE
           FROM USERS
@@ -157,7 +159,8 @@
 
     <update id="updateUserPwd" parameterType="map">
         UPDATE USERS
-           SET USER_PWD = #{userPwd}
+           SET USER_PWD = #{userPwd},
+               UPDATE_DATE = SYSDATE()
          WHERE USER_ID = #{userId}
     </update>
 
@@ -169,7 +172,8 @@
 
     <update id="updateVerificationCode" parameterType="map">
         UPDATE USERS
-           SET VERIFICATION_CODE = #{VerificationCode}
+           SET VERIFICATION_CODE = #{VerificationCode},
+               UPDATE_DATE = SYSDATE()
          WHERE USER_ID = #{userId}
     </update>
 
@@ -185,7 +189,8 @@
 
     <update id="updateIsVerified" parameterType="string">
         UPDATE USERS
-           SET IS_VERIFIED = 1
+           SET IS_VERIFIED = 1,
+               UPDATE_DATE = SYSDATE()
          WHERE USER_ID = #{userId}
     </update>
 
