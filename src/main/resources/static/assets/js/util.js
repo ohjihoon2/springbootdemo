@@ -90,7 +90,7 @@
                         alert("수정을 실패하였습니다.");
                     }
                 },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                error: function (XMLHttpRequest, textStatus) {
                     return alert("네트워크 통신을 실패하였습니다.");
                 }
             });
@@ -125,7 +125,7 @@
         },
 
         // post 에이작스
-        postAjax : function (url, param, async=false, msg='네트워크 통신을 실패하였습니다.') {
+        postAjax : function (url, param, async=false) {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -143,8 +143,8 @@
                 success: function (response) {
                     res = response;
                 },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert(msg);
+                error: function (XMLHttpRequest, textStatus) {
+                    res = textStatus;
                 }
             });
             return res;

@@ -30,8 +30,8 @@ $(function(){
                         loginBtn = false;
                     }
                 },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert('네트워크 통신을 실패하였습니다.');
+                error: function (XMLHttpRequest, textStatus) {
+                    $('#loginMsg').text('네트워크 통신 실패, 관리자에게 문의해주세요.');
                     loginBtn = false;
                 }
             });

@@ -1,5 +1,4 @@
-// var cnt = 1;
-// var signupBtn = true;
+var signupBtn = true;
 
 $(function(){
     //아이디 관련
@@ -17,7 +16,7 @@ $(function(){
     //연락처 관련
     userPhChk();
 
-    // 약관동의(전체선택)
+    // 약관동의 (전체선택)
     $('#agreeAll').change(function () {
         if($('#agreeAll').is(":checked")) {
             $('#agreeBox input[type=checkbox]').prop("checked", true);
@@ -30,60 +29,66 @@ $(function(){
     // 회원가입
     $('#signupForm').submit(function(event){
         event.preventDefault();
-        
-        //빈값체크
-        if($event.validationFocus("userId")) return;
-        if($event.validationFocus("userPwd")) return;
-        if($event.validationFocus("userPwdChk")) return;
-        if($event.validationFocus("userNm")) return;
-        if($event.validationFocus("userNicknm")) return;
-        if($event.validationFocus("userEmail1")) return;
-        if($event.validationFocus("userEmail2")) return;
-        if($event.validationFocus("userPhone1")) return;
-        if($event.validationFocus("userPhone2")) return;
-        if($event.validationFocus("userPhone3")) return;
-        
-        //li별 msg를 통한 밸리데이션
-        var msg = $('.signup-msg').toArray();
 
-        if(msg.length != 0) {
-            var focus = {
-                idMsg : 'userId',
-                pwMsg : 'userPwd',
-                nnMsg : 'userNicknm',
-                emMsg : 'userEmail1',
+        if(signupBtn) {
+            //빈값체크
+            if($event.validationFocus("userId")) return;
+            if($event.validationFocus("userPwd")) return;
+            if($event.validationFocus("userPwdChk")) return;
+            if($event.validationFocus("userNm")) return;
+            if($event.validationFocus("userNicknm")) return;
+            if($event.validationFocus("userEmail1")) return;
+            if($event.validationFocus("userEmail2")) return;
+            if($event.validationFocus("userPhone1")) return;
+            if($event.validationFocus("userPhone2")) return;
+            if($event.validationFocus("userPhone3")) return;
+
+            //li별 msg를 통한 밸리데이션
+            var msg = $('li.signup-msg').toArray();
+
+            if(msg.length != 0) {
+                var focus = {
+                    idMsg : 'userId',
+                    pwMsg : 'userPwd',
+                    nnMsg : 'userNicknm',
+                    emMsg : 'userEmail1',
+                }
             }
-        }
 
-        for(var i = 0; i < msg.length; i++) {
-            if($(msg[i]).html() != '') {
-                $('#' + focus[$(msg[i]).attr('id')]).focus();
-                return;
+            for(var i = 0; i < msg.length; i++) {
+                if($(msg[i]).html() != '') {
+                    $('#' + focus[$(msg[i]).attr('id')]).focus();
+                    return;
+                }
             }
-        }
 
 
-        if($event.validationChk("agree1")) return;
-        if($event.validationChk("agree2")) return;
-        if($event.validationChk("agree3")) return;
-        
-        //회원가입 신청
-        var data = {
-            userId : $('#userId').val(),
-            userPwd : $('#userPwd').val(),
-            userNm : $('#userNm').val(),
-            userNicknm : $('#userNicknm').val(),
-            userEmail : $('#userEmail1').val() + "@" + $('#userEmail2').val(),
-            userPhone : $('#userPhone1').val() + "-" + $('#userPhone1').val() + "-" + $('#userPhone3').val(),
-            verificationYn : "Y"
-        }
-        var res = $ajax.postAjax('/signup', data);
-        if(res.result == "success") {
-            location.href = "/";
-        }
-        else{
-            // $('#loginMsg').text(res.message + " (" + cnt + ")");
-            // cnt++;
+            if($event.validationChk("agree1")) return;
+            if($event.validationChk("agree2")) return;
+            if($event.validationChk("agree3")) return;
+
+            //회원가입 신청
+            var data = {
+                userId : $('#userId').val(),
+                userPwd : $('#userPwd').val(),
+                userNm : $('#userNm').val(),
+                userNicknm : $('#userNicknm').val(),
+                userEmail : $('#userEmail1').val() + "@" + $('#userEmail2').val(),
+                userPhone : $('#userPhone1').val() + "-" + $('#userPhone1').val() + "-" + $('#userPhone3').val(),
+                roleType : "ROLE_USER",
+                verificationYn : "N",
+            }
+            var res = $ajax.postAjax('/signup', data);
+            if(res == "error") {
+                // signupBtn = false;
+                $('#signupMsg').text('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            }
+            else if(res.result == "success") {
+                location.href = "/";
+            }
+            else if(res.result == "fail"){
+                $('#signupMsg').text('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            }
         }
     });
 });
@@ -215,7 +220,7 @@ function userEmChk() {
     });
 }
 
-// 이메일 유효성검서, 중복확인
+// 이메일 유효성검사, 중복확인
 function detailUserEmChk() {
     if($('#userEmail1').val() != "" && $('#userEmail2').val() != "") {
         var data = {
@@ -237,7 +242,7 @@ function detailUserEmChk() {
     }
 }
 
-// 이메일 유효성검서, 중복확인
+// 유저 연락처 관련
 function userPhChk() {
     $('#userPhone1').keyup(function () {
         $('#phMsg').html("");
@@ -260,7 +265,7 @@ function userPhChk() {
     });
 }
 
-// 휴대전화 유효성검사
+// 연락처 유효성검사
 function detailUserPhChk() {
     if($('#userPhone1').val() != "" && $('#userPhone2').val() != "" && $('#userPhone3').val() != "") {
         var data = {

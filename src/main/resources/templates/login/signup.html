@@ -3,7 +3,7 @@
     <th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/login/signup.css')"></th:block>
     <body>
         <div class="signup-wrap">
-            <div class="prev_btn pt80 pb15">
+            <div class="prev_btn pt50 pb15">
                 <a href="javascript:history.back()"><img th:src="@{/img/login/prev_arrow.png}" alt="화살표" class="mr5"> 뒤로가기</a>
             </div>
             <div class="signup-box mb70">
@@ -118,6 +118,7 @@
 
                     <button id="signupBtn" class="signup-btn" type="submit">SIGN UP</button>
                 </form>
+                <div id="signupMsg" class="signup-msg mt20 text-center"></div>
             </div>
         </div>
 
