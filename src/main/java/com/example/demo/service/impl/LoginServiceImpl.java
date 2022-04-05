@@ -30,7 +30,6 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException{
-        System.out.println("LoginServiceImpl.loadUserByUsername");
         User user = loginMapper.findByUserId(userId);
         if (user == null) {
             throw new UsernameNotFoundException(userId + "is not found.");
@@ -143,8 +142,6 @@ public class LoginServiceImpl implements LoginService {
     @Transactional(rollbackFor = Exception.class)
     public int sendVerificationMail(HttpServletRequest request, Map<String, Object> map) {
         int result = 0;
-        System.out.println("LoginServiceImpl.sendVerificationMail");
-        System.out.println("map = " + map);
         String ranPw = RandomString.randomStr();
         String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");
         String userId = map.get("userId").toString();
