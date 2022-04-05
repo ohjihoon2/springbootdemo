@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -34,8 +35,11 @@ public class AdminController {
     }
 
     @GetMapping(value = "/menuTree")
-    public String menuTreeDetails(HttpServletResponse response, HttpServletRequest request) {
-//        adminService.findAllmenuTree();
+    public String menuTreeDetails(HttpServletResponse response, HttpServletRequest request,Model model) {
+        List<Map<String,Object>> resultMap = adminService.findAllMenuTree();
+        System.out.println("resultMap = " + resultMap);
+
+        model.addAttribute("resultMap", resultMap);
         return "/adm/menuTree";
     }
 

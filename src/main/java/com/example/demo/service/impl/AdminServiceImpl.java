@@ -34,4 +34,9 @@ public class AdminServiceImpl implements AdminService {
     public int addMenuTree(MenuTree menuTree) {
         return adminMapper.insertMenuTree(menuTree);
     }
+
+    @Override
+    public List<Map<String,Object>> findAllMenuTree() {
+        return adminMapper.findAllMenuTree();
+    }
 }
