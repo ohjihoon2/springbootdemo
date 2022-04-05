@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface LoginService extends UserDetailsService {
 
-    int userSave(UserSaveForm userSaveForm);
+    int userSave(UserSaveForm userSaveForm,HttpServletRequest request);
 
     User findByEmailAndUserNm(Map<String, Object> paraMap);
 

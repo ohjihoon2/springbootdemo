@@ -118,9 +118,9 @@ public class LoginController {
      */
     @PostMapping(value = "/signup")
     @ResponseBody
-    public Map<String, Object> signupProc(@Validated @RequestBody UserSaveForm userSaveForm){
+    public Map<String, Object> signupProc(@Validated @RequestBody UserSaveForm userSaveForm, HttpServletRequest request){
         System.out.println("userSaveForm = " + userSaveForm);
-        int result = loginService.userSave(userSaveForm);
+        int result = loginService.userSave(userSaveForm, request);
         Map<String, Object> resultMap = new HashMap<>();
 
         if(result == 1) {

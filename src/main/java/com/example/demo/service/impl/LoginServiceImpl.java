@@ -51,7 +51,8 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public int userSave(UserSaveForm userSaveForm) {
+    @Transactional(rollbackFor = Exception.class)
+    public int userSave(UserSaveForm userSaveForm,HttpServletRequest request) {
 
         int cnt = loginMapper.countByUserId(userSaveForm.getUserId());
 
@@ -59,7 +60,14 @@ public class LoginServiceImpl implements LoginService {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             userSaveForm.setUserPwd(passwordEncoder.encode(userSaveForm.getUserPwd()));
             userSaveForm.setUseYn("Y");
-            return loginMapper.saveUser(userSaveForm);
+            if(loginMapper.saveUser(userSaveForm) == 1){
+                Map<String, Object> map = new HashMap<>();
+                map.put("userId",userSaveForm.getUserId());
+                map.put("userEmail",userSaveForm.getUserEmail());
+                System.out.println("map = " + map);
+                return sendVerificationMail(request, map);
+            }
+
         }
 
         return 0;
@@ -135,10 +143,12 @@ public class LoginServiceImpl implements LoginService {
     @Transactional(rollbackFor = Exception.class)
     public int sendVerificationMail(HttpServletRequest request, Map<String, Object> map) {
         int result = 0;
+        System.out.println("LoginServiceImpl.sendVerificationMail");
+        System.out.println("map = " + map);
         String ranPw = RandomString.randomStr();
         String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");
         String userId = map.get("userId").toString();
-        String to = map.get("email").toString();
+        String to = map.get("userEmail").toString();
         String subject = "OO 인증 처리";
         String text = "안녕하세요.<br>" +
                 "하단에 링크 클릭 시 인증 처리 됩니다. <br>" +
