@@ -12,7 +12,6 @@ public class UserSaveForm {
     private String userId;
     @NotBlank
     private String userPwd;
-    @NotBlank
     private String userPwdChk;
     @NotBlank
     private String userNm;
