@@ -11,7 +11,7 @@ import java.util.Map;
 @Repository("AdminMapper")
 public interface AdminMapper {
 
-    int insertMenuTree(MenuTree menuTree);
+    int insertMenuTree(List<Map<String,Object>> paramMapList);
 
-    List<Map<String,Object>> findAllMenuTree();
+    List<MenuTree>  findAllMenuTree();
 }

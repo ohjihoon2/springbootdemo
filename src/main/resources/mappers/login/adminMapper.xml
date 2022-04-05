@@ -3,18 +3,46 @@
 <mapper namespace="com.example.demo.repository.AdminMapper">
 
     <select id="findAllMenuTree" resultType="MenuTree">
-        WITH RECURSIVE CTE AS(
-            SELECT IDX, NAME, LVL, SORT_ORDER
-              FROM MENU_TREE
-             WHERE LVL = 1
-             UNION ALL
-            SELECT IDX, NAME, LVL, SORT_ORDER
-              FROM menu_tree
-             WHERE IDX != PARENT_IDX
+        WITH RECURSIVE CTE AS
+            (
+                SELECT IDX,
+                       PARENT_IDX,
+                       NAME,
+                       LVL,
+                       SORT_ORDER,
+                       WRITE_ID,
+                       WRITE_DATE,
+                       UPDATE_ID,
+                       UPDATE_DATE,
+                       OPEN_YN
+                  FROM MENU_TREE
+                 WHERE LVL = 1
+                 UNION ALL
+                SELECT IDX,
+                       PARENT_IDX,
+                       NAME,
+                       LVL,
+                       SORT_ORDER,
+                       WRITE_ID,
+                       WRITE_DATE,
+                       UPDATE_ID,
+                       UPDATE_DATE,
+                       OPEN_YN
+                  FROM MENU_TREE
+                 WHERE IDX != PARENT_IDX
             )
-        SELECT IDX, NAME, LVL
+        SELECT IDX,
+               PARENT_IDX,
+               NAME,
+               LVL,
+               SORT_ORDER,
+               WRITE_ID,
+               WRITE_DATE,
+               UPDATE_ID,
+               UPDATE_DATE,
+               OPEN_YN
           FROM CTE
-         ORDER BY SORT_ORDER
+         ORDER BY PARENT_IDX, IDX
     </select>
 
     <insert id="insertMenuTree" parameterType="MenuTree">
