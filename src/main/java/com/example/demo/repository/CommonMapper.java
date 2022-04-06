@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-@Repository("AdminMapper")
+@Repository("CommonMapper")
 public interface CommonMapper {
 
     List<MenuTree>  findLinkNameLvlByUseYn();
