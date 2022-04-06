@@ -1,5 +1,21 @@
 $(function(){
+    //메뉴
     headerMenuControl();
+
+    //상단으로 버튼
+    $("#topBtn").on("click", function() {
+        $("html, body").animate({scrollTop:0}, '500');
+        return false;
+    });
+
+    $(window).scroll(function(){
+        if($(window).scrollTop() == 0) {
+            $('#topBtn').hide();
+        }
+        else {
+            $('#topBtn').show();
+        }
+    });
 });
 
 //메뉴를 컨트롤한다

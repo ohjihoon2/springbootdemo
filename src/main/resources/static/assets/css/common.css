@@ -6,6 +6,7 @@
 */
 
 
+/* 체크박스 커스텀 */
 input[type="checkbox"] {
     -webkit-appearance: none;
     position: relative;
@@ -150,7 +151,7 @@ section {
     position: relative;
     top: 0;
     left: 20%;
-    min-height: calc(100% - 206px);
+    min-height: calc(100vh - 210px);
     word-break: keep-all;
 }
 
