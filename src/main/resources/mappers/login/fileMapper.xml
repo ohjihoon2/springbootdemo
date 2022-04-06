@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.FileMapper">
+
+    <insert id="insertAttachFile" parameterType="AttachFile">
+
+        INSERT INTO attach_file
+            (
+                 RELATED_TABLE,
+                 RELATED_IDX,
+                 ORIGINAL_NAME,
+                 SAVE_NAME,
+                 `SIZE`,
+                 CREATE_ID,
+                 CREATE_DATE,
+                 DELETE_YN,
+                 DELETE_DATE
+            )
+        VALUES
+            (
+                 #{relatedTable},
+                 #{relatedIdx},
+                 #{originalName},
+                 #{saveName},
+                 #{size},
+                 #{createId},
+                 SYSDATE(),
+                 'N',
+                 NULL
+            )
+    </insert>
+</mapper>

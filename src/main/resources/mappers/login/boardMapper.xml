@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.BoardMapper">
+
+    <insert id="insertBoard" parameterType="Board">
+        INSERT INTO board
+            (
+                 MASTER_IDX,
+                 BOARD_SUBJECT,
+                 BOARD_CONTENT,
+                 HIT,
+                 START_DATE,
+                 END_DATE,
+                 USE_YN,
+                 CREATE_ID,
+                 CREATE_DATE,
+                 UPDATE_ID,
+                 UPDATE_DATE
+            )
+        VALUES
+            (
+                 #{masterIdx},
+                 #{boardSubject},
+                 #{boardContent},
+                 0,
+                 #{startDate},
+                 #{endDate},
+                 'Y',
+                 #{createId},
+                 SYSDATE(),
+                 NULL,
+                 SYSDATE()
+             )
+    </insert>
+</mapper>
