@@ -5,7 +5,44 @@ $(function(){
     // 메뉴저장
     $('#menuTreeForm').submit(function(event){
         event.preventDefault();
-        alert("왔니");
+
+        var tr = $('#menuTreeTable tbody').find('tr');
+        var parent = 1;
+        var data = new Array();
+        for(i = 0; i < tr.length; i++) {
+            var obj = new Object();
+            obj.idx = (i + 1);
+            obj.lvl = tr.eq(i).data('val');
+            if(obj.lvl == 1) {
+                parent = obj.idx;
+            }
+            obj.parentIdx = parent;
+            obj.name = tr.eq(i).find('td').eq(1).children('input[type="text"]').val();
+            if(obj.name == '') {
+                alert(" Name은 필수항목입니다.");
+                tr.eq(i).find('td').eq(1).children('input[type="text"]').focus();
+                return;
+            }
+            obj.link = tr.eq(i).find('td').eq(2).children('input[type="text"]').val();
+            if(tr.eq(i).find('td').eq(4).children('input[type="checkbox"]').is(':checked')) {
+                obj.openYn = 'Y';
+            }
+            else {
+                obj.openYn = 'N';
+            }
+            data.push(obj);
+        }
+
+        var res = $ajax.postAjax('/adm/menuTree', data);
+        if(res == "error") {
+            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+        }
+        else if(res.result == "success") {
+            location.href = "/";
+        }
+        else if(res.result == "fail"){
+            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+        }
     });
 
     // 메뉴추가
@@ -19,10 +56,41 @@ $(function(){
     });
     
     // 위로올리기
-    // $(document).on("click", "[name='downAddBtn']", function() {
-    //     var tr = $(this).closest('tr');
-    //     menuTreeDownAdd(tr);
-    // });
+    $(document).on("click", "[name='upMoveBtn']", function() {
+        var tr = $(this).closest('tr');
+        if($(tr).data('val') == '1') {
+            var standardTr = tr;
+            while (true) {
+                if($(standardTr).prev('tr').length == 0) {
+                    return alert("더이상 이동할 수 없습니다.");
+                }
+                standardTr = $(standardTr).prev('tr');
+                if($(standardTr).data('val') == 1) {
+                    break;
+                }
+            };
+            var trAll = $(tr).nextAll('tr');
+
+            $(standardTr).before(tr);
+
+            for (var i = 0; i < trAll.length; i++) {
+                if($(trAll[i]).data('val') == 2) {
+                    $(standardTr).before(trAll[i]);
+                }
+                else {
+                    break;
+                }
+            };
+        }
+        else if($(tr).data('val') == '2') {
+            if($(tr).prev('tr').data('val') == '1' || $(tr).prev('tr').length == 0) {
+                alert("더이상 이동할  수 없습니다.");
+            }
+            else {
+                $(tr).prev('tr').before(tr);
+            }
+        }
+    });
 
     // 아래로 내리기
     $(document).on("click", "[name='downMoveBtn']", function() {
@@ -34,15 +102,14 @@ $(function(){
                 cnt++;
             }
             while (true) {
-                console.log(cnt);
                 if(cnt == 2) {
                     break;
                 }
-                else if(cnt == 0 && $(standardTr).next('tr').length == 0) {
+                standardTr = $(standardTr).next('tr');
+                if(cnt == 0 && $(standardTr).next('tr').length == 0) {
                     return alert("더이상 이동할 수 없습니다.");
                 }
-                standardTr = $(standardTr).next('tr');
-                if($(standardTr).next('tr').data('val') == 1 || $(standardTr).next('tr').length == 0) {
+                else if($(standardTr).next('tr').data('val') == 1 || $(standardTr).next('tr').length == 0) {
                     cnt++;
                 }
             };
@@ -62,14 +129,6 @@ $(function(){
             }
 
             $(standardTr).after(tr);
-
-            // while (true) {
-            //     if($(tr).next('tr').data('val') == 2) {
-            //
-            //     }
-            //     $(tr).next('tr').after(tr);
-            //     tr = $(tr).next('tr');
-            // };
         }
         else if($(tr).data('val') == '2') {
             if($(tr).next('tr').data('val') == '1' || $(tr).next('tr').length == 0) {
