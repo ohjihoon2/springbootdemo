@@ -6,8 +6,4 @@ import java.util.List;
 import java.util.Map;
 
 public interface AdminService{
-
-    int addMenuTree(List<Map<String,Object>> paramMapList);
-
-    List<MenuTree> findAllMenuTree();
 }
