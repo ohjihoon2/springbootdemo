@@ -14,4 +14,6 @@ public interface AdminMapper {
     int insertMenuTree(List<Map<String,Object>> paramMapList);
 
     List<MenuTree>  findAllMenuTree();
+
+    int deleteMenuTree();
 }

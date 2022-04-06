@@ -13,6 +13,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -45,5 +46,10 @@ public class BoardServiceImpl implements BoardService {
             }
         }
         return result;
+    }
+
+    @Override
+    public List<Board> findByMasterIdxSearch(Map<String, Object> paramMap) {
+        return boardMapper.findByMasterIdxSearch(paramMap);
     }
 }

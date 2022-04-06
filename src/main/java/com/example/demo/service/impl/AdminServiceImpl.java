@@ -5,6 +5,7 @@ import com.example.demo.service.AdminService;
 import com.example.demo.vo.MenuTree;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -16,10 +17,9 @@ public class AdminServiceImpl implements AdminService {
     private final AdminMapper adminMapper;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int addMenuTree(List<Map<String,Object>> paramMapList) {
-        for (Map<String, Object> map : paramMapList) {
-
-        }
+        adminMapper.deleteMenuTree();
         return adminMapper.insertMenuTree(paramMapList);
     }
 

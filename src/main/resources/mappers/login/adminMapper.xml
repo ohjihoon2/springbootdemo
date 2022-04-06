@@ -53,17 +53,28 @@
                  OPEN_YN
              )
         VALUES
+        <foreach collection="list" item="item" separator=" , ">
             (
-                  #{idx},
-                  #{parentIdx},
-                  #{lvl},
-                  #{name},
-                  #{link},
-                  #{sortOrder},
-                  #{writeId},
-                  SYSDATE(),
+                 #{item.idx},
+                 #{item.parentIdx},
+                 #{item.lvl},
+                 #{item.name},
+                 #{item.link},
+                 #{item.sortOrder},
+                 #{item.writeId},
+                 SYSDATE(),
                  'Y'
-             )
+            )
+        </foreach>
 
     </insert>
+
+    <delete id="deleteMenuTree">
+
+        DELETE FROM menu_tree
+         WHERE EXISTS (
+                           SELECT 1
+                             FROM menu_tree
+                      )
+    </delete>
 </mapper>

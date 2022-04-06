@@ -54,12 +54,11 @@ public class AdminController {
     public Map<String,Object> menuTreeSave(@ModelAttribute List<Map<String,Object>> paramMapList, HttpServletResponse response, HttpServletRequest request) {
         Map<String,Object> resultMap = new HashMap<>();
         int result = adminService.addMenuTree(paramMapList);
-        if(result == 1) {
+        if(result > 0) {
             resultMap.put("result", "success");
         }else{
             resultMap.put("result", "fail");
         }
         return resultMap;
     }
-
 }

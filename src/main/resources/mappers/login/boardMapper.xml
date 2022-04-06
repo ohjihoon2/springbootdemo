@@ -2,6 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.BoardMapper">
 
+    <select id="findByMasterIdxSearch" resultType="Board" parameterType="map">
+
+        SELECT IDX,
+               MASTER_IDX,
+               BOARD_SUBJECT,
+               BOARD_CONTENT,
+               HIT,
+               START_DATE,
+               END_DATE,
+               USE_YN,
+               CREATE_ID,
+               CREATE_DATE,
+               UPDATE_ID,
+               UPDATE_DATE
+          FROM board
+         WHERE MASTER_IDX = #{masterIdx}
+            <!--
+            <if test="search != null">
+                #{searchType}
+                #{keyword}
+            </if>
+            -->
+    </select>
+
     <insert id="insertBoard" parameterType="Board">
         INSERT INTO board
             (
