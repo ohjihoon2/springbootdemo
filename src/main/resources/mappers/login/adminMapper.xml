@@ -42,6 +42,7 @@
     <insert id="insertMenuTree" parameterType="MenuTree">
         INSERT INTO menu_tree
             (
+                 IDX,
                  PARENT_IDX,
                  LVL,
                  NAME,
@@ -53,6 +54,7 @@
              )
         VALUES
             (
+                  #{idx},
                   #{parentIdx},
                   #{lvl},
                   #{name},
