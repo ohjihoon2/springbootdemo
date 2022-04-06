@@ -9,5 +9,9 @@ import java.util.Map;
 
 @Mapper
 @Repository("AdminMapper")
-public interface AdminMapper {
+public interface CommonMapper {
+
+    int insertMenuTree(List<Map<String,Object>> paramMapList);
+
+    List<MenuTree>  findAllMenuTree();
 }

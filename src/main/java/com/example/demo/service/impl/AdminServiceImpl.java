@@ -14,17 +14,4 @@ import java.util.Map;
 public class AdminServiceImpl implements AdminService {
 
     private final AdminMapper adminMapper;
-
-    @Override
-    public int addMenuTree(List<Map<String,Object>> paramMapList) {
-        for (Map<String, Object> map : paramMapList) {
-
-        }
-        return adminMapper.insertMenuTree(paramMapList);
-    }
-
-    @Override
-    public List<MenuTree>  findAllMenuTree() {
-        return adminMapper.findAllMenuTree();
-    }
 }
