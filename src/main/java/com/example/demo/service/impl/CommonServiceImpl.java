@@ -16,15 +16,7 @@ public class CommonServiceImpl implements CommonService {
     private final CommonMapper commonMapper;
 
     @Override
-    public int addMenuTree(List<Map<String,Object>> paramMapList) {
-        for (Map<String, Object> map : paramMapList) {
-
-        }
-        return commonMapper.insertMenuTree(paramMapList);
-    }
-
-    @Override
-    public List<MenuTree>  findAllMenuTree() {
-        return commonMapper.findAllMenuTree();
+    public List<MenuTree>  findLinkNameLvlByUseYn() {
+        return commonMapper.findLinkNameLvlByUseYn();
     }
 }

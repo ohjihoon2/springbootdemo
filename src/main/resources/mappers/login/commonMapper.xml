@@ -2,16 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.CommonMapper">
 
-    <select id="findAllMenuTree" resultType="MenuTree">
+    <select id="findLinkNameLvlByUseYn" resultType="CustomMap">
         WITH RECURSIVE CTE AS
             (
                 SELECT IDX,
                        PARENT_IDX,
                        NAME,
+                       LINK,
                        LVL,
-                       SORT_ORDER,
-                       WRITE_ID,
-                       WRITE_DATE,
                        OPEN_YN
                   FROM MENU_TREE
                  WHERE LVL = 1
@@ -19,49 +17,17 @@
                 SELECT IDX,
                        PARENT_IDX,
                        NAME,
+                       LINK,
                        LVL,
-                       SORT_ORDER,
-                       WRITE_ID,
-                       WRITE_DATE,
                        OPEN_YN
                   FROM MENU_TREE
                  WHERE IDX != PARENT_IDX
             )
-        SELECT IDX,
-               PARENT_IDX,
-               NAME,
-               LVL,
-               SORT_ORDER,
-               WRITE_ID,
-               WRITE_DATE,
-               OPEN_YN
+        SELECT NAME,
+               LINK,
+               LVL
           FROM CTE
+         WHERE OPEN_YN = 'Y'
          ORDER BY PARENT_IDX, IDX
     </select>
-
-    <insert id="insertMenuTree" parameterType="MenuTree">
-        INSERT INTO menu_tree
-            (
-                 PARENT_IDX,
-                 LVL,
-                 NAME,
-                 LINK,
-                 SORT_ORDER,
-                 WRITE_ID,
-                 CREATE_DATE,
-                 OPEN_YN
-             )
-        VALUES
-            (
-                  #{parentIdx},
-                  #{lvl},
-                  #{name},
-                  #{link},
-                  #{sortOrder},
-                  #{writeId},
-                  SYSDATE(),
-                 'Y'
-             )
-
-    </insert>
 </mapper>

@@ -33,4 +33,33 @@ public class AdminController {
         model.addAttribute("page",split[2]);
         return "/adm/admIndex";
     }
+
+    @GetMapping(value = "/menuTree")
+    public String menuTreeDetails(HttpServletResponse response, HttpServletRequest request,Model model) {
+        List<MenuTree> resultList = adminService.findAllMenuTree();
+
+        String[] split = request.getRequestURI().split("/");
+        model.addAttribute("page",split[2]);
+        model.addAttribute("resultList", resultList);
+        return "/adm/menuTree";
+    }
+
+    /**
+     * menuTree 추가
+     * @param response
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/menuTree")
+    public Map<String,Object> menuTreeSave(@ModelAttribute List<Map<String,Object>> paramMapList, HttpServletResponse response, HttpServletRequest request) {
+        Map<String,Object> resultMap = new HashMap<>();
+        int result = adminService.addMenuTree(paramMapList);
+        if(result == 1) {
+            resultMap.put("result", "success");
+        }else{
+            resultMap.put("result", "fail");
+        }
+        return resultMap;
+    }
+
 }

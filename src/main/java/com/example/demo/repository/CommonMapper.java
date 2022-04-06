@@ -11,7 +11,5 @@ import java.util.Map;
 @Repository("AdminMapper")
 public interface CommonMapper {
 
-    int insertMenuTree(List<Map<String,Object>> paramMapList);
-
-    List<MenuTree>  findAllMenuTree();
+    List<MenuTree>  findLinkNameLvlByUseYn();
 }

@@ -7,7 +7,5 @@ import java.util.Map;
 
 public interface CommonService {
 
-    int addMenuTree(List<Map<String,Object>> paramMapList);
-
-    List<MenuTree> findAllMenuTree();
+    List<MenuTree> findLinkNameLvlByUseYn();
 }
