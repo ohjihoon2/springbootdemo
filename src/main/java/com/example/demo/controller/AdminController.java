@@ -58,7 +58,6 @@ public class AdminController {
     @ResponseBody
     public Map<String,Object> menuTreeSave(@RequestBody List<Map<String,Object>> paramMapList, HttpServletResponse response, HttpServletRequest request) {
         Map<String,Object> resultMap = new HashMap<>();
-        System.out.println("paramMapList = " + paramMapList);
         int result = adminService.addMenuTree(paramMapList);
         if(result > 0) {
             resultMap.put("result", "success");
