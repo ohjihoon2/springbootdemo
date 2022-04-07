@@ -66,4 +66,22 @@ public class AdminController {
         }
         return resultMap;
     }
+
+    /**
+     * board 설정 페이지
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/boardMaster")
+    public String boardMasterDetails(HttpServletResponse response, HttpServletRequest request,Model model) {
+//        List<MenuTree> resultList = adminService.findAllMenuTree();
+
+        String[] split = request.getRequestURI().split("/");
+        model.addAttribute("page",split[2]);
+//        model.addAttribute("resultList", resultList);
+        return "/adm/boardMaster";
+    }
+
 }

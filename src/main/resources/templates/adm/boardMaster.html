@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
+
+<th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='/css/adm/menuTree.css')"></th:block>
+<body ondragstart="return false" onselectstart="return false">
+    <th:block th:replace="/fragments/header.html :: thAdmHeader"></th:block>
+    <section>
+        <div class="section-wrap">
+            <h2>메뉴설정</h2>
+            <div class="mt50"></div>
+            <form id="menuTreeForm">
+                <div class="top-btn-box">
+                    <button type="submit">메뉴저장</button>
+                    <button type="button" id="addBtn">메뉴추가</button>
+                    <button type="button" id="cancelBtn">전체취소</button>
+                </div>
+                <table id="menuTreeTable">
+                    <colgroup>
+                        <col width="5%">
+                        <col width="30%">
+                        <col width="35%">
+                        <col width="15%">
+                        <col width="10%">
+                        <col width="5%">
+
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>Depth</th>
+                        <th>Name</th>
+                        <th>Link</th>
+                        <th>Command</th>
+                        <th>Open</th>
+                        <th>Add</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+<!--                    <th:block th:each="res, i : ${resultList}">-->
+<!--                        <tr th:data-val="${res.lvl}">-->
+<!--                            <td class="text-center"><th:block th:text="${res.lvl == 1} ? 'Menu' : '┗'"></th:block></td>-->
+<!--                            <td><input type="text" th:value="${res.name}"></td>-->
+<!--                            <td><input type="text" th:value="${res.link}"></td>-->
+<!--                            <td class="text-center command-btn">-->
+<!--                                <button type="button" name="upMoveBtn">▲</button>-->
+<!--                                <button type="button" name="downMoveBtn">▼</button>-->
+<!--                                <button type="button" name="removeBtn">ㅡ</button>-->
+<!--                            </td>-->
+<!--                            <td class="text-center"><input type="checkbox" th:checked="${res.openYn == 'Y'}"></td>-->
+<!--                            <td class="text-center add-btn">-->
+<!--                                <th:block th:if="${res.lvl == 1}">-->
+<!--                                    <button type="button" name="downAddBtn">하위추가</button>-->
+<!--                                </th:block>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    </th:block>-->
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </section>
+    <th:block th:replace="/fragments/footer.html :: thAdmJs"></th:block>
+    <script th:src="@{/js/adm/menuTree.js}"></script>
+</body>
+</html>
