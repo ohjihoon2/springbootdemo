@@ -73,9 +73,9 @@
                       )
     </delete>
 
-    <select id="findAllBoradMaster" resultType="BoardMaster">
+    <select id="findAllboardMaster" resultType="BoardMaster">
         SELECT IDX,
-               BORAD_ID,
+               board_ID,
                BOARD_NM,
                BOARD_DESC,
                BOARD_TYPE,
