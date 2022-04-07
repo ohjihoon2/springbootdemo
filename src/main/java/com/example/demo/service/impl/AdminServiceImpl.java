@@ -18,15 +18,15 @@ public class AdminServiceImpl implements AdminService {
     private final AdminMapper adminMapper;
 
     @Override
-    @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
-    public int addMenuTree(List<Map<String,Object>> paramMapList) {
+    @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
+    public int addMenuTree(List<Map<String,Object>> paramMapList) throws Exception{
         int i = adminMapper.deleteMenuTree();
         int result = 0;
 
         System.out.println("delete = " + i);
         result = adminMapper.insertMenuTree(paramMapList);
         System.out.println("insert = " + result);
-        RuntimeException ex = new RuntimeException("runtimeException !!!");
+        Exception ex = new Exception("runtimeException !!!");
         throw ex;
 
 //        return adminMapper.insertMenuTree(paramMapList);

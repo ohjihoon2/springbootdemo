@@ -17,7 +17,7 @@
                UPDATE_ID,
                UPDATE_DATE
           FROM board
-         WHERE MASTER_IDX = #{masterIdx}
+         WHERE BOARD_ID = #{boardId}
             <!--
             <if test="search != null">
                 #{searchType}

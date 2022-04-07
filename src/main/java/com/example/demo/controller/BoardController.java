@@ -35,11 +35,11 @@ public class BoardController {
      * @param model
      * @return
      */
-    @GetMapping("/boradList/{masterIdx}")
-    public String boradList(@PathVariable("masterIdx") String masterIdx, @RequestParam Search search
+    @GetMapping("/boradList/{boardId}")
+    public String boradList(@PathVariable("boardId") String boardId, @RequestParam Search search
                             , HttpServletResponse response, HttpServletRequest request, Model model) {
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("masterIdx", masterIdx);
+        paramMap.put("boardId", boardId);
         paramMap.put("search", search);
 
         List<Board> boardList = boardService.findByMasterIdxSearch(paramMap);

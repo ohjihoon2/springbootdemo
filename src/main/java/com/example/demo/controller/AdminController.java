@@ -57,7 +57,7 @@ public class AdminController {
      */
     @PostMapping(value = "/menuTree")
     @ResponseBody
-    public Map<String,Object> menuTreeSave(@RequestBody List<Map<String,Object>> paramMapList, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> menuTreeSave(@RequestBody List<Map<String,Object>> paramMapList, HttpServletResponse response, HttpServletRequest request) throws Exception {
         Map<String,Object> resultMap = new HashMap<>();
         int result = adminService.addMenuTree(paramMapList);
         if(result > 0) {
@@ -78,7 +78,7 @@ public class AdminController {
     @GetMapping(value = "/boardMaster")
     public String boardMasterDetails(HttpServletResponse response, HttpServletRequest request,Model model) {
         List<BoardMaster> resultList = adminService.findAllBoradMaster();
-
+ 
         model.addAttribute("resultList", resultList);
         return "/adm/boardMaster";
     }
