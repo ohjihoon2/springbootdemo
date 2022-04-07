@@ -13,18 +13,17 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(rollbackFor=Exception.class)
 public class AdminServiceImpl implements AdminService {
 
     private final AdminMapper adminMapper;
 
     @Override
+    @Transactional(rollbackFor=Exception.class)
     public int addMenuTree(List<Map<String,Object>> paramMapList){
         int i = adminMapper.deleteMenuTree();
         int result = 0;
         adminMapper.insertMenuTree(paramMapList);
-        RuntimeException ex = new RuntimeException("runtimeException !!!");
-        throw ex;
+        throw new RuntimeException("runtimeException !!!");
     }
 
     @Override
