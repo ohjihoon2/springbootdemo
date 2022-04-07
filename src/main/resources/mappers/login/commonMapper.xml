@@ -10,7 +10,7 @@
                        NAME,
                        LINK,
                        LVL,
-                       OPEN_YN
+                       USE_YN
                   FROM MENU_TREE
                  WHERE LVL = 1
                  UNION ALL
@@ -19,7 +19,7 @@
                        NAME,
                        LINK,
                        LVL,
-                       OPEN_YN
+                       USE_YN
                   FROM MENU_TREE
                  WHERE IDX != PARENT_IDX
             )
@@ -27,7 +27,7 @@
                LINK,
                LVL
           FROM CTE
-         WHERE OPEN_YN = 'Y'
+         WHERE USE_YN = 'Y'
          ORDER BY PARENT_IDX, IDX
     </select>
 </mapper>

@@ -11,7 +11,7 @@
                        LVL,
                        CREATE_ID,
                        CREATE_DATE,
-                       OPEN_YN
+                       USE_YN
                   FROM MENU_TREE
                  WHERE LVL = 1
                  UNION ALL
@@ -21,7 +21,7 @@
                        LVL,
                        CREATE_ID,
                        CREATE_DATE,
-                       OPEN_YN
+                       USE_YN
                   FROM MENU_TREE
                  WHERE IDX != PARENT_IDX
             )
@@ -31,7 +31,7 @@
                LVL,
                CREATE_ID,
                CREATE_DATE,
-               OPEN_YN
+               USE_YN
           FROM CTE
          ORDER BY PARENT_IDX, IDX
     </select>
@@ -46,7 +46,7 @@
                  LINK,
                  CREATE_ID,
                  CREATE_DATE,
-                 OPEN_YN
+                 USE_YN
              )
         VALUES
         <foreach collection="list" item="item" separator=" , ">

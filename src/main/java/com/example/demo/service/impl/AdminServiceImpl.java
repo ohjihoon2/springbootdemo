@@ -38,10 +38,10 @@ public class AdminServiceImpl implements AdminService {
     public int addMenuTree(List<Map<String,Object>> paramMapList) {
         int i = adminMapper.deleteMenuTree();
         int result = 0;
-        if (true) {
-            throw new RuntimeException();
-        }
         result = adminMapper.insertMenuTree(paramMapList);
+        if (true) {
+            throw new NullPointerException();
+        }
         return result;
     }
 
