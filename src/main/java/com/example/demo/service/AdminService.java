@@ -13,7 +13,7 @@ public interface AdminService{
 
     List<MenuTree> findAllMenuTree();
 
-    List<BoardMaster> findAllBoradMaster();
+    List<BoardMaster> findAllBoardMaster();
 
     int addBoardMaster(Map<String, Object> paramMap);
 }

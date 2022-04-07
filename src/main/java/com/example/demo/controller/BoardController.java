@@ -35,8 +35,8 @@ public class BoardController {
      * @param model
      * @return
      */
-    @GetMapping("/boradList/{boardId}")
-    public String boradList(@PathVariable("boardId") String boardId, @RequestParam Search search
+    @GetMapping("/boardList/{boardId}")
+    public String boardList(@PathVariable("boardId") String boardId, @RequestParam Search search
                             , HttpServletResponse response, HttpServletRequest request, Model model) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("boardId", boardId);
@@ -47,7 +47,7 @@ public class BoardController {
         model.addAttribute("boardList", boardList);
         model.addAttribute("search", search);
 
-        return "/board/boradList";
+        return "/board/boardList";
     }
 
     /**
@@ -59,14 +59,14 @@ public class BoardController {
      * @return
      */
     @GetMapping("/board/{idx}")
-    public String boradDetails(@PathVariable("idx") String idx, HttpServletResponse response, HttpServletRequest request, Model model) {
+    public String boardDetails(@PathVariable("idx") String idx, HttpServletResponse response, HttpServletRequest request, Model model) {
         Map<String, Object> paramMap = new HashMap<>();
 
         Board board = boardService.findAllByIdx(idx);
 
         model.addAttribute("board", board);
 
-        return "/board/boradList";
+        return "/board/boardList";
     }
 
     /**

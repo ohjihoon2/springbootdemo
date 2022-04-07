@@ -80,7 +80,7 @@ public class AdminController {
      */
     @GetMapping(value = "/boardMaster")
     public String boardMasterDetails(HttpServletResponse response, HttpServletRequest request,Model model) {
-        List<BoardMaster> resultList = adminService.findAllBoradMaster();
+        List<BoardMaster> resultList = adminService.findAllBoardMaster();
  
         model.addAttribute("resultList", resultList);
         return "/adm/boardMaster";

@@ -33,8 +33,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<BoardMaster> findAllBoradMaster() {
-        return adminMapper.findAllBoradMaster();
+    public List<BoardMaster> findAllBoardMaster() {
+        return adminMapper.findAllBoardMaster();
     }
 
     @Override

@@ -18,7 +18,7 @@ public interface AdminMapper {
 
     int deleteMenuTree();
 
-    List<BoardMaster> findAllBoradMaster();
+    List<BoardMaster> findAllBoardMaster();
 
     int insertBoardMaster(Map<String, Object> paramMap);
 }
