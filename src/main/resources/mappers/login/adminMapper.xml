@@ -9,7 +9,6 @@
                        PARENT_IDX,
                        NAME,
                        LVL,
-                       SORT_ORDER,
                        CREATE_ID,
                        CREATE_DATE,
                        OPEN_YN
@@ -20,7 +19,6 @@
                        PARENT_IDX,
                        NAME,
                        LVL,
-                       SORT_ORDER,
                        CREATE_ID,
                        CREATE_DATE,
                        OPEN_YN
@@ -31,7 +29,6 @@
                PARENT_IDX,
                NAME,
                LVL,
-               SORT_ORDER,
                CREATE_ID,
                CREATE_DATE,
                OPEN_YN
@@ -47,7 +44,6 @@
                  LVL,
                  NAME,
                  LINK,
-                 SORT_ORDER,
                  CREATE_ID,
                  CREATE_DATE,
                  OPEN_YN
@@ -60,10 +56,9 @@
                  #{item.lvl},
                  #{item.name},
                  #{item.link},
-                 #{item.sortOrder},
                  #{item.writeId},
                  SYSDATE(),
-                 'Y'
+                 #{item.openYn}
             )
         </foreach>
 
