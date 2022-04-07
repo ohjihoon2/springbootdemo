@@ -89,4 +89,37 @@
                DELETE_DATE
           FROM board_master
     </select>
+
+    <insert id="insertBoardMaster" parameterType="map">
+        INSERT INTO board_master
+            (
+                 BOARD_ID,
+                 BOARD_NM,
+                 BOARD_DESC,
+                 BOARD_TYPE,
+                 FILE_ATTACH_YN,
+                 USE_YN,
+                 CREATE_ID,
+                 CREATE_DATE,
+                 UPDATE_ID,
+                 UPDATE_DATE,
+                 DELETE_YN,
+                 DELETE_DATE
+             )
+        VALUES
+            (
+                 #{boardId},
+                 #{boardNm},
+                 #{boardDesc},
+                 #{boardType},
+                 #{fileAttachYn},
+                 #{useYn},
+                 #{createId},
+                 SYSDATE(),
+                 NULL,
+                 NULL,
+                 'Y',
+                 NULL
+            )
+    </insert>
 </mapper>

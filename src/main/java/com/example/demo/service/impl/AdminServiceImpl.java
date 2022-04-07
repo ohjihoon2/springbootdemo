@@ -13,23 +13,18 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(rollbackFor=Exception.class)
 public class AdminServiceImpl implements AdminService {
 
     private final AdminMapper adminMapper;
 
     @Override
-    @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
-    public int addMenuTree(List<Map<String,Object>> paramMapList) throws Exception{
+    public int addMenuTree(List<Map<String,Object>> paramMapList){
         int i = adminMapper.deleteMenuTree();
         int result = 0;
-
-        System.out.println("delete = " + i);
-        result = adminMapper.insertMenuTree(paramMapList);
-        System.out.println("insert = " + result);
-        Exception ex = new Exception("runtimeException !!!");
+        adminMapper.insertMenuTree(paramMapList);
+        RuntimeException ex = new RuntimeException("runtimeException !!!");
         throw ex;
-
-//        return adminMapper.insertMenuTree(paramMapList);
     }
 
     @Override
@@ -40,5 +35,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<BoardMaster> findAllBoradMaster() {
         return adminMapper.findAllBoradMaster();
+    }
+
+    @Override
+    public int addBoardMaster(Map<String, Object> paramMap) {
+        return adminMapper.insertBoardMaster(paramMap);
     }
 }

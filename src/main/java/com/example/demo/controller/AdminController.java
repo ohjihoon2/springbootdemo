@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.AdminService;
+import com.example.demo.util.ResultStr;
 import com.example.demo.vo.BoardMaster;
 import com.example.demo.vo.MenuTree;
 import com.example.demo.vo.User;
@@ -8,11 +9,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +60,7 @@ public class AdminController {
      */
     @PostMapping(value = "/menuTree")
     @ResponseBody
-    public Map<String,Object> menuTreeSave(@RequestBody List<Map<String,Object>> paramMapList, HttpServletResponse response, HttpServletRequest request) throws Exception {
+    public Map<String,Object> menuTreeSave(@RequestBody List<Map<String,Object>> paramMapList, HttpServletResponse response, HttpServletRequest request) {
         Map<String,Object> resultMap = new HashMap<>();
         int result = adminService.addMenuTree(paramMapList);
         if(result > 0) {
@@ -81,6 +84,26 @@ public class AdminController {
  
         model.addAttribute("resultList", resultList);
         return "/adm/boardMaster";
+    }
+
+    /**
+     * board 설정 추가
+     * @param paramMap
+     * @param principal
+     * @param response
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/boardMaster")
+    @ResponseBody
+    public Map<String,Object> boardMasterSave(@RequestBody Map<String,Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+        Map<String,Object> resultMap = new HashMap<>();
+        String userId = principal.getName();
+        paramMap.put("userId",userId);
+
+        int result = adminService.addBoardMaster(paramMap);
+
+        return ResultStr.set(result);
     }
 
 }
