@@ -164,6 +164,8 @@
                 userPhone1: '연락처',
                 userPhone2: '연락처',
                 userPhone3: '연락처',
+                boardNm: '게시판명',
+                boardId: '게시판ID',
             }
 
             if ($('#' + id).val() == '') {
@@ -277,6 +279,31 @@
             }
         }
     }
+    $popup = {
+        popupJs : function(html) {
+            var backHeight = $(document).height(); //뒷 배경의 상하 폭
+            var backWidth = window.document.body.clientWidth; //뒷 배경의 좌우 폭
+            var popupCover = "<div class='background'></div>"; //뒷 배경을 감쌀 커버
+            var popup = '';
+            popup +=
+                "<div class='popup-js'>" +
+                "<div class='popup-js-close' onclick='$popup.popupJsClose();'>" +
+                "<i class=\"fa fa-times\"></i>" +
+                "</div>" +
+                "<div class=popup-js-content>" +
+                html +
+                "</div>" +
+                "</div>";
+            $('body').append(popupCover).append(popup);
+            $('.background').css({ 'width': backWidth, 'height': backHeight, 'opacity': '0.3' });
+            $('.background').show();
+        },
+        popupJsClose : function() {
+            $('.background').remove();
+            $('.popup-js').remove();
+        },
+    },
+
     $etc = {
 
     }

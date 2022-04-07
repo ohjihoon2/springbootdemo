@@ -1,5 +1,3 @@
-var cnt = 1;
-var loginBtn = true;
 
 $(function(){
     // 메뉴저장
@@ -63,7 +61,7 @@ $(function(){
             var standardTr = tr;
             while (true) {
                 if($(standardTr).prev('tr').length == 0) {
-                    return alert("더이상 이동할 수 없습니다.");
+                    return alert("더 이상 이동할 수 없습니다.");
                 }
                 standardTr = $(standardTr).prev('tr');
                 if($(standardTr).data('val') == 1) {
@@ -85,7 +83,7 @@ $(function(){
         }
         else if($(tr).data('val') == '2') {
             if($(tr).prev('tr').data('val') == '1' || $(tr).prev('tr').length == 0) {
-                alert("더이상 이동할  수 없습니다.");
+                alert("더 이상 이동할  수 없습니다.");
             }
             else {
                 $(tr).prev('tr').before(tr);
@@ -108,7 +106,7 @@ $(function(){
                 }
                 standardTr = $(standardTr).next('tr');
                 if(cnt == 0 && $(standardTr).next('tr').length == 0) {
-                    return alert("더이상 이동할 수 없습니다.");
+                    return alert("더 이상 이동할 수 없습니다.");
                 }
                 else if($(standardTr).next('tr').data('val') == 1 || $(standardTr).next('tr').length == 0) {
                     cnt++;
@@ -133,7 +131,7 @@ $(function(){
         }
         else if($(tr).data('val') == '2') {
             if($(tr).next('tr').data('val') == '1' || $(tr).next('tr').length == 0) {
-                alert("더이상 이동할  수 없습니다.");
+                alert("더 이상 이동할  수 없습니다.");
             }
             else {
                 $(tr).next('tr').after(tr);
