@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.List;
 import java.util.Map;
@@ -38,8 +39,12 @@ public class AdminServiceImpl implements AdminService {
         int i = adminMapper.deleteMenuTree();
         int result = 0;
         result = adminMapper.insertMenuTree(paramMapList);
-        if (true) {
+        try {
             throw new NullPointerException();
+        }catch (Exception e){
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
         }
         return result;
     }

@@ -12,17 +12,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.lang.model.SourceVersion;
 import javax.sql.DataSource;
 //
-@Configuration
-@EnableTransactionManagement
+//@Configuration
+//@EnableTransactionManagement
 //@PropertySource("classpath:/application.yml")
 public class DBConfig {
-
+/*
     @Bean
     @ConfigurationProperties(prefix="spring.datasource.hikari")
     public HikariConfig hikariConfig() {
@@ -33,7 +34,8 @@ public class DBConfig {
     public DataSource dataSource() throws Exception {
         DataSource dataSource = new HikariDataSource(hikariConfig());
         System.out.println("datasource = "+dataSource.toString());
-        return dataSource;
+        return new LazyConnectionDataSourceProxy(dataSource);
+//        return dataSource;
     }
 
 //    @Bean
@@ -47,6 +49,6 @@ public class DBConfig {
         dataSourceTransactionManager.setDataSource(dataSource());
         dataSourceTransactionManager.setNestedTransactionAllowed(true); // nested
         return dataSourceTransactionManager;
-    }
+    }*/
 
 }
