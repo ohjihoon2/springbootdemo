@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface AdminService{
 
-    int addMenuTree(List<Map<String,Object>> paramMapList);
+    int addMenuTree(List<Map<String,Object>> paramMapList) throws Exception;
 
     List<MenuTree> findAllMenuTree();
 }

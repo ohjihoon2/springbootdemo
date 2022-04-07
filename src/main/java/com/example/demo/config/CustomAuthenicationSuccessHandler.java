@@ -26,7 +26,7 @@ public class CustomAuthenicationSuccessHandler extends SavedRequestAwareAuthenti
         HttpSession session = request.getSession();
 
         String userId =  authentication.getPrincipal().toString();
-        Map<String, Object> sessionMap = loginService.findUserNicknmVerificationYnByUserId(userId);
+        Map<String, Object> sessionMap = loginService.findUserNicknmVerificationYnEmailByUserId(userId);
         System.out.println("sessionMap = " + sessionMap);
         session.setAttribute("userNicknm", sessionMap.get("userNicknm"));
         session.setAttribute("verificationYn", sessionMap.get("verificationYn"));

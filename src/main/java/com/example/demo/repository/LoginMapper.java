@@ -26,7 +26,7 @@ public interface LoginMapper {
 
     void updateUserPwd(Map<String, Object> map);
 
-    Map<String, Object> findUserNicknmVerificationYnByUserId(String userId);
+    Map<String, Object> findUserNicknmVerificationYnEmailByUserId(String userId);
 
     boolean updateVerificationCode(Map<String,Object> paramMap);
 

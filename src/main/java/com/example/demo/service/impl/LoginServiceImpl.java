@@ -100,8 +100,8 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public Map<String, Object> findUserNicknmVerificationYnByUserId(String userId) {
-        return loginMapper.findUserNicknmVerificationYnByUserId(userId);
+    public Map<String, Object> findUserNicknmVerificationYnEmailByUserId(String userId) {
+        return loginMapper.findUserNicknmVerificationYnEmailByUserId(userId);
     }
 
     @Override

@@ -19,7 +19,7 @@ public interface LoginService extends UserDetailsService {
 
     User checkUserByUserId(String userId);
 
-    Map<String, Object> findUserNicknmVerificationYnByUserId(String userId);
+    Map<String, Object> findUserNicknmVerificationYnEmailByUserId(String userId);
 
     boolean updateVerificationCode(Map<String,Object> paramMap);
 

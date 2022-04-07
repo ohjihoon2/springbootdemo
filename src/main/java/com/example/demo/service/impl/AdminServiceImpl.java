@@ -19,8 +19,24 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int addMenuTree(List<Map<String,Object>> paramMapList) {
-        adminMapper.deleteMenuTree();
-        return adminMapper.insertMenuTree(paramMapList);
+        int i = adminMapper.deleteMenuTree();
+        int result = 0;
+
+        System.out.println("delete = " + i);
+        try {
+            System.out.println("try !!!");
+            throw new Exception();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("catch !!!");
+        }
+        result = adminMapper.insertMenuTree(paramMapList);
+        System.out.println("insert = " + result);
+        RuntimeException ex = new RuntimeException();
+        throw ex;
+
+        //        return adminMapper.insertMenuTree(paramMapList);
     }
 
     @Override
