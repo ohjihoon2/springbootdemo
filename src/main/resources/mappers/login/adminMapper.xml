@@ -58,7 +58,7 @@
                  #{item.link},
                  #{item.writeId},
                  SYSDATE(),
-                 #{item.openYn}
+                 #{item.useYn}
             )
         </foreach>
 

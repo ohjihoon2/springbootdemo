@@ -13,5 +13,5 @@ public class MenuTree {
     private String link;
     private String writeId;
     private Date createDate;
-    private String openYn;
+    private String useYn;
 }

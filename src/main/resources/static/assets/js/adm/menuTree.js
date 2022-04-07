@@ -23,10 +23,10 @@ $(function(){
             }
             obj.link = tr.eq(i).find('td').eq(2).children('input[type="text"]').val();
             if(tr.eq(i).find('td').eq(4).children('input[type="checkbox"]').is(':checked')) {
-                obj.openYn = 'Y';
+                obj.useYn = 'Y';
             }
             else {
-                obj.openYn = 'N';
+                obj.useYn = 'N';
             }
             data.push(obj);
         }
