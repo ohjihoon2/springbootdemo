@@ -10,8 +10,8 @@
                        NAME,
                        LVL,
                        SORT_ORDER,
-                       WRITE_ID,
-                       WRITE_DATE,
+                       CREATE_ID,
+                       CREATE_DATE,
                        OPEN_YN
                   FROM MENU_TREE
                  WHERE LVL = 1
@@ -21,8 +21,8 @@
                        NAME,
                        LVL,
                        SORT_ORDER,
-                       WRITE_ID,
-                       WRITE_DATE,
+                       CREATE_ID,
+                       CREATE_DATE,
                        OPEN_YN
                   FROM MENU_TREE
                  WHERE IDX != PARENT_IDX
@@ -32,8 +32,8 @@
                NAME,
                LVL,
                SORT_ORDER,
-               WRITE_ID,
-               WRITE_DATE,
+               CREATE_ID,
+               CREATE_DATE,
                OPEN_YN
           FROM CTE
          ORDER BY PARENT_IDX, IDX
@@ -48,7 +48,7 @@
                  NAME,
                  LINK,
                  SORT_ORDER,
-                 WRITE_ID,
+                 CREATE_ID,
                  CREATE_DATE,
                  OPEN_YN
              )
