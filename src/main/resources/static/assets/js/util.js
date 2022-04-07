@@ -243,6 +243,12 @@
             return regExp.test(asValue);
         },
 
+        //영문숫자만 가능
+        isEnNu(asValue) {
+            var regExp = /[a-zA-Z0-9]/;
+            return regExp.test(asValue);
+        },
+
         // null값 확인
         nullChk : function (str) {
             if(str == 'null' || str == null || typeof str == undefined || str == 'undefined') {
