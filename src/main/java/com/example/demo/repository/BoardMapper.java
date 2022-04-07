@@ -14,4 +14,6 @@ public interface BoardMapper {
     int insertBoard(Board board);
 
     List<Board> findByMasterIdxSearch(Map<String, Object> paramMap);
+
+    Board findAllByIdx(String idx);
 }

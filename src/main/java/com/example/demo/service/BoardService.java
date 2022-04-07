@@ -13,4 +13,6 @@ public interface BoardService {
     int insertBoard(MultipartFile[] files, Board board, String boardType, int masterIdx);
 
     List<Board> findByMasterIdxSearch(Map<String, Object> paramMap);
+
+    Board findAllByIdx(String idx);
 }

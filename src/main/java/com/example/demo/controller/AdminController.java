@@ -8,10 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +31,13 @@ public class AdminController {
         return "/adm/admIndex";
     }
 
+    /**
+     * menuTree 설정 페이지
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/menuTree")
     public String menuTreeDetails(HttpServletResponse response, HttpServletRequest request,Model model) {
         List<MenuTree> resultList = adminService.findAllMenuTree();
@@ -45,13 +49,14 @@ public class AdminController {
     }
 
     /**
-     * menuTree 추가
+     * menuTree 설정 추가
      * @param response
      * @param request
      * @return
      */
     @PostMapping(value = "/menuTree")
-    public Map<String,Object> menuTreeSave(@ModelAttribute List<Map<String,Object>> paramMapList, HttpServletResponse response, HttpServletRequest request) {
+    @ResponseBody
+    public Map<String,Object> menuTreeSave(@RequestBody List<Map<String,Object>> paramMapList, HttpServletResponse response, HttpServletRequest request) {
         Map<String,Object> resultMap = new HashMap<>();
         int result = adminService.addMenuTree(paramMapList);
         if(result > 0) {

@@ -52,4 +52,9 @@ public class BoardServiceImpl implements BoardService {
     public List<Board> findByMasterIdxSearch(Map<String, Object> paramMap) {
         return boardMapper.findByMasterIdxSearch(paramMap);
     }
+
+    @Override
+    public Board findAllByIdx(String idx) {
+        return boardMapper.findAllByIdx(idx);
+    }
 }

@@ -1,10 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.AdminService;
 import com.example.demo.service.BoardService;
+import com.example.demo.util.ResultStr;
 import com.example.demo.vo.Board;
 import com.example.demo.vo.Search;
-import com.example.demo.vo.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -14,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +26,15 @@ public class BoardController {
     private final BoardService boardService;
 
 
+    /**
+     * 게시판 관리 리스트
+     * @param masterIdx
+     * @param search
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
     @GetMapping("/boradList/{masterIdx}")
     public String boradList(@PathVariable("masterIdx") String masterIdx, @RequestParam Search search
                             , HttpServletResponse response, HttpServletRequest request, Model model) {
@@ -41,26 +50,65 @@ public class BoardController {
         return "/board/boradList";
     }
 
+    /**
+     * 게시판 상세
+     * @param idx
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @GetMapping("/board/{idx}")
+    public String boradDetails(@PathVariable("idx") String idx, HttpServletResponse response, HttpServletRequest request, Model model) {
+        Map<String, Object> paramMap = new HashMap<>();
+
+        Board board = boardService.findAllByIdx(idx);
+
+        model.addAttribute("board", board);
+
+        return "/board/boradList";
+    }
+
+    /**
+     * 게시판 등록
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
     @GetMapping("/register")
     public String registerPage(HttpServletResponse response, HttpServletRequest request, Model model) {
         return "/board/registBoard";
     }
 
     /**
-     *
+     * 게시판 등록(파일 없음)
      * @param board
      * @param response
      * @param request
      * @return
      */
-    @PostMapping(value = "/boardWithFile")
+    @PostMapping(value = "/registerWithoutFile")
     @ResponseBody
-    public String insertBoard(@RequestBody Board board, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String, Object> insertBoard(@RequestBody Board board, Principal principal, HttpServletResponse response, HttpServletRequest request) {
+        String userId = principal.getName();
+        board.setCreateId(userId);
+
         int result = boardService.insertBoard(board);
-        return "/adm/admIndex";
+        return ResultStr.set(result);
     }
 
-    @PostMapping(value = "/registerWithoutFile")
+    /**
+     * 게시판 등록 (파일 있음)
+     * @param files
+     * @param board
+     * @param boardType
+     * @param masterIdx
+     * @param response
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/registerWithFile")
     @ResponseBody
     public String insertBoard(@RequestPart MultipartFile[] files, @RequestBody Board board, @RequestParam String boardType, @RequestParam int masterIdx, HttpServletResponse response, HttpServletRequest request) {
         int result = boardService.insertBoard(files,board,boardType,masterIdx);

@@ -56,4 +56,21 @@
                  SYSDATE()
              )
     </insert>
+
+    <select id="findAllByIdx" parameterType="int" resultType="Board">
+        SELECT IDX,
+               MASTER_IDX,
+               BOARD_SUBJECT,
+               BOARD_CONTENT,
+               HIT,
+               START_DATE,
+               END_DATE,
+               USE_YN,
+               CREATE_ID,
+               CREATE_DATE,
+               UPDATE_ID,
+               UPDATE_DATE
+          FROM board
+         WHERE IDX = #{idx}
+    </select>
 </mapper>
