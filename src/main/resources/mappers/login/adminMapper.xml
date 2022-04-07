@@ -73,7 +73,7 @@
                       )
     </delete>
 
-    <select id="findAllboardMaster" resultType="BoardMaster">
+    <select id="findAllBoardMaster" resultType="BoardMaster">
         SELECT IDX,
                board_ID,
                BOARD_NM,
