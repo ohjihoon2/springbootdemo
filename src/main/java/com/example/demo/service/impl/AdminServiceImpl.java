@@ -34,7 +34,6 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
     public int addMenuTree(List<Map<String,Object>> paramMapList) {
         int i = adminMapper.deleteMenuTree();
         int result = 0;
@@ -51,7 +50,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<BoardMaster> findAllBoardMaster() {
+    public List<Map<String,Object>> findAllBoardMaster() {
         return adminMapper.findAllBoardMaster();
     }
 

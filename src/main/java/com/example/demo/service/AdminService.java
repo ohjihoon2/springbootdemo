@@ -10,11 +10,12 @@ import java.util.Map;
 
 public interface AdminService{
 
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
     int addMenuTree(List<Map<String,Object>> paramMapList);
 
     List<MenuTree> findAllMenuTree();
 
-    List<BoardMaster> findAllBoardMaster();
+    List<Map<String,Object>> findAllBoardMaster();
 
     int addBoardMaster(Map<String, Object> paramMap);
 

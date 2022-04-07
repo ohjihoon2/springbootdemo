@@ -27,7 +27,7 @@ public class BoardController {
 
 
     /**
-     * 게시판 관리 리스트
+     * 게시판 리스트
      * @param masterIdx
      * @param search
      * @param response

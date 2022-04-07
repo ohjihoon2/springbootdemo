@@ -84,7 +84,7 @@ public class AdminController {
      */
     @GetMapping(value = "/boardMaster")
     public String boardMasterDetails(HttpServletResponse response, HttpServletRequest request,Model model) {
-        List<BoardMaster> resultList = adminService.findAllBoardMaster();
+        List<Map<String,Object>> resultList = adminService.findAllBoardMaster();
  
         model.addAttribute("resultList", resultList);
         return "/adm/boardMaster";
@@ -101,6 +101,19 @@ public class AdminController {
     @PostMapping(value = "/boardMaster")
     @ResponseBody
     public Map<String,Object> boardMasterSave(@RequestBody Map<String,Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+        Map<String,Object> resultMap = new HashMap<>();
+        String userId = principal.getName();
+        System.out.println("userId = " + userId);
+        paramMap.put("userId",userId);
+
+        int result = adminService.addBoardMaster(paramMap);
+
+        return ResultStr.set(result);
+    }
+
+    @PutMapping(value = "/boardMaster")
+    @ResponseBody
+    public Map<String,Object> boardMasterUpdate(@RequestBody Map<String,Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
         Map<String,Object> resultMap = new HashMap<>();
         String userId = principal.getName();
         System.out.println("userId = " + userId);
