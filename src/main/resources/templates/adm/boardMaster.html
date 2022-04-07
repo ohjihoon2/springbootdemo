@@ -11,35 +11,39 @@
             <div class="mt50"></div>
             <form id="menuTreeForm">
                 <div class="top-btn-box">
-                    <button type="submit">메뉴저장</button>
-                    <button type="button" id="addBtn">메뉴추가</button>
-                    <button type="button" id="cancelBtn">전체취소</button>
+                    <button type="button" id="addBtn" class="color-primary">게시판추가</button>
                 </div>
                 <table id="menuTreeTable">
                     <colgroup>
-                        <col width="5%">
                         <col width="30%">
-                        <col width="35%">
-                        <col width="15%">
+                        <col width="20%">
                         <col width="10%">
+                        <col width="10%">
+                        <col width="15%">
                         <col width="5%">
+                        <col width="10%">
 
                     </colgroup>
                     <thead>
                     <tr>
-                        <th>Depth</th>
                         <th>Name</th>
-                        <th>Link</th>
-                        <th>Command</th>
+                        <th>Type</th>
+                        <th>Creater</th>
+                        <th>Date</th>
+                        <th>Remarks</th>
                         <th>Open</th>
-                        <th>Add</th>
+                        <th>Update</th>
                     </tr>
                     </thead>
                     <tbody>
-<!--                    <th:block th:each="res, i : ${resultList}">-->
-<!--                        <tr th:data-val="${res.lvl}">-->
-<!--                            <td class="text-center"><th:block th:text="${res.lvl == 1} ? 'Menu' : '┗'"></th:block></td>-->
-<!--                            <td><input type="text" th:value="${res.name}"></td>-->
+<!--                    <th:block th:each="res : ${resultList}">-->
+<!--                        <tr th:data-val="${res.idx}">-->
+<!--                            <td>[[${res.name}]]</td>-->
+<!--                            <td class="text-center">[[${res.type}]]</td>-->
+<!--                            <td class="text-center">[[${res.createId}]]</td>-->
+<!--                            <td class="text-center">[[${res.createDate}]]</td>-->
+<!--                            <td class="text-center">[[${res.createDate}]]</td>-->
+<!--                            <td class="text-center"><input type="checkbox" th:checked="${res.openYn == 'Y'}"></td>-->
 <!--                            <td><input type="text" th:value="${res.link}"></td>-->
 <!--                            <td class="text-center command-btn">-->
 <!--                                <button type="button" name="upMoveBtn">▲</button>-->
@@ -47,10 +51,8 @@
 <!--                                <button type="button" name="removeBtn">ㅡ</button>-->
 <!--                            </td>-->
 <!--                            <td class="text-center"><input type="checkbox" th:checked="${res.openYn == 'Y'}"></td>-->
-<!--                            <td class="text-center add-btn">-->
-<!--                                <th:block th:if="${res.lvl == 1}">-->
-<!--                                    <button type="button" name="downAddBtn">하위추가</button>-->
-<!--                                </th:block>-->
+<!--                            <td class="text-center update-btn">-->
+<!--                                <button type="button">수정</button>-->
 <!--                            </td>-->
 <!--                        </tr>-->
 <!--                    </th:block>-->
@@ -60,6 +62,6 @@
         </div>
     </section>
     <th:block th:replace="/fragments/footer.html :: thAdmJs"></th:block>
-    <script th:src="@{/js/adm/menuTree.js}"></script>
+    <script th:src="@{/js/adm/boardMaster.js}"></script>
 </body>
 </html>

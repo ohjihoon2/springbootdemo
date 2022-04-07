@@ -113,3 +113,7 @@ input:read-only, input[readonly=true], textarea:read-only, textarea[readonly=tru
 
 .weight600 {font-weight: 600;}
 
+/* color */
+
+.color-primary {background: #1fb1c7!important; border-color: #00a6bc!important;}
+
