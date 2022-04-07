@@ -5,6 +5,7 @@ import com.example.demo.util.ResultStr;
 import com.example.demo.vo.BoardMaster;
 import com.example.demo.vo.MenuTree;
 import com.example.demo.vo.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,10 @@ public class AdminController {
     private final AdminService adminService;
 
     @GetMapping(value = "/admIndex")
-    public String adminPage(User user, HttpServletResponse response, HttpServletRequest request, Model model) {
+    public String adminPage(Principal principal,User user, HttpServletResponse response, HttpServletRequest request, Model model) {
+        System.out.println("principal = " + principal);
+        String name = principal.getName();
+        System.out.println("name = " + name);
         String[] split = request.getRequestURI().split("/");
         model.addAttribute("page",split[2]);
         return "/adm/admIndex";
@@ -99,6 +103,7 @@ public class AdminController {
     public Map<String,Object> boardMasterSave(@RequestBody Map<String,Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
         Map<String,Object> resultMap = new HashMap<>();
         String userId = principal.getName();
+        System.out.println("userId = " + userId);
         paramMap.put("userId",userId);
 
         int result = adminService.addBoardMaster(paramMap);
@@ -106,4 +111,20 @@ public class AdminController {
         return ResultStr.set(result);
     }
 
+    /**
+     * boardId 중복 체크
+     * @param boardId
+     * @param response
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/boardId")
+    @ResponseBody
+    public Map<String,Object> boardMasterSave(@RequestBody String boardId, HttpServletResponse response, HttpServletRequest request) {
+        Map<String,Object> resultMap = new HashMap<>();
+
+        int result = adminService.existsBoardId(boardId);
+
+        return ResultStr.set(result);
+    }
 }

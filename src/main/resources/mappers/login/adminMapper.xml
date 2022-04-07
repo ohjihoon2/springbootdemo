@@ -114,12 +114,18 @@
                  #{boardType},
                  #{fileAttachYn},
                  #{useYn},
-                 #{createId},
-                 SYSDATE(),
+                 #{userId},
+                 date_format(SYSDATE(), '%Y-%m-%d %h:%i:%s'),
                  NULL,
                  NULL,
                  'Y',
                  NULL
             )
     </insert>
+
+    <select id="existsBoardId" parameterType="string" resultType="int">
+        SELECT COUNT(*)
+          FROM board_master
+         WHERE BOARD_ID = #{boardId}
+    </select>
 </mapper>

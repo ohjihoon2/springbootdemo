@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.vo.BoardMaster;
 import com.example.demo.vo.MenuTree;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface AdminService{
     List<BoardMaster> findAllBoardMaster();
 
     int addBoardMaster(Map<String, Object> paramMap);
+
+    int existsBoardId(String boardId);
 }

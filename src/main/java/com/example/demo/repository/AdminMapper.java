@@ -21,4 +21,6 @@ public interface AdminMapper {
     List<BoardMaster> findAllBoardMaster();
 
     int insertBoardMaster(Map<String, Object> paramMap);
+
+    int existsBoardId(String boardId);
 }
