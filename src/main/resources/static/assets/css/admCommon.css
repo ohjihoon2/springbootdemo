@@ -28,6 +28,10 @@ input[type="checkbox"]:hover {
     border-color: rgba(170, 170, 170, 0.5);
 }
 
+input[type="checkbox"]:checked:disabled {
+    background-color: #b4b4b4;
+}
+
 input[type="checkbox"]:checked {
     background-color: #1fb1c7;
     border-color: rgba(255, 255, 255, 0.3);
@@ -219,12 +223,16 @@ section {
 
 /*하단 버튼박스 */
 .bot-btn-box {
-    text-align: center;
-    margin-bottom: 10px;
+    text-align: right;
+    margin-bottom: 30px;
+}
+
+.bot-btn-box .left {
+    float: left;
 }
 
 .bot-btn-box button {
-    min-width: 95px;
+    min-width: 60px;
     color: #fff;
     padding: 10px 0;
     border-radius: 5px;
