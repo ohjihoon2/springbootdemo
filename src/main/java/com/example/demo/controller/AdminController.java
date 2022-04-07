@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.AdminService;
+import com.example.demo.vo.BoardMaster;
 import com.example.demo.vo.MenuTree;
 import com.example.demo.vo.User;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +57,7 @@ public class AdminController {
      */
     @PostMapping(value = "/menuTree")
     @ResponseBody
-    public Map<String,Object> menuTreeSave(@RequestBody List<Map<String,Object>> paramMapList, HttpServletResponse response, HttpServletRequest request) throws Exception {
+    public Map<String,Object> menuTreeSave(@RequestBody List<Map<String,Object>> paramMapList, HttpServletResponse response, HttpServletRequest request) {
         Map<String,Object> resultMap = new HashMap<>();
         int result = adminService.addMenuTree(paramMapList);
         if(result > 0) {
@@ -76,11 +77,9 @@ public class AdminController {
      */
     @GetMapping(value = "/boardMaster")
     public String boardMasterDetails(HttpServletResponse response, HttpServletRequest request,Model model) {
-//        List<MenuTree> resultList = adminService.findAllMenuTree();
+        List<BoardMaster> resultList = adminService.findAllBoradMaster();
 
-        String[] split = request.getRequestURI().split("/");
-        model.addAttribute("page",split[2]);
-//        model.addAttribute("resultList", resultList);
+        model.addAttribute("resultList", resultList);
         return "/adm/boardMaster";
     }
 
