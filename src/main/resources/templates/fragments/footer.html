@@ -21,6 +21,20 @@
             <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
             <script th:src="@{/js/util.js}"></script>
             <script th:src="@{/js/common.js}"></script>
+
+            <script>
+                var authorities = "[[${#authentication.authorities}]]";
+                var verificationYn = "[[${session.verificationYn}]]";
+                var userEmail = "[[${session.userEmail}]]";
+                if(authorities == '[ROLE_USER]' && verificationYn == "N") {
+                    if(confirm(userEmail + " 메일인증 후 로그인해주세요.\n 다른 메일로 변경하시려면 취소를 눌러주세요.")) {
+                        window.location.href = "/logout";
+                    }
+                    else {
+                        window.location.href = "/logout";
+                    }
+                }
+            </script>
         </th:block>
     </th:block>
 
