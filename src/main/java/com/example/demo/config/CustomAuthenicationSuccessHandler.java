@@ -30,6 +30,7 @@ public class CustomAuthenicationSuccessHandler extends SavedRequestAwareAuthenti
         System.out.println("sessionMap = " + sessionMap);
         session.setAttribute("userNicknm", sessionMap.get("userNicknm"));
         session.setAttribute("verificationYn", sessionMap.get("verificationYn"));
+        session.setAttribute("userEmail", sessionMap.get("userEmail"));
         JSONObject jsonObj = new JSONObject();
 
         jsonObj.put("result","success");
