@@ -14,8 +14,8 @@ public class Board {
     private Date startDate;
     private Date endDate;
     private String useYn;
-    private String createId;
+    private int createIdx;
     private Date createDate;
-    private String updateId;
+    private int updateIdx;
     private Date updateDate;
 }

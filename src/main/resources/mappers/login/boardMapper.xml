@@ -12,9 +12,9 @@
                START_DATE,
                END_DATE,
                USE_YN,
-               CREATE_ID,
+               CREATE_IDX,
                CREATE_DATE,
-               UPDATE_ID,
+               UPDATE_IDX,
                UPDATE_DATE
           FROM board
          WHERE BOARD_ID = #{boardId}
@@ -36,9 +36,9 @@
                  START_DATE,
                  END_DATE,
                  USE_YN,
-                 CREATE_ID,
+                 CREATE_IDX,
                  CREATE_DATE,
-                 UPDATE_ID,
+                 UPDATE_IDX,
                  UPDATE_DATE
             )
         VALUES
@@ -50,7 +50,7 @@
                  #{startDate},
                  #{endDate},
                  'Y',
-                 #{createId},
+                 #{createIdx},
                  SYSDATE(),
                  NULL,
                  SYSDATE()
@@ -66,9 +66,9 @@
                START_DATE,
                END_DATE,
                USE_YN,
-               CREATE_ID,
+               CREATE_IDX,
                CREATE_DATE,
-               UPDATE_ID,
+               UPDATE_IDX,
                UPDATE_DATE
           FROM board
          WHERE IDX = #{idx}

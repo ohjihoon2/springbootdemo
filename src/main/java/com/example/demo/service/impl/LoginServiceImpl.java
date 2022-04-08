@@ -63,7 +63,6 @@ public class LoginServiceImpl implements LoginService {
                 Map<String, Object> map = new HashMap<>();
                 map.put("userId",userSaveForm.getUserId());
                 map.put("userEmail",userSaveForm.getUserEmail());
-                System.out.println("map = " + map);
                 return sendVerificationMail(request, map);
             }
 
@@ -100,8 +99,8 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public Map<String, Object> findUserNicknmVerificationYnEmailByUserId(String userId) {
-        return loginMapper.findUserNicknmVerificationYnEmailByUserId(userId);
+    public Map<String, Object> findUserNicknmVerificationYnEmailIdxByUserId(String userId) {
+        return loginMapper.findUserNicknmVerificationYnEmailIdxByUserId(userId);
     }
 
     @Override

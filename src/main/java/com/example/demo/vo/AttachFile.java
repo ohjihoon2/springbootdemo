@@ -10,7 +10,7 @@ public class AttachFile {
     private String originalName;
     private String saveName;
     private Long size;
-    private String createId;
+    private int createIdx;
     private String createDate;
     private String deleteYn;
     private String deleteDate;

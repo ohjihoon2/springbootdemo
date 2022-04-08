@@ -9,7 +9,7 @@
                        PARENT_IDX,
                        NAME,
                        LVL,
-                       CREATE_ID,
+                       CREATE_IDX,
                        CREATE_DATE,
                        USE_YN
                   FROM MENU_TREE
@@ -19,7 +19,7 @@
                        PARENT_IDX,
                        NAME,
                        LVL,
-                       CREATE_ID,
+                       CREATE_IDX,
                        CREATE_DATE,
                        USE_YN
                   FROM MENU_TREE
@@ -29,7 +29,7 @@
                PARENT_IDX,
                NAME,
                LVL,
-               CREATE_ID,
+               CREATE_IDX,
                CREATE_DATE,
                USE_YN
           FROM CTE
@@ -44,7 +44,7 @@
                  LVL,
                  NAME,
                  LINK,
-                 CREATE_ID,
+                 CREATE_IDX,
                  CREATE_DATE,
                  USE_YN
              )
@@ -81,11 +81,11 @@
                A.BOARD_TYPE,
                A.FILE_ATTACH_YN,
                A.USE_YN,
-               IFNULL(C.USER_NICKNM,'탈퇴관리자')AS CREATE_NICKNM,
-               A.CREATE_ID,
+               IFNULL(C.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
+               A.CREATE_IDX,
                A.CREATE_DATE,
-               IFNULL(D.USER_NICKNM,'탈퇴관리자')AS UPDATE_NICKNM,
-               A.UPDATE_ID,
+               IFNULL(D.USER_NICKNM,'탈퇴된 관리자')AS UPDATE_NICKNM,
+               A.UPDATE_IDX,
                A.UPDATE_DATE,
                A.DELETE_YN,
                IFNULL(B.CNT,'0') AS CNT
@@ -98,8 +98,8 @@
                          WHERE A.MASTER_IDX = B.IDX
                          GROUP BY MASTER_IDX
                     ) B ON A.IDX = B.MASTER_IDX
-          LEFT JOIN USERS C ON A.CREATE_ID = C.USER_ID
-          LEFT JOIN USERS D ON A.UPDATE_ID = D.USER_ID
+          LEFT JOIN USERS C ON A.CREATE_IDX = C.IDX
+          LEFT JOIN USERS D ON A.UPDATE_IDX = D.IDX
          WHERE A.DELETE_YN = 'N'
     </select>
 
@@ -112,9 +112,9 @@
                  BOARD_TYPE,
                  FILE_ATTACH_YN,
                  USE_YN,
-                 CREATE_ID,
+                 CREATE_IDX,
                  CREATE_DATE,
-                 UPDATE_ID,
+                 UPDATE_IDX,
                  UPDATE_DATE,
                  DELETE_YN
              )
@@ -126,7 +126,7 @@
                  #{boardType},
                  #{fileAttachYn},
                  #{useYn},
-                 #{userId},
+                 #{userIdx},
                  date_format(SYSDATE(), '%Y-%m-%d %h:%i:%s'),
                  NULL,
                  NULL,
@@ -149,7 +149,7 @@
                BOARD_TYPE=#{boardType},
                FILE_ATTACH_YN=#{fileAttachYn},
                USE_YN=#{useYn},
-               UPDATE_ID= #{userId},
+               UPDATE_IDX= #{userIdx},
                UPDATE_DATE= SYSDATE()
          WHERE IDX= #{idx}
 
@@ -163,11 +163,11 @@
                A.BOARD_TYPE,
                A.FILE_ATTACH_YN,
                A.USE_YN,
-               IFNULL(C.USER_NICKNM,'탈퇴관리자') AS CREATE_NICKNM,
-               A.CREATE_ID,
+               IFNULL(C.USER_NICKNM,'탈퇴된 관리자') AS CREATE_NICKNM,
+               A.CREATE_IDX,
                A.CREATE_DATE,
-               IFNULL(D.USER_NICKNM,'탈퇴관리자') AS UPDATE_NICKNM,
-               A.UPDATE_ID,
+               IFNULL(D.USER_NICKNM,'탈퇴된 관리자') AS UPDATE_NICKNM,
+               A.UPDATE_IDX,
                A.UPDATE_DATE,
                A.DELETE_YN,
                IFNULL(B.CNT,'0') AS CNT
@@ -180,15 +180,15 @@
                          WHERE A.MASTER_IDX = B.IDX
                          GROUP BY MASTER_IDX
                     ) B ON A.IDX = B.MASTER_IDX
-          LEFT JOIN USERS C ON A.CREATE_ID = C.USER_ID
-          LEFT JOIN USERS D ON A.UPDATE_ID = D.USER_ID
+          LEFT JOIN USERS C ON A.CREATE_IDX = C.IDX
+          LEFT JOIN USERS D ON A.UPDATE_IDX = D.IDX
          WHERE A.IDX = #{idx}
     </select>
 
     <update id="deleteBoardMaster" parameterType="map">
         UPDATE board_master
            SET BOARD_ID = NULL,
-               UPDATE_ID= #{userId},
+               UPDATE_IDX= #{userIdx},
                UPDATE_DATE= SYSDATE(),
                DELETE_YN = 'Y'
          WHERE IDX= #{idx}
@@ -202,9 +202,9 @@
                HIT,
                OPEN_YN,
                USE_YN,
-               CREATE_ID,
+               CREATE_IDX,
                CREATE_DATE,
-               UPDATE_ID,
+               UPDATE_IDX,
                UPDATE_DATE
           FROM content
          WHERE 1=1
@@ -213,4 +213,44 @@
             </if>
     </select>
 
+    <select id="findByIdxContent" resultType="Content" parameterType="int">
+        SELECT CONTENT_ID,
+               CONTENT_NM,
+               CONTENT_HTML,
+               HIT,
+               OPEN_YN,
+               USE_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM CONTENT
+         WHERE IDX = #{idx}
+    </select>
+
+    <insert id="insertContent" parameterType="map">
+        INSERT INTO content
+            (
+                 CONTENT_ID,
+                 CONTENT_NM,
+                 CONTENT_HTML,
+                 HIT,
+                 OPEN_YN,
+                 USE_YN,
+                 CREATE_IDX,
+                 CREATE_DATE
+             )
+        VALUES
+            (
+                #{contentId},
+                #{contentNm},
+                #{contentHtml},
+                0,
+                #{openYn},
+                'Y'
+                #{userId},
+                SYSDATE
+            )
+
+    </insert>
 </mapper>

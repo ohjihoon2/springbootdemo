@@ -11,7 +11,7 @@
                  ORIGINAL_NAME,
                  SAVE_NAME,
                  `SIZE`,
-                 CREATE_ID,
+                 CREATE_IDX,
                  CREATE_DATE,
                  DELETE_YN,
                  DELETE_DATE
@@ -23,7 +23,7 @@
                  #{originalName},
                  #{saveName},
                  #{size},
-                 #{createId},
+                 #{createIdx},
                  SYSDATE(),
                  'N',
                  NULL

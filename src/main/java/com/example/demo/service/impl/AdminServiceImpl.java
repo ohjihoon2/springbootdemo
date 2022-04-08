@@ -3,7 +3,9 @@ package com.example.demo.service.impl;
 import com.example.demo.repository.AdminMapper;
 import com.example.demo.service.AdminService;
 import com.example.demo.vo.BoardMaster;
+import com.example.demo.vo.Content;
 import com.example.demo.vo.MenuTree;
+import com.example.demo.vo.Search;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +45,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public int addBoardMaster(Map<String, Object> paramMap) {
+    public int insertBoardMaster(Map<String, Object> paramMap) {
         return adminMapper.insertBoardMaster(paramMap);
     }
 
@@ -65,5 +67,20 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public int deleteBoardMaster(Map<String, Object> paramMap) {
         return adminMapper.deleteBoardMaster(paramMap);
+    }
+
+    @Override
+    public List<Map<String, Object>> findAllContent(Search search) {
+        return adminMapper.findAllContent(search);
+    }
+
+    @Override
+    public Content findByIdxContent(int idx) {
+        return adminMapper.findByIdxContent(idx);
+    }
+
+    @Override
+    public int insertContent(Map<String, Object> paramMap) {
+        return adminMapper.insertContent(paramMap);
     }
 }

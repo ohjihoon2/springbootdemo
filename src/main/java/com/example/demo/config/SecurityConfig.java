@@ -153,7 +153,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 
     @Bean
     public PersistentTokenRepository tokenRepository(){
-        System.out.println("SecurityConfig.tokenRepository");
         JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
         jdbcTokenRepository.setDataSource(dataSource);
         return jdbcTokenRepository;
@@ -161,7 +160,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 
     @Bean
     public PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices() {
-        System.out.println("SecurityConfig.persistentTokenBasedRememberMeServices");
         String key = "bitsol";
         PersistentTokenBasedRememberMeServices persistenceTokenBasedservice = new PersistentTokenBasedRememberMeServices(key, loginServiceImpl, tokenRepository());
         persistenceTokenBasedservice.setAlwaysRemember(true);

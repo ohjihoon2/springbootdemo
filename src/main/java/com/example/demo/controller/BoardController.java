@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -91,8 +92,10 @@ public class BoardController {
     @PostMapping(value = "/registerWithoutFile")
     @ResponseBody
     public Map<String, Object> insertBoard(@RequestBody Board board, Principal principal, HttpServletResponse response, HttpServletRequest request) {
-        String userId = principal.getName();
-        board.setCreateId(userId);
+        HttpSession session = request.getSession();
+
+        int idx = Integer.parseInt((String) session.getAttribute("idx"));
+        board.setCreateIdx(idx);
 
         int result = boardService.insertBoard(board);
         return ResultStr.set(result);

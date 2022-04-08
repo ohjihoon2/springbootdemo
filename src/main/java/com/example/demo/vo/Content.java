@@ -5,17 +5,16 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class BoardMaster {
+public class Content {
     private int idx;
-    private String boardId;
-    private String boardNm;
-    private String boardDesc;
-    private String boardType;
-    private String fileAttachYn;
+    private String contentId;
+    private String contentNm;
+    private String contentHtml;
+    private int hit;
+    private String openYn;
     private String useYn;
     private int createIdx;
     private Date createDate;
     private int updateIdx;
     private Date updateDate;
-    private String deleteYn;
 }

@@ -86,7 +86,6 @@ public class LoginController {
      */
     @GetMapping(value = "/verifyMail")
     public String verifyMail(@RequestParam String userId, @RequestParam String code,RedirectAttributes redirectAttributes){
-        System.out.println("LoginController.verifyMail");
 
         Map<String, Object> resultMap = loginService.verifyMail(userId,code);
 
@@ -176,7 +175,6 @@ public class LoginController {
     @PostMapping(value = "/checkId")
     @ResponseBody
     public String checkId(@RequestBody HashMap<String, String> paraMap) {
-        System.out.println(paraMap.toString());
         User user = loginService.checkUserByUserId(paraMap.get("userId"));
         if (user == null) {
             return "success";
@@ -194,7 +192,6 @@ public class LoginController {
     @PostMapping(value = "/checkNicknm")
     @ResponseBody
     public String checkNicknm(@RequestBody HashMap<String, String> paraMap) {
-        System.out.println("paraMap" + paraMap.toString());
         int result = loginService.checkUserByUserNicknm(paraMap.get("userNicknm"));
         if (result == 0) {
             return "success";
@@ -212,7 +209,6 @@ public class LoginController {
     @PostMapping(value = "/checkEmail")
     @ResponseBody
     public String checkEmail(@RequestBody HashMap<String, String> paraMap) {
-        System.out.println("paraMap" + paraMap.toString());
         int result = loginService.checkUserByUserEmail(paraMap.get("userEmail"));
         if (result == 0) {
             return "success";

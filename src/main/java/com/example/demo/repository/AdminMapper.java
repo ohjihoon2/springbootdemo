@@ -1,7 +1,9 @@
 package com.example.demo.repository;
 
 import com.example.demo.vo.BoardMaster;
+import com.example.demo.vo.Content;
 import com.example.demo.vo.MenuTree;
+import com.example.demo.vo.Search;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -29,4 +31,10 @@ public interface AdminMapper {
     BoardMaster findByIdxBoardMaster(int idx);
 
     int deleteBoardMaster(Map<String, Object> paramMap);
+
+    List<Map<String, Object>> findAllContent(Search search);
+
+    Content findByIdxContent(int idx);
+
+    int insertContent(Map<String, Object> paramMap);
 }
