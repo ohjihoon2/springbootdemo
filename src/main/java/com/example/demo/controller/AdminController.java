@@ -119,7 +119,7 @@ public class AdminController {
      * @param request
      * @return
      */
-    @PutMapping(value = "/boardMaster/{idx}")
+    @PatchMapping(value = "/boardMaster/{idx}")
     @ResponseBody
     public Map<String,Object> updateBoardMaster(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
         String userId = principal.getName();
