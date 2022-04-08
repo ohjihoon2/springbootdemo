@@ -81,8 +81,10 @@
                A.BOARD_TYPE,
                A.FILE_ATTACH_YN,
                A.USE_YN,
+               IFNULL(C.USER_NICKNM,'탈퇴관리자')AS CREATE_NICKNM,
                A.CREATE_ID,
                A.CREATE_DATE,
+               IFNULL(C.USER_NICKNM,'탈퇴관리자')AS UPDATE_NICKNM,
                A.UPDATE_ID,
                A.UPDATE_DATE,
                A.DELETE_YN,
@@ -95,7 +97,9 @@
                           LEFT JOIN BOARD_MASTER B ON A.MASTER_IDX = B.IDX
                          WHERE A.MASTER_IDX = B.IDX
                          GROUP BY MASTER_IDX
-          ) B ON A.IDX = B.MASTER_IDX
+                    ) B ON A.IDX = B.MASTER_IDX
+          LEFT JOIN USERS C ON A.CREATE_ID = C.USER_ID
+          LEFT JOIN USERS D ON A.CREATE_ID = D.USER_ID
          WHERE A.DELETE_YN = 'N'
     </select>
 
@@ -159,8 +163,10 @@
                A.BOARD_TYPE,
                A.FILE_ATTACH_YN,
                A.USE_YN,
+               IFNULL(C.USER_NICKNM,'탈퇴관리자')AS CREATE_NICKNM,
                A.CREATE_ID,
                A.CREATE_DATE,
+               IFNULL(D.USER_NICKNM,'탈퇴관리자')AS UPDATE_NICKNM,
                A.UPDATE_ID,
                A.UPDATE_DATE,
                A.DELETE_YN,
@@ -174,6 +180,8 @@
                          WHERE A.MASTER_IDX = B.IDX
                          GROUP BY MASTER_IDX
                     ) B ON A.IDX = B.MASTER_IDX
+          LEFT JOIN USERS C ON A.CREATE_ID = C.USER_ID
+          LEFT JOIN USERS D ON A.UPDATE_ID = D.USER_ID
          WHERE IDX = #{idx}
     </select>
 
