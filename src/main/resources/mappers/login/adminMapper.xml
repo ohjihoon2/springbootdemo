@@ -152,18 +152,28 @@
     </update>
 
     <select id="findByIdxBoardMaster" parameterType="int" resultType="BoardMaster">
-        SELECT BOARD_ID,
-               BOARD_NM,
-               BOARD_DESC,
-               BOARD_TYPE,
-               FILE_ATTACH_YN,
-               USE_YN,
-               CREATE_ID,
-               CREATE_DATE,
-               UPDATE_ID,
-               UPDATE_DATE,
-               DELETE_YN
-          FROM board_master
+        SELECT A.IDX,
+               A.board_ID,
+               A.BOARD_NM,
+               A.BOARD_DESC,
+               A.BOARD_TYPE,
+               A.FILE_ATTACH_YN,
+               A.USE_YN,
+               A.CREATE_ID,
+               A.CREATE_DATE,
+               A.UPDATE_ID,
+               A.UPDATE_DATE,
+               A.DELETE_YN,
+               IFNULL(B.CNT,'0') AS CNT
+          FROM board_master A
+          LEFT JOIN (
+                        SELECT COUNT(A.IDX) AS CNT,
+                               MASTER_IDX
+                          FROM BOARD A
+                          LEFT JOIN BOARD_MASTER B ON A.MASTER_IDX = B.IDX
+                         WHERE A.MASTER_IDX = B.IDX
+                         GROUP BY MASTER_IDX
+                    ) B ON A.IDX = B.MASTER_IDX
          WHERE IDX = #{idx}
     </select>
 
