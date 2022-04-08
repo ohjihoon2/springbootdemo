@@ -80,6 +80,10 @@ public class AdminController {
         List<Map<String,Object>> resultList = adminService.findAllBoardMaster();
  
         model.addAttribute("resultList", resultList);
+
+        String[] split = request.getRequestURI().split("/");
+        model.addAttribute("page",split[2]);
+        model.addAttribute("resultList", resultList);
         return "/adm/boardMaster";
     }
 
@@ -191,6 +195,7 @@ public class AdminController {
         List<Map<String,Object>> resultList = adminService.findAllContent(search);
 
         model.addAttribute("resultList", resultList);
+
         String[] split = request.getRequestURI().split("/");
         model.addAttribute("page",split[2]);
         model.addAttribute("resultList", resultList);
