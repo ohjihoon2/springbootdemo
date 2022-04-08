@@ -85,7 +85,7 @@
                A.CREATE_DATE,
                A.UPDATE_ID,
                A.UPDATE_DATE,
-               A.DELETE_YN
+               A.DELETE_YN,
                IFNULL(B.CNT,'0') AS CNT
           FROM board_master A
           LEFT JOIN (
