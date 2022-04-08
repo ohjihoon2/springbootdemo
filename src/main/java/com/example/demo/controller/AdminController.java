@@ -163,7 +163,7 @@ public class AdminController {
      * @param model
      * @return
      */
-    @GetMapping(value = "/boardMaster/{idx}")
+    @PostMapping(value = "/boardMaster/{idx}")
     @ResponseBody
     public BoardMaster boardMasterDetails(@PathVariable int idx,HttpServletResponse response, HttpServletRequest request,Model model) {
         return adminService.findByIdxBoardMaster(idx);
