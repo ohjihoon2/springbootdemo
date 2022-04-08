@@ -17,6 +17,5 @@ public class BoardMaster {
     private Date createDate;
     private String updateId;
     private Date updateDate;
-    private String deleteId;
-    private Date deleteDate;
+    private String deleteYn;
 }

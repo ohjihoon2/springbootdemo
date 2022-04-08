@@ -85,8 +85,7 @@
                A.CREATE_DATE,
                A.UPDATE_ID,
                A.UPDATE_DATE,
-               A.DELETE_YN,
-               A.DELETE_DATE,
+               A.DELETE_YN
                IFNULL(B.CNT,'0') AS CNT
           FROM board_master A
           LEFT JOIN (
@@ -97,6 +96,7 @@
                          WHERE A.MASTER_IDX = B.IDX
                          GROUP BY MASTER_IDX
           ) B ON A.IDX = B.MASTER_IDX
+         WHERE A.DELETE_YN = 'N'
     </select>
 
     <insert id="insertBoardMaster" parameterType="map">
@@ -112,8 +112,7 @@
                  CREATE_DATE,
                  UPDATE_ID,
                  UPDATE_DATE,
-                 DELETE_YN,
-                 DELETE_DATE
+                 DELETE_YN
              )
         VALUES
             (
@@ -127,8 +126,7 @@
                  date_format(SYSDATE(), '%Y-%m-%d %h:%i:%s'),
                  NULL,
                  NULL,
-                 'Y',
-                 NULL
+                 'N'
             )
     </insert>
 
@@ -164,8 +162,7 @@
                CREATE_DATE,
                UPDATE_ID,
                UPDATE_DATE,
-               DELETE_YN,
-               DELETE_DATE
+               DELETE_YN
           FROM board_master
          WHERE IDX = #{idx}
     </select>
