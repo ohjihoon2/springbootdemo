@@ -76,9 +76,9 @@ public class AdminController {
      * @return
      */
     @GetMapping(value = "/boardMaster")
-    public String boardMasterList(HttpServletResponse response, HttpServletRequest request,Model model) {
-        List<Map<String,Object>> resultList = adminService.findAllBoardMaster();
- 
+    public String boardMasterList(@RequestParam Search search, HttpServletResponse response, HttpServletRequest request,Model model) {
+        System.out.println("search = " + search);
+        List<Map<String,Object>> resultList = adminService.findAllBoardMaster(search);
         model.addAttribute("resultList", resultList);
 
         String[] split = request.getRequestURI().split("/");
@@ -90,14 +90,13 @@ public class AdminController {
     /**
      * board master 설정 추가
      * @param paramMap
-     * @param principal
      * @param response
      * @param request
      * @return
      */
     @PostMapping(value = "/boardMaster")
     @ResponseBody
-    public Map<String,Object> saveBoardMaster(@RequestBody Map<String,Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> saveBoardMaster(@RequestBody Map<String,Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
         paramMap.put("userIdx",userIdx);

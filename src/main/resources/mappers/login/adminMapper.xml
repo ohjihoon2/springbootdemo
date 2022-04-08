@@ -73,7 +73,7 @@
                       )
     </delete>
 
-    <select id="findAllBoardMaster" resultType="CustomMap">
+    <select id="findAllBoardMaster" resultType="CustomMap" parameterType="Search">
         SELECT A.IDX,
                A.board_ID,
                A.BOARD_NM,
@@ -101,6 +101,34 @@
           LEFT JOIN USERS C ON A.CREATE_IDX = C.IDX
           LEFT JOIN USERS D ON A.UPDATE_IDX = D.IDX
          WHERE A.DELETE_YN = 'N'
+        <if test="searchType != null and searchValue != null and searchValue != ''">
+            <choose>
+                <when test='searchType == "boardNm"'>
+                    AND BOARD_NM LIKE '%' || #{keyword} || '%'
+                </when>
+                <when test='searchType == "createIdx"'>
+                    AND IDX IN
+                            (
+                                SELECT CREATE_IDX
+                                  FROM USERS
+                                 WHERE USER_ID LIKE '%' || #{keyword} || '%'
+                            )
+                </when>
+                <otherwise>
+                    AND (
+                            BOARD_NM LIKE '%' || #{keyword} || '%'
+                            OR (
+                                    IDX IN
+                                            (
+                                                SELECT CREATE_IDX
+                                                  FROM USERS
+                                                 WHERE USER_ID LIKE '%' || #{keyword} || '%'
+                                            )
+                                )
+                        )
+                </otherwise>
+            </choose>
+        </if>
     </select>
 
     <insert id="insertBoardMaster" parameterType="map">

@@ -20,7 +20,7 @@ public interface AdminMapper {
 
     int deleteMenuTree();
 
-    List<Map<String,Object>> findAllBoardMaster();
+    List<Map<String,Object>> findAllBoardMaster(Search search);
 
     int insertBoardMaster(Map<String, Object> paramMap);
 

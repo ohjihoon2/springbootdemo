@@ -93,7 +93,6 @@ public class BoardController {
     @ResponseBody
     public Map<String, Object> insertBoard(@RequestBody Board board, Principal principal, HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
-
         int idx = Integer.parseInt((String) session.getAttribute("idx"));
         board.setCreateIdx(idx);
 
@@ -113,8 +112,12 @@ public class BoardController {
      */
     @PostMapping(value = "/registerWithFile")
     @ResponseBody
-    public String insertBoard(@RequestPart MultipartFile[] files, @RequestBody Board board, @RequestParam String boardType, @RequestParam int masterIdx, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String, Object> insertBoard(@RequestPart MultipartFile[] files, @RequestBody Board board, @RequestParam String boardType, @RequestParam int masterIdx, HttpServletResponse response, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        int idx = Integer.parseInt((String) session.getAttribute("idx"));
+        board.setCreateIdx(idx);
+
         int result = boardService.insertBoard(files,board,boardType,masterIdx);
-        return "/adm/admIndex";
+        return ResultStr.set(result);
     }
 }

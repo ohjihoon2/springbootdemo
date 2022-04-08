@@ -40,8 +40,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Map<String,Object>> findAllBoardMaster() {
-        return adminMapper.findAllBoardMaster();
+    public List<Map<String,Object>> findAllBoardMaster(Search search) {
+        return adminMapper.findAllBoardMaster(search);
     }
 
     @Override

@@ -38,7 +38,7 @@ public class BoardServiceImpl implements BoardService {
             return result;
         }
 
-        List<AttachFile> fileList = fileUtils.uploadFiles(files, masterIdx, boardType);
+        List<AttachFile> fileList = fileUtils.uploadFiles(files, masterIdx, boardType, board.getCreateIdx());
         if (CollectionUtils.isEmpty(fileList) == false) {
             result = fileMapper.insertAttachFile(fileList);
             if (result < 1) {

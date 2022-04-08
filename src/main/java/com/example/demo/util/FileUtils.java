@@ -28,7 +28,7 @@ public class FileUtils {
         return UUID.randomUUID().toString().replace("-","");
     }
 
-    public List<AttachFile> uploadFiles(MultipartFile[] files, int relatedIdx, String relatedTable){
+    public List<AttachFile> uploadFiles(MultipartFile[] files, int relatedIdx, String relatedTable, int CreateIdx){
         /* 파일이 비어있으면 비어있는 리스트 반환 */
         if(files[0].getSize() <1){
             return Collections.emptyList();
@@ -63,7 +63,7 @@ public class FileUtils {
                 attachFile.setOriginalName(file.getOriginalFilename());
                 attachFile.setSaveName(saveName);
                 attachFile.setSize(file.getSize());
-
+                attachFile.setCreateIdx(CreateIdx);
                 /* 파일 정보 추가 */
                 fileList.add(attachFile);
 
