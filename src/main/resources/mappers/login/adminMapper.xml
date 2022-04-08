@@ -182,7 +182,7 @@
                     ) B ON A.IDX = B.MASTER_IDX
           LEFT JOIN USERS C ON A.CREATE_ID = C.USER_ID
           LEFT JOIN USERS D ON A.UPDATE_ID = D.USER_ID
-         WHERE IDX = #{idx}
+         WHERE A.IDX = #{idx}
     </select>
 
     <update id="deleteBoardMaster" parameterType="map">
