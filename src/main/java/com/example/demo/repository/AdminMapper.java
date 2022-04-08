@@ -23,4 +23,8 @@ public interface AdminMapper {
     int insertBoardMaster(Map<String, Object> paramMap);
 
     int existsBoardId(String boardId);
+
+    int updateBoardMaster(Map<String, Object> paramMap);
+
+    BoardMaster findByIdxBoardMaster(int idx);
 }

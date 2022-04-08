@@ -50,7 +50,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
     public int userSave(UserSaveForm userSaveForm,HttpServletRequest request) {
 
         int cnt = loginMapper.countByUserId(userSaveForm.getUserId());
@@ -110,7 +110,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
     public Map<String, Object> verifyMail(String userId, String code) {
         Map<String, Object> resultMap = new HashMap<>();
         int result = 0;
@@ -139,7 +139,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
     public int sendVerificationMail(HttpServletRequest request, Map<String, Object> map) {
         int result = 0;
         String ranPw = RandomString.randomStr();
@@ -172,7 +172,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
     public int forgetPwd(String userNm, String userId) {
         int result =0;
         User user = findByUserNmAndUserId(userNm,userId);

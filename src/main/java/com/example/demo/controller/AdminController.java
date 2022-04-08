@@ -83,7 +83,7 @@ public class AdminController {
      * @return
      */
     @GetMapping(value = "/boardMaster")
-    public String boardMasterDetails(HttpServletResponse response, HttpServletRequest request,Model model) {
+    public String boardMasterList(HttpServletResponse response, HttpServletRequest request,Model model) {
         List<Map<String,Object>> resultList = adminService.findAllBoardMaster();
  
         model.addAttribute("resultList", resultList);
@@ -100,7 +100,7 @@ public class AdminController {
      */
     @PostMapping(value = "/boardMaster")
     @ResponseBody
-    public Map<String,Object> boardMasterSave(@RequestBody Map<String,Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> saveBoardMaster(@RequestBody Map<String,Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
         Map<String,Object> resultMap = new HashMap<>();
         String userId = principal.getName();
         System.out.println("userId = " + userId);
@@ -111,17 +111,40 @@ public class AdminController {
         return ResultStr.set(result);
     }
 
+    /**
+     * board 설정 수정
+     * @param paramMap
+     * @param principal
+     * @param response
+     * @param request
+     * @return
+     */
     @PutMapping(value = "/boardMaster")
     @ResponseBody
-    public Map<String,Object> boardMasterUpdate(@RequestBody Map<String,Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
-        Map<String,Object> resultMap = new HashMap<>();
+    public Map<String,Object> updateBoardMaster(@RequestBody Map<String,Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
         String userId = principal.getName();
         System.out.println("userId = " + userId);
         paramMap.put("userId",userId);
 
-        int result = adminService.addBoardMaster(paramMap);
+        int result = adminService.updateBoardMaster(paramMap);
 
         return ResultStr.set(result);
+    }
+
+    /**
+     * 상세페이지
+     * @param idx
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/boardMaster/{idx}")
+    public String boardMasterDetails(@PathVariable int idx,HttpServletResponse response, HttpServletRequest request,Model model) {
+        BoardMaster resultMap = adminService.findByIdxBoardMaster(idx);
+
+        model.addAttribute("resultMap", resultMap);
+        return "/adm/boardMaster";
     }
 
     /**

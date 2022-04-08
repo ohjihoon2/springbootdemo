@@ -137,4 +137,37 @@
           FROM board_master
          WHERE BOARD_ID = #{boardId}
     </select>
+
+    <update id="updateBoardMaster" parameterType="map">
+
+        UPDATE board_master
+           SET BOARD_ID= #{boardId},
+               BOARD_NM= #{boardNm},
+               BOARD_DESC= #{boardDesc},
+               BOARD_TYPE=#{boardType},
+               FILE_ATTACH_YN=#{fileAttachYn},
+               USE_YN=#{useYn},
+               UPDATE_ID= #{userId},
+               UPDATE_DATE= SYSDATE()
+         WHERE IDX= #{idx}
+
+    </update>
+
+    <select id="findByIdxBoardMaster" parameterType="int" resultType="BoardMaster">
+        SELECT BOARD_ID,
+               BOARD_NM,
+               BOARD_DESC,
+               BOARD_TYPE,
+               FILE_ATTACH_YN,
+               USE_YN,
+               CREATE_ID,
+               CREATE_DATE,
+               UPDATE_ID,
+               UPDATE_DATE,
+               DELETE_YN,
+               DELETE_DATE
+          FROM board_master
+         WHERE IDX = #{idx}
+    </select>
+
 </mapper>
