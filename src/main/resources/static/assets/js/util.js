@@ -221,9 +221,9 @@
             return regExp.test(asValue);
         },
 
-        //닉네임 한글, 영문, 숫자만 가능하며 2-10자리
+        //닉네임 한글(자음, 모음 제외), 영문, 숫자만 가능하며 2-10자리
         isNn(asValue) {
-            var regExp = /^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{1,10}$/;
+            var regExp = /^[가-힣|a-z|A-Z|0-9|]+$/;
             return regExp.test(asValue);
         },
 

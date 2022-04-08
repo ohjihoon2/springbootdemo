@@ -84,6 +84,7 @@ $(function(){
                 $('#signupMsg').text('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }
             else if(res.result == "success") {
+                alert("회원가입이 완료, 메일인증 후 로그인해주세요.")
                 location.href = "/";
             }
             else if(res.result == "fail"){

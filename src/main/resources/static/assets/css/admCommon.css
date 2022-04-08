@@ -204,6 +204,20 @@ section {
     margin-bottom: 10px;
 }
 
+.top-btn-box select {
+    width: 150px;
+    height: 40px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid #e2e2e2;
+    border-radius: 7px;
+    outline: none;
+    font-size: 16px;
+}
+
 .top-btn-box input[type="text"], table input[type="password"] {
     width: 250px;
     height: 40px;
