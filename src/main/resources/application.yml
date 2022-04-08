@@ -10,11 +10,10 @@ spring:
 
 # 데이터베이스 설정
   datasource:
-#    hikari:
-      driverClassName : net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      url: jdbc:log4jdbc:mariadb://192.168.0.2:3306/demo
-      username: demo
-      password: demo
+    driverClassName : net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:mariadb://192.168.0.2:3306/demo
+    username: demo
+    password: demo
   messages:
     basename: errors
 server:
