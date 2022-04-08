@@ -125,6 +125,7 @@ public class AdminController {
         Map<String,Object> paramMap = new HashMap<>();
         String userId = principal.getName();
         System.out.println("userId = " + userId);
+        paramMap.put("idx",idx);
         paramMap.put("userId",userId);
 
         int result = adminService.updateBoardMaster(paramMap);
