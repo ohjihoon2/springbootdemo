@@ -26,7 +26,7 @@
         },
 
         // post 페이지 이동 (폼방식)
-        postGoPage :function (data, url) {
+        postGoPage :function (url, data) {
             var form = document.createElement('form');
             form.id = 'postForm';
             console.log(data);
@@ -40,7 +40,7 @@
                 $(document.body).append(form);
             }
             $("#postForm").attr('action', url);
-            $("#postForm").attr('method', 'post');
+            $("#postForm").attr('method', 'get');
             $("#postForm").attr('enctype', 'application/json');
             $("#postForm").submit();
         },

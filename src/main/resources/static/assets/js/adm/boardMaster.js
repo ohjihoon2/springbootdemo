@@ -1,4 +1,13 @@
 $(function(){
+    //검색
+    $('#searchBtn').click(function() {
+        var param = {
+            searchType : $('#searchType').val(),
+            searchKeyword : $('#searchKeyword').val(),
+        }
+        $page.getGoPage('/adm/boardMaster', param)
+    });
+
     //게시판추가 팝업
     $('#addBtn').click(function(){
         var html = 

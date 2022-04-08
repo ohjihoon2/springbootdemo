@@ -205,7 +205,7 @@ section {
 }
 
 .top-btn-box select {
-    width: 150px;
+    width: 200px;
     height: 40px;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -219,7 +219,7 @@ section {
 }
 
 .top-btn-box input[type="text"], table input[type="password"] {
-    width: 250px;
+    width: 300px;
     height: 40px;
     padding-left: 10px;
     padding-right: 10px;
