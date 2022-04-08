@@ -170,4 +170,12 @@
          WHERE IDX = #{idx}
     </select>
 
+    <update id="deleteBoardMaster" parameterType="map">
+        UPDATE board_master
+           SET BOARD_ID = NULL,
+               UPDATE_ID= #{userId},
+               UPDATE_DATE= SYSDATE(),
+               DELETE_YN = 'Y'
+         WHERE IDX= #{idx}
+    </update>
 </mapper>

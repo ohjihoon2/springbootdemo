@@ -113,20 +113,43 @@ public class AdminController {
 
     /**
      * board 설정 수정
-     * @param paramMap
+     * @param idx
      * @param principal
      * @param response
      * @param request
      * @return
      */
-    @PutMapping(value = "/boardMaster")
+    @PutMapping(value = "/boardMaster/{idx}")
     @ResponseBody
-    public Map<String,Object> updateBoardMaster(@RequestBody Map<String,Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> updateBoardMaster(@PathVariable int idx, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+        Map<String,Object> paramMap = new HashMap<>();
         String userId = principal.getName();
         System.out.println("userId = " + userId);
         paramMap.put("userId",userId);
 
         int result = adminService.updateBoardMaster(paramMap);
+
+        return ResultStr.set(result);
+    }
+
+    /**
+     * board 설정 삭제
+     * @param idx
+     * @param principal
+     * @param response
+     * @param request
+     * @return
+     */
+    @DeleteMapping(value = "/boardMaster/{idx}")
+    @ResponseBody
+    public Map<String,Object> deleteBoardMaster(@PathVariable int idx, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+        Map<String,Object> paramMap = new HashMap<>();
+        String userId = principal.getName();
+
+        paramMap.put("userId",userId);
+        paramMap.put("idx",idx);
+
+        int result = adminService.deleteBoardMaster(paramMap);
 
         return ResultStr.set(result);
     }

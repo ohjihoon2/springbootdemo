@@ -27,4 +27,6 @@ public interface AdminMapper {
     int updateBoardMaster(Map<String, Object> paramMap);
 
     BoardMaster findByIdxBoardMaster(int idx);
+
+    int deleteBoardMaster(Map<String, Object> paramMap);
 }

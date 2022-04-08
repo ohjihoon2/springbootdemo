@@ -61,4 +61,9 @@ public class AdminServiceImpl implements AdminService {
     public BoardMaster findByIdxBoardMaster(int idx) {
         return adminMapper.findByIdxBoardMaster(idx);
     }
+
+    @Override
+    public int deleteBoardMaster(Map<String, Object> paramMap) {
+        return adminMapper.deleteBoardMaster(paramMap);
+    }
 }
