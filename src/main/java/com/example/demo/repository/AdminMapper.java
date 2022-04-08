@@ -22,7 +22,7 @@ public interface AdminMapper {
 
     int insertBoardMaster(Map<String, Object> paramMap);
 
-    int existsBoardId(String boardId);
+    int existsBoardId(Map<String,Object> paramMap);
 
     int updateBoardMaster(Map<String, Object> paramMap);
 

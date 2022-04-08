@@ -48,8 +48,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public int existsBoardId(String boardId) {
-        return adminMapper.existsBoardId(boardId);
+    public int existsBoardId(Map<String,Object> paramMap) {
+        return adminMapper.existsBoardId(paramMap);
     }
 
     @Override

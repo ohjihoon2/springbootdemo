@@ -130,7 +130,7 @@
             )
     </insert>
 
-    <select id="existsBoardId" parameterType="string" resultType="int">
+    <select id="existsBoardId" parameterType="map" resultType="int">
         SELECT COUNT(*)
           FROM board_master
          WHERE BOARD_ID = #{boardId}

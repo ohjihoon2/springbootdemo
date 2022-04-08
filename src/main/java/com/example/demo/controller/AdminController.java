@@ -156,7 +156,7 @@ public class AdminController {
     }
 
     /**
-     * 상세페이지
+     * board 상세페이지
      * @param idx
      * @param response
      * @param request
@@ -164,11 +164,9 @@ public class AdminController {
      * @return
      */
     @GetMapping(value = "/boardMaster/{idx}")
-    public String boardMasterDetails(@PathVariable int idx,HttpServletResponse response, HttpServletRequest request,Model model) {
-        BoardMaster resultMap = adminService.findByIdxBoardMaster(idx);
-
-        model.addAttribute("resultMap", resultMap);
-        return "/adm/boardMaster";
+    @ResponseBody
+    public BoardMaster boardMasterDetails(@PathVariable int idx,HttpServletResponse response, HttpServletRequest request,Model model) {
+        return adminService.findByIdxBoardMaster(idx);
     }
 
     /**
@@ -180,10 +178,10 @@ public class AdminController {
      */
     @PostMapping(value = "/boardId")
     @ResponseBody
-    public Map<String,Object> boardMasterSave(@RequestBody String boardId, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> boardMasterSave(@RequestBody Map<String,Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
         Map<String,Object> resultMap = new HashMap<>();
 
-        int result = adminService.existsBoardId(boardId);
+        int result = adminService.existsBoardId(paramMap);
 
         return ResultStr.set(result);
     }
