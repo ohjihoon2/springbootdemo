@@ -84,7 +84,7 @@
                IFNULL(C.USER_NICKNM,'탈퇴관리자')AS CREATE_NICKNM,
                A.CREATE_ID,
                A.CREATE_DATE,
-               IFNULL(C.USER_NICKNM,'탈퇴관리자')AS UPDATE_NICKNM,
+               IFNULL(D.USER_NICKNM,'탈퇴관리자')AS UPDATE_NICKNM,
                A.UPDATE_ID,
                A.UPDATE_DATE,
                A.DELETE_YN,
@@ -99,7 +99,7 @@
                          GROUP BY MASTER_IDX
                     ) B ON A.IDX = B.MASTER_IDX
           LEFT JOIN USERS C ON A.CREATE_ID = C.USER_ID
-          LEFT JOIN USERS D ON A.CREATE_ID = D.USER_ID
+          LEFT JOIN USERS D ON A.UPDATE_ID = D.USER_ID
          WHERE A.DELETE_YN = 'N'
     </select>
 
@@ -163,10 +163,10 @@
                A.BOARD_TYPE,
                A.FILE_ATTACH_YN,
                A.USE_YN,
-               IFNULL(C.USER_NICKNM,'탈퇴관리자')AS CREATE_NICKNM,
+               IFNULL(C.USER_NICKNM,'탈퇴관리자') AS CREATE_NICKNM,
                A.CREATE_ID,
                A.CREATE_DATE,
-               IFNULL(D.USER_NICKNM,'탈퇴관리자')AS UPDATE_NICKNM,
+               IFNULL(D.USER_NICKNM,'탈퇴관리자') AS UPDATE_NICKNM,
                A.UPDATE_ID,
                A.UPDATE_DATE,
                A.DELETE_YN,
@@ -193,4 +193,24 @@
                DELETE_YN = 'Y'
          WHERE IDX= #{idx}
     </update>
+
+    <select id="findAllContent" parameterType="map" resultType="CustomMap">
+        SELECT IDX,
+               CONTENT_ID,
+               CONTENT_NM,
+               CONTENT_HTML,
+               HIT,
+               OPEN_YN,
+               USE_YN,
+               CREATE_ID,
+               CREATE_DATE,
+               UPDATE_ID,
+               UPDATE_DATE
+          FROM content
+         WHERE 1=1
+            <if test="searchType != null">
+
+            </if>
+    </select>
+
 </mapper>
