@@ -59,9 +59,8 @@ header {
 
 .header-wrap {
     width: 100%;
-    max-width: 280px;
-    margin: 100px auto;
-
+    height: 100%;
+    padding: 70px 40px;
 }
 
 .header-wrap .header-phrases {
@@ -106,6 +105,21 @@ header {
     cursor: pointer;
 }
 
+.header-menu {
+    height: 55%;
+    overflow-y: scroll;
+}
+
+.header-menu::-webkit-scrollbar {
+    width: 5px;
+}
+.header-menu::-webkit-scrollbar-thumb {
+    background-color: #188a9b;
+}
+.header-menu::-webkit-scrollbar-track {
+    background-color: #1fb1c7;
+}
+
 .header-menu ul {
     border-top: 2px solid #000;
     border-bottom: 2px solid #000;
@@ -118,32 +132,32 @@ header {
     border-bottom: 1px solid #000;
 }
 
-.header-menu div {
+.header-bot {
     display: flex;
     font-size: 0;
 }
 
-.header-menu div a {
+.header-bot a {
     font-size: 16px;
     padding: 10px;
     text-align: center;
     background: rgba(0,0,0,0.3);
 }
 
-.header-menu div a:not(:nth-last-child(1)) {
+.header-bot a:not(:nth-last-child(1)) {
     margin-right: 10px;
 }
 
-.header-menu div a:first-child:nth-last-child(1),
-.header-menu div a:first-child:nth-last-child(1) ~ a {width: 100%;}
-.header-menu div a:first-child:nth-last-child(2),
-.header-menu div a:first-child:nth-last-child(2) ~ a {width: 50%;}
-.header-menu div a:first-child:nth-last-child(3),
-.header-menu div a:first-child:nth-last-child(3) ~ a {width: 33.3%;}
-.header-menu div a:first-child:nth-last-child(4),
-.header-menu div a:first-child:nth-last-child(4) ~ a {width: 25%;}
-.header-menu div a:first-child:nth-last-child(5),
-.header-menu div a:first-child:nth-last-child(5) ~ a {width: 20%;}
+.header-bot a:first-child:nth-last-child(1),
+.header-bot a:first-child:nth-last-child(1) ~ a {width: 100%;}
+.header-bot a:first-child:nth-last-child(2),
+.header-bot a:first-child:nth-last-child(2) ~ a {width: 50%;}
+.header-bot a:first-child:nth-last-child(3),
+.header-bot a:first-child:nth-last-child(3) ~ a {width: 33.3%;}
+.header-bot a:first-child:nth-last-child(4),
+.header-bot a:first-child:nth-last-child(4) ~ a {width: 25%;}
+.header-bot a:first-child:nth-last-child(5),
+.header-bot a:first-child:nth-last-child(5) ~ a {width: 20%;}
 
 /* 본문 */
 section {

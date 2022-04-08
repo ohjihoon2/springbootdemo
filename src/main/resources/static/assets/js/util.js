@@ -29,6 +29,7 @@
         postGoPage :function (data, url) {
             var form = document.createElement('form');
             form.id = 'postForm';
+            console.log(data);
 
             for (var key in data) {
                 var input = document.createElement('input');
@@ -39,7 +40,7 @@
                 $(document.body).append(form);
             }
             $("#postForm").attr('action', url);
-            $("#postForm").attr('method', 'POST');
+            $("#postForm").attr('method', 'post');
             $("#postForm").attr('enctype', 'application/json');
             $("#postForm").submit();
         },
@@ -68,60 +69,55 @@
 
     $ajax = {
         // patch 에이작스
-        patchAjax : function (url, param, msg) {
+        patchAjax : function (url, param, async=false) {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
+
+            var res;
 
             $.ajax({
                 type: "PATCH",
                 url: url,
                 data: JSON.stringify(param),
+                async: async,
                 contentType: "application/json",
-                // 토큰 사용시
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
                 },
-                success: function (res) {
-                    if(res == 1) {
-                        alert(msg);
-                        window.history.back();
-                    }
-                    else if(res == 0) {
-                        alert("수정을 실패하였습니다.");
-                    }
+                success: function (response) {
+                    res = response;
                 },
                 error: function (XMLHttpRequest, textStatus) {
-                    return alert("네트워크 통신을 실패하였습니다.");
+                    res = textStatus;
                 }
             });
+            return res;
         },
 
         // delete 에이작스
-        deleteAjax : function (url, msg) {
+        deleteAjax : function (url, param, async=false) {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
+
+            var res;
 
             $.ajax({
                 type: "DELETE",
                 url: url,
+                data: JSON.stringify(param),
+                async: async,
                 contentType: "application/json",
-                // 토큰 사용시
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
                 },
-                success: function (res) {
-                    if(res == 1) {
-                        alert(msg);
-                        window.history.back();
-                    }
-                    else if(res == 0) {
-                        alert("삭제를 실패하였습니다.");
-                    }
+                success: function (response) {
+                    res = response;
                 },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    return alert("네트워크 통신을 실패하였습니다.");
+                error: function (XMLHttpRequest, textStatus) {
+                    res = textStatus;
                 }
             });
+            return res;
         },
 
         // post 에이작스
@@ -302,7 +298,6 @@
                 "</div>";
             $('body').append(popupCover).append(popup);
             $('.background').css({ 'width': backWidth, 'height': backHeight, 'opacity': '0.3' });
-            $('.background').show();
         },
         popupJsClose : function() {
             $('.background').remove();

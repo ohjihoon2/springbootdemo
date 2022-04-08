@@ -169,8 +169,11 @@ function userNnChk() {
             else if($('#userNicknm').val().indexOf("관리자") != -1) {
                 $('#nnMsg').html("<label class=\"mb10\"></label> '관리자' 단어는 포함 할수 없습니다.");
             }
+            else if($('#userNicknm').val().indexOf("탈퇴") != -1) {
+                $('#nnMsg').html("<label class=\"mb10\"></label> '탈퇴' 단어는 포함 할수 없습니다.");
+            }
             else if(!$util.isNn($('#userNicknm').val())) {
-                $('#nnMsg').html("<label class=\"mb10\"></label> 테스트");
+                $('#nnMsg').html("<label class=\"mb10\"></label> 닉네임은 한글, 영어, 숫자 만 사용가능합니다.");
             }
             else {
                 var data = {
