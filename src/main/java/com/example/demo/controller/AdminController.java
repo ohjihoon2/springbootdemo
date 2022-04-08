@@ -121,8 +121,7 @@ public class AdminController {
      */
     @PutMapping(value = "/boardMaster/{idx}")
     @ResponseBody
-    public Map<String,Object> updateBoardMaster(@PathVariable int idx, Principal principal,HttpServletResponse response, HttpServletRequest request) {
-        Map<String,Object> paramMap = new HashMap<>();
+    public Map<String,Object> updateBoardMaster(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
         String userId = principal.getName();
         System.out.println("userId = " + userId);
         paramMap.put("idx",idx);
