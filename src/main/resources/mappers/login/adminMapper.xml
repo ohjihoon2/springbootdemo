@@ -101,30 +101,29 @@
           LEFT JOIN USERS C ON A.CREATE_IDX = C.IDX
           LEFT JOIN USERS D ON A.UPDATE_IDX = D.IDX
          WHERE A.DELETE_YN = 'N'
-        <if test="searchType != null and searchValue != null and searchValue != ''">
+        <if test="searchType != null and keyword != null and keyword != ''">
             <choose>
                 <when test='searchType == "boardNm"'>
-                    AND BOARD_NM LIKE '%' || #{keyword} || '%'
+                    AND BOARD_NM LIKE CONCAT('%',#{keyword},'%')
                 </when>
                 <when test='searchType == "createIdx"'>
-                    AND IDX IN
+                    AND A.CREATE_IDX IN
                             (
-                                SELECT CREATE_IDX
+                                SELECT IDX
                                   FROM USERS
-                                 WHERE USER_ID LIKE '%' || #{keyword} || '%'
+                                 WHERE USER_ID LIKE CONCAT('%',#{keyword},'%')
                             )
                 </when>
                 <otherwise>
                     AND (
-                            BOARD_NM LIKE '%' || #{keyword} || '%'
-                            OR (
-                                    IDX IN
-                                            (
-                                                SELECT CREATE_IDX
-                                                  FROM USERS
-                                                 WHERE USER_ID LIKE '%' || #{keyword} || '%'
-                                            )
-                                )
+                            BOARD_NM LIKE CONCAT('%',#{keyword},'%')
+                            OR A.CREATE_IDX IN
+                                    (
+                                        SELECT IDX
+                                          FROM USERS
+                                         WHERE USER_ID LIKE CONCAT('%',#{keyword},'%')
+                                    )
+
                         )
                 </otherwise>
             </choose>

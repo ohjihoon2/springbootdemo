@@ -20,7 +20,7 @@ import java.util.Map;
 class LoginServiceImplTest {
     @Autowired
     private LoginMapper loginMapper;
-/*
+
 
     @Test
     public void ADMIN_생성() {
@@ -33,13 +33,18 @@ class LoginServiceImplTest {
 
         map.put("userId",userId);
         map.put("userPwd",passwordEncoder.encode(userPwd));
+        map.put("userNicknm","최고관리자");
+//        map.put("userNicknm","일반관리자");
+        map.put("roleType","ROLE_ADMIN");
+//        map.put("userNicknm","일반관리자");
+        map.put("roleType","ROLE_MANAGER");
         log.debug("map = {}",map);
         int result = loginMapper.saveAdminTest(map);
 
         log.debug(String.valueOf(result));
 
     }
-*/
+
 
     @Test
     public void USER_생성() {

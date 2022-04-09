@@ -69,10 +69,10 @@
             (
                 #{userId},
                 #{userPwd},
-                '최고관리자',
-                '최고관리자',
+                #{userNicknm},
+                #{userNicknm},
                 '',
-                'ROLE_ADMIN',
+                #{roleType},
                 #{verificationCode},
                 #{verificationYn},
                 'Y',

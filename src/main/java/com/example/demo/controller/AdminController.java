@@ -76,8 +76,7 @@ public class AdminController {
      * @return
      */
     @GetMapping(value = "/boardMaster")
-    public String boardMasterList(@RequestParam Search search, HttpServletResponse response, HttpServletRequest request,Model model) {
-        System.out.println("search = " + search);
+    public String boardMasterList(@ModelAttribute Search search, HttpServletResponse response, HttpServletRequest request,Model model) {
         List<Map<String,Object>> resultList = adminService.findAllBoardMaster(search);
         model.addAttribute("resultList", resultList);
 
