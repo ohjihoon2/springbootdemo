@@ -3,7 +3,7 @@ package com.example.demo.service;
 import com.example.demo.vo.BoardMaster;
 import com.example.demo.vo.Content;
 import com.example.demo.vo.MenuTree;
-import com.example.demo.vo.Search;
+import com.example.demo.vo.Criteria;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +14,7 @@ public interface AdminService{
 
     List<MenuTree> findAllMenuTree();
 
-    List<Map<String,Object>> findAllBoardMaster(Search search);
+    List<Map<String,Object>> findAllBoardMaster(Criteria criteria);
 
     int insertBoardMaster(Map<String, Object> paramMap);
 
@@ -26,9 +26,11 @@ public interface AdminService{
 
     int deleteBoardMaster(Map<String, Object> paramMap);
 
-    List<Map<String, Object>> findAllContent(Search search);
+    List<Map<String, Object>> findAllContent(Criteria criteria);
 
     Content findByIdxContent(int idx);
 
     int insertContent(Map<String, Object> paramMap);
+
+    int countBoardMaster(Criteria criteria);
 }

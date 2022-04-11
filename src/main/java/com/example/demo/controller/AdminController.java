@@ -76,12 +76,17 @@ public class AdminController {
      * @return
      */
     @GetMapping(value = "/boardMaster")
-    public String boardMasterList(@ModelAttribute Search search, HttpServletResponse response, HttpServletRequest request,Model model) {
-        List<Map<String,Object>> resultList = adminService.findAllBoardMaster(search);
+    public String boardMasterList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
+        List<Map<String,Object>> resultList = adminService.findAllBoardMaster(criteria);
+        int total = adminService.countBoardMaster(criteria);
+        Page pageMaker = new Page(total, 10, criteria);
+
         model.addAttribute("resultList", resultList);
 
         String[] split = request.getRequestURI().split("/");
+
         model.addAttribute("page",split[2]);
+        model.addAttribute("pageMaker", pageMaker);
         model.addAttribute("resultList", resultList);
         return "/adm/boardMaster";
     }
@@ -182,15 +187,15 @@ public class AdminController {
 
     /**
      * 컨텐츠 리스트
-     * @param search
+     * @param criteria
      * @param response
      * @param request
      * @param model
      * @return
      */
     @GetMapping(value = "/content")
-    public String contentList(@RequestParam(required = false) Search search, HttpServletResponse response, HttpServletRequest request, Model model) {
-        List<Map<String,Object>> resultList = adminService.findAllContent(search);
+    public String contentList(@RequestParam(required = false) Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
+        List<Map<String,Object>> resultList = adminService.findAllContent(criteria);
 
         model.addAttribute("resultList", resultList);
 

@@ -2,8 +2,8 @@ package com.example.demo.repository;
 
 import com.example.demo.vo.BoardMaster;
 import com.example.demo.vo.Content;
+import com.example.demo.vo.Criteria;
 import com.example.demo.vo.MenuTree;
-import com.example.demo.vo.Search;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +20,7 @@ public interface AdminMapper {
 
     int deleteMenuTree();
 
-    List<Map<String,Object>> findAllBoardMaster(Search search);
+    List<Map<String,Object>> findAllBoardMaster(Criteria criteria);
 
     int insertBoardMaster(Map<String, Object> paramMap);
 
@@ -32,9 +32,11 @@ public interface AdminMapper {
 
     int deleteBoardMaster(Map<String, Object> paramMap);
 
-    List<Map<String, Object>> findAllContent(Search search);
+    List<Map<String, Object>> findAllContent(Criteria criteria);
 
     Content findByIdxContent(int idx);
 
     int insertContent(Map<String, Object> paramMap);
+
+    int countBoardMaster(Criteria criteria);
 }

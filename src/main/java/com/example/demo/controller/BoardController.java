@@ -3,7 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.service.BoardService;
 import com.example.demo.util.ResultStr;
 import com.example.demo.vo.Board;
-import com.example.demo.vo.Search;
+import com.example.demo.vo.Criteria;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -30,23 +30,23 @@ public class BoardController {
     /**
      * 게시판 리스트
      * @param masterIdx
-     * @param search
+     * @param criteria
      * @param response
      * @param request
      * @param model
      * @return
      */
     @GetMapping("/boardList/{boardId}")
-    public String boardList(@PathVariable("boardId") String boardId, @RequestParam Search search
+    public String boardList(@PathVariable("boardId") String boardId, @RequestParam Criteria criteria
                             , HttpServletResponse response, HttpServletRequest request, Model model) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("boardId", boardId);
-        paramMap.put("search", search);
+        paramMap.put("sriteria", criteria);
 
         List<Board> boardList = boardService.findByMasterIdxSearch(paramMap);
 
         model.addAttribute("boardList", boardList);
-        model.addAttribute("search", search);
+        model.addAttribute("sriteria", criteria);
 
         return "/board/boardList";
     }

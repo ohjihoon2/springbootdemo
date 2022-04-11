@@ -5,7 +5,7 @@ import com.example.demo.service.AdminService;
 import com.example.demo.vo.BoardMaster;
 import com.example.demo.vo.Content;
 import com.example.demo.vo.MenuTree;
-import com.example.demo.vo.Search;
+import com.example.demo.vo.Criteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,8 +40,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Map<String,Object>> findAllBoardMaster(Search search) {
-        return adminMapper.findAllBoardMaster(search);
+    public List<Map<String,Object>> findAllBoardMaster(Criteria criteria) {
+        return adminMapper.findAllBoardMaster(criteria);
     }
 
     @Override
@@ -70,8 +70,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Map<String, Object>> findAllContent(Search search) {
-        return adminMapper.findAllContent(search);
+    public List<Map<String, Object>> findAllContent(Criteria criteria) {
+        return adminMapper.findAllContent(criteria);
     }
 
     @Override
@@ -82,5 +82,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public int insertContent(Map<String, Object> paramMap) {
         return adminMapper.insertContent(paramMap);
+    }
+
+    @Override
+    public int countBoardMaster(Criteria criteria) {
+        return adminMapper.countBoardMaster(criteria);
     }
 }

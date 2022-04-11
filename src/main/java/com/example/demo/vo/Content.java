@@ -11,7 +11,6 @@ public class Content {
     private String contentNm;
     private String contentHtml;
     private int hit;
-    private String openYn;
     private String useYn;
     private int createIdx;
     private Date createDate;

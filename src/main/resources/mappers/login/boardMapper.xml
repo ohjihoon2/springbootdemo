@@ -19,7 +19,7 @@
           FROM board
          WHERE BOARD_ID = #{boardId}
             <!--
-            <if test="search != null">
+            <if test="criteria != null">
                 #{searchType}
                 #{keyword}
             </if>

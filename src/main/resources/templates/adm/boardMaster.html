@@ -12,9 +12,9 @@
             <div class="top-btn-box">
                 <div class="left">
                     <select id="searchType">
-                        <option value="all" th:selected="${#httpServletRequest.getParameter('searchType') == 'all'}">게시판명 + 작성자</option>
-                        <option value="boardNm" th:selected="${#httpServletRequest.getParameter('searchType') == 'boardNm'}">게시판명</option>
-                        <option value="createIdx" th:selected="${#httpServletRequest.getParameter('searchType') == 'createIdx'}">작성자</option>
+                        <option value="TW" th:selected="${#httpServletRequest.getParameter('searchType') == 'all'}">게시판명 + 작성자</option>
+                        <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'boardNm'}">게시판명</option>
+                        <option value="W" th:selected="${#httpServletRequest.getParameter('searchType') == 'createIdx'}">작성자</option>
                     </select>
                     <input id="searchKeyword" type="text" th:value="${#httpServletRequest.getParameter('searchKeyword')}" />
                     <button type="button" id="searchBtn" class="color-primary">검색</button>
@@ -72,11 +72,45 @@
                         <td colspan="8" class="text-center">등록된 게시판이 없습니다.</td>
                     </tr>
                 </th:block>
+
+                <div th:object="${pageMaker}">
+                    <div class="big-width" style="text-align: center">
+                        <a class="changePage" th:if="*{prev}" th:href="*{startPage - 1}"><code>&lt;</code></a>
+                        <th:block th:each="num : ${#numbers.sequence(pageMaker.getStartPage(), pageMaker.getEndPage())}">
+                            <code th:if="${pageMaker.criteria.getPageNum() == num}" th:text="${num}"></code>
+                            <a class="changePage" th:unless="${pageMaker.criteria.getPageNum() == num}" th:href="${num}"><code th:text="${num}"></code></a>
+                        </th:block>
+                        <a class="changePage" th:if="*{next}" th:href="*{endPage + 1}"><code>&gt;</code></a>
+                    </div>
+<!--                    <div class="small-width" style="text-align: center">-->
+<!--                        <a class="changePage" th:if="*{criteria.pageNum > 1}" th:href="*{criteria.pageNum - 1}"><code>&lt;</code></a>-->
+<!--                        <code th:text="*{criteria.pageNum}"></code>-->
+<!--                        <a class="changePage" th:if="*{criteria.pageNum < realEnd}" th:href="*{criteria.pageNum + 1}"><code>&gt;</code></a>-->
+<!--                    </div>-->
+                    <form id="actionForm" action="/board/list" th:object="${criteria}" name="pageForm">
+                        <input type="hidden" name="pageNum" th:field="*{pageNum}">
+                        <input type="hidden" name="amount" th:field="*{amount}">
+                    </form>
+                </div>
+
                 </tbody>
             </table>
         </div>
     </section>
     <th:block th:replace="/fragments/footer.html :: thAdmJs"></th:block>
+    <script>
+        $(".changePage").on("click", function(e){
+            e.preventDefault();
+            alert("클릭");
+            var actionForm = $("#actionForm");
+            var pageNum = $(this).attr("href");
+            console.log(pageNum);
+
+            actionForm.find("input[name='pageNum']").val(pageNum);
+            actionForm.submit();
+        })
+
+    </script>
     <script th:src="@{/js/adm/boardMaster.js}"></script>
 </body>
 </html>
