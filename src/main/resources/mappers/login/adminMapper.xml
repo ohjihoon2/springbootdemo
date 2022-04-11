@@ -289,17 +289,21 @@
     </update>
 
     <select id="findAllContent" parameterType="map" resultType="CustomMap">
-        SELECT IDX,
-               CONTENT_ID,
-               CONTENT_NM,
-               CONTENT_HTML,
-               HIT,
-               USE_YN,
-               CREATE_IDX,
-               CREATE_DATE,
-               UPDATE_IDX,
-               UPDATE_DATE
-          FROM content
+        SELECT A.IDX,
+               A.CONTENT_ID,
+               A.CONTENT_NM,
+               A.CONTENT_HTML,
+               A.HIT,
+               A.USE_YN,
+               A.CREATE_IDX,
+               A.CREATE_DATE,
+               A.UPDATE_IDX,
+               A.UPDATE_DATE,
+               IFNULL(B.USER_NICKNM,'탈퇴된 관리자') AS CREATE_NICKNM,
+               IFNULL(C.USER_NICKNM,'탈퇴된 관리자') AS UPDATE_NICKNM,
+          FROM content A
+        LEFT JOIN USERS B ON A.CREATE_IDX = B.IDX
+        LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX
          WHERE 1=1
             <if test="searchType != null">
 
