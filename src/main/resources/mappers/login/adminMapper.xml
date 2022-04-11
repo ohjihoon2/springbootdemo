@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.AdminMapper">
 
-    <sql id="criteria">
+    <sql id="criteriaBoardMaster">
         <if test="searchType != null and searchKeyword != null">
             <trim prefix="AND (" suffix=")" prefixOverrides="OR">
                 <foreach item="type" collection="typeArr">
@@ -22,6 +22,32 @@
                                               FROM USERS
                                              WHERE USER_ID LIKE CONCAT('%',#{searchKeyword},'%')
                                         )
+                                )
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
+    <sql id="criteriaContent">
+        <if test="searchType != null and searchKeyword != null">
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <foreach item="type" collection="typeArr">
+                    <trim prefix="OR">
+                        <choose>
+                            <when test="type=='T'.toString">
+                                (CONTENT_NM LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                            <when test="type=='W'.toString()">
+                                (
+                                A.CREATE_IDX IN
+                                    (
+                                    SELECT IDX
+                                    FROM USERS
+                                    WHERE USER_ID LIKE CONCAT('%',#{searchKeyword},'%')
+                                    )
                                 )
                             </when>
                         </choose>
@@ -103,7 +129,7 @@
     </delete>
 
     <select id="countBoardMaster" resultType="int" parameterType="Criteria">
-        SELECT COUNT(CNT)
+        SELECT COUNT(*)
           FROM
                (
                     SELECT A.IDX,
@@ -133,8 +159,8 @@
                       LEFT JOIN USERS C ON A.CREATE_IDX = C.IDX
                       LEFT JOIN USERS D ON A.UPDATE_IDX = D.IDX
                      WHERE A.DELETE_YN = 'N'
-                    <include refid="criteria"/>
-               ) AS CNT
+                    <include refid="criteriaBoardMaster"/>
+               ) AS CNT_TB
     </select>
 
     <select id="findAllBoardMaster" resultType="CustomMap" parameterType="Criteria">
@@ -165,7 +191,7 @@
           LEFT JOIN USERS C ON A.CREATE_IDX = C.IDX
           LEFT JOIN USERS D ON A.UPDATE_IDX = D.IDX
          WHERE A.DELETE_YN = 'N'
-        <include refid="criteria"/>
+        <include refid="criteriaBoardMaster"/>
         <!--<if test="searchType != null and searchKeyword != null and searchKeyword != ''">
             <choose>
                 <when test='searchType == "boardNm"'>
@@ -287,6 +313,30 @@
          WHERE IDX= #{idx}
     </update>
 
+    <select id="countContent" parameterType="Criteria" resultType="int">
+
+        SELECT COUNT(*)
+          FROM (
+                    SELECT A.IDX,
+                           A.CONTENT_ID,
+                           A.CONTENT_NM,
+                           A.CONTENT_HTML,
+                           A.HIT,
+                           A.USE_YN,
+                           A.CREATE_IDX,
+                           A.CREATE_DATE,
+                           A.UPDATE_IDX,
+                           A.UPDATE_DATE,
+                           IFNULL(B.USER_NICKNM,'탈퇴된 관리자') AS CREATE_NICKNM,
+                           IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(C.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM
+                      FROM content A
+                      LEFT JOIN USERS B ON A.CREATE_IDX = B.IDX
+                      LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX
+                     WHERE 1=1
+                    <include refid="criteriaContent"/>
+               ) AS CNT_TB
+    </select>
+
     <select id="findAllContent" parameterType="map" resultType="CustomMap">
         SELECT A.IDX,
                A.CONTENT_ID,
@@ -301,12 +351,11 @@
                IFNULL(B.USER_NICKNM,'탈퇴된 관리자') AS CREATE_NICKNM,
                IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(C.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM
           FROM content A
-        LEFT JOIN USERS B ON A.CREATE_IDX = B.IDX
-        LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX
+          LEFT JOIN USERS B ON A.CREATE_IDX = B.IDX
+          LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX
          WHERE 1=1
-            <if test="searchType != null">
-
-            </if>
+        <include refid="criteriaContent"/>
+         LIMIT #{pageStart},#{amount}
     </select>
 
     <select id="findByIdxContent" resultType="Content" parameterType="int">
@@ -354,4 +403,21 @@
           FROM content
          WHERE CONTENT_ID = #{contentId}
     </select>
+
+    <update id="updateContent" parameterType="map">
+        UPDATE content
+           SET CONTENT_ID = #{contentId},
+               CONTENT_NM = #{contentNm},
+               CONTENT_HTML = #{contentHtml},
+               HIT = #{hit},
+               USE_YN = #{useYn},
+               UPDATE_IDX= #{userIdx},
+               UPDATE_DATE= SYSDATE()
+         WHERE IDX= #{idx}
+    </update>
+
+    <delete id="deleteContent" parameterType="map">
+        DELETE FROM content
+         WHERE CONTENT_ID=#{idx}
+    </delete>
 </mapper>

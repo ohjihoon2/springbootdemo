@@ -93,4 +93,19 @@ public class AdminServiceImpl implements AdminService {
     public int existsContentId(Map<String, Object> paramMap) {
         return adminMapper.existsContentId(paramMap);
     }
+
+    @Override
+    public int updateContent(Map<String, Object> paramMap) {
+        return adminMapper.updateContent(paramMap);
+    }
+
+    @Override
+    public int deleteContent(Map<String, Object> paramMap) {
+        return adminMapper.deleteContent(paramMap);
+    }
+
+    @Override
+    public int countContent(Criteria criteria) {
+        return adminMapper.countContent(criteria);
+    }
 }

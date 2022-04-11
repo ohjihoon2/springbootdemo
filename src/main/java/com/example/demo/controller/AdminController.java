@@ -172,9 +172,10 @@ public class AdminController {
         return adminService.findByIdxBoardMaster(idx);
     }
 
+
     /**
      * board master boardId 중복 체크
-     * @param boardId
+     * @param paramMap
      * @param response
      * @param request
      * @return
@@ -197,9 +198,16 @@ public class AdminController {
      * @return
      */
     @GetMapping(value = "/content")
-    public String contentList(@RequestParam(required = false) Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
+    public String contentList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
         List<Map<String,Object>> resultList = adminService.findAllContent(criteria);
+        int total = adminService.countContent(criteria);
 
+        // 웹 페이징 설정 처리
+        int webPageCount =DeviceCheck.getWebPageCount();
+        Page pageMaker = new Page(total, webPageCount, criteria);
+        model.addAttribute("resultList", resultList);
+
+        model.addAttribute("pageMaker", pageMaker);
         model.addAttribute("resultList", resultList);
         return "/adm/content";
     }
@@ -218,9 +226,16 @@ public class AdminController {
         return adminService.findByIdxContent(idx);
     }
 
+    /**
+     * 컨첸츠 저장
+     * @param paramMap
+     * @param response
+     * @param request
+     * @return
+     */
     @PostMapping(value = "/content")
     @ResponseBody
-    public Map<String,Object> saveContent(@RequestBody Map<String,Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> saveContent(@RequestBody Map<String,Object> paramMap,HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
         paramMap.put("userIdx",userIdx);
@@ -230,6 +245,52 @@ public class AdminController {
         return ResultStr.set(result);
     }
 
+    /**
+     * content 설정 수정
+     * @param idx
+     * @param principal
+     * @param response
+     * @param request
+     * @return
+     */
+    @PatchMapping(value = "/content/{idx}")
+    @ResponseBody
+    public Map<String,Object> updateContent(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        paramMap.put("idx",idx);
+        paramMap.put("userIdx",userIdx);
+
+        int result = adminService.updateContent(paramMap);
+
+        return ResultStr.set(result);
+    }
+
+    /**
+     * content 설정 삭제
+     * @param idx
+     * @param response
+     * @param request
+     * @return
+     */
+    @DeleteMapping(value = "/content/{idx}")
+    @ResponseBody
+    public Map<String,Object> deleteContent(@PathVariable int idx,HttpServletResponse response, HttpServletRequest request) {
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("idx",idx);
+
+        int result = adminService.deleteContent(paramMap);
+
+        return ResultStr.set(result);
+    }
+
+    /**
+     * content contentId 중복 체크
+     * @param paramMap
+     * @param response
+     * @param request
+     * @return
+     */
     @PostMapping(value = "/contentId")
     @ResponseBody
     public Map<String,Object> existsContentId(@RequestBody Map<String,Object> paramMap, HttpServletResponse response, HttpServletRequest request) {

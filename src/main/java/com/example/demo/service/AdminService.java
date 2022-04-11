@@ -35,4 +35,10 @@ public interface AdminService{
     int countBoardMaster(Criteria criteria);
 
     int existsContentId(Map<String, Object> paramMap);
+
+    int updateContent(Map<String, Object> paramMap);
+
+    int deleteContent(Map<String, Object> paramMap);
+
+    int countContent(Criteria criteria);
 }
