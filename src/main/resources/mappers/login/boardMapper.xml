@@ -21,7 +21,7 @@
             <!--
             <if test="criteria != null">
                 #{searchType}
-                #{keyword}
+                #{searchKeyword}
             </if>
             -->
     </select>
