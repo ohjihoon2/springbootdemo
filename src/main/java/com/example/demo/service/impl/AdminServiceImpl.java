@@ -88,4 +88,9 @@ public class AdminServiceImpl implements AdminService {
     public int countBoardMaster(Criteria criteria) {
         return adminMapper.countBoardMaster(criteria);
     }
+
+    @Override
+    public int existsContentId(Map<String, Object> paramMap) {
+        return adminMapper.existsContentId(paramMap);
+    }
 }

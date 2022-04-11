@@ -33,4 +33,6 @@ public interface AdminService{
     int insertContent(Map<String, Object> paramMap);
 
     int countBoardMaster(Criteria criteria);
+
+    int existsContentId(Map<String, Object> paramMap);
 }

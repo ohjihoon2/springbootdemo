@@ -171,8 +171,7 @@ public class AdminController {
      */
     @PostMapping(value = "/boardId")
     @ResponseBody
-    public Map<String,Object> boardMasterSave(@RequestBody Map<String,Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
-        Map<String,Object> resultMap = new HashMap<>();
+    public Map<String,Object> existsBoardId(@RequestBody Map<String,Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
 
         int result = adminService.existsBoardId(paramMap);
 
@@ -217,6 +216,15 @@ public class AdminController {
         paramMap.put("userIdx",userIdx);
 
         int result = adminService.insertContent(paramMap);
+
+        return ResultStr.set(result);
+    }
+
+    @PostMapping(value = "/contentId")
+    @ResponseBody
+    public Map<String,Object> existsContentId(@RequestBody Map<String,Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
+
+        int result = adminService.existsContentId(paramMap);
 
         return ResultStr.set(result);
     }

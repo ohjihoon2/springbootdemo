@@ -349,4 +349,10 @@
             )
 
     </insert>
+
+    <select id="existsContentId" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+          FROM content
+         WHERE CONTENT_ID = #{contentId}
+    </select>
 </mapper>
