@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Data
 public class Page {
+
     private int pageCount;
     private int startPage;
     private int endPage;
@@ -30,11 +31,12 @@ public class Page {
         realEnd = (int)(Math.ceil(total*1.0 / criteria.getAmount()));
 
         if(endPage > realEnd){
-            endPage = realEnd;
+            endPage = realEnd ==0 ? 1 : realEnd;
         }
 
-        prev = startPage == 1 ? false : true;
-        next = endPage * criteria.getAmount() < total ? true : false;
+        prev = startPage > 1;
+//        next = endPage * criteria.getAmount() < total ? true : false;
+        next = endPage < realEnd;
 
 
         System.out.println("total = " + total);

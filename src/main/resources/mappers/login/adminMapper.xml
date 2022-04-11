@@ -134,7 +134,6 @@
                       LEFT JOIN USERS D ON A.UPDATE_IDX = D.IDX
                      WHERE A.DELETE_YN = 'N'
                     <include refid="criteria"/>
-                LIMIT #{pageStart},#{amount}
                ) AS CNT
     </select>
 
