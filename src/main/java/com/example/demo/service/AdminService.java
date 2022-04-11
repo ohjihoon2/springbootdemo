@@ -41,4 +41,8 @@ public interface AdminService{
     int deleteContent(Map<String, Object> paramMap);
 
     int countContent(Criteria criteria);
+
+    List<Map<String, Object>> findAllUser(Criteria criteria);
+
+    int countUser(Criteria criteria);
 }

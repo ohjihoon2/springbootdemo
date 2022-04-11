@@ -108,4 +108,14 @@ public class AdminServiceImpl implements AdminService {
     public int countContent(Criteria criteria) {
         return adminMapper.countContent(criteria);
     }
+
+    @Override
+    public List<Map<String, Object>> findAllUser(Criteria criteria) {
+        return adminMapper.findAllUser(criteria);
+    }
+
+    @Override
+    public int countUser(Criteria criteria) {
+        return adminMapper.countUser(criteria);
+    }
 }

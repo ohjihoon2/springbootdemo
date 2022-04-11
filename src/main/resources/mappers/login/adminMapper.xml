@@ -57,6 +57,28 @@
         </if>
     </sql>
 
+    <sql id="criteriaUser">
+        <if test="searchType != null and searchKeyword != null">
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <foreach item="type" collection="typeArr">
+                    <trim prefix="OR">
+                        <choose>
+                            <when test="type=='I'.toString">
+                                (USER_ID LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                            <when test="type=='N'.toString()">
+                                (USER_NM LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                            <when test="type=='K'.toString()">
+                                (USER_NICKNM LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
     <select id="findAllMenuTree" resultType="MenuTree">
         WITH RECURSIVE CTE AS
             (
@@ -420,4 +442,46 @@
         DELETE FROM content
          WHERE CONTENT_ID=#{idx}
     </delete>
+
+    <select id="findAllUser" parameterType="map" resultType="CustomMap">
+        SELECT IDX,
+               USER_ID,
+               USER_PWD,
+               USER_NM,
+               USER_NICKNM,
+               USER_EMAIL,
+               USER_PHONE,
+               ROLE_TYPE,
+               VERIFICATION_CODE,
+               VERIFICATION_YN,
+               USE_YN,
+               CREATE_DATE,
+               UPDATE_DATE
+          FROM users
+         WHERE 1=1
+        <include refid="criteriaUser"/>
+        LIMIT #{pageStart},#{amount}
+    </select>
+
+    <select id="countUser" parameterType="Criteria" resultType="int">
+        SELECT COUNT(*)
+          FROM (
+                    SELECT IDX,
+                           USER_ID,
+                           USER_PWD,
+                           USER_NM,
+                           USER_NICKNM,
+                           USER_EMAIL,
+                           USER_PHONE,
+                           ROLE_TYPE,
+                           VERIFICATION_CODE,
+                           VERIFICATION_YN,
+                           USE_YN,
+                           CREATE_DATE,
+                           UPDATE_DATE
+                      FROM users
+                     WHERE 1=1
+                    <include refid="criteriaUser"/>
+                ) AS CNT_TB
+    </select>
 </mapper>

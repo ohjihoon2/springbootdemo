@@ -299,4 +299,31 @@ public class AdminController {
 
         return ResultStr.set(result);
     }
+
+
+    /**
+     * 유저 리스트
+     * @param criteria
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/user")
+    public String userList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
+        List<Map<String,Object>> resultList = adminService.findAllUser(criteria);
+        int total = adminService.countUser(criteria);
+
+        // 참고 select - option 파라미터
+        // criteria - i(userId) n(userNm) k(userNicknm)
+
+        // 웹 페이징 설정 처리
+        int webPageCount =DeviceCheck.getWebPageCount();
+        Page pageMaker = new Page(total, webPageCount, criteria);
+
+        model.addAttribute("resultList", resultList);
+        model.addAttribute("pageMaker", pageMaker);
+        return "/adm/content";
+    }
+
 }
