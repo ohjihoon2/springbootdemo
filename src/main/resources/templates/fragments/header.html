@@ -48,13 +48,13 @@
         </div>
     </header>
 
-    <header th:fragment="thAdmHeader">
+    <header th:fragment="thAdmHeader" th:with="url=${#strings.arraySplit(#httpServletRequest.requestURI,'/')}">
         <div class="header-top">
             <a href="/adm/admIndex"><img th:src="@{/img/common/logo_b.png}"></a>
             <a href="/"><img th:src="@{/img/adm/home.png}"></a>
         </div>
         <div class="header-bot">
-            <div class="header-list">
+            <div class="header-list" th:with="page=${url[1] != null} ? ${url[1]} : ''">
                 <ul>
                     <li th:classappend="${page == 'menuTree' or page == 'eeee'} ? 'on' : 'off'">
                         <span>환경설정</span>

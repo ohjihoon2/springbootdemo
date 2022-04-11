@@ -27,8 +27,6 @@ public class AdminController {
 
     @GetMapping(value = "/admIndex")
     public String adminPage(Principal principal,User user, HttpServletResponse response, HttpServletRequest request, Model model) {
-        String[] split = request.getRequestURI().split("/");
-        model.addAttribute("page",split[2]);
         return "/adm/admIndex";
     }
 
@@ -44,8 +42,6 @@ public class AdminController {
         List<MenuTree> resultList = adminService.findAllMenuTree();
 
         String[] split = request.getRequestURI().split("/");
-        model.addAttribute("page",split[2]);
-        model.addAttribute("resultList", resultList);
         return "/adm/menuTree";
     }
 
@@ -83,9 +79,7 @@ public class AdminController {
 
         model.addAttribute("resultList", resultList);
 
-        String[] split = request.getRequestURI().split("/");
 
-        model.addAttribute("page",split[2]);
         model.addAttribute("pageMaker", pageMaker);
         model.addAttribute("resultList", resultList);
         return "/adm/boardMaster";
@@ -197,10 +191,6 @@ public class AdminController {
     public String contentList(@RequestParam(required = false) Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
         List<Map<String,Object>> resultList = adminService.findAllContent(criteria);
 
-        model.addAttribute("resultList", resultList);
-
-        String[] split = request.getRequestURI().split("/");
-        model.addAttribute("page",split[2]);
         model.addAttribute("resultList", resultList);
         return "/adm/content";
     }
