@@ -131,3 +131,8 @@ custom:
 resources:
   location: D:/upload/@project.name@
   uri_path: /upload
+
+# 페이징
+pageCount:
+  mobile: 5
+  web: 10

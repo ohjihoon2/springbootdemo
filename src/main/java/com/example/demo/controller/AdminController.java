@@ -1,10 +1,13 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.AdminService;
+import com.example.demo.util.DeviceCheck;
 import com.example.demo.util.ResultStr;
 import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mobile.device.Device;
+import org.springframework.mobile.device.DeviceUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -73,12 +76,19 @@ public class AdminController {
      */
     @GetMapping(value = "/boardMaster")
     public String boardMasterList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
+
         List<Map<String,Object>> resultList = adminService.findAllBoardMaster(criteria);
+
         int total = adminService.countBoardMaster(criteria);
-        Page pageMaker = new Page(total, 10, criteria);
 
+        // 모바일/웹 페이징 설정 처리
+        int pageCount =DeviceCheck.getPageCount(DeviceUtils.getCurrentDevice(request));
+
+        // 웹 페이징 설정 처리
+        // int webPageCount =DeviceCheck.getWebPageCount();
+
+        Page pageMaker = new Page(total, pageCount, criteria);
         model.addAttribute("resultList", resultList);
-
 
         model.addAttribute("pageMaker", pageMaker);
         model.addAttribute("resultList", resultList);

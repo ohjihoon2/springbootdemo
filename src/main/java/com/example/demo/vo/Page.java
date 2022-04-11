@@ -2,6 +2,7 @@ package com.example.demo.vo;
 
 
 import lombok.Data;
+import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,18 +36,7 @@ public class Page {
         }
 
         prev = startPage > 1;
-//        next = endPage * criteria.getAmount() < total ? true : false;
         next = endPage < realEnd;
 
-
-        System.out.println("total = " + total);
-        System.out.println("criteria = " + criteria);
-        System.out.println("pageCount = " + pageCount);
-        System.out.println("endPage = " + endPage);
-        System.out.println("realEnd = " + realEnd);
-        System.out.println("startPage = " + startPage);
-        System.out.println("prev = " + prev);
-        System.out.println("next = " + next);
     }
-
 }
