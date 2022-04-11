@@ -24,7 +24,7 @@ class LoginServiceImplTest {
 
     @Test
     public void ADMIN_생성() {
-        String userId = "admin";
+        String userId = "adminsys";
         String userPwd ="1234";
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -36,8 +36,7 @@ class LoginServiceImplTest {
         map.put("userNicknm","최고관리자");
 //        map.put("userNicknm","일반관리자");
         map.put("roleType","ROLE_ADMIN");
-//        map.put("userNicknm","일반관리자");
-        map.put("roleType","ROLE_MANAGER");
+//        map.put("roleType","ROLE_MANAGER");
         log.debug("map = {}",map);
         int result = loginMapper.saveAdminTest(map);
 

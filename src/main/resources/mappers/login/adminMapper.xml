@@ -116,7 +116,7 @@
                            IFNULL(C.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
                            A.CREATE_IDX,
                            A.CREATE_DATE,
-                           IFNULL(D.USER_NICKNM,'탈퇴된 관리자')AS UPDATE_NICKNM,
+                           IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(D.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM,
                            A.UPDATE_IDX,
                            A.UPDATE_DATE,
                            A.DELETE_YN,
@@ -149,7 +149,7 @@
                IFNULL(C.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
                A.CREATE_IDX,
                A.CREATE_DATE,
-               IFNULL(D.USER_NICKNM,'탈퇴된 관리자')AS UPDATE_NICKNM,
+               IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(D.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM,
                A.UPDATE_IDX,
                A.UPDATE_DATE,
                A.DELETE_YN,
@@ -260,7 +260,7 @@
                IFNULL(C.USER_NICKNM,'탈퇴된 관리자') AS CREATE_NICKNM,
                A.CREATE_IDX,
                A.CREATE_DATE,
-               IFNULL(D.USER_NICKNM,'탈퇴된 관리자') AS UPDATE_NICKNM,
+               IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(D.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM,
                A.UPDATE_IDX,
                A.UPDATE_DATE,
                A.DELETE_YN,
@@ -300,7 +300,7 @@
                A.UPDATE_IDX,
                A.UPDATE_DATE,
                IFNULL(B.USER_NICKNM,'탈퇴된 관리자') AS CREATE_NICKNM,
-               IFNULL(C.USER_NICKNM,'탈퇴된 관리자') AS UPDATE_NICKNM,
+               IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(C.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM
           FROM content A
         LEFT JOIN USERS B ON A.CREATE_IDX = B.IDX
         LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX
