@@ -133,7 +133,7 @@
                  #{item.lvl},
                  #{item.name},
                  #{item.link},
-                 #{item.writeId},
+                 #{item.userIdx},
                  SYSDATE(),
                  #{item.useYn}
             )

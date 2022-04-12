@@ -21,6 +21,12 @@ public class AdminServiceImpl implements AdminService {
     public int addMenuTree(List<Map<String,Object>> paramMapList) {
         int i = adminMapper.deleteMenuTree();
         int result = 0;
+
+        if(paramMapList.size() == 0){
+            result = 1;
+            return result;
+        }
+
         result = adminMapper.insertMenuTree(paramMapList);
 //        try {
 //            throw new NullPointerException();

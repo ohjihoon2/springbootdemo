@@ -44,7 +44,7 @@ public class AdminController {
     public String menuTreeDetails(HttpServletResponse response, HttpServletRequest request,Model model) {
         List<MenuTree> resultList = adminService.findAllMenuTree();
 
-        String[] split = request.getRequestURI().split("/");
+        model.addAttribute("resultList", resultList);
         return "/adm/menuTree";
     }
 
@@ -57,6 +57,14 @@ public class AdminController {
     @PostMapping(value = "/menuTree")
     @ResponseBody
     public Map<String,Object> menuTreeSave(@RequestBody List<Map<String,Object>> paramMapList, HttpServletResponse response, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        System.out.println("paramMapList = " + paramMapList);
+
+        for (Map<String, Object> map : paramMapList) {
+            map.put("userIdx",userIdx);
+        }
+
         Map<String,Object> resultMap = new HashMap<>();
         int result = adminService.addMenuTree(paramMapList);
         if(result > 0) {
@@ -380,6 +388,7 @@ public class AdminController {
         return ResultStr.set(result);
     }
 
+    //유저 비밀번호 초기화
 
     // 관리자 리스트
     // 관리자 상세

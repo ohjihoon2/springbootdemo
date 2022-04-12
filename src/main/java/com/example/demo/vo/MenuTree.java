@@ -11,7 +11,7 @@ public class MenuTree {
     private int lvl;
     private String name;
     private String link;
-    private String writeId;
+    private String createIdx;
     private Date createDate;
     private String useYn;
 }
