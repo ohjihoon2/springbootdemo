@@ -381,7 +381,8 @@
     </select>
 
     <select id="findByIdxContent" resultType="Content" parameterType="int">
-        SELECT CONTENT_ID,
+        SELECT IDX,
+               CONTENT_ID,
                CONTENT_NM,
                CONTENT_HTML,
                HIT,

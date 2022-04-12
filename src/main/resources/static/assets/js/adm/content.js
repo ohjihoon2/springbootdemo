@@ -190,6 +190,7 @@ $(function(){
     $(document).on("click", "#contentDel", function(e) {
         if(confirm("해당 컨텐츠를 삭제하시겠습니까?")) {
             var idx = $('#idx').val();
+            console.log(idx);
 
             var res = $ajax.deleteAjax('/adm/content/'+ idx);
             if(res == "error") {
