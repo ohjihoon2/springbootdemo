@@ -47,5 +47,5 @@ public interface AdminService{
 
     int updateUser(Map<String, Object> paramMap);
 
-    int withdrawUser(Map<String, Object> paramMap);
+    int forceDeleteUser(Map<String, Object> paramMap);
 }

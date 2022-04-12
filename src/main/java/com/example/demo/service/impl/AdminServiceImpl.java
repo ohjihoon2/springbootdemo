@@ -133,7 +133,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public int withdrawUser(Map<String, Object> paramMap) {
-        return adminMapper.withdrawUser(paramMap);
+    public int forceDeleteUser(Map<String, Object> paramMap) {
+        return adminMapper.forceDeleteUser(paramMap);
     }
 }

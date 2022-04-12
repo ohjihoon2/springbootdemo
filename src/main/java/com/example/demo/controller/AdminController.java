@@ -369,7 +369,7 @@ public class AdminController {
     }
 
     /**
-     * 회원 탈퇴
+     * 회원 강제 탈퇴
      * @param idx
      * @param paramMap
      * @param principal
@@ -377,18 +377,20 @@ public class AdminController {
      * @param request
      * @return
      */
-    @PatchMapping(value = "/user/withdraw/{idx}")
+    @DeleteMapping(value = "/user/{idx}")
     @ResponseBody
-    public Map<String,Object> withdrawUser(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> forceDeleteUser(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
         paramMap.put("idx",idx);
         String[] roleType = {"ROLE_USER"};
         paramMap.put("roleType", roleType);
-        int result = adminService.withdrawUser(paramMap);
+        int result = adminService.forceDeleteUser(paramMap);
 
         return ResultStr.set(result);
     }
 
     //유저 비밀번호 초기화
+
+
 
     // 관리자 리스트
     // 관리자 상세

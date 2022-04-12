@@ -53,7 +53,5 @@ public interface AdminMapper {
 
     int updateUser(Map<String, Object> paramMap);
 
-    int withdrawUser(Map<String, Object> paramMap);
-
-    int deleteUser();
+    int forceDeleteUser(Map<String, Object> paramMap);
 }

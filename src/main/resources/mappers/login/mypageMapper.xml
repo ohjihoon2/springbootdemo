@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.MypageMapper">
+    <update id="withdrawUser" parameterType="map">
+        UPDATE users
+           SET USE_YN = 'N',
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX = #{idx}
+           AND ROLE_TYPE IN
+        <foreach collection="roleType" item="roleType" open="(" close=")" separator=",">
+            #{roleType}
+        </foreach>
+    </update>
+</mapper>

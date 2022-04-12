@@ -12,4 +12,6 @@ import java.util.Map;
 public interface CommonMapper {
 
     List<MenuTree>  findLinkNameLvlByUseYn();
+
+    int deleteWithdrawUser();
 }

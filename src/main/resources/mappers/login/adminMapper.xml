@@ -526,22 +526,8 @@
         </foreach>
     </update>
 
-    <update id="withdrawUser" parameterType="map">
-        UPDATE users
-           SET USE_YN = 'N',
-               UPDATE_DATE = SYSDATE()
-         WHERE IDX = #{idx}
-           AND ROLE_TYPE IN
-        <foreach collection="roleType" item="roleType" open="(" close=")" separator=",">
-            #{roleType}
-        </foreach>
-    </update>
-
-    <delete id="deleteUser">
-        <![CDATA[
+    <delete id="forceDeleteUser">
         DELETE FROM USERS
-         WHERE USE_YN = 'N'
-           AND UPDATE_DATE <= date_add(now(), interval -1 month)
-        ]]>
+         WHERE USER_IDX = #{idx}
     </delete>
 </mapper>

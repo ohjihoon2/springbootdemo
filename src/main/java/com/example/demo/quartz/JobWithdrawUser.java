@@ -1,6 +1,7 @@
 package com.example.demo.quartz;
 
 import com.example.demo.repository.AdminMapper;
+import com.example.demo.repository.CommonMapper;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class JobWithdrawUser extends QuartzJobBean {
 
     @Autowired
-    AdminMapper adminMapper;
+    CommonMapper commonMapper;
 
     private static final Logger log = LoggerFactory.getLogger(JobWithdrawUser.class);
 
@@ -21,7 +22,7 @@ public class JobWithdrawUser extends QuartzJobBean {
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         log.debug("==매일 0시 1초에 작업 시작==");
 
-        int result = adminMapper.deleteUser();
+        int result = commonMapper.deleteWithdrawUser();
         if(result == 1){
             log.debug("탈퇴 한지 한달 된 유저 삭제 완료");
         }else{

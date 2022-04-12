@@ -30,4 +30,12 @@
          WHERE USE_YN = 'Y'
          ORDER BY PARENT_IDX, IDX
     </select>
+
+    <delete id="deleteWithdrawUser">
+        <![CDATA[
+        DELETE FROM USERS
+         WHERE USE_YN = 'N'
+           AND UPDATE_DATE <= date_add(now(), interval -1 month)
+        ]]>
+    </delete>
 </mapper>
