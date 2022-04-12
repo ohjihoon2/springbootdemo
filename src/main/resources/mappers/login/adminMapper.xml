@@ -440,7 +440,7 @@
          WHERE IDX=#{idx}
     </delete>
 
-    <select id="findAllUser" parameterType="map" resultType="CustomMap">
+    <select id="findAllUser" parameterType="Criteria" resultType="CustomMap">
         SELECT IDX,
                USER_ID,
                USER_PWD,
@@ -456,7 +456,7 @@
                UPDATE_DATE
           FROM users
          WHERE 1=1
-           AND ROLE_TYPE NOT IN ("ROLE_ADMIN", "ROLE_MANAGER")
+           AND ROLE_TYPE IN ("ROLE_USER")
         <include refid="criteriaUser"/>
         LIMIT #{pageStart},#{amount}
     </select>
@@ -479,12 +479,12 @@
                            UPDATE_DATE
                       FROM users
                      WHERE 1=1
-                       AND ROLE_TYPE NOT IN ("ROLE_ADMIN", "ROLE_MANAGER")
+                       AND ROLE_TYPE IN ("ROLE_USER")
                     <include refid="criteriaUser"/>
                 ) AS CNT_TB
     </select>
 
-    <select id="findByIdxUser" resultType="User" parameterType="int">
+    <select id="findByIdxUser" resultType="User" parameterType="map">
         SELECT IDX,
                USER_ID,
                USER_PWD,
@@ -523,8 +523,73 @@
         </foreach>
     </update>
 
-    <delete id="forceDeleteUser">
+    <delete id="forceDeleteUser" parameterType="map">
         DELETE FROM USERS
          WHERE USER_IDX = #{idx}
+           AND ROLE_TYPE IN
+        <foreach collection="roleType" item="roleType" open="(" close=")" separator=",">
+            #{roleType}
+        </foreach>
     </delete>
+
+    <update id="resetPassword" parameterType="map">
+        UPDATE USERS
+           SET USER_PWD = #{userPwd}
+         WHERE IDX = {idx}
+    </update>
+
+    <select id="findAllAdmin" parameterType="Criteria" resultType="User">
+        SELECT IDX,
+               USER_ID,
+               USER_PWD,
+               USER_NM,
+               USER_NICKNM,
+               USER_EMAIL,
+               USER_PHONE,
+               ROLE_TYPE,
+               VERIFICATION_CODE,
+               VERIFICATION_YN,
+               USE_YN,
+               CREATE_DATE,
+               UPDATE_DATE
+               FROM users
+         WHERE 1=1
+           AND ROLE_TYPE IN ("ROLE_MANAGER")
+        <include refid="criteriaUser"/>
+        LIMIT #{pageStart},#{amount}
+    </select>
+
+    <select id="countAdmin" parameterType="Criteria" resultType="int">
+        SELECT COUNT(*)
+          FROM (
+                    SELECT IDX,
+                           USER_ID,
+                           USER_PWD,
+                           USER_NM,
+                           USER_NICKNM,
+                           USER_EMAIL,
+                           USER_PHONE,
+                           ROLE_TYPE,
+                           VERIFICATION_CODE,
+                           VERIFICATION_YN,
+                           USE_YN,
+                           CREATE_DATE,
+                           UPDATE_DATE
+                      FROM users
+                     WHERE 1=1
+                       AND ROLE_TYPE IN ("ROLE_MANAGER")
+                     <include refid="criteriaUser"/>
+                ) AS CNT_TB
+    </select>
+
+    <update id="updateAdminSelfInfo" parameterType="map">
+        UPDATE users
+           SET USER_NM = #{userNm},
+               USER_NICKNM = #{userNicknm},
+               USER_EMAIL = #{userEmail},
+               USER_PHONE = #{userPhone},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX= #{idx}
+
+    </update>
 </mapper>

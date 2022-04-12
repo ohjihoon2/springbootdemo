@@ -89,7 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .antMatchers("/forgetPwd").permitAll() // permitAll() - 모든 유저에게 접근을 허용
 //                .antMatchers("/adm/**").hasAnyRole("ADMIN","MANAGER")
                 .antMatchers("/**").permitAll() // permitAll() - 모든 유저에게 접근을 허용
-                .antMatchers("/**/**").permitAll() // permitAll() - 모든 유저에게 접근을 허용
+
                 // anonymous() - 인증되지 않은 유저만 허용합니다.
 //                .anyRequest().authenticated() // 그 외의 모든 요청은 인증된 사용자만 접근가능
                 .and()

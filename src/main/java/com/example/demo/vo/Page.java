@@ -36,15 +36,6 @@ public class Page {
         prev = startPage == 1 ? false : true;
         next = endPage * criteria.getAmount() < total ? true : false;
 
-
-        System.out.println("total = " + total);
-        System.out.println("criteria = " + criteria);
-        System.out.println("pageCount = " + pageCount);
-        System.out.println("endPage = " + endPage);
-        System.out.println("realEnd = " + realEnd);
-        System.out.println("startPage = " + startPage);
-        System.out.println("prev = " + prev);
-        System.out.println("next = " + next);
     }
 
 }

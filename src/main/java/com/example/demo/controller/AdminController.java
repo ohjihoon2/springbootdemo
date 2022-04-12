@@ -331,7 +331,7 @@ public class AdminController {
 
         model.addAttribute("resultList", resultList);
         model.addAttribute("pageMaker", pageMaker);
-        return "/adm/content";
+        return "/adm/user";
     }
 
     /**
@@ -344,8 +344,12 @@ public class AdminController {
      */
     @PostMapping(value = "/user/{idx}")
     @ResponseBody
-    public User userDetails(@PathVariable int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
-        return adminService.findByIdxUser(idx);
+    public User userDetails(@PathVariable int idx,@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request, Model model) {
+        paramMap.put("idx",idx);
+        String[] roleType = {"ROLE_USER"};
+        paramMap.put("roleType", roleType);
+
+        return adminService.findByIdxUser(paramMap);
     }
 
     /**
@@ -388,12 +392,81 @@ public class AdminController {
         return ResultStr.set(result);
     }
 
-    //유저 비밀번호 초기화
+    /**
+     * 비밀번호 초기화
+     * @param paramMap
+     * @param principal
+     * @param response
+     * @param request
+     * @return
+     */
+    @PatchMapping(value = "/password")
+    @ResponseBody
+    public Map<String,Object> resetPassword(@RequestBody Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+        int result = adminService.resetPassword(paramMap);
 
+        return ResultStr.set(result);
+    }
 
+    /**
+     * 관리자 리스트
+     * @param criteria
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/admin")
+    public String adminList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
+        List<Map<String,Object>> resultList = adminService.findAllAdmin(criteria);
+        int total = adminService.countAdmin(criteria);
 
-    // 관리자 리스트
-    // 관리자 상세
+        // 참고 select - option 파라미터
+        // criteria - i(userId) n(userNm) k(userNicknm)
+
+        // 웹 페이징 설정 처리
+        int webPageCount =DeviceCheck.getWebPageCount();
+        Page pageMaker = new Page(total, webPageCount, criteria);
+
+        model.addAttribute("resultList", resultList);
+        model.addAttribute("pageMaker", pageMaker);
+        return "/adm/admin";
+    }
+
+    /**
+     * 관리자 상세
+     * @param idx
+     * @param paramMap
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @PostMapping(value = "/admin/{idx}")
+    @ResponseBody
+    public User adminDetails(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
+        String[] roleType = {"ROLE_MANAGER"};
+        paramMap.put("roleType", roleType);
+        paramMap.put("idx", idx);
+        return adminService.findByIdxUser(paramMap);
+    }
+
+    /**
+     * 관리자 정보 변경
+     * @param paramMap
+     * @param response
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/admin/info")
+    @ResponseBody
+    public Map<String,Object> updateAdminSelfInfo(@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
+        int result = adminService.updateAdminSelfInfo(paramMap);
+        return ResultStr.set(result);
+    }
+
+    // 비밀번호 AJAX - 확인 / 변경
+
     // 관리자 추가
     // 관리자 수정
     // 관리자 삭제

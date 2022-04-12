@@ -28,7 +28,7 @@ public class BoardController {
 
 
     /**
-     * 게시판 리스트
+     * 게시물 리스트
      * @param masterIdx
      * @param criteria
      * @param response
@@ -52,7 +52,7 @@ public class BoardController {
     }
 
     /**
-     * 게시판 상세
+     * 게시물 상세
      * @param idx
      * @param response
      * @param request
@@ -71,7 +71,7 @@ public class BoardController {
     }
 
     /**
-     * 게시판 등록
+     * 게시물 등록 페이지
      * @param response
      * @param request
      * @param model
@@ -83,7 +83,7 @@ public class BoardController {
     }
 
     /**
-     * 게시판 등록(파일 없음)
+     * 게시물 등록(파일 없음)
      * @param board
      * @param response
      * @param request
@@ -101,7 +101,7 @@ public class BoardController {
     }
 
     /**
-     * 게시판 등록 (파일 있음)
+     * 게시물 등록 (파일 있음)
      * @param files
      * @param board
      * @param boardType

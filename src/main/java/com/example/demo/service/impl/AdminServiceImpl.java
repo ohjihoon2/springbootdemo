@@ -4,9 +4,11 @@ import com.example.demo.repository.AdminMapper;
 import com.example.demo.service.AdminService;
 import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -123,8 +125,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public User findByIdxUser(int idx) {
-        return adminMapper.findByIdxUser(idx);
+    public User findByIdxUser(Map<String, Object> paramMap) {
+        return adminMapper.findByIdxUser(paramMap);
     }
 
     @Override
@@ -135,5 +137,28 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public int forceDeleteUser(Map<String, Object> paramMap) {
         return adminMapper.forceDeleteUser(paramMap);
+    }
+
+    @Override
+    public int resetPassword(Map<String, Object> paramMap) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        paramMap.put("userPwd",passwordEncoder.encode("rhdxhd12!"));
+
+        return adminMapper.resetPassword(paramMap);
+    }
+
+    @Override
+    public List<Map<String, Object>> findAllAdmin(Criteria criteria) {
+        return adminMapper.findAllAdmin(criteria);
+    }
+
+    @Override
+    public int countAdmin(Criteria criteria) {
+        return adminMapper.countAdmin(criteria);
+    }
+
+    @Override
+    public int updateAdminSelfInfo(Map<String, Object> paramMap) {
+        return adminMapper.updateAdminSelfInfo(paramMap);
     }
 }

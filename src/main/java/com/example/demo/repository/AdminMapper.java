@@ -49,9 +49,17 @@ public interface AdminMapper {
 
     int countUser(Criteria criteria);
 
-    User findByIdxUser(int idx);
+    User findByIdxUser(Map<String, Object> paramMap);
 
     int updateUser(Map<String, Object> paramMap);
 
     int forceDeleteUser(Map<String, Object> paramMap);
+
+    int resetPassword(Map<String, Object> paramMap);
+
+    List<Map<String, Object>> findAllAdmin(Criteria criteria);
+
+    int countAdmin(Criteria criteria);
+
+    int updateAdminSelfInfo(Map<String, Object> paramMap);
 }
