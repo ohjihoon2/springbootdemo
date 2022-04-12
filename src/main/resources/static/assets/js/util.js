@@ -162,6 +162,8 @@
                 userPhone3: '연락처',
                 boardNm: '게시판명',
                 boardId: '게시판ID',
+                contentId: '컨텐츠ID',
+                contentNm: '컨텐츠명',
             }
 
             if ($('#' + id).val() == '') {

@@ -400,8 +400,6 @@
                  CONTENT_ID,
                  CONTENT_NM,
                  CONTENT_HTML,
-                 HIT,
-                 OPEN_YN,
                  USE_YN,
                  CREATE_IDX,
                  CREATE_DATE
@@ -411,11 +409,9 @@
                 #{contentId},
                 #{contentNm},
                 #{contentHtml},
-                0,
-                #{openYn},
-                'Y'
-                #{userId},
-                SYSDATE
+                'Y',
+                #{userIdx},
+                SYSDATE()
             )
 
     </insert>

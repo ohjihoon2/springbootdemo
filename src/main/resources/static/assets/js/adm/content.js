@@ -1,3 +1,7 @@
+
+// 에디터용
+var oEditors = [];
+
 $(function(){
     //검색
     $('#searchBtn').click(function() {
@@ -51,7 +55,7 @@ $(function(){
 
         $popup.popupJs(html);
 
-        var oEditors = [];
+        oEditors = [];
         nhn.husky.EZCreator.createInIFrame({
             oAppRef : oEditors,
             elPlaceHolder : "contentHtml",
@@ -91,6 +95,8 @@ $(function(){
         else {
             useYn = 'N';
         }
+
+        oEditors.getById["contentHtml"].exec("UPDATE_CONTENTS_FIELD", []);
 
         var data = {
             contentId : $('#contentId').val(),
