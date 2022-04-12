@@ -436,7 +436,7 @@
 
     <delete id="deleteContent" parameterType="map">
         DELETE FROM content
-         WHERE CONTENT_ID=#{idx}
+         WHERE IDX=#{idx}
     </delete>
 
     <select id="findAllUser" parameterType="map" resultType="CustomMap">

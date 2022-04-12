@@ -206,7 +206,7 @@ $(function(){
 
     // 게시판삭제
     $(document).on("click", "#boardDel", function(e) {
-        if(confirm("해당 게시판 을 삭제하시겠습니까?")) {
+        if(confirm("해당 게시판을 삭제하시겠습니까?")) {
             var idx = $('#idx').val();
 
             var res = $ajax.deleteAjax('/adm/boardMaster/'+ idx);

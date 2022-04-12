@@ -134,13 +134,8 @@ $(function(){
             useYn = 'checked';
         }
 
-        var fileAttachYn = '';
-        if(res.fileAttachYn == 'Y') {
-            fileAttachYn = 'checked';
-        }
-
         var html =
-            '<h4>게시판 수정</h4>' +
+            '<h4>컨텐츠 수정</h4>' +
             '<div class="mb20"></div>' +
             '<form id="boardUpdateForm">' +
             '<input id="idx" type="hidden" value="'+ res.idx +'">' +
@@ -153,35 +148,27 @@ $(function(){
             '</colgroup>' +
             '<tbody>' +
             '<tr>' +
-            '<th>Type</th>' +
-            '<td class="text-center"><select id="boardType"><option value="GENERAL"' + boardTypeGeneral + '>일반게시판</option><option value="PHOTO"' + boardTypePhoto + '>사진게시판</option></select></td>' +
+            '<th>Id</th>' +
+            '<td><input id="contentId" type="text" value="'+ res.contentId +'" maxlength="15"><input id="boardIdOrigin" type="hidden" value="'+ res.boardId +'"></td>' +
             '<th>Use</th>' +
             '<td class="text-center"><input id="useYn" type="checkbox"'+ useYn +'></td>' +
-            '</tr>' +
-            '<tr>' +
-            '<th>Id</th>' +
-            '<td colspan="3"><input id="boardId" type="text" value="'+ res.boardId +'" maxlength="15"><input id="boardIdOrigin" type="hidden" value="'+ res.boardId +'"></td>' +
             '</tr>' +
             '<tr>' +
             '<th>Name</th>' +
             '<td colspan="3"><input id="boardNm" type="text" value="'+ res.boardNm +'" maxlength="15"></td>' +
             '</tr>' +
             '<tr>' +
-            '<th colspan="4">Desc</th>' +
+            '<th colspan="4">Html</th>' +
             '</tr>' +
             '<tr>' +
-            '<td colspan="4"><textarea id="boardDesc">' + res.boardDesc + '</textarea></td>' +
-            '</tr>' +
-            '<tr>' +
-            '<th colspan="2">File Attach</th>' +
-            '<td colspan="2" class="text-center"><input id="fileAttachYn" type="checkbox"'+ fileAttachYn +'></td>' +
+            '<td colspan="4"><textarea id="contentHtml">' + res.contentHtml + '</textarea></td>' +
             '</tr>' +
             '</tbody>' +
             '</table>' +
             '<div class="mt50"></div>' +
             '<div class="bot-btn-box">' +
             '<div class="left">' +
-            '<button type="button" id="boardDel">삭제</button>' +
+            '<button type="button" id="contentDel">삭제</button>' +
             '</div>' +
             '<button type="button" onclick="$popup.popupJsClose()">닫기</button>\n' +
             '<button type="submit">수정</button>' +
@@ -189,19 +176,27 @@ $(function(){
             '</form>';
 
         $popup.popupJs(html);
+
+        oEditors = [];
+        nhn.husky.EZCreator.createInIFrame({
+            oAppRef : oEditors,
+            elPlaceHolder : "contentHtml",
+            sSkinURI : "/js/externalLib/smarteditor2/SmartEditor2Skin.html",
+            fCreator : "createSEditor2"
+        });
     });
 
-    // 게시판삭제
-    $(document).on("click", "#boardDel", function(e) {
-        if(confirm("해당 게시판 을 삭제하시겠습니까?")) {
+    // 컨텐츠삭제
+    $(document).on("click", "#contentDel", function(e) {
+        if(confirm("해당 컨텐츠를 삭제하시겠습니까?")) {
             var idx = $('#idx').val();
 
-            var res = $ajax.deleteAjax('/adm/boardMaster/'+ idx);
+            var res = $ajax.deleteAjax('/adm/content/'+ idx);
             if(res == "error") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }
             else if(res.result == "success") {
-                alert("해당 게시판을 삭제하였습니다.")
+                alert("해당 컨텐츠를 삭제하였습니다.")
                 window.location.reload();
             }
             else if(res.result == "fail"){
