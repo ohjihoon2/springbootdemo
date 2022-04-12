@@ -2,13 +2,11 @@ package com.example.demo.vo;
 
 
 import lombok.Data;
-import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Component;
 
 @Component
 @Data
 public class Page {
-
     private int pageCount;
     private int startPage;
     private int endPage;
@@ -32,11 +30,21 @@ public class Page {
         realEnd = (int)(Math.ceil(total*1.0 / criteria.getAmount()));
 
         if(endPage > realEnd){
-            endPage = realEnd ==0 ? 1 : realEnd;
+            endPage = realEnd;
         }
 
-        prev = startPage > 1;
-        next = endPage < realEnd;
+        prev = startPage == 1 ? false : true;
+        next = endPage * criteria.getAmount() < total ? true : false;
 
+
+        System.out.println("total = " + total);
+        System.out.println("criteria = " + criteria);
+        System.out.println("pageCount = " + pageCount);
+        System.out.println("endPage = " + endPage);
+        System.out.println("realEnd = " + realEnd);
+        System.out.println("startPage = " + startPage);
+        System.out.println("prev = " + prev);
+        System.out.println("next = " + next);
     }
+
 }

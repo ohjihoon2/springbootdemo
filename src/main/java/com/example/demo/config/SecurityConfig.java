@@ -94,7 +94,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 //                .anyRequest().authenticated() // 그 외의 모든 요청은 인증된 사용자만 접근가능
                 .and()
 
-                .csrf().ignoringAntMatchers("/sendVerificationMail"); //csrf 예외 처리
+                .csrf().ignoringAntMatchers("/sendVerificationMail") //csrf 예외 처리
+                        .ignoringAntMatchers("/cmm/singleImageUploader"); //csrf 예외 처리
 //                .and()
 
         http.csrf()

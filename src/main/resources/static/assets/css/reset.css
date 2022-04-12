@@ -100,6 +100,8 @@ input:read-only, input[readonly=true], textarea:read-only, textarea[readonly=tru
 .mb70{margin-bottom:70px !important}
 
 /* padding */
+.p0{padding: 0 !important;}
+
 .pt20{padding-top:20px !important}
 .pt50{padding-top:50px !important}
 .pt80{padding-top:80px !important}

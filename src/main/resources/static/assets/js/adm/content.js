@@ -5,15 +5,15 @@ $(function(){
             searchType : $('#searchType').val(),
             searchKeyword : $('#searchKeyword').val(),
         }
-        $page.getGoPage('/adm/boardMaster', param)
+        $page.getGoPage('/adm/content', param)
     });
 
-    //게시판추가 팝업
+    //컨텐츠추가 팝업
     $('#addBtn').click(function(){
         var html = 
-            '<h4>게시판 추가</h4>' +
+            '<h4>컨텐츠 추가</h4>' +
             '<div class="mb20"></div>' +
-            '<form id="boardAddForm">' +
+            '<form id="contentAddForm">' +
             '<table>' +
             '<colgroup>' +
             '<col width="15%">' +
@@ -23,28 +23,22 @@ $(function(){
             '</colgroup>' +
             '<tbody>' +
             '<tr>' +
-            '<th>Type</th>' +
-            '<td class="text-center"><select id="boardType"><option value="GENERAL">일반게시판</option><option value="PHOTO">사진게시판</option></select></td>' +
+            '<th>Id</th>' +
+            '<td><input id="contentId" type="text" maxlength="15"></td>' +
             '<th>Use</th>' +
             '<td class="text-center"><input id="useYn" type="checkbox" checked></td>' +
             '</tr>' +
             '<tr>' +
-            '<th>Id</th>' +
-            '<td colspan="3"><input id="boardId" type="text" maxlength="15"></td>' +
-            '</tr>' +
-            '<tr>' +
             '<th>Name</th>' +
-            '<td colspan="3"><input id="boardNm" type="text" maxlength="15"></td>' +
+            '<td colspan="3"><input id="contentNm" type="text" maxlength="15"></td>' +
             '</tr>' +
             '<tr>' +
-            '<th colspan="4">Desc</th>' +
+            '<th colspan="4">Html</th>' +
             '</tr>' +
             '<tr>' +
-            '<td colspan="4"><textarea id="boardDesc"></textarea></td>' +
+            '<td colspan="4" class="p0"><textarea id="contentHtml"></textarea></td>' +
             '</tr>' +
             '<tr>' +
-            '<th colspan="2">File Attach</th>' +
-            '<td colspan="2" class="text-center"><input id="fileAttachYn" type="checkbox" checked></td>' +
             '</tr>' +
             '</tbody>' +
             '</table>' +
@@ -56,31 +50,39 @@ $(function(){
             '</form>';
 
         $popup.popupJs(html);
+
+        var oEditors = [];
+        nhn.husky.EZCreator.createInIFrame({
+            oAppRef : oEditors,
+            elPlaceHolder : "contentHtml",
+            sSkinURI : "/js/externalLib/smarteditor2/SmartEditor2Skin.html",
+            fCreator : "createSEditor2"
+        });
     });
 
     // 게시판추가
-    $(document).on("submit", "#boardAddForm", function(e) {
+    $(document).on("submit", "#contentAddForm", function(e) {
         e.preventDefault();
 
-        if($event.validationFocus("boardId")) return;
+        if($event.validationFocus("contentId")) return;
 
-        if(!$util.isEnNu($('#boardId').val())) {
-            alert("게시판 ID는 영문, 숫자만 입력가능합니다.");
-            $('#boardId').focus();
+        if(!$util.isEnNu($('#contentId').val())) {
+            alert("컨텐츠 ID는 영문, 숫자만 입력가능합니다.");
+            $('#contentId').focus();
             return;
         }
         var param = {
-            boardId : $('#boardId').val()
+            contentId : $('#contentId').val()
         }
 
-        var result = $ajax.postAjax('/adm/boardId', param);
+        var result = $ajax.postAjax('/adm/contentId', param);
 
         if(result.result == 'success') {
-            alert("이미 사용중인 게시판 ID입니다.\n게사판 ID는 중복 될 수 없습니다.");
+            alert("이미 사용중인 컨텐츠 ID입니다.\n컨텐츠 ID는 중복 될 수 없습니다.");
             return;
         }
 
-        if($event.validationFocus("boardNm")) return;
+        if($event.validationFocus("contentNm")) return;
 
         var useYn;
         if($('#useYn').is(':checked')) {
@@ -90,30 +92,19 @@ $(function(){
             useYn = 'N';
         }
 
-        var fileAttachYn;
-        if($('#fileAttachYn').is(':checked')) {
-            fileAttachYn = 'Y';
-        }
-        else {
-            fileAttachYn = 'N';
-        }
-
-
         var data = {
-            boardType : $('#boardType').val(),
+            contentId : $('#contentId').val(),
             useYn : useYn,
-            boardId : $('#boardId').val(),
-            boardNm : $('#boardNm').val(),
-            boardDesc : $('#boardDesc').val(),
-            fileAttachYn : fileAttachYn,
+            contentNm : $('#contentNm').val(),
+            contentHtml : $('#contentHtml').val(),
         };
 
-        var res = $ajax.postAjax('/adm/boardMaster', data);
+        var res = $ajax.postAjax('/adm/content', data);
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
         }
         else if(res.result == "success") {
-            alert("게시판을 추가하였습니다.")
+            alert("컨텐츠를 추가하였습니다.")
             window.location.reload();
         }
         else if(res.result == "fail"){
@@ -121,25 +112,15 @@ $(function(){
         }
     });
 
-    //게시판수정 팝업
+    //컨텐츠수정 팝업
     $('[name="updateBtn"]').click(function(){
         var idx = $(this).data('val');
 
-        var res = $ajax.postAjax('/adm/boardMaster/' + idx);
+        var res = $ajax.postAjax('/adm/content/' + idx);
 
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             return;
-        }
-
-        var boardTypeGeneral = '';
-        var boardTypePhoto = '';
-
-        if(res.boardType == 'GENERAL') {
-            boardTypeGeneral = 'selected';
-        }
-        else if(res.boardType == 'PHOTO') {
-            boardTypePhoto = 'selected';
         }
 
         var useYn ='';

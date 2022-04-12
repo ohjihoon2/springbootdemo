@@ -8,11 +8,11 @@
             <div class="logo-wrap mb30">
                 <a href="/"><img th:src="@{/img/common/logo_b.png}" width="100%;"></a>
             </div>
-            <div class="header-criteria mb30">
+            <div class="header-search mb30">
                 <form class="">
                     <input type="text" placeholder="검색어를 입력하세요">
-                    <button type="submit" class="criteria-btn">
-                        <i class="fa fa-criteria"></i>
+                    <button type="submit" class="search-btn">
+                        <i class="fa fa-search"></i>
                     </button>
                 </form>
             </div>
@@ -78,7 +78,7 @@
                             <li class="list-li" th:classappend="${page == 'boardMaster'} ? 'on'" data-val="/adm/boardMaster">게시판 관리</li>
                             <li class="list-li" th:classappend="${page == 'content'} ? 'on'" data-val="/adm/content">컨텐츠 관리</li>
                             <li class="list-li" data-val="">Q&A 관리</li>
-                            <li class="list-li" data-val="">FAQ 관리</li>
+                            <li class="list-li" data-val="">F&Q 관리</li>
                             <li class="list-li" data-val="">글, 댓글 현황</li>
                         </ul>
                     </li>

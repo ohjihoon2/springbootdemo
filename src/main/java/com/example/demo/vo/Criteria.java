@@ -17,16 +17,16 @@ public class Criteria {
     // 생성자로 무조건 실행된다.
     // 기본 페이지를 1페이지에 10개씩 페이징 처리
     public Criteria(){
-        this(1,10,null,null);
+        this.pageNum = 1;
+        this.amount = 10;
     }
 
     //매개변수로 들어오는 값을 이용하여 페이징 처리
-    public Criteria(int pageNum, int amount, String searchType, String searchKeyword) {
+    public Criteria(int pageNum, int amount) {
         this.pageNum = pageNum;
         this.amount = amount;
-        this.searchType = searchType;
-        this.searchKeyword = searchKeyword;
     }
+
 
     public void setPageNum(int pageNum) {
         if(pageNum<=0) {

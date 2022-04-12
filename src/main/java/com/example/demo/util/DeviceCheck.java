@@ -22,7 +22,7 @@ public class DeviceCheck {
     @Value("${pageCount.web}")
     public void setWebPageCount(Integer count) {
         webPageCount = count;
-    }                                              
+    }
 
     public DeviceCheck() {
     }
@@ -43,6 +43,6 @@ public class DeviceCheck {
      * @return
      */
     public static int getWebPageCount(){
-       return webPageCount;
+        return webPageCount;
     }
 }
