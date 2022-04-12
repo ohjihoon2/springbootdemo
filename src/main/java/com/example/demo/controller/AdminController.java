@@ -326,4 +326,66 @@ public class AdminController {
         return "/adm/content";
     }
 
+    /**
+     * 유저 상세 팝업
+     * @param idx
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @PostMapping(value = "/user/{idx}")
+    @ResponseBody
+    public User userDetails(@PathVariable int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
+        return adminService.findByIdxUser(idx);
+    }
+
+    /**
+     * 유저 수정
+     * @param idx
+     * @param paramMap
+     * @param principal
+     * @param response
+     * @param request
+     * @return
+     */
+    @PatchMapping(value = "/user/{idx}")
+    @ResponseBody
+    public Map<String,Object> updateUser(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+        paramMap.put("idx",idx);
+        String[] roleType = {"ROLE_USER"};
+        paramMap.put("roleType", roleType);
+        int result = adminService.updateUser(paramMap);
+
+        return ResultStr.set(result);
+    }
+
+    /**
+     * 회원 탈퇴
+     * @param idx
+     * @param paramMap
+     * @param principal
+     * @param response
+     * @param request
+     * @return
+     */
+    @PatchMapping(value = "/user/withdraw/{idx}")
+    @ResponseBody
+    public Map<String,Object> withdrawUser(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+        paramMap.put("idx",idx);
+        String[] roleType = {"ROLE_USER"};
+        paramMap.put("roleType", roleType);
+        int result = adminService.withdrawUser(paramMap);
+
+        return ResultStr.set(result);
+    }
+
+
+    // 관리자 리스트
+    // 관리자 상세
+    // 관리자 추가
+    // 관리자 수정
+    // 관리자 삭제
+
+
 }

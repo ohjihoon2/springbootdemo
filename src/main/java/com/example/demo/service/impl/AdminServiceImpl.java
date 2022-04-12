@@ -2,10 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.repository.AdminMapper;
 import com.example.demo.service.AdminService;
-import com.example.demo.vo.BoardMaster;
-import com.example.demo.vo.Content;
-import com.example.demo.vo.MenuTree;
-import com.example.demo.vo.Criteria;
+import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -117,5 +114,20 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public int countUser(Criteria criteria) {
         return adminMapper.countUser(criteria);
+    }
+
+    @Override
+    public User findByIdxUser(int idx) {
+        return adminMapper.findByIdxUser(idx);
+    }
+
+    @Override
+    public int updateUser(Map<String, Object> paramMap) {
+        return adminMapper.updateUser(paramMap);
+    }
+
+    @Override
+    public int withdrawUser(Map<String, Object> paramMap) {
+        return adminMapper.withdrawUser(paramMap);
     }
 }

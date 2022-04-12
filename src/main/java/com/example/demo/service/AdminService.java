@@ -1,9 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.vo.BoardMaster;
-import com.example.demo.vo.Content;
-import com.example.demo.vo.MenuTree;
-import com.example.demo.vo.Criteria;
+import com.example.demo.vo.*;
 
 import java.util.List;
 import java.util.Map;
@@ -45,4 +42,10 @@ public interface AdminService{
     List<Map<String, Object>> findAllUser(Criteria criteria);
 
     int countUser(Criteria criteria);
+
+    User findByIdxUser(int idx);
+
+    int updateUser(Map<String, Object> paramMap);
+
+    int withdrawUser(Map<String, Object> paramMap);
 }

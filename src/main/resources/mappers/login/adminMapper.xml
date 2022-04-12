@@ -459,6 +459,7 @@
                UPDATE_DATE
           FROM users
          WHERE 1=1
+           AND ROLE_TYPE NOT IN ("ROLE_ADMIN", "ROLE_MANAGER")
         <include refid="criteriaUser"/>
         LIMIT #{pageStart},#{amount}
     </select>
@@ -481,7 +482,66 @@
                            UPDATE_DATE
                       FROM users
                      WHERE 1=1
+                       AND ROLE_TYPE NOT IN ("ROLE_ADMIN", "ROLE_MANAGER")
                     <include refid="criteriaUser"/>
                 ) AS CNT_TB
     </select>
+
+    <select id="findByIdxUser" resultType="User" parameterType="int">
+        SELECT IDX,
+               USER_ID,
+               USER_PWD,
+               USER_NM,
+               USER_NICKNM,
+               USER_EMAIL,
+               USER_PHONE,
+               ROLE_TYPE,
+               VERIFICATION_CODE,
+               VERIFICATION_YN,
+               USE_YN,
+               CREATE_DATE,
+               UPDATE_DATE
+          FROM users
+         WHERE IDX = #{idx}
+           AND ROLE_TYPE IN
+        <foreach collection="roleType" item="roleType" open="(" close=")" separator=",">
+            #{roleType}
+        </foreach>
+    </select>
+
+    <update id="updateUser" parameterType="map">
+        UPDATE users
+           SET USER_PWD = #{userPwd},
+               USER_NM = #{userNm},
+               USER_NICKNM = #{userNicknm},
+               USER_EMAIL = #{userEmail},
+               USER_PHONE = #{userPhone},
+               VERIFICATION_CODE = #{verificationCode},
+               VERIFICATION_YN = #{verificationYn},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX = #{idx}
+           AND ROLE_TYPE IN
+        <foreach collection="roleType" item="roleType" open="(" close=")" separator=",">
+            #{roleType}
+        </foreach>
+    </update>
+
+    <update id="withdrawUser" parameterType="map">
+        UPDATE users
+           SET USE_YN = 'N',
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX = #{idx}
+           AND ROLE_TYPE IN
+        <foreach collection="roleType" item="roleType" open="(" close=")" separator=",">
+            #{roleType}
+        </foreach>
+    </update>
+
+    <delete id="deleteUser">
+        <![CDATA[
+        DELETE FROM USERS
+         WHERE USE_YN = 'N'
+           AND UPDATE_DATE <= date_add(now(), interval -1 month)
+        ]]>
+    </delete>
 </mapper>

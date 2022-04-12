@@ -1,9 +1,6 @@
 package com.example.demo.repository;
 
-import com.example.demo.vo.BoardMaster;
-import com.example.demo.vo.Content;
-import com.example.demo.vo.Criteria;
-import com.example.demo.vo.MenuTree;
+import com.example.demo.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -51,4 +48,12 @@ public interface AdminMapper {
     List<Map<String, Object>> findAllUser(Criteria criteria);
 
     int countUser(Criteria criteria);
+
+    User findByIdxUser(int idx);
+
+    int updateUser(Map<String, Object> paramMap);
+
+    int withdrawUser(Map<String, Object> paramMap);
+
+    int deleteUser();
 }
