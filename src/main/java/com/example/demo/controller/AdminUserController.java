@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +59,7 @@ public class AdminUserController {
      */
     @PostMapping(value = "/user/{idx}")
     @ResponseBody
-    public User userDetails(@PathVariable int idx,@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request, Model model) {
+    public User userDetails(@PathVariable int idx,Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request, Model model) {
         paramMap.put("idx",idx);
         String[] roleType = {"ROLE_USER"};
         paramMap.put("roleType", roleType);
@@ -157,7 +158,7 @@ public class AdminUserController {
      */
     @PostMapping(value = "/admin/{idx}")
     @ResponseBody
-    public User adminDetails(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
+    public User adminDetails(@PathVariable int idx, Map<String, Object> paramMap , HttpServletResponse response, HttpServletRequest request) {
         String[] roleType = {"ROLE_MANAGER"};
         paramMap.put("roleType", roleType);
         paramMap.put("idx", idx);
