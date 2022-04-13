@@ -441,24 +441,29 @@
     </delete>
 
     <select id="findAllUser" parameterType="Criteria" resultType="CustomMap">
-        SELECT IDX,
-               USER_ID,
-               USER_PWD,
-               USER_NM,
-               USER_NICKNM,
-               USER_EMAIL,
-               USER_PHONE,
-               ROLE_TYPE,
-               VERIFICATION_CODE,
-               VERIFICATION_YN,
-               MARKETING_YN,
-               USE_YN,
-               CREATE_DATE,
-               UPDATE_DATE
-          FROM users
-         WHERE 1=1
-           AND ROLE_TYPE IN ("ROLE_USER")
-        <include refid="criteriaUser"/>
+        SELECT ROWNUM_TB.*
+          FROM (
+                    SELECT @ROWNUM:=@ROWNUM+1 as ROWNUM,
+                           IDX,
+                           USER_ID,
+                           USER_PWD,
+                           USER_NM,
+                           USER_NICKNM,
+                           USER_EMAIL,
+                           USER_PHONE,
+                           ROLE_TYPE,
+                           VERIFICATION_CODE,
+                           VERIFICATION_YN,
+                           MARKETING_YN,
+                           USE_YN,
+                           CREATE_DATE,
+                           UPDATE_DATE
+                      FROM users,
+                           (SELECT @ROWNUM:=0) temp
+                     WHERE 1=1
+                       AND ROLE_TYPE IN ("ROLE_USER")
+                    <include refid="criteriaUser"/>
+                ) AS ROWNUM_TB
         LIMIT #{pageStart},#{amount}
     </select>
 
@@ -541,24 +546,29 @@
     </update>
 
     <select id="findAllAdmin" parameterType="Criteria" resultType="User">
-        SELECT IDX,
-               USER_ID,
-               USER_PWD,
-               USER_NM,
-               USER_NICKNM,
-               USER_EMAIL,
-               USER_PHONE,
-               ROLE_TYPE,
-               VERIFICATION_CODE,
-               VERIFICATION_YN,
-               MARKETING_YN,
-               USE_YN,
-               CREATE_DATE,
-               UPDATE_DATE
-               FROM users
-         WHERE 1=1
-           AND ROLE_TYPE IN ("ROLE_MANAGER")
-        <include refid="criteriaUser"/>
+        SELECT ROWNUM_TB.*
+          FROM (
+                    SELECT @ROWNUM:=@ROWNUM+1 as ROWNUM,
+                           IDX,
+                           USER_ID,
+                           USER_PWD,
+                           USER_NM,
+                           USER_NICKNM,
+                           USER_EMAIL,
+                           USER_PHONE,
+                           ROLE_TYPE,
+                           VERIFICATION_CODE,
+                           VERIFICATION_YN,
+                           MARKETING_YN,
+                           USE_YN,
+                           CREATE_DATE,
+                           UPDATE_DATE
+                      FROM users,
+                           (SELECT @ROWNUM:=0) temp
+                     WHERE 1=1
+                       AND ROLE_TYPE IN ("ROLE_MANAGER")
+                    <include refid="criteriaUser"/>
+                )
         LIMIT #{pageStart},#{amount}
     </select>
 
