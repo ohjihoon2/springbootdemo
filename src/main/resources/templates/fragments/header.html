@@ -65,10 +65,11 @@
                             <li class="list-li" data-val="">팝업관리</li>
                         </ul>
                     </li>
-                    <li data-val="" class="off">
+                    <li th:classappend="${page == 'user' or page == 'eeee'} ? 'on' : 'off'">
                         <span>회원관리</span>
                         <ul>
-                            <li class="list-li" data-val="">회원관리</li>
+                            <li class="list-li" data-val="/adm/user">회원 관리</li>
+                            <li class="list-li" data-val="">관리자 관리</li>
                             <li class="list-li" data-val="">접속자 통계</li>
                         </ul>
                     </li>

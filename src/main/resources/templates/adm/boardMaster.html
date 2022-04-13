@@ -16,9 +16,9 @@
             <div class="top-btn-box">
                 <div class="left">
                     <select id="searchType">
-                        <option value="TW" th:selected="${#httpServletRequest.getParameter('searchType') == 'all'}">게시판명 + 작성자</option>
-                        <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'boardNm'}">게시판명</option>
-                        <option value="W" th:selected="${#httpServletRequest.getParameter('searchType') == 'createIdx'}">작성자</option>
+                        <option value="TW" th:selected="${#httpServletRequest.getParameter('searchType') == 'TW'}">게시판명 + 작성자</option>
+                        <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'T'}">게시판명</option>
+                        <option value="W" th:selected="${#httpServletRequest.getParameter('searchType') == 'W'}">작성자</option>
                     </select>
                     <input id="searchKeyword" type="text" th:value="${#httpServletRequest.getParameter('searchKeyword')}" />
                     <button type="button" id="searchBtn" class="color-primary">검색</button>

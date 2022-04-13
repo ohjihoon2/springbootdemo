@@ -1,3 +1,6 @@
+// 에디터용
+var oEditors = [];
+
 $(function(){
     //검색
     $('#searchBtn').click(function() {
