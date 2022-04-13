@@ -355,7 +355,7 @@
     <select id="findAllUser" parameterType="Criteria" resultType="CustomMap">
         SELECT ROWNUM_TB.*
           FROM (
-                    SELECT @ROWNUM:=@ROWNUM+1 as ROWNUM,
+                    SELECT @ROWNUM:=@ROWNUM+1 as RN,
                            IDX,
                            USER_ID,
                            USER_PWD,
@@ -376,6 +376,7 @@
                        AND ROLE_TYPE IN ("ROLE_USER")
                     <include refid="criteriaUser"/>
                 ) AS ROWNUM_TB
+        ORDER BY IDX desc
         LIMIT #{pageStart},#{amount}
     </select>
 
@@ -460,7 +461,7 @@
     <select id="findAllAdmin" parameterType="Criteria" resultType="User">
         SELECT ROWNUM_TB.*
           FROM (
-                    SELECT @ROWNUM:=@ROWNUM+1 as ROWNUM,
+                    SELECT @ROWNUM:=@ROWNUM+1 as RN,
                            IDX,
                            USER_ID,
                            USER_PWD,
@@ -481,6 +482,7 @@
                        AND ROLE_TYPE IN ("ROLE_MANAGER")
                     <include refid="criteriaUser"/>
                 )
+        ORDER BY IDX desc
         LIMIT #{pageStart},#{amount}
     </select>
 
