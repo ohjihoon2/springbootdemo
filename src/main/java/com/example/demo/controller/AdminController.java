@@ -324,7 +324,6 @@ public class AdminController {
 
         // 참고 select - option 파라미터
         // criteria - i(userId) n(userNm) k(userNicknm)
-
         // 웹 페이징 설정 처리
         int webPageCount =DeviceCheck.getWebPageCount();
         Page pageMaker = new Page(total, webPageCount, criteria);
@@ -457,10 +456,11 @@ public class AdminController {
      * @param request
      * @return
      */
-    @PatchMapping(value = "/admin/info")
+    @PatchMapping(value = "/admin/{idx}")
     @ResponseBody
-    public Map<String,Object> updateAdminSelfInfo(@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
-        int result = adminService.updateAdminSelfInfo(paramMap);
+    public Map<String,Object> updateAdmin(@PathVariable int idx,@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
+        paramMap.put("idx",idx);
+        int result = adminService.updateAdmin(paramMap);
         return ResultStr.set(result);
     }
 
@@ -479,7 +479,11 @@ public class AdminController {
         return ResultStr.set(result);
     }
 
-    // 관리자 추가
+    /**
+     * 관리자 추가
+     * @param paramMap
+     * @return
+     */
     @PostMapping(value = "/admin")
     @ResponseBody
     public Map<String,Object> insertAdmin(@RequestBody Map<String, Object> paramMap){
@@ -488,8 +492,21 @@ public class AdminController {
         return ResultStr.set(result);
     }
 
-    // 관리자 수정
-    // 관리자 삭제
+    /**
+     * 관리자 삭제
+     * @param idx
+     * @param paramMap
+     * @return
+     */
+    @DeleteMapping(value = "/admin/{idx}")
+    @ResponseBody
+    public Map<String,Object> forceDeleteAdmin(@PathVariable int idx, @RequestBody Map<String, Object> paramMap) {
+        paramMap.put("idx",idx);
+        String[] roleType = {"ROLE_MANAGER"};
+        paramMap.put("roleType", roleType);
+        int result = adminService.forceDeleteUser(paramMap);
 
+        return ResultStr.set(result);
+    }
 
 }

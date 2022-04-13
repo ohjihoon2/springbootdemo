@@ -595,15 +595,14 @@
                 ) AS CNT_TB
     </select>
 
-    <update id="updateAdminSelfInfo" parameterType="map">
+    <update id="updateAdmin" parameterType="map">
         UPDATE users
-           SET USER_NM = #{userNm},
-               USER_NICKNM = #{userNicknm},
-               USER_EMAIL = #{userEmail},
-               USER_PHONE = #{userPhone},
-               UPDATE_DATE = SYSDATE()
-         WHERE IDX= #{idx}
-
+        SET USER_NM = #{userNm},
+            USER_NICKNM = #{userNicknm},
+            USER_EMAIL = #{userEmail},
+            USER_PHONE = #{userPhone},
+            UPDATE_DATE = SYSDATE()
+        WHERE IDX = #{idx}
     </update>
 
     <select id="existsPassword" parameterType="map" resultType="int">
@@ -652,4 +651,6 @@
                  SYSDATE()
             )
     </insert>
+
+
 </mapper>

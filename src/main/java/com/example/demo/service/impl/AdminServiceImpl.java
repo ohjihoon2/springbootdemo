@@ -160,11 +160,6 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public int updateAdminSelfInfo(Map<String, Object> paramMap) {
-        return adminMapper.updateAdminSelfInfo(paramMap);
-    }
-
-    @Override
     public int updatePassword(Map<String, Object> paramMap) {
         int result = 0 ;
 
@@ -189,5 +184,10 @@ public class AdminServiceImpl implements AdminService {
         String password = String.valueOf(paramMap.get("password"));
         paramMap.put("userPwd",passwordEncoder.encode(password));
         return adminMapper.insertAdmin(paramMap);
+    }
+
+    @Override
+    public int updateAdmin(Map<String, Object> paramMap) {
+        return adminMapper.updateAdmin(paramMap);
     }
 }
