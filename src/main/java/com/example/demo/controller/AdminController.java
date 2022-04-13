@@ -439,7 +439,6 @@ public class AdminController {
      * @param paramMap
      * @param response
      * @param request
-     * @param model
      * @return
      */
     @PostMapping(value = "/admin/{idx}")
@@ -458,16 +457,37 @@ public class AdminController {
      * @param request
      * @return
      */
-    @PostMapping(value = "/admin/info")
+    @PatchMapping(value = "/admin/info")
     @ResponseBody
     public Map<String,Object> updateAdminSelfInfo(@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
         int result = adminService.updateAdminSelfInfo(paramMap);
         return ResultStr.set(result);
     }
 
-    // 비밀번호 AJAX - 확인 / 변경
+    /**
+     * 관리자 비밀번호 변경
+     * @param paramMap
+     * @param response
+     * @param request
+     * @return
+     */
+    @PatchMapping(value = "/admin/password")
+    @ResponseBody
+    public Map<String,Object> updatePassword(@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
+
+        int result = adminService.updatePassword(paramMap);
+        return ResultStr.set(result);
+    }
 
     // 관리자 추가
+    @PostMapping(value = "/admin")
+    @ResponseBody
+    public Map<String,Object> insertAdmin(@RequestBody Map<String, Object> paramMap){
+        int result = adminService.insertAdmin(paramMap);
+
+        return ResultStr.set(result);
+    }
+
     // 관리자 수정
     // 관리자 삭제
 

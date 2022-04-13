@@ -451,6 +451,7 @@
                ROLE_TYPE,
                VERIFICATION_CODE,
                VERIFICATION_YN,
+               MARKETING_YN,
                USE_YN,
                CREATE_DATE,
                UPDATE_DATE
@@ -495,6 +496,7 @@
                ROLE_TYPE,
                VERIFICATION_CODE,
                VERIFICATION_YN,
+               MARKETING_YN,
                USE_YN,
                CREATE_DATE,
                UPDATE_DATE
@@ -549,6 +551,7 @@
                ROLE_TYPE,
                VERIFICATION_CODE,
                VERIFICATION_YN,
+               MARKETING_YN,
                USE_YN,
                CREATE_DATE,
                UPDATE_DATE
@@ -592,4 +595,51 @@
          WHERE IDX= #{idx}
 
     </update>
+
+    <select id="existsPassword" parameterType="map" resultType="int">
+        SELECT EXISTS(
+                        SELECT *
+                          FROM USERS
+                         WHERE IDX = #{idx}
+                           AND USER_PWD = #{userPwd}
+                     )
+    </select>
+
+    <update id="updatePassword" parameterType="map">
+        UPDATE USERS
+           SET USER_PWD = #{newPwd},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX =#{idx}
+    </update>
+
+    <insert id="insertAdmin" parameterType="map">
+        INSERT INTO USERS
+            (
+                 USER_ID,
+                 USER_PWD,
+                 USER_NM,
+                 USER_NICKNM,
+                 USER_EMAIL,
+                 USER_PHONE,
+                 ROLE_TYPE,
+                 VERIFICATION_YN,
+                 MARKETING_YN,
+                 USE_YN,
+                 CREATE_DATE
+            )
+        VALUES
+            (
+                 #{userId},
+                 #{userPwd},
+                 #{userNm},
+                 #{userNicknm},
+                 #{userEmail},
+                 #{userPhone},
+                 'ROLE_MANAGER',
+                 NULL,
+                 NULL,
+                 'Y',
+                 SYSDATE()
+            )
+    </insert>
 </mapper>

@@ -13,6 +13,7 @@
                ROLE_TYPE,
                VERIFICATION_CODE,
                VERIFICATION_YN,
+               MARKETING_YN,
                CREATE_DATE,
                UPDATE_DATE
           FROM USERS
@@ -30,6 +31,7 @@
                  USER_PHONE,
                  VERIFICATION_CODE,
                  VERIFICATION_YN,
+                 MARKETING_YN,
                  ROLE_TYPE,
                  USE_YN,
                  CREATE_DATE
@@ -44,6 +46,7 @@
                 #{userPhone},
                 #{verificationCode},
                 #{verificationYn},
+                #{marketingYn},
                 #{roleType},
                 #{useYn},
                 SYSDATE()
@@ -126,6 +129,7 @@
                ROLE_TYPE,
                VERIFICATION_CODE,
                VERIFICATION_YN,
+               MARKETING_YN,
                USE_YN,
                CREATE_DATE,
                UPDATE_DATE
@@ -145,6 +149,7 @@
                ROLE_TYPE,
                VERIFICATION_CODE,
                VERIFICATION_YN,
+               MARKETING_YN,
                USE_YN,
                CREATE_DATE,
                UPDATE_DATE

@@ -62,4 +62,10 @@ public interface AdminMapper {
     int countAdmin(Criteria criteria);
 
     int updateAdminSelfInfo(Map<String, Object> paramMap);
+
+    int existsPassword(Map<String, Object> paramMap);
+
+    int updatePassword(Map<String, Object> paramMap);
+
+    int insertAdmin(Map<String, Object> paramMap);
 }

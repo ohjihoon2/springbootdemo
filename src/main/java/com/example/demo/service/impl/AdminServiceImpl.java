@@ -4,6 +4,7 @@ import com.example.demo.repository.AdminMapper;
 import com.example.demo.service.AdminService;
 import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,8 @@ import java.util.Map;
 public class AdminServiceImpl implements AdminService {
 
     private final AdminMapper adminMapper;
+
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
@@ -141,7 +144,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public int resetPassword(Map<String, Object> paramMap) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         paramMap.put("userPwd",passwordEncoder.encode("rhdxhd12!"));
 
         return adminMapper.resetPassword(paramMap);
@@ -160,5 +162,32 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public int updateAdminSelfInfo(Map<String, Object> paramMap) {
         return adminMapper.updateAdminSelfInfo(paramMap);
+    }
+
+    @Override
+    public int updatePassword(Map<String, Object> paramMap) {
+        int result = 0 ;
+
+
+        String password = String.valueOf(paramMap.get("password"));
+        String newPassword = String.valueOf(paramMap.get("newPassword"));
+
+        paramMap.put("userPwd",passwordEncoder.encode(password));
+        paramMap.put("newPwd",passwordEncoder.encode(newPassword));
+
+        if( adminMapper.existsPassword(paramMap) == 1) {
+            if(adminMapper.updatePassword(paramMap) == 1){
+                result = 1;
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public int insertAdmin(Map<String, Object> paramMap) {
+        String password = String.valueOf(paramMap.get("password"));
+        paramMap.put("userPwd",passwordEncoder.encode(password));
+        return adminMapper.insertAdmin(paramMap);
     }
 }

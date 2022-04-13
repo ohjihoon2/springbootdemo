@@ -18,6 +18,7 @@ public class User {
     private String roleType;
     private String verificationCode;
     private String verificationYn;
+    private String marketingYn;
     private String useYn;
     private Date createDate;
     private Date updateDate;
