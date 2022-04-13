@@ -65,7 +65,10 @@ $(function(){
 
             if($event.validationChk("agree1")) return;
             if($event.validationChk("agree2")) return;
-            if($event.validationChk("agree3")) return;
+            // if($event.validationChk("agree3")) return;
+
+            var marketingYn = "N";
+            if ($('#marketingYn').is(":checked")) marketingYn = "Y";
 
             //회원가입 신청
             var data = {
@@ -77,6 +80,7 @@ $(function(){
                 userPhone : $('#userPhone1').val() + "-" + $('#userPhone1').val() + "-" + $('#userPhone3').val(),
                 roleType : "ROLE_USER",
                 verificationYn : "N",
+                marketingYn : marketingYn,
             }
             var res = $ajax.postAjax('/signup', data);
             if(res == "error") {

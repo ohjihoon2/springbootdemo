@@ -6,24 +6,25 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns="http://www.w3.org/1999/html">
 
-<th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='/css/adm/content.css')"></th:block>
+<th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='/css/adm/user.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
 <th:block th:replace="/fragments/header.html :: thAdmHeader"></th:block>
 <section>
     <div class="section-wrap">
-        <h2>컨텐츠 관리</h2>
+        <h2>회원 관리</h2>
         <div class="mt50"></div>
         <div class="top-btn-box">
             <div class="left">
                 <select id="searchType">
-                    <option value="TW" th:selected="${#httpServletRequest.getParameter('searchType') == 'TW'}">컨텐츠명 + 작성자</option>
-                    <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'T'}">게시판명</option>
-                    <option value="W" th:selected="${#httpServletRequest.getParameter('searchType') == 'W'}">작성자</option>
+                    <option value="TW" th:selected="${#httpServletRequest.getParameter('searchType') == 'INK'}">ID + 이름 + 닉네임</option>
+                    <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'I'}">ID</option>
+                    <option value="W" th:selected="${#httpServletRequest.getParameter('searchType') == 'N'}">이름</option>
+                    <option value="W" th:selected="${#httpServletRequest.getParameter('searchType') == 'N'}">닉네임</option>
                 </select>
                 <input id="searchKeyword" type="text" th:value="${#httpServletRequest.getParameter('searchKeyword')}" />
                 <button type="button" id="searchBtn" class="color-primary">검색</button>
             </div>
-            <button type="button" id="addBtn" class="color-primary">컨텐츠추가</button>
+<!--            <button type="button" id="addBtn" class="color-primary">컨텐츠추가</button>-->
         </div>
         <table id="menuTreeTable">
             <colgroup>
@@ -48,6 +49,10 @@
             </tr>
             </thead>
             <tbody>
+            <th:block>
+                [[${resultList}]]
+            </th:block>
+            <!--/*
             <th:block th:each="res : ${resultList}">
                 <tr>
                     <td th:text="${res.contentNm}"></td>
@@ -65,6 +70,7 @@
                     </td>
                 </tr>
             </th:block>
+            */-->
             <th:block th:if="${resultList.size() == 0}">
                 <tr>
                     <td colspan="8" class="text-center">등록된 컨텐츠가 없습니다.</td>
@@ -75,6 +81,6 @@
     </div>
 </section>
 <th:block th:replace="/fragments/footer.html :: thAdmJs"></th:block>
-<script th:src="@{/js/adm/content.js}"></script>
+<script th:src="@{/js/adm/user.js}"></script>
 </body>
 </html>
