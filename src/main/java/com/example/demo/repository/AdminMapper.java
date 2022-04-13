@@ -35,15 +35,11 @@ public interface AdminMapper {
 
     int insertContent(Map<String, Object> paramMap);
 
-    int countBoardMaster(Criteria criteria);
-
     int existsContentId(Map<String, Object> paramMap);
 
     int updateContent(Map<String, Object> paramMap);
 
     int deleteContent(Map<String, Object> paramMap);
-
-    int countContent(Criteria criteria);
 
     List<Map<String, Object>> findAllUser(Criteria criteria);
 

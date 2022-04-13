@@ -87,18 +87,6 @@ public class AdminController {
 
         List<Map<String,Object>> resultList = adminService.findAllBoardMaster(criteria);
 
-        int total = adminService.countBoardMaster(criteria);
-
-        // 모바일/웹 페이징 설정 처리
-        int pageCount =DeviceCheck.getPageCount(DeviceUtils.getCurrentDevice(request));
-
-        // 웹 페이징 설정 처리
-        // int webPageCount =DeviceCheck.getWebPageCount();
-
-        Page pageMaker = new Page(total, pageCount, criteria);
-        model.addAttribute("resultList", resultList);
-
-        model.addAttribute("pageMaker", pageMaker);
         model.addAttribute("resultList", resultList);
         return "/adm/boardMaster";
     }
@@ -208,14 +196,7 @@ public class AdminController {
     @GetMapping(value = "/content")
     public String contentList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
         List<Map<String,Object>> resultList = adminService.findAllContent(criteria);
-        int total = adminService.countContent(criteria);
 
-        // 웹 페이징 설정 처리
-        int webPageCount =DeviceCheck.getWebPageCount();
-        Page pageMaker = new Page(total, webPageCount, criteria);
-        model.addAttribute("resultList", resultList);
-
-        model.addAttribute("pageMaker", pageMaker);
         model.addAttribute("resultList", resultList);
         return "/adm/content";
     }

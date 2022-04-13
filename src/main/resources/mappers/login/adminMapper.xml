@@ -150,41 +150,6 @@
                       )
     </delete>
 
-    <select id="countBoardMaster" resultType="int" parameterType="Criteria">
-        SELECT COUNT(*)
-          FROM
-               (
-                    SELECT A.IDX,
-                           A.board_ID,
-                           A.BOARD_NM,
-                           A.BOARD_DESC,
-                           A.BOARD_TYPE,
-                           A.FILE_ATTACH_YN,
-                           A.USE_YN,
-                           IFNULL(C.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
-                           A.CREATE_IDX,
-                           A.CREATE_DATE,
-                           IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(D.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM,
-                           A.UPDATE_IDX,
-                           A.UPDATE_DATE,
-                           A.DELETE_YN,
-                           IFNULL(B.CNT,'0') AS CNT
-                      FROM board_master A
-                      LEFT JOIN (
-                                    SELECT COUNT(A.IDX) AS CNT,
-                                           MASTER_IDX
-                                      FROM BOARD A
-                                      LEFT JOIN BOARD_MASTER B ON A.MASTER_IDX = B.IDX
-                                     WHERE A.MASTER_IDX = B.IDX
-                                     GROUP BY MASTER_IDX
-                                ) B ON A.IDX = B.MASTER_IDX
-                      LEFT JOIN USERS C ON A.CREATE_IDX = C.IDX
-                      LEFT JOIN USERS D ON A.UPDATE_IDX = D.IDX
-                     WHERE A.DELETE_YN = 'N'
-                    <include refid="criteriaBoardMaster"/>
-               ) AS CNT_TB
-    </select>
-
     <select id="findAllBoardMaster" resultType="CustomMap" parameterType="Criteria">
         SELECT A.IDX,
                A.board_ID,
@@ -214,34 +179,6 @@
           LEFT JOIN USERS D ON A.UPDATE_IDX = D.IDX
          WHERE A.DELETE_YN = 'N'
         <include refid="criteriaBoardMaster"/>
-        <!--<if test="searchType != null and searchKeyword != null and searchKeyword != ''">
-            <choose>
-                <when test='searchType == "boardNm"'>
-                    AND BOARD_NM LIKE CONCAT('%',#{searchKeyword},'%')
-                </when>
-                <when test='searchType == "createIdx"'>
-                    AND A.CREATE_IDX IN
-                            (
-                                SELECT IDX
-                                  FROM USERS
-                                 WHERE USER_ID LIKE CONCAT('%',#{searchKeyword},'%')
-                            )
-                </when>
-                <otherwise>
-                    AND (
-                            BOARD_NM LIKE CONCAT('%',#{searchKeyword},'%')
-                            OR A.CREATE_IDX IN
-                                    (
-                                        SELECT IDX
-                                          FROM USERS
-                                         WHERE USER_ID LIKE CONCAT('%',#{searchKeyword},'%')
-                                    )
-
-                        )
-                </otherwise>
-            </choose>
-        </if>-->
-        LIMIT #{pageStart},#{amount}
     </select>
 
     <insert id="insertBoardMaster" parameterType="map">
@@ -335,30 +272,6 @@
          WHERE IDX= #{idx}
     </update>
 
-    <select id="countContent" parameterType="Criteria" resultType="int">
-
-        SELECT COUNT(*)
-          FROM (
-                    SELECT A.IDX,
-                           A.CONTENT_ID,
-                           A.CONTENT_NM,
-                           A.CONTENT_HTML,
-                           A.HIT,
-                           A.USE_YN,
-                           A.CREATE_IDX,
-                           A.CREATE_DATE,
-                           A.UPDATE_IDX,
-                           A.UPDATE_DATE,
-                           IFNULL(B.USER_NICKNM,'탈퇴된 관리자') AS CREATE_NICKNM,
-                           IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(C.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM
-                      FROM content A
-                      LEFT JOIN USERS B ON A.CREATE_IDX = B.IDX
-                      LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX
-                     WHERE 1=1
-                    <include refid="criteriaContent"/>
-               ) AS CNT_TB
-    </select>
-
     <select id="findAllContent" parameterType="map" resultType="CustomMap">
         SELECT A.IDX,
                A.CONTENT_ID,
@@ -377,7 +290,6 @@
           LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX
          WHERE 1=1
         <include refid="criteriaContent"/>
-         LIMIT #{pageStart},#{amount}
     </select>
 
     <select id="findByIdxContent" resultType="Content" parameterType="int">

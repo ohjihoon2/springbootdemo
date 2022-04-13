@@ -93,11 +93,6 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public int countBoardMaster(Criteria criteria) {
-        return adminMapper.countBoardMaster(criteria);
-    }
-
-    @Override
     public int existsContentId(Map<String, Object> paramMap) {
         return adminMapper.existsContentId(paramMap);
     }
@@ -110,11 +105,6 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public int deleteContent(Map<String, Object> paramMap) {
         return adminMapper.deleteContent(paramMap);
-    }
-
-    @Override
-    public int countContent(Criteria criteria) {
-        return adminMapper.countContent(criteria);
     }
 
     @Override
