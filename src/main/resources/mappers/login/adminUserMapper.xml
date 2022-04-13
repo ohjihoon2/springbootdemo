@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.AdminUserMapper">
+
+    <sql id="criteriaUser">
+        <if test="searchType != null and searchKeyword != null">
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <foreach item="type" collection="typeArr">
+                    <trim prefix="OR">
+                        <choose>
+                            <when test="type=='I'.toString">
+                                (USER_ID LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                            <when test="type=='N'.toString()">
+                                (USER_NM LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                            <when test="type=='K'.toString()">
+                                (USER_NICKNM LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
+    <select id="findAllUser" parameterType="Criteria" resultType="CustomMap">
+        SELECT ROWNUM_TB.*
+          FROM (
+                    SELECT @ROWNUM:=@ROWNUM+1 as RN,
+                           IDX,
+                           USER_ID,
+                           USER_PWD,
+                           USER_NM,
+                           USER_NICKNM,
+                           USER_EMAIL,
+                           USER_PHONE,
+                           ROLE_TYPE,
+                           VERIFICATION_CODE,
+                           VERIFICATION_YN,
+                           MARKETING_YN,
+                           USE_YN,
+                           CREATE_DATE,
+                           UPDATE_DATE
+                      FROM users,
+                           (SELECT @ROWNUM:=0) temp
+                     WHERE 1=1
+                       AND ROLE_TYPE IN ("ROLE_USER")
+                    <include refid="criteriaUser"/>
+                ) AS ROWNUM_TB
+        ORDER BY IDX desc
+        LIMIT #{pageStart},#{amount}
+    </select>
+
+    <select id="countUser" parameterType="Criteria" resultType="int">
+        SELECT COUNT(*)
+          FROM (
+                    SELECT IDX,
+                           USER_ID,
+                           USER_PWD,
+                           USER_NM,
+                           USER_NICKNM,
+                           USER_EMAIL,
+                           USER_PHONE,
+                           ROLE_TYPE,
+                           VERIFICATION_CODE,
+                           VERIFICATION_YN,
+                           USE_YN,
+                           CREATE_DATE,
+                           UPDATE_DATE
+                      FROM users
+                     WHERE 1=1
+                       AND ROLE_TYPE IN ("ROLE_USER")
+                    <include refid="criteriaUser"/>
+                ) AS CNT_TB
+    </select>
+
+    <select id="findByIdxUser" resultType="User" parameterType="map">
+        SELECT IDX,
+               USER_ID,
+               USER_PWD,
+               USER_NM,
+               USER_NICKNM,
+               USER_EMAIL,
+               USER_PHONE,
+               ROLE_TYPE,
+               VERIFICATION_CODE,
+               VERIFICATION_YN,
+               MARKETING_YN,
+               USE_YN,
+               CREATE_DATE,
+               UPDATE_DATE
+          FROM users
+         WHERE IDX = #{idx}
+           AND ROLE_TYPE IN
+        <foreach collection="roleType" item="roleType" open="(" close=")" separator=",">
+            #{roleType}
+        </foreach>
+    </select>
+
+    <update id="updateUser" parameterType="map">
+        UPDATE users
+           SET USER_PWD = #{userPwd},
+               USER_NM = #{userNm},
+               USER_NICKNM = #{userNicknm},
+               USER_EMAIL = #{userEmail},
+               USER_PHONE = #{userPhone},
+               VERIFICATION_CODE = #{verificationCode},
+               VERIFICATION_YN = #{verificationYn},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX = #{idx}
+           AND ROLE_TYPE IN
+        <foreach collection="roleType" item="roleType" open="(" close=")" separator=",">
+            #{roleType}
+        </foreach>
+    </update>
+
+    <delete id="forceDeleteUser" parameterType="map">
+        DELETE FROM USERS
+         WHERE USER_IDX = #{idx}
+           AND ROLE_TYPE IN
+        <foreach collection="roleType" item="roleType" open="(" close=")" separator=",">
+            #{roleType}
+        </foreach>
+    </delete>
+
+    <update id="resetPassword" parameterType="map">
+        UPDATE USERS
+           SET USER_PWD = #{userPwd}
+         WHERE IDX = {idx}
+    </update>
+
+    <select id="findAllAdmin" parameterType="Criteria" resultType="User">
+        SELECT ROWNUM_TB.*
+          FROM (
+                    SELECT @ROWNUM:=@ROWNUM+1 as RN,
+                           IDX,
+                           USER_ID,
+                           USER_PWD,
+                           USER_NM,
+                           USER_NICKNM,
+                           USER_EMAIL,
+                           USER_PHONE,
+                           ROLE_TYPE,
+                           VERIFICATION_CODE,
+                           VERIFICATION_YN,
+                           MARKETING_YN,
+                           USE_YN,
+                           CREATE_DATE,
+                           UPDATE_DATE
+                      FROM users,
+                           (SELECT @ROWNUM:=0) temp
+                     WHERE 1=1
+                       AND ROLE_TYPE IN ("ROLE_MANAGER")
+                    <include refid="criteriaUser"/>
+                ) AS ROWNUM_TB
+        ORDER BY IDX DESC
+        LIMIT #{pageStart},#{amount}
+    </select>
+
+    <select id="countAdmin" parameterType="Criteria" resultType="int">
+        SELECT COUNT(*)
+          FROM (
+                    SELECT IDX,
+                           USER_ID,
+                           USER_PWD,
+                           USER_NM,
+                           USER_NICKNM,
+                           USER_EMAIL,
+                           USER_PHONE,
+                           ROLE_TYPE,
+                           VERIFICATION_CODE,
+                           VERIFICATION_YN,
+                           USE_YN,
+                           CREATE_DATE,
+                           UPDATE_DATE
+                      FROM users
+                     WHERE 1=1
+                       AND ROLE_TYPE IN ("ROLE_MANAGER")
+                     <include refid="criteriaUser"/>
+                ) AS CNT_TB
+    </select>
+
+    <select id="existsPassword" parameterType="map" resultType="int">
+        SELECT EXISTS(
+                        SELECT *
+                          FROM USERS
+                         WHERE IDX = #{idx}
+                           AND USER_PWD = #{userPwd}
+                     )
+    </select>
+
+    <update id="updatePassword" parameterType="map">
+        UPDATE USERS
+           SET USER_PWD = #{newPwd},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX =#{idx}
+    </update>
+
+    <insert id="insertAdmin" parameterType="map">
+        INSERT INTO USERS
+            (
+                 USER_ID,
+                 USER_PWD,
+                 USER_NM,
+                 USER_NICKNM,
+                 USER_EMAIL,
+                 USER_PHONE,
+                 ROLE_TYPE,
+                 VERIFICATION_YN,
+                 MARKETING_YN,
+                 USE_YN,
+                 CREATE_DATE
+            )
+        VALUES
+            (
+                 #{userId},
+                 #{userPwd},
+                 #{userNm},
+                 #{userNicknm},
+                 #{userEmail},
+                 #{userPhone},
+                 'ROLE_MANAGER',
+                 NULL,
+                 NULL,
+                 'Y',
+                 SYSDATE()
+            )
+    </insert>
+
+    <update id="updateAdmin" parameterType="map">
+        UPDATE users
+        SET USER_NM = #{userNm},
+            USER_NICKNM = #{userNicknm},
+            USER_EMAIL = #{userEmail},
+            USER_PHONE = #{userPhone},
+            UPDATE_DATE = SYSDATE()
+        WHERE IDX = #{idx}
+    </update>
+
+
+</mapper>

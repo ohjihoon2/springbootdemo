@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.AdminBoardMapper">
+
+    <sql id="criteriaBoardMaster">
+        <if test="searchType != null and searchKeyword != null">
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <foreach item="type" collection="typeArr">
+                    <trim prefix="OR">
+                        <choose>
+                            <when test="type=='T'.toString">
+                                (BOARD_NM LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                            <when test="type=='C'.toString()">
+                                (BOARD_DESC LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                            <when test="type=='W'.toString()">
+                                (
+                                    A.CREATE_IDX IN
+                                        (
+                                            SELECT IDX
+                                              FROM USERS
+                                             WHERE USER_ID LIKE CONCAT('%',#{searchKeyword},'%')
+                                        )
+                                )
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
+    <sql id="criteriaContent">
+        <if test="searchType != null and searchKeyword != null">
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <foreach item="type" collection="typeArr">
+                    <trim prefix="OR">
+                        <choose>
+                            <when test="type=='T'.toString">
+                                (CONTENT_NM LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                            <when test="type=='W'.toString()">
+                                (
+                                A.CREATE_IDX IN
+                                    (
+                                    SELECT IDX
+                                    FROM USERS
+                                    WHERE USER_ID LIKE CONCAT('%',#{searchKeyword},'%')
+                                    )
+                                )
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
+    <select id="findAllBoardMaster" resultType="CustomMap" parameterType="Criteria">
+        SELECT A.IDX,
+               A.board_ID,
+               A.BOARD_NM,
+               A.BOARD_DESC,
+               A.BOARD_TYPE,
+               A.FILE_ATTACH_YN,
+               A.USE_YN,
+               IFNULL(C.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
+               A.CREATE_IDX,
+               A.CREATE_DATE,
+               IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(D.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM,
+               A.UPDATE_IDX,
+               A.UPDATE_DATE,
+               A.DELETE_YN,
+               IFNULL(B.CNT,'0') AS CNT
+          FROM board_master A
+          LEFT JOIN (
+                        SELECT COUNT(A.IDX) AS CNT,
+                               MASTER_IDX
+                          FROM BOARD A
+                          LEFT JOIN BOARD_MASTER B ON A.MASTER_IDX = B.IDX
+                         WHERE A.MASTER_IDX = B.IDX
+                         GROUP BY MASTER_IDX
+                    ) B ON A.IDX = B.MASTER_IDX
+          LEFT JOIN USERS C ON A.CREATE_IDX = C.IDX
+          LEFT JOIN USERS D ON A.UPDATE_IDX = D.IDX
+         WHERE A.DELETE_YN = 'N'
+        <include refid="criteriaBoardMaster"/>
+    </select>
+
+    <insert id="insertBoardMaster" parameterType="map">
+        INSERT INTO board_master
+            (
+                 BOARD_ID,
+                 BOARD_NM,
+                 BOARD_DESC,
+                 BOARD_TYPE,
+                 FILE_ATTACH_YN,
+                 USE_YN,
+                 CREATE_IDX,
+                 CREATE_DATE,
+                 UPDATE_IDX,
+                 UPDATE_DATE,
+                 DELETE_YN
+             )
+        VALUES
+            (
+                 #{boardId},
+                 #{boardNm},
+                 #{boardDesc},
+                 #{boardType},
+                 #{fileAttachYn},
+                 #{useYn},
+                 #{userIdx},
+                 date_format(SYSDATE(), '%Y-%m-%d %h:%i:%s'),
+                 NULL,
+                 NULL,
+                 'N'
+            )
+    </insert>
+
+    <select id="existsBoardId" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+          FROM board_master
+         WHERE BOARD_ID = #{boardId}
+    </select>
+
+    <update id="updateBoardMaster" parameterType="map">
+
+        UPDATE board_master
+           SET BOARD_ID= #{boardId},
+               BOARD_NM= #{boardNm},
+               BOARD_DESC= #{boardDesc},
+               BOARD_TYPE=#{boardType},
+               FILE_ATTACH_YN=#{fileAttachYn},
+               USE_YN=#{useYn},
+               UPDATE_IDX= #{userIdx},
+               UPDATE_DATE= SYSDATE()
+         WHERE IDX= #{idx}
+
+    </update>
+
+    <select id="findByIdxBoardMaster" parameterType="int" resultType="BoardMaster">
+        SELECT A.IDX,
+               A.board_ID,
+               A.BOARD_NM,
+               A.BOARD_DESC,
+               A.BOARD_TYPE,
+               A.FILE_ATTACH_YN,
+               A.USE_YN,
+               IFNULL(C.USER_NICKNM,'탈퇴된 관리자') AS CREATE_NICKNM,
+               A.CREATE_IDX,
+               A.CREATE_DATE,
+               IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(D.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM,
+               A.UPDATE_IDX,
+               A.UPDATE_DATE,
+               A.DELETE_YN,
+               IFNULL(B.CNT,'0') AS CNT
+          FROM board_master A
+          LEFT JOIN (
+                        SELECT COUNT(A.IDX) AS CNT,
+                               MASTER_IDX
+                          FROM BOARD A
+                          LEFT JOIN BOARD_MASTER B ON A.MASTER_IDX = B.IDX
+                         WHERE A.MASTER_IDX = B.IDX
+                         GROUP BY MASTER_IDX
+                    ) B ON A.IDX = B.MASTER_IDX
+          LEFT JOIN USERS C ON A.CREATE_IDX = C.IDX
+          LEFT JOIN USERS D ON A.UPDATE_IDX = D.IDX
+         WHERE A.IDX = #{idx}
+    </select>
+
+    <update id="deleteBoardMaster" parameterType="map">
+        UPDATE board_master
+           SET BOARD_ID = NULL,
+               UPDATE_IDX= #{userIdx},
+               UPDATE_DATE= SYSDATE(),
+               DELETE_YN = 'Y'
+         WHERE IDX= #{idx}
+    </update>
+
+    <select id="findAllContent" parameterType="map" resultType="CustomMap">
+        SELECT A.IDX,
+               A.CONTENT_ID,
+               A.CONTENT_NM,
+               A.CONTENT_HTML,
+               A.HIT,
+               A.USE_YN,
+               A.CREATE_IDX,
+               A.CREATE_DATE,
+               A.UPDATE_IDX,
+               A.UPDATE_DATE,
+               IFNULL(B.USER_NICKNM,'탈퇴된 관리자') AS CREATE_NICKNM,
+               IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(C.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM
+          FROM content A
+          LEFT JOIN USERS B ON A.CREATE_IDX = B.IDX
+          LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX
+         WHERE 1=1
+        <include refid="criteriaContent"/>
+    </select>
+
+    <select id="findByIdxContent" resultType="Content" parameterType="int">
+        SELECT IDX,
+               CONTENT_ID,
+               CONTENT_NM,
+               CONTENT_HTML,
+               HIT,
+               USE_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM CONTENT
+         WHERE IDX = #{idx}
+    </select>
+
+    <insert id="insertContent" parameterType="map">
+        INSERT INTO content
+            (
+                 CONTENT_ID,
+                 CONTENT_NM,
+                 CONTENT_HTML,
+                 USE_YN,
+                 CREATE_IDX,
+                 CREATE_DATE
+             )
+        VALUES
+            (
+                #{contentId},
+                #{contentNm},
+                #{contentHtml},
+                'Y',
+                #{userIdx},
+                SYSDATE()
+            )
+
+    </insert>
+
+    <select id="existsContentId" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+          FROM content
+         WHERE CONTENT_ID = #{contentId}
+    </select>
+
+    <update id="updateContent" parameterType="map">
+        UPDATE content
+           SET CONTENT_ID = #{contentId},
+               CONTENT_NM = #{contentNm},
+               CONTENT_HTML = #{contentHtml},
+               HIT = #{hit},
+               USE_YN = #{useYn},
+               UPDATE_IDX= #{userIdx},
+               UPDATE_DATE= SYSDATE()
+         WHERE IDX= #{idx}
+    </update>
+
+    <delete id="deleteContent" parameterType="map">
+        DELETE FROM content
+         WHERE IDX=#{idx}
+    </delete>
+
+</mapper>

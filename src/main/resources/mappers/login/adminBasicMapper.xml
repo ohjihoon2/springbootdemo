@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.AdminBasicMapper">
+
+    <insert id="insertMenuTree" parameterType="MenuTree">
+        INSERT INTO menu_tree
+        (
+        IDX,
+        PARENT_IDX,
+        LVL,
+        NAME,
+        LINK,
+        CREATE_IDX,
+        CREATE_DATE,
+        USE_YN
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=" , ">
+            (
+            #{item.idx},
+            #{item.parentIdx},
+            #{item.lvl},
+            #{item.name},
+            #{item.link},
+            #{item.userIdx},
+            SYSDATE(),
+            #{item.useYn}
+            )
+        </foreach>
+
+    </insert>
+
+
+    <select id="findAllMenuTree" resultType="MenuTree">
+        WITH RECURSIVE CTE AS
+                           (
+                               SELECT IDX,
+                                      PARENT_IDX,
+                                      NAME,
+                                      LVL,
+                                      CREATE_IDX,
+                                      CREATE_DATE,
+                                      USE_YN
+                               FROM MENU_TREE
+                               WHERE LVL = 1
+                               UNION ALL
+                               SELECT IDX,
+                                      PARENT_IDX,
+                                      NAME,
+                                      LVL,
+                                      CREATE_IDX,
+                                      CREATE_DATE,
+                                      USE_YN
+                               FROM MENU_TREE
+                               WHERE IDX != PARENT_IDX
+            )
+        SELECT IDX,
+               PARENT_IDX,
+               NAME,
+               LVL,
+               CREATE_IDX,
+               CREATE_DATE,
+               USE_YN
+        FROM CTE
+        ORDER BY PARENT_IDX, IDX
+    </select>
+
+
+    <delete id="deleteMenuTree">
+
+        DELETE FROM menu_tree
+        WHERE EXISTS (
+                      SELECT 1
+                      FROM menu_tree
+                  )
+    </delete>
+
+
+</mapper>

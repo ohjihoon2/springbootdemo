@@ -1,6 +1,5 @@
 package com.example.demo.quartz;
 
-import com.example.demo.repository.AdminMapper;
 import com.example.demo.repository.CommonMapper;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
