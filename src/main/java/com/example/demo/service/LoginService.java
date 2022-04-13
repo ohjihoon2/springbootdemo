@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.form.UserSaveForm;
 import com.example.demo.vo.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -9,7 +8,7 @@ import java.util.Map;
 
 public interface LoginService extends UserDetailsService {
 
-    int userSave(UserSaveForm userSaveForm,HttpServletRequest request);
+    int userSave(User user,HttpServletRequest request);
 
     User findByEmailAndUserNm(Map<String, Object> paraMap);
 

@@ -1,6 +1,5 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.form.UserSaveForm;
 import com.example.demo.repository.LoginMapper;
 import com.example.demo.service.EmailService;
 import com.example.demo.service.LoginService;
@@ -51,18 +50,18 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
-    public int userSave(UserSaveForm userSaveForm,HttpServletRequest request) {
+    public int userSave(User user,HttpServletRequest request) {
 
-        int cnt = loginMapper.countByUserId(userSaveForm.getUserId());
+        int cnt = loginMapper.countByUserId(user.getUserId());
 
         if(cnt == 0){
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            userSaveForm.setUserPwd(passwordEncoder.encode(userSaveForm.getUserPwd()));
-            userSaveForm.setUseYn("Y");
-            if(loginMapper.saveUser(userSaveForm) == 1){
+            user.setUserPwd(passwordEncoder.encode(user.getUserPwd()));
+            user.setUseYn("Y");
+            if(loginMapper.saveUser(user) == 1){
                 Map<String, Object> map = new HashMap<>();
-                map.put("userId",userSaveForm.getUserId());
-                map.put("userEmail",userSaveForm.getUserEmail());
+                map.put("userId",user.getUserId());
+                map.put("userEmail",user.getUserEmail());
                 return sendVerificationMail(request, map);
             }
 

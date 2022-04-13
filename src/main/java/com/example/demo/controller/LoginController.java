@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.form.UserSaveForm;
 import com.example.demo.service.LoginService;
 import com.example.demo.vo.User;
 import lombok.RequiredArgsConstructor;
@@ -110,15 +109,17 @@ public class LoginController {
     public int sendVerificationMail(@RequestBody Map<String, Object> map, HttpServletRequest request){
         return loginService.sendVerificationMail(request,map);
     }
+
     /**
      * 회원가입 요청
-     * @param userSaveForm
+     * @param user
+     * @param request
      * @return
      */
     @PostMapping(value = "/signup")
     @ResponseBody
-    public Map<String, Object> signupProc(@Validated @RequestBody UserSaveForm userSaveForm, HttpServletRequest request){
-        int result = loginService.userSave(userSaveForm, request);
+    public Map<String, Object> signupProc(@RequestBody User user, HttpServletRequest request){
+        int result = loginService.userSave(user, request);
         Map<String, Object> resultMap = new HashMap<>();
 
         if(result == 1) {
