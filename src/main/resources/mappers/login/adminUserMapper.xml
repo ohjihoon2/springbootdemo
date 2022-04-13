@@ -9,13 +9,13 @@
                     <trim prefix="OR">
                         <choose>
                             <when test="type=='I'.toString">
-                                (USER_ID LIKE CONCAT('%',#{searchKeyword},'%'))
+                                (A.USER_ID LIKE CONCAT('%',#{searchKeyword},'%'))
                             </when>
                             <when test="type=='N'.toString()">
-                                (USER_NM LIKE CONCAT('%',#{searchKeyword},'%'))
+                                (A.USER_NM LIKE CONCAT('%',#{searchKeyword},'%'))
                             </when>
                             <when test="type=='K'.toString()">
-                                (USER_NICKNM LIKE CONCAT('%',#{searchKeyword},'%'))
+                                (A.USER_NICKNM LIKE CONCAT('%',#{searchKeyword},'%'))
                             </when>
                         </choose>
                     </trim>
@@ -27,25 +27,27 @@
     <select id="findAllUser" parameterType="Criteria" resultType="CustomMap">
         SELECT ROWNUM_TB.*
           FROM (
-                    SELECT @ROWNUM:=@ROWNUM+1 as RN,
-                           IDX,
-                           USER_ID,
-                           USER_PWD,
-                           USER_NM,
-                           USER_NICKNM,
-                           USER_EMAIL,
-                           USER_PHONE,
-                           ROLE_TYPE,
-                           VERIFICATION_CODE,
-                           VERIFICATION_YN,
-                           MARKETING_YN,
-                           USE_YN,
-                           CREATE_DATE,
-                           UPDATE_DATE
-                      FROM users,
+                    SELECT @ROWNUM:=@ROWNUM+1 AS RN,
+                           A.IDX,
+                           A.USER_ID,
+                           A.USER_PWD,
+                           A.USER_NM,
+                           A.USER_NICKNM,
+                           A.USER_EMAIL,
+                           A.USER_PHONE,
+                           A.ROLE_TYPE,
+                           A.VERIFICATION_CODE,
+                           A.VERIFICATION_YN,
+                           A.MARKETING_YN,
+                           A.USE_YN,
+                           A.CREATE_DATE,
+                           A.UPDATE_DATE,
+                           B.USER_NICKNM AS UPDATE_NICKNM
+                      FROM users A
+                      LEFT OUTER JOIN users B on A.UPDATE_IDX = B.IDX,
                            (SELECT @ROWNUM:=0) temp
                      WHERE 1=1
-                       AND ROLE_TYPE IN ("ROLE_USER")
+                       AND A.ROLE_TYPE IN ("ROLE_USER")
                     <include refid="criteriaUser"/>
                 ) AS ROWNUM_TB
         ORDER BY IDX desc
@@ -84,6 +86,7 @@
                USER_EMAIL,
                USER_PHONE,
                ROLE_TYPE,
+               ADMIN_MEMO,
                VERIFICATION_CODE,
                VERIFICATION_YN,
                MARKETING_YN,
@@ -134,24 +137,26 @@
         SELECT ROWNUM_TB.*
           FROM (
                     SELECT @ROWNUM:=@ROWNUM+1 as RN,
-                           IDX,
-                           USER_ID,
-                           USER_PWD,
-                           USER_NM,
-                           USER_NICKNM,
-                           USER_EMAIL,
-                           USER_PHONE,
-                           ROLE_TYPE,
-                           VERIFICATION_CODE,
-                           VERIFICATION_YN,
-                           MARKETING_YN,
-                           USE_YN,
-                           CREATE_DATE,
-                           UPDATE_DATE
-                      FROM users,
+                           A.IDX,
+                           A.USER_ID,
+                           A.USER_PWD,
+                           A.USER_NM,
+                           A.USER_NICKNM,
+                           A.USER_EMAIL,
+                           A.USER_PHONE,
+                           A.ROLE_TYPE,
+                           A.VERIFICATION_CODE,
+                           A.VERIFICATION_YN,
+                           A.MARKETING_YN,
+                           A.USE_YN,
+                           A.CREATE_DATE,
+                           A.UPDATE_DATE,
+                           B.USER_NICKNM AS UPDATE_NICKNM
+                      FROM users A
+                      LEFT OUTER JOIN users B on A.UPDATE_IDX = B.IDX,
                            (SELECT @ROWNUM:=0) temp
                      WHERE 1=1
-                       AND ROLE_TYPE IN ("ROLE_MANAGER")
+                       AND A.ROLE_TYPE IN ("ROLE_MANAGER")
                     <include refid="criteriaUser"/>
                 ) AS ROWNUM_TB
         ORDER BY IDX DESC

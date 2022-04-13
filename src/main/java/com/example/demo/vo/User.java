@@ -17,6 +17,7 @@ public class User {
     private String userEmail;
     private String userPhone;
     private String roleType;
+    private String adminMemo;
     private String verificationCode;
     private String verificationYn;
     private String marketingYn;
