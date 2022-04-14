@@ -107,7 +107,7 @@
                USER_NICKNM = #{userNicknm},
                USER_EMAIL = #{userEmail},
                USER_PHONE = #{userPhone},
-               ADMIN_MENO = #{adminMemo},
+               ADMIN_MEMO = #{adminMemo},
                VERIFICATION_YN = #{verificationYn},
                UPDATE_IDX = #{userIdx},
                UPDATE_DATE = SYSDATE()
@@ -234,7 +234,7 @@
         SET USER_NM = #{userNm},
             USER_NICKNM = #{userNicknm},
             USER_EMAIL = #{userEmail},
-            ADMIN_MENO = #{adminMemo},
+            ADMIN_MEMO = #{adminMemo},
             USER_PHONE = #{userPhone},
             UPDATE_DATE = SYSDATE()
         WHERE IDX = #{idx}
