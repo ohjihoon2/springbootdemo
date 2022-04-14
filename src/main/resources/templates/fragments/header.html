@@ -60,7 +60,7 @@
                         <span>환경설정</span>
                         <ul>
                             <li class="list-li" data-val="">기본환경설정</li>
-                            <li class="list-li" th:classappend="${page == 'menuTree' or page == 'eeee'} ? 'on'" data-val="/adm/menuTree">메뉴설정</li>
+                            <li class="list-li" th:classappend="${page == 'menuTree'} ? 'on'" data-val="/adm/menuTree">메뉴설정</li>
                             <li class="list-li" data-val="">배너관리</li>
                             <li class="list-li" data-val="">팝업관리</li>
                         </ul>
@@ -68,28 +68,28 @@
                     <li th:classappend="${page == 'user' or page == 'eeee'} ? 'on' : 'off'">
                         <span>회원관리</span>
                         <ul>
-                            <li class="list-li" data-val="/adm/user">회원 관리</li>
-                            <li class="list-li" data-val="">관리자 관리</li>
-                            <li class="list-li" data-val="">접속자 통계</li>
+                            <li class="list-li" th:classappend="${page == 'user'} ? 'on'" data-val="/adm/user">회원관리</li>
+                            <li class="list-li" data-val="">관리자관리</li>
+                            <li class="list-li" data-val="">접속자통계</li>
                         </ul>
                     </li>
                     <li th:classappend="${page == 'boardMaster' or page == 'content'} ? 'on' : 'off'">
                         <span>게시판관리</span>
                         <ul>
-                            <li class="list-li" th:classappend="${page == 'boardMaster'} ? 'on'" data-val="/adm/boardMaster">게시판 관리</li>
-                            <li class="list-li" th:classappend="${page == 'content'} ? 'on'" data-val="/adm/content">컨텐츠 관리</li>
-                            <li class="list-li" data-val="">Q&A 관리</li>
-                            <li class="list-li" data-val="">FAQ 관리</li>
-                            <li class="list-li" data-val="">글, 댓글 현황</li>
+                            <li class="list-li" th:classappend="${page == 'boardMaster'} ? 'on'" data-val="/adm/boardMaster">게시판관리</li>
+                            <li class="list-li" th:classappend="${page == 'content'} ? 'on'" data-val="/adm/content">컨텐츠관리</li>
+                            <li class="list-li" data-val="">Q&A관리</li>
+                            <li class="list-li" data-val="">FAQ관리</li>
+                            <li class="list-li" data-val="">글, 댓글현황</li>
                         </ul>
                     </li>
                     <li data-val="" class="off">
                         <span>DM 관리</span>
                         <ul>
-                            <li class="list-li" data-val="">메일 발송</li>
-                            <li class="list-li" data-val="">메일 전송내역</li>
-                            <li class="list-li" data-val="">SMS 발송</li>
-                            <li class="list-li" data-val="">SMS 전송내역</li>
+                            <li class="list-li" data-val="">메일발송</li>
+                            <li class="list-li" data-val="">메일전송내역</li>
+                            <li class="list-li" data-val="">SMS발송</li>
+                            <li class="list-li" data-val="">SMS전송내역</li>
                         </ul>
                     </li>
                 </ul>

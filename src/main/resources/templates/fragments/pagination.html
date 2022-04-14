@@ -1,25 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
-    <div th:fragment="pagination" id="pagination" class="pagination">
+    <div th:fragment="pagination" th:object="${pageMaker}" id="pagination" class="pagination">
+        <p class="page-info">Total [[${#numbers.formatInteger(pageMaker.getTotal(), 0, 'COMMA')}]] Page [[${pageMaker.criteria.getPageNum()}]] / [[${pageMaker.getRealEnd()}]]</p>
         <ul>
-            <li th:classappend="${list.getPageNum() == 1} ? disabled">
-                <a data-val="1">《</a>
-            </li>
-            <li th:classappend="${list.getPageNum() == 1} ? disabled">
-                <a th:data-val="${list.getPageNum() - 1}">〈</a>
-            </li>
-            <li class="on" th:if="${list.getPages() == 0}">
-                <a data-val="1">1</a>
-            </li>
-            <li th:each="num : ${#numbers.sequence(list.getPageNum()/10*10, list.getPageNum()/10*10+9)}" th:if="${list.getPages() > num}" th:classappend="${list.getPageNum() == (num + 1)} ? on">
-                <a th:text="${num + 1}" th:data-val="${num + 1}"></a>
-            </li>
-            <li th:classappend="${list.getPageNum() == list.getPages()} ? disabled">
-                <a th:data-val="${list.getPageNum() + 1}">〉</a>
-            </li>
-            <li th:classappend="${list.getPageNum() == list.getPages()} ? disabled">
-                <a th:data-val="${list.getPages()}">》</a>
-            </li>
+            <li><a th:classappend="${pageMaker.criteria.getPageNum() == 1} ? 'disable'" th:data-val="1">《</a></li>
+            <li><a th:classappend="!*{prev} ? 'disable'" th:data-val="${pageMaker.getStartPage()}">〈</a></li>
+            <th:block th:each="num : ${#numbers.sequence(pageMaker.getStartPage(), pageMaker.getEndPage())}">
+                <li><a th:classappend="${pageMaker.criteria.getPageNum() == num} ? 'on disable'" th:data-val="${num}">[[${num}]]</a></li>
+            </th:block>
+            <li><a th:classappend="!*{next} ? 'disable'" th:data-val="${pageMaker.getEndPage() + 1}">〉</a></li>
+            <li><a th:classappend="${pageMaker.getRealEnd() == pageMaker.criteria.getPageNum()}  ? 'disable'" th:data-val="${pageMaker.getRealEnd()}">》</a></li>
         </ul>
+
+        <input id="hiddenSearchType" type="hidden" th:value="${pageMaker.criteria.getSearchType()}">
+        <input id="hiddenSearchKeyword" type="hidden" th:value="${pageMaker.criteria.getSearchKeyword()}">
     </div>
 </html>

@@ -1,5 +1,6 @@
 @charset "utf-8";
-
+/* 관리자는 반응형을 사용하지 않기 위해사용*/
+body {min-width: 1440px;}
 
 /* 체크박스 커스텀 */
 input[type="checkbox"] {
@@ -202,6 +203,7 @@ section {
 .top-btn-box {
     text-align: right;
     margin-bottom: 10px;
+    min-height: 41px;
 }
 
 .top-btn-box select {
@@ -389,4 +391,47 @@ table textarea::-webkit-scrollbar-track {
 }
 .popup-js-content::-webkit-scrollbar-track {
     background-color: #ededed;
+}
+
+/* 페이지네이션 */
+
+.pagination p {
+    text-align: right;
+    font-size: 13px;
+    padding-right: 15px;
+    color: #9b9b9b;
+}
+
+.pagination ul {
+    width: 100%;
+    text-align: center;
+    margin: 80px 0 20px;
+}
+
+.pagination ul li {
+    display: inline-block;
+}
+
+.pagination ul li a{
+    border: 1px solid #d6d6d6;
+    display: inline-block;
+    min-width: 38px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 14px;
+}
+
+.pagination ul li a.disable{
+    background: #EDEDED;
+}
+
+.pagination ul li a.on{
+    color: #fff!important;
+    background-color: #1fb1c7!important;
+    border-color: #00a6bc!important;
+}
+
+.pagination ul li a:not(.disable):hover{
+    cursor: pointer;
+    background: #EDEDED;
 }
