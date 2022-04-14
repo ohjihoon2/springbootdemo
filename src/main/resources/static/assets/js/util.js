@@ -154,9 +154,12 @@
                 userId: '아이디',
                 userPwd: '비밀번호',
                 userPwdChk: '비밀번호 확인',
+                userNm: '이름',
                 userNicknm: '닉네임',
+                userEmail: '이메일',
                 userEmail1: '이메일',
                 userEmail2: '이메일',
+                userPhone: '연락처',
                 userPhone1: '연락처',
                 userPhone2: '연락처',
                 userPhone3: '연락처',
@@ -256,10 +259,29 @@
                 return str;
             }
         },
+        // 배열 null치환
+        nullChkObj : function (obj) {
+            for (var key in obj){
+                if(obj[key] == 'null' || obj[key] == null || typeof obj[key] == undefined || obj[key] == 'undefined') {
+                    obj[key] = "";
+                }
+            }
+            return obj;
+        },
 
         // 숫자 3자리 , 처리
         viewComma : function (num) {
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        },
+
+        // 연락처 자동 하이픈
+        phoneAutoHyphen : function (ph) {
+            $(document).on("focusin", "#" + ph, function() {
+                $(this).val($(this).val().replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')) ;
+            });
+            $(document).on("focusout", "#" + ph, function() {
+                $(this).val($(this).val().replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/\-{1,2}$/g, "")) ;
+            });
         },
 
         // 머였지..
