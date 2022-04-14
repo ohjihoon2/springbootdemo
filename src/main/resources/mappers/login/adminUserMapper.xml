@@ -109,7 +109,7 @@
                USER_PHONE = #{userPhone},
                ADMIN_MENO = #{adminMemo},
                VERIFICATION_YN = #{verificationYn},
-               UPDATE_IDX = #{userIdx}
+               UPDATE_IDX = #{userIdx},
                UPDATE_DATE = SYSDATE()
          WHERE IDX = #{`idx`}
     </update>
