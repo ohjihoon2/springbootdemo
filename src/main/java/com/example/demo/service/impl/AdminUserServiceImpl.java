@@ -91,4 +91,9 @@ public class AdminUserServiceImpl implements AdminUserService {
     public int updateAdmin(Map<String, Object> paramMap) {
         return adminMapper.updateAdmin(paramMap);
     }
+
+    @Override
+    public String getResetPassword() {
+        return adminMapper.getResetPassword();
+    }
 }

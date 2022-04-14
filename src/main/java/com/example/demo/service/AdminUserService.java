@@ -29,4 +29,6 @@ public interface AdminUserService {
     int insertAdmin(Map<String, Object> paramMap);
 
     int updateAdmin(Map<String, Object> paramMap);
+
+    String getResetPassword();
 }

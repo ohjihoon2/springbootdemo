@@ -240,5 +240,9 @@
         WHERE IDX = #{idx}
     </update>
 
+    <select id="getResetPassword" resultType="string">
+        SELECT RESET_PASSWORD
+          FROM config
+    </select>
 
 </mapper>

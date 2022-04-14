@@ -228,4 +228,15 @@ public class AdminUserController {
         return ResultStr.set(result);
     }
 
+    /**
+     * resetPassword 받기
+     * @return
+     */
+    @PostMapping(value = "resetPassword")
+    @ResponseBody
+    public String getResetPassword(){
+        String resetPwd = adminService.getResetPassword();
+        return resetPwd;
+    }
+
 }

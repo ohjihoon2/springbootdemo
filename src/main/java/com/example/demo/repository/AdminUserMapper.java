@@ -34,4 +34,6 @@ public interface AdminUserMapper {
     int insertAdmin(Map<String, Object> paramMap);
 
     int updateAdmin(Map<String, Object> paramMap);
+
+    String getResetPassword();
 }
