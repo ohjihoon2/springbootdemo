@@ -187,7 +187,10 @@ function userNnChk() {
 
                 var res = $ajax.postAjax('/checkNicknm', data);
 
-                if (res == "fail") {
+                if (res == "error") {
+                    alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                }
+                else if (res == "fail") {
                     $('#nnMsg').html("<label class=\"mb10\"></label> 이미 사용중인 닉네임입니다.");
                 }
             }
@@ -243,9 +246,11 @@ function detailUserEmChk() {
 
         //이메일 중복확인
         var res = $ajax.postAjax('/checkEmail', data);
-
-        if (res == "fail") {
-            $('#emMsg').html("<label class=\"mb10\"></label> 이미 사용중인 닉네임입니다.");
+        if(res == "error") {
+            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+        }
+        else if (res == "fail") {
+            $('#emMsg').html("<label class=\"mb10\"></label> 이미 사용중인 이메일입니다.");
         }
     }
 }

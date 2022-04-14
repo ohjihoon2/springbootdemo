@@ -1,7 +1,13 @@
 // 에디터용
 var oEditors = [];
 
+//다중 통신 막기
+submitBtn = true;
+
 $(function(){
+    //연락처 자동 하이픈
+    $util.phoneAutoHyphen("userPhone");
+
     //검색
     $('#searchBtn').click(function() {
         var param = {
@@ -26,26 +32,26 @@ $(function(){
         var idx = $(this).data('val');
 
         var res = $ajax.postAjax('/adm/user/' + idx);
+        res = $util.nullChkObj(res);
 
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             return;
         }
-        var verification ='';
-        if(res.verification == 'Y') {
-            verification = 'checked';
+        var verificationYn ='';
+        if(res.verificationYn == 'Y') {
+            verificationYn = 'checked';
         }
 
-        var useYn ='';
-        if(res.useYn == 'Y') {
-            useYn = 'checked';
+        var marketingYn ='';
+        if(res.marketingYn == 'Y') {
+            marketingYn = 'checked';
         }
-        console.log(res);
 
         var html =
             '<h4>회원 수정</h4>' +
             '<div class="mb20"></div>' +
-            '<form id="contentUpdateForm">' +
+            '<form id="userUpdateForm">' +
             '<input id="idx" type="hidden" value="'+ res.idx +'">' +
             '<table>' +
             '<colgroup>' +
@@ -59,37 +65,43 @@ $(function(){
             '<th>Id</th>' +
             '<td>'+ res.userId +'</td>' +
             '<th>Name</th>' +
-            '<td class="text-center"><input id="userNm" type="text" value="'+ res.userNm +'"></td>' +
+            '<td class="text-center"><input id="userNm" type="text" value="'+ res.userNm +'" maxlength="10"></td>' +
             '</tr>' +
             '<tr>' +
             '<tr>' +
             '<th>Nickname</th>' +
-            '<td class="text-center"><input id="userNicknm" type="text" value="'+ res.userNicknm +'"></td>' +
+            '<td class="text-center">' +
+            '<input id="userNicknm" type="text" value="'+ res.userNicknm +'" maxlength="10">' +
+            '<input id="userNicknmHidden" type="hidden" value="'+ res.userNicknm +'">' +
+            '</td>' +
             '<th>Tel</th>' +
-            '<td class="text-center"><input id="userPhone" type="text" value="'+ res.userPhone +'"></td>' +
+            '<td class="text-center"><input id="userPhone" type="text" value="'+ res.userPhone +'" maxlength="11" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\').replace(/(\\..*)\\./g, \'$1\');"></td>' +
             '</tr>' +
             '<tr>' +
             '<th>Email</th>' +
-            '<td class="text-center"><input id="userEmail" type="text" value="'+ res.userEmail +'"></td>' +
+            '<td class="text-center">' +
+            '<input id="userEmail" type="text" value="'+ res.userEmail +'">' +
+            '<input id="userEmailHidden" type="hidden" value="'+ res.userEmail +'">' +
+            '</td>' +
             '<th>Verification</th>' +
-            '<td class="text-center"><input id="verification" type="checkbox"'+ verification +'></td>' +
+            '<td class="text-center"><input id="verificationYn" type="checkbox"'+ verificationYn +'></td>' +
             '</tr>' +
             '<tr>' +
             '<th colspan="4">Memo</th>' +
             '</tr>' +
             '<tr>' +
-            '<td colspan="4"><textarea id="adminMemo">' + res.adminMemo + '</textarea></td>' +
+            '<td colspan="4"><textarea id="adminMemo" placeholder="관리자 전용으로 유저에게 출력되지 않습니다.">' + res.adminMemo + '</textarea></td>' +
             '</tr>' +
             '<tr>' +
-            '<th colspan="2">File Attach</th>' +
-            '<td colspan="2" class="text-center"><input id="fileAttachYn" type="checkbox" checked></td>' +
+            '<th colspan="2">marketing</th>' +
+            '<td class="text-center" colspan="2"><input id="marketingYn" type="checkbox"'+ marketingYn +' disabled></td>' +
             '</tr>' +
             '</tbody>' +
             '</table>' +
             '<div class="mt50"></div>' +
             '<div class="bot-btn-box">' +
             '<div class="left">' +
-            '<button type="button" id="contentDel">탈퇴</button>' +
+            '<button type="button" id="userDel">탈퇴</button>' +
             '</div>' +
             '<button type="button" onclick="$popup.popupJsClose()">닫기</button>\n' +
             '<button type="submit">수정</button>' +
@@ -100,16 +112,16 @@ $(function(){
     });
 
     // 회원 강제탈퇴
-    $(document).on("click", "#contentDel", function(e) {
-        if(confirm("해당 컨텐츠를 삭제하시겠습니까?")) {
+    $(document).on("click", "#userDel", function(e) {
+        if(confirm("해당 회원을 탈퇴시키겠습니까?")) {
             var idx = $('#idx').val();
 
-            var res = $ajax.deleteAjax('/adm/content/'+ idx);
+            var res = $ajax.deleteAjax('/adm/user/'+ idx);
             if(res == "error") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }
             else if(res.result == "success") {
-                alert("해당 컨텐츠를 삭제하였습니다.")
+                alert("해당 회원을 탈퇴하였습니다.")
                 window.location.reload();
             }
             else if(res.result == "fail"){
@@ -119,55 +131,101 @@ $(function(){
     });
 
     // 회원 수정
-    $(document).on("submit", "#contentUpdateForm", function(e) {
+    $(document).on("submit", "#userUpdateForm", function(e) {
         e.preventDefault();
 
-        if($event.validationFocus("contentId")) return;
+        if (submitBtn) {
+            //빈값체크
+            if ($event.validationFocus("userNm")) return;
+            if ($event.validationFocus("userNicknm")) return;
 
-        if(!$util.isEnNu($('#contentId').val())) {
-            alert("컨텐츠 ID는 영문, 숫자만 입력가능합니다.");
-            $('#boardId').focus();
-            return;
-        }
-        if($('#contentId').val() != $('#contentIdOrigin').val()) {
-            var param = {
-                contentId : $('#contentId').val()
+            if($('#userNicknm').val() != $('#userNicknmHidden').val()) {
+                if ($('#userNicknm').val().length < 2) {
+                    alert("닉네임을 2자 이상 입력해주세요.");
+                    $('#userNicknm').focus();
+                    return;
+                } else if ($('#userNicknm').val().indexOf("관리자") != -1) {
+                    alert("'관리자' 단어는 포함 할수 없습니다.");
+                    $('#userNicknm').focus();
+                    return;
+                } else if ($('#userNicknm').val().indexOf("탈퇴") != -1) {
+                    alert("'탈퇴' 단어는 포함 할수 없습니다.");
+                    $('#userNicknm').focus();
+                    return;
+                } else if (!$util.isNn($('#userNicknm').val())) {
+                    alert("닉네임은 한글, 영어, 숫자 만 사용가능합니다.");
+                    $('#userNicknm').focus();
+                    return;
+                } else {
+                    var userNicknm = {
+                        userNicknm: $('#userNicknm').val(),
+                    }
+
+                    var res1 = $ajax.postAjax('/checkNicknm', userNicknm);
+
+                    if (res1 == "error") {
+                        alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                        return;
+                    } else if (res1 == "fail") {
+                        alert("이미 사용중인 닉네임입니다.");
+                        $('#userNicknm').focus();
+                        return;
+                    }
+                }
+            }
+            if ($event.validationFocus("userPhone")) return;
+            if ($event.validationFocus("userEmail")) return;
+
+            if($('#userEmail').val() != $('#userEmailHidden').val()) {
+                var userEmail = {
+                    userEmail: $('#userEmail').val()
+                }
+
+
+                //이메일 유효성검사
+                if (!$util.isEm(userEmail.userEmail)) {
+                    alert("유효하지 않은 이메일입니다.");
+                    return;
+                }
+                //이메일 중복확인
+                var res2 = $ajax.postAjax('/checkEmail', userEmail);
+
+                if (res2 == "error") {
+                    alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                    return;
+                } else if (res2 == "fail") {
+                    alert("이미 사용중인 이메일입니다.");
+                    $('#userEmail').focus();
+                    return;
+                }
             }
 
-            var result = $ajax.postAjax('/adm/contentId', param);
+            var verificationYn = "N";
+            if ($('#verification').is(":checked")) verificationYn = "Y";
 
-            if(result.result == 'success') {
-                alert("이미 사용중인 컨텐츠 ID입니다.\n컨텐츠 ID는 중복 될 수 없습니다.");
-                return;
+            var data = {
+                userNm: $('#userNm').val(),
+                userNicknm: $('#userNicknm').val(),
+                userPhone: $('#userPhone').val(),
+                userEmail: $('#userEmail').val(),
+                verificationYn : verificationYn,
+                adminMemo : $('#adminMemo').val(),
+            };
+
+            var idx = $('#idx').val();
+
+            submitBtn = false;
+
+            var res = $ajax.patchAjax('/adm/user/' + idx, data);
+            if (res == "error") {
+                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                submitBtn = true;
+            } else if (res.result == "success") {
+                alert("회원을 수정하였습니다.");
+            } else if (res.result == "fail") {
+                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                submitBtn = true;
             }
-        }
-
-        if($event.validationFocus("contentNm")) return;
-
-        var useYn;
-        if($('#useYn').is(':checked')) {
-            useYn = 'Y';
-        }
-        else {
-            useYn = 'N';
-        }
-
-        var data = {
-            contentId : $('#contentId').val(),
-            useYn : useYn,
-            contentNm : $('#contentNm').val(),
-            contentHtml : $('#contentHtml').val(),
-        };
-        var idx = $('#idx').val();
-        var res = $ajax.patchAjax('/adm/content/'+ idx, data);
-        if(res == "error") {
-            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
-        }
-        else if(res.result == "success") {
-            alert("컨텐츠를 수정하였습니다.");
-        }
-        else if(res.result == "fail"){
-            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
         }
     });
 });

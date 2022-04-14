@@ -111,7 +111,7 @@
                VERIFICATION_YN = #{verificationYn},
                UPDATE_IDX = #{userIdx},
                UPDATE_DATE = SYSDATE()
-         WHERE IDX = #{`idx`}
+         WHERE IDX = #{idx}
     </update>
 
     <delete id="forceDeleteUser" parameterType="map">

@@ -122,6 +122,7 @@ $(function(){
         var idx = $(this).data('val');
 
         var res = $ajax.postAjax('/adm/content/' + idx);
+        res = $util.nullChkObj(res);
 
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
@@ -132,7 +133,6 @@ $(function(){
         if(res.useYn == 'Y') {
             useYn = 'checked';
         }
-        console.log(res);
 
         var html =
             '<h4>컨텐츠 수정</h4>' +

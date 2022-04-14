@@ -129,6 +129,7 @@ $(function(){
         var idx = $(this).data('val');
 
         var res = $ajax.postAjax('/adm/boardMaster/' + idx);
+        res = $util.nullChkObj(res);
 
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
