@@ -241,4 +241,16 @@ public class AdminBoardController {
         return ResultStr.set(result);
     }
 
+
+    // qna List
+    // qna 상세
+    //
+
+
+
+
+
+
+
+
 }

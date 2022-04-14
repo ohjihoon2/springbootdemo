@@ -98,7 +98,7 @@ public class AdminUserController {
      */
     @DeleteMapping(value = "/user/{idx}")
     @ResponseBody
-    public Map<String,Object> forceDeleteUser(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> forceDeleteUser(@PathVariable int idx, Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
         paramMap.put("idx",idx);
         String[] roleType = {"ROLE_USER"};
         paramMap.put("roleType", roleType);
@@ -216,7 +216,7 @@ public class AdminUserController {
      */
     @DeleteMapping(value = "/admin/{idx}")
     @ResponseBody
-    public Map<String,Object> forceDeleteAdmin(@PathVariable int idx, @RequestBody Map<String, Object> paramMap) {
+    public Map<String,Object> forceDeleteAdmin(@PathVariable int idx, Map<String, Object> paramMap) {
         paramMap.put("idx",idx);
         String[] roleType = {"ROLE_MANAGER"};
         paramMap.put("roleType", roleType);
