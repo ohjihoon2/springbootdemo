@@ -31,4 +31,7 @@ public interface AdminBoardService {
 
     int deleteContent(Map<String, Object> paramMap);
 
+    List<Map<String, Object>> findAllQna(Criteria criteria);
+
+    int countQna(Criteria criteria);
 }

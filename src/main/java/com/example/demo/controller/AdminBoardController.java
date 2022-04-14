@@ -1,10 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.AdminBoardService;
+import com.example.demo.util.DeviceCheck;
 import com.example.demo.util.ResultStr;
 import com.example.demo.vo.BoardMaster;
 import com.example.demo.vo.Content;
 import com.example.demo.vo.Criteria;
+import com.example.demo.vo.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -25,7 +27,7 @@ import java.util.Map;
 @RequestMapping("adm")
 public class AdminBoardController {
 
-    private final AdminBoardService service;
+    private final AdminBoardService adminService;
 
     /**
      * board master 설정 페이지
@@ -37,7 +39,7 @@ public class AdminBoardController {
     @GetMapping(value = "/boardMaster")
     public String boardMasterList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
 
-        List<Map<String,Object>> resultList = service.findAllBoardMaster(criteria);
+        List<Map<String,Object>> resultList = adminService.findAllBoardMaster(criteria);
 
         model.addAttribute("resultList", resultList);
         return "/adm/boardMaster";
@@ -57,7 +59,7 @@ public class AdminBoardController {
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
         paramMap.put("userIdx",userIdx);
 
-        int result = service.insertBoardMaster(paramMap);
+        int result = adminService.insertBoardMaster(paramMap);
 
         return ResultStr.set(result);
     }
@@ -78,7 +80,7 @@ public class AdminBoardController {
         paramMap.put("idx",idx);
         paramMap.put("userIdx",userIdx);
 
-        int result = service.updateBoardMaster(paramMap);
+        int result = adminService.updateBoardMaster(paramMap);
 
         return ResultStr.set(result);
     }
@@ -101,7 +103,7 @@ public class AdminBoardController {
         paramMap.put("userIdx",userIdx);
         paramMap.put("idx",idx);
 
-        int result = service.deleteBoardMaster(paramMap);
+        int result = adminService.deleteBoardMaster(paramMap);
 
         return ResultStr.set(result);
     }
@@ -117,7 +119,7 @@ public class AdminBoardController {
     @PostMapping(value = "/boardMaster/{idx}")
     @ResponseBody
     public BoardMaster boardMasterDetails(@PathVariable int idx,HttpServletResponse response, HttpServletRequest request,Model model) {
-        return service.findByIdxBoardMaster(idx);
+        return adminService.findByIdxBoardMaster(idx);
     }
 
 
@@ -132,7 +134,7 @@ public class AdminBoardController {
     @ResponseBody
     public Map<String,Object> existsBoardId(@RequestBody Map<String,Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
 
-        int result = service.existsBoardId(paramMap);
+        int result = adminService.existsBoardId(paramMap);
 
         return ResultStr.set(result);
     }
@@ -147,7 +149,7 @@ public class AdminBoardController {
      */
     @GetMapping(value = "/content")
     public String contentList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
-        List<Map<String,Object>> resultList = service.findAllContent(criteria);
+        List<Map<String,Object>> resultList = adminService.findAllContent(criteria);
 
         model.addAttribute("resultList", resultList);
         return "/adm/content";
@@ -164,7 +166,7 @@ public class AdminBoardController {
     @PostMapping(value = "/content/{idx}")
     @ResponseBody
     public Content contentDetails(@PathVariable int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
-        return service.findByIdxContent(idx);
+        return adminService.findByIdxContent(idx);
     }
 
     /**
@@ -181,7 +183,7 @@ public class AdminBoardController {
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
         paramMap.put("userIdx",userIdx);
 
-        int result = service.insertContent(paramMap);
+        int result = adminService.insertContent(paramMap);
 
         return ResultStr.set(result);
     }
@@ -202,7 +204,7 @@ public class AdminBoardController {
         paramMap.put("idx",idx);
         paramMap.put("userIdx",userIdx);
 
-        int result = service.updateContent(paramMap);
+        int result = adminService.updateContent(paramMap);
 
         return ResultStr.set(result);
     }
@@ -220,7 +222,7 @@ public class AdminBoardController {
         Map<String,Object> paramMap = new HashMap<>();
         paramMap.put("idx",idx);
 
-        int result = service.deleteContent(paramMap);
+        int result = adminService.deleteContent(paramMap);
 
         return ResultStr.set(result);
     }
@@ -236,13 +238,53 @@ public class AdminBoardController {
     @ResponseBody
     public Map<String,Object> existsContentId(@RequestBody Map<String,Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
 
-        int result = service.existsContentId(paramMap);
+        int result = adminService.existsContentId(paramMap);
 
         return ResultStr.set(result);
     }
 
+    /**
+     * Qna 리스트
+     * @param pageNum
+     * @param searchType
+     * @param searchKeyword
+     * @param status
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/qna")
+    public String qnaList(@RequestParam(value = "pageNum", required = false, defaultValue = "1") String pageNum,
+                          @RequestParam(value = "searchType", required = false) String searchType,
+                          @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
+                          @RequestParam(value = "status", required = false, defaultValue = "wait") String status,
+                          HttpServletResponse response, HttpServletRequest request, Model model) {
 
-    // qna List
+        Map<String ,Object> mMap = new HashMap<>();
+        mMap.put("status",status);
+
+        Criteria criteria = new Criteria();
+        criteria.setPageNum(Integer.parseInt(pageNum));
+        criteria.setSearchKeyword(searchKeyword);
+        criteria.setSearchType(searchType);
+        criteria.setParamMap(mMap);
+
+        List<Map<String,Object>> resultList = adminService.findAllQna(criteria);
+
+        int total = adminService.countQna(criteria);
+
+        // 참고 select - option 파라미터
+        // criteria - i(userId) n(userNm) k(userNicknm)
+        // 웹 페이징 설정 처리
+        int webPageCount = DeviceCheck.getWebPageCount();
+        Page pageMaker = new Page(total, webPageCount, criteria);
+
+        model.addAttribute("pageMaker", pageMaker);
+        model.addAttribute("resultList", resultList);
+        return "/adm/content";
+    }
+
     // qna 상세
     //
 

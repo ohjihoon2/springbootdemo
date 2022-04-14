@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Arrays;
+import java.util.Map;
 
 @Component
 @Data
@@ -16,6 +17,9 @@ public class Criteria {
     private int amount;
     private String searchType;
     private String searchKeyword;
+    private Map<String, Object> paramMap;
+
+
 
     // 생성자로 무조건 실행된다.
     // 기본 페이지를 1페이지에 10개씩 페이징 처리
@@ -48,7 +52,6 @@ public class Criteria {
 //        }
 //    }
 
-
     public int getPageStart() {
         return (this.pageNum - 1) * amount;
     }
@@ -73,7 +76,6 @@ public class Criteria {
 //    검색 조건이 'W'면 : 작성자가 키워드인 항목을 검색
     public String[] getTypeArr(){
         String[] strArr = searchType == null ? new String[]{} : searchType.split("");
-        System.out.println("strArr = " + Arrays.toString(strArr));
         return strArr;
     }
 }

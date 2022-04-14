@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -75,6 +76,16 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     @Override
     public int deleteContent(Map<String, Object> paramMap) {
         return adminMapper.deleteContent(paramMap);
+    }
+
+    @Override
+    public List<Map<String, Object>> findAllQna(Criteria criteria) {
+        return adminMapper.findAllQna(criteria);
+    }
+
+    @Override
+    public int countQna(Criteria criteria) {
+        return adminMapper.countQna(criteria);
     }
 
 }
