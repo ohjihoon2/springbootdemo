@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -79,9 +80,11 @@ public class AdminUserController {
     @PatchMapping(value = "/user/{idx}")
     @ResponseBody
     public Map<String,Object> updateUser(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        paramMap.put("userIdx",userIdx);
         paramMap.put("idx",idx);
-        String[] roleType = {"ROLE_USER"};
-        paramMap.put("roleType", roleType);
+
         int result = adminService.updateUser(paramMap);
 
         return ResultStr.set(result);

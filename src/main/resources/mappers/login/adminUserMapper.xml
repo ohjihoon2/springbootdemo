@@ -103,19 +103,14 @@
 
     <update id="updateUser" parameterType="map">
         UPDATE users
-           SET USER_PWD = #{userPwd},
-               USER_NM = #{userNm},
+           SET USER_NM = #{userNm},
                USER_NICKNM = #{userNicknm},
                USER_EMAIL = #{userEmail},
                USER_PHONE = #{userPhone},
-               VERIFICATION_CODE = #{verificationCode},
                VERIFICATION_YN = #{verificationYn},
+               UPDATE_IDX = #{userIdx}
                UPDATE_DATE = SYSDATE()
-         WHERE IDX = #{idx}
-           AND ROLE_TYPE IN
-        <foreach collection="roleType" item="roleType" open="(" close=")" separator=",">
-            #{roleType}
-        </foreach>
+         WHERE IDX = #{`idx`}
     </update>
 
     <delete id="forceDeleteUser" parameterType="map">
