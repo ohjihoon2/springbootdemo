@@ -37,9 +37,9 @@ public class AdminUserController {
     @GetMapping(value = "/user")
     public String userList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
         List<Map<String,Object>> resultList = adminService.findAllUser(criteria);
-        System.out.println("criteria = " + criteria);
         int total = adminService.countUser(criteria);
 
+        System.out.println("criteria = " + criteria);
         // 참고 select - option 파라미터
         // criteria - i(userId) n(userNm) k(userNicknm)
         // 웹 페이징 설정 처리

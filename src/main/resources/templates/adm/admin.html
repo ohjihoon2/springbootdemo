@@ -6,12 +6,12 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns="http://www.w3.org/1999/html">
 
-<th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='/css/adm/user.css')"></th:block>
+<th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='/css/adm/admin.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
 <th:block th:replace="/fragments/header.html :: thAdmHeader"></th:block>
 <section>
     <div class="section-wrap">
-        <h2>회원 관리</h2>
+        <h2>관리자 관리</h2>
         <div class="mt40"></div>
         <div class="top-btn-box">
             <div class="left">
@@ -24,6 +24,8 @@
                 <input id="searchKeyword" type="text" th:value="${#httpServletRequest.getParameter('searchKeyword')}" />
                 <button type="button" id="searchBtn" class="color-primary">검색</button>
             </div>
+            <button type="button" id="myBtn" class="color-primary">내정보수정</button>
+            <button type="button" id="addBtn" class="color-primary" sec:authorize="hasRole('ROLE_ADMIN')">관리자추가</button>
         </div>
         <table>
             <colgroup>
@@ -32,8 +34,7 @@
                 <col width="10%">
                 <col width="10%">
                 <col width="10%">
-                <col width="20%">
-                <col width="10%">
+                <col width="30%">
                 <col width="5%">
             </colgroup>
             <thead>
@@ -44,7 +45,6 @@
                 <th>Nickname</th>
                 <th>Date</th>
                 <th>Remarks</th>
-                <th>Verification</th>
                 <th>Update</th>
             </tr>
             </thead>
@@ -67,16 +67,15 @@
                             </th:block>
                         </th:block>
                     </td>
-                    <td class="text-center"><input type="checkbox" th:checked="${res.verificationYn == 'Y'}" disabled></td>
                     <td class="text-center update-btn">
-                        <button type="button" name="updateBtn" th:data-val="${res.idx}">수정</button>
+                        <button type="button" name="updateBtn" th:data-val="${res.idx}" sec:authorize="hasRole('ROLE_ADMIN')">수정</button>
+                        <button type="button" name="detailBtn" th:data-val="${res.idx}" sec:authorize="hasRole('ROLE_MANAGER')">상세</button>
                     </td>
                 </tr>
             </th:block>
-
             <th:block th:if="${resultList.size() == 0}">
                 <tr>
-                    <td colspan="8" class="text-center">등록된 회원이 없습니다.</td>
+                    <td colspan="8" class="text-center">등록된 관리자가 없습니다.</td>
                 </tr>
             </th:block>
             </tbody>
@@ -87,6 +86,6 @@
     </div>
 </section>
 <th:block th:replace="/fragments/footer.html :: thAdmJs"></th:block>
-<script th:src="@{/js/adm/user.js}"></script>
+<script th:src="@{/js/adm/admin.js}"></script>
 </body>
 </html>

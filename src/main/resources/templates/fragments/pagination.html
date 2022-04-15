@@ -6,7 +6,7 @@
             <li><a th:classappend="${pageMaker.criteria.getPageNum() == 1} ? 'disable'" th:data-val="1">《</a></li>
             <li><a th:classappend="!*{prev} ? 'disable'" th:data-val="${pageMaker.getStartPage()}">〈</a></li>
             <th:block th:each="num : ${#numbers.sequence(pageMaker.getStartPage(), pageMaker.getEndPage())}">
-                <li><a th:classappend="${pageMaker.criteria.getPageNum() == num} ? 'on disable'" th:data-val="${num}">[[${num}]]</a></li>
+                <li><a th:classappend="${pageMaker.criteria.getPageNum() == num} ? 'on disable'" th:data-val="${num}" th:if="${num != 0}">[[${num}]]</a></li>
             </th:block>
             <li><a th:classappend="!*{next} ? 'disable'" th:data-val="${pageMaker.getEndPage() + 1}">〉</a></li>
             <li><a th:classappend="${pageMaker.getRealEnd() == pageMaker.criteria.getPageNum()}  ? 'disable'" th:data-val="${pageMaker.getRealEnd()}">》</a></li>
