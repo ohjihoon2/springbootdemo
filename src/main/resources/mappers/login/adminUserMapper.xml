@@ -178,13 +178,10 @@
                 ) AS CNT_TB
     </select>
 
-    <select id="existsPassword" parameterType="map" resultType="int">
-        SELECT EXISTS(
-                        SELECT *
-                          FROM USERS
-                         WHERE IDX = #{idx}
-                           AND USER_PWD = #{userPwd}
-                     )
+    <select id="findPasswordByIdx" parameterType="map" resultType="string">
+        SELECT USER_PWD
+          FROM USERS
+         WHERE IDX = #{idx}
     </select>
 
     <update id="updatePassword" parameterType="map">

@@ -6,6 +6,7 @@ import com.example.demo.util.ResultStr;
 import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -190,7 +191,7 @@ public class AdminUserController {
      */
     @PatchMapping(value = "/admin/password/{idx}")
     @ResponseBody
-    public Map<String,Object> updatePassword(@PathVariable int idx,@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> updatePassword(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
         paramMap.put("idx",idx);
         int result = adminService.updatePassword(paramMap);
         return ResultStr.set(result);

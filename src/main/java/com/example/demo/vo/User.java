@@ -24,4 +24,5 @@ public class User {
     private String useYn;
     private Date createDate;
     private Date updateDate;
+    private String deleteYn;
 }

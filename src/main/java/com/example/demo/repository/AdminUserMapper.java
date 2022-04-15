@@ -27,8 +27,6 @@ public interface AdminUserMapper {
 
     int countAdmin(Criteria criteria);
 
-    int existsPassword(Map<String, Object> paramMap);
-
     int updatePassword(Map<String, Object> paramMap);
 
     int insertAdmin(Map<String, Object> paramMap);
@@ -36,4 +34,6 @@ public interface AdminUserMapper {
     int updateAdmin(Map<String, Object> paramMap);
 
     String getResetPassword();
+
+    String findPasswordByIdx(Map<String, Object> paramMap);
 }

@@ -2,8 +2,10 @@ package com.example.demo.service.impl;
 
 import com.example.demo.repository.AdminUserMapper;
 import com.example.demo.service.AdminUserService;
+import com.example.demo.service.LoginService;
 import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -68,12 +70,12 @@ public class AdminUserServiceImpl implements AdminUserService {
 
         String password = String.valueOf(paramMap.get("password"));
         String newPassword = String.valueOf(paramMap.get("newPassword"));
+        String encodePassword = adminMapper.findPasswordByIdx(paramMap);
 
-        paramMap.put("userPwd",passwordEncoder.encode(password));
         paramMap.put("newPwd",passwordEncoder.encode(newPassword));
 
-        if( adminMapper.existsPassword(paramMap) == 1) {
-            if(adminMapper.updatePassword(paramMap) == 1){
+        if(passwordEncoder.matches(password, encodePassword)) {
+            if (adminMapper.updatePassword(paramMap) == 1) {
                 result = 1;
             }
         }
