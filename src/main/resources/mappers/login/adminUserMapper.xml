@@ -14,7 +14,7 @@
                             <when test="type=='N'.toString()">
                                 (A.USER_NM LIKE CONCAT('%',#{searchKeyword},'%'))
                             </when>
-                            <when test="type=='K'.toString()">
+                            <when test="type=='W'.toString()">
                                 (A.USER_NICKNM LIKE CONCAT('%',#{searchKeyword},'%'))
                             </when>
                         </choose>

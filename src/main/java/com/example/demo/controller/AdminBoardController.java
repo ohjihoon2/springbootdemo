@@ -275,7 +275,7 @@ public class AdminBoardController {
         int total = adminService.countQna(criteria);
 
         // 참고 select - option 파라미터
-        // criteria - i(userId) n(userNm) k(userNicknm)
+        // criteria - T(QA_SUBJECT) W(userNicknm)
         // 웹 페이징 설정 처리
         int webPageCount = DeviceCheck.getWebPageCount();
         Page pageMaker = new Page(total, webPageCount, criteria);

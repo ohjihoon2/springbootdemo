@@ -1,13 +1,9 @@
 package com.example.demo.vo;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Arrays;
 import java.util.Map;
 
 @Component
@@ -43,6 +39,9 @@ public class Criteria {
         }
     }
 
+    public void setSearchType(String searchType) {
+        this.searchType = searchType.toUpperCase();
+    }
 //    public void setAmount(int pageCount) {
 //        int cnt = this.amount;
 //        if(pageCount != cnt) {
@@ -76,6 +75,7 @@ public class Criteria {
 //    검색 조건이 'W'면 : 작성자가 키워드인 항목을 검색
     public String[] getTypeArr(){
         String[] strArr = searchType == null ? new String[]{} : searchType.split("");
+
         return strArr;
     }
 }
