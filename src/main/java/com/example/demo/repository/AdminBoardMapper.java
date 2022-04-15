@@ -39,4 +39,10 @@ public interface AdminBoardMapper {
     List<Map<String, Object>> findAllQna(Criteria criteria);
 
     int countQna(Criteria criteria);
+
+    List<Qna> findByIdxQna(int idx);
+
+    int answerQna(Map<String, Object> paramMap);
+
+    int updateOriginalQna(String originalIdx);
 }

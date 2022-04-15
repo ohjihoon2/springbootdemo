@@ -42,7 +42,7 @@
                             </when>
                             <when test="searchType=='W'.toString()">
                                 (
-                                     A.CREATE_IDX IN
+                                     CREATE_IDX IN
                                                 (
                                                     SELECT IDX
                                                       FROM USERS
@@ -377,7 +377,16 @@
                                     IDX,
                                     PARENT_IDX,
                                     LVL,
-                                    CTE_PATH
+                                    CTE_PATH,
+                                    QA_CATEGORY,
+                                    QA_SUBJECT,
+                                    QA_STATUS,
+                                    SECRET_YN,
+                                    USE_YN,
+                                    CREATE_IDX,
+                                    CREATE_DATE,
+                                    UPDATE_IDX,
+                                    UPDATE_DATE
                                FROM CTE,
                                     (SELECT @ROWNUM:=0) AS temp
                               WHERE LVL = 1
@@ -388,4 +397,88 @@
               ) AS CNT_TB
     </select>
 
+    <select id="findByIdxQna" parameterType="int" resultType="map">
+        WITH RECURSIVE CTE AS
+                           (
+                               SELECT IDX,
+                                      convert(idx, char(100)) as CTE_PATH,
+                                      1 LVL,
+                                      PARENT_IDX,
+                                      QA_CATEGORY,
+                                      QA_SUBJECT,
+                                      QA_STATUS,
+                                      SECRET_YN,
+                                      USE_YN,
+                                      CREATE_IDX,
+                                      CREATE_DATE,
+                                      UPDATE_IDX,
+                                      UPDATE_DATE
+                                 FROM QNA Q
+                                WHERE IDX = 1
+                                UNION ALL
+                               SELECT Q.IDX,
+                                      concat(CTE.CTE_PATH, '-', Q.IDX) AS CTE_PATH,
+                                      LVL + 1 LVL,
+                                      Q.PARENT_IDX,
+                                      Q.QA_CATEGORY,
+                                      Q.QA_SUBJECT,
+                                      Q.QA_STATUS,
+                                      Q.SECRET_YN,
+                                      Q.USE_YN,
+                                      Q.CREATE_IDX,
+                                      Q.CREATE_DATE,
+                                      Q.UPDATE_IDX,
+                                      Q.UPDATE_DATE
+                                 FROM QNA Q
+                                INNER JOIN CTE ON Q.PARENT_IDX = CTE.IDX
+                           )
+                    SELECT IDX,
+                           PARENT_IDX,
+                           LVL,
+                           CTE_PATH,
+                           QA_CATEGORY,
+                           QA_SUBJECT,
+                           QA_STATUS,
+                           SECRET_YN,
+                           USE_YN,
+                           CREATE_IDX,
+                           CREATE_DATE,
+                           UPDATE_IDX,
+                           UPDATE_DATE
+                    FROM CTE
+    </select>
+
+    <update id="updateOriginalQna" parameterType="int">
+        UPDATE qna
+           SET QA_STATUS = #{qaStatus}
+         WHERE idx = #{originalIdx}
+    </update>
+
+    <insert id="answerQna" parameterType="map">
+        INSERT INTO qna
+            (
+                 PARENT_IDX,
+                 QA_EMAIL_RECV_YN,
+                 QA_CATEGORY,
+                 QA_SUBJECT,
+                 QA_CONTENT,
+                 QA_FILE,
+                 USE_YN,
+                 CREATE_IDX,
+                 CREATE_DATE
+             )
+        VALUES
+            (
+                #{parentIdx},
+                #{qaEmailRecvYn},
+                #{qaCategory},
+                #{qaSubject},
+                #{qaContent},
+                #{qaFile},
+                'Y',
+                #{userIdx},
+                SYSDATE()
+             )
+
+    </insert>
 </mapper>

@@ -3,10 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.service.AdminBoardService;
 import com.example.demo.util.DeviceCheck;
 import com.example.demo.util.ResultStr;
-import com.example.demo.vo.BoardMaster;
-import com.example.demo.vo.Content;
-import com.example.demo.vo.Criteria;
-import com.example.demo.vo.Page;
+import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -282,17 +279,40 @@ public class AdminBoardController {
 
         model.addAttribute("pageMaker", pageMaker);
         model.addAttribute("resultList", resultList);
-        return "/adm/content";
+        return "/adm/qna";
     }
 
-    // qna 상세
-    //
+    /**
+     * Qna 상세
+     * @param idx
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @PostMapping(value = "/qna/{idx}")
+    @ResponseBody
+    public List<Qna> qnaDetails(@PathVariable int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
+        return adminService.findByIdxQna(idx);
+    }
 
+    /**
+     * Qna 답변
+     * @param paramMap
+     * @param response
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/qna")
+    @ResponseBody
+    public Map<String,Object> answerQna(@RequestBody Map<String,Object> paramMap,HttpServletResponse response, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        paramMap.put("userIdx",userIdx);
 
+        int result = adminService.answerQna(paramMap);
 
-
-
-
-
+        return ResultStr.set(result);
+    }
 
 }

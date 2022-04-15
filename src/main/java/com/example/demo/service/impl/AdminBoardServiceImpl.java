@@ -88,4 +88,19 @@ public class AdminBoardServiceImpl implements AdminBoardService {
         return adminMapper.countQna(criteria);
     }
 
+    @Override
+    public List<Qna> findByIdxQna(int idx) {
+        return adminMapper.findByIdxQna(idx);
+    }
+
+    @Override
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
+    public int answerQna(Map<String, Object> paramMap) {
+        // originalIdx : 첫 질문의 idx
+        //
+        String originalIdx = String.valueOf(paramMap.get("originalIdx"));
+        int result = adminMapper.updateOriginalQna(originalIdx);
+        return adminMapper.answerQna(paramMap);
+    }
+
 }
