@@ -121,7 +121,7 @@
         },
 
         // post 에이작스
-        postAjax : function (url, param, async=false) {
+        postAjax : function (url, param = {}, async=false) {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -199,7 +199,7 @@
             return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
         },
 
-        //url 보이지 않게하기
+        //url Get보이지 않게하기
         paramViewNone : function(){
             history.replaceState({}, null, location.pathname);
         },

@@ -24,4 +24,16 @@
         <link rel="stylesheet" th:href="@{/css/admCommon.css}">
         <link rel="stylesheet" th:href="${pageCss}">
     </head>
+
+    <head th:fragment="thPopupHead(pageCss)">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta name="viewport" content="width=device-width, initial-scale=0.35">
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+        <title>BITSOL CMS POPUP</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
+        <link rel="stylesheet" th:href="@{/css/reset.css}">
+        <link rel="stylesheet" th:href="${pageCss}">
+    </head>
 </html>

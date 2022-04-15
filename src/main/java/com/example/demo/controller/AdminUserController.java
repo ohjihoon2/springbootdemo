@@ -113,14 +113,12 @@ public class AdminUserController {
     /**
      * 비밀번호 초기화
      * @param paramMap
-     * @param principal
-     * @param response
-     * @param request
      * @return
      */
-    @PatchMapping(value = "/password")
+    @PatchMapping(value = "/resetPassword/{idx}")
     @ResponseBody
-    public Map<String,Object> resetPassword(@RequestBody Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> resetPassword(@PathVariable int idx, Map<String, Object> paramMap) {
+        paramMap.put("idx",idx);
         int result = adminService.resetPassword(paramMap);
 
         return ResultStr.set(result);
@@ -239,4 +237,13 @@ public class AdminUserController {
         return resetPwd;
     }
 
+    /**
+     * 비밀번호 변경 팝업
+     * @return
+     */
+    @GetMapping(value = "/popupPw/{idx}")
+    public String popupPassword(@PathVariable int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
+        model.addAttribute("idx", idx);
+        return "/adm/popupPw";
+    }
 }

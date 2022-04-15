@@ -1,0 +1,17 @@
+<!--/*
+    thymeleaf 주석처리
+*/-->
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
+
+<th:block th:replace="/fragments/head.html :: thPopupHead(pageCss='/css/adm/user.css')"></th:block>
+<body ondragstart="return false" onselectstart="return false">
+<section>
+
+</section>
+<th:block th:replace="/fragments/footer.html :: thAdmJs"></th:block>
+<script th:src="@{/js/adm/user.js}"></script>
+</body>
+</html>

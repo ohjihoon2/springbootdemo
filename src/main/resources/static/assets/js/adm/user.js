@@ -5,6 +5,15 @@ var oEditors = [];
 submitBtn = true;
 
 $(function(){
+    //비밀번호 수정팝업
+    // $(document).on("click", "#popubPw", function() {
+    //     var idx = $('#idx').val();
+    //     window.open("/adm/popupPw/"+idx,"","top=0, left=0, width=400, height=300, directories='no',location=no, menubar=no, resizable=no, status=yes, toolbar=no")  ;
+    //     window.opener = "nothing";
+    //     // window.open('', '_parent', '');
+    //     // window.close();
+    // });
+
     //연락처 자동 하이픈
     $util.phoneAutoHyphen("userPhone");
 
@@ -101,6 +110,7 @@ $(function(){
             '<div class="mt50"></div>' +
             '<div class="bot-btn-box">' +
             '<div class="left">' +
+            '<button type="button" id="userResetPassword">PW초기화</button>\n' +
             '<button type="button" id="userDel">탈퇴</button>' +
             '</div>' +
             '<button type="button" onclick="$popup.popupJsClose()">닫기</button>\n' +
@@ -109,6 +119,32 @@ $(function(){
             '</form>';
 
         $popup.popupJs(html);
+    });
+
+    // PW초기화
+    $(document).on("click", "#userResetPassword", function(e) {
+        var res1 = $ajax.postAjax('/adm/resetPassword');
+
+        if(res1 == "error") {
+            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            return;
+        }
+        
+        if(confirm("해당 회원의 비밀번호를 '"+ res1 +"' 로 초기화 하시겠습니까?")) {
+            var idx = $('#idx').val();
+
+            var res2 = $ajax.deleteAjax('/adm/user/'+ idx);
+            if(res2 == "error") {
+                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            }
+            else if(res2.result == "success") {
+                alert("해당 회원을 탈퇴하였습니다.")
+                window.location.reload();
+            }
+            else if(res2.result == "fail"){
+                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            }
+        }
     });
 
     // 회원 강제탈퇴
@@ -201,7 +237,7 @@ $(function(){
             }
 
             var verificationYn = "N";
-            if ($('#verification').is(":checked")) verificationYn = "Y";
+            if ($('#verificationYn').is(":checked")) verificationYn = "Y";
 
             var data = {
                 userNm: $('#userNm').val(),
@@ -222,6 +258,7 @@ $(function(){
                 submitBtn = true;
             } else if (res.result == "success") {
                 alert("회원을 수정하였습니다.");
+                window.location.reload();
             } else if (res.result == "fail") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
                 submitBtn = true;
