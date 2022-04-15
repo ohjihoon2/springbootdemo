@@ -336,7 +336,7 @@
             LIMIT #{pageStart},#{amount}
     </select>
 
-    <select id="countQna" resultType="map" parameterType="int">
+    <select id="countQna" resultType="int" parameterType="map">
         SELECT COUNT(*)
           FROM (
                     WITH RECURSIVE CTE AS

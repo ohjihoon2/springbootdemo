@@ -129,7 +129,7 @@
          WHERE IDX = #{idx}
     </update>
 
-    <select id="findAllAdmin" parameterType="Criteria" resultType="User">
+    <select id="findAllAdmin" parameterType="Criteria" resultType="CustomMap">
         SELECT ROWNUM_TB.*
           FROM (
                     SELECT @ROWNUM:=@ROWNUM+1 as RN,

@@ -38,10 +38,6 @@ public class Criteria {
             this.pageNum = pageNum;
         }
     }
-
-    public void setSearchType(String searchType) {
-        this.searchType = searchType.toUpperCase();
-    }
 //    public void setAmount(int pageCount) {
 //        int cnt = this.amount;
 //        if(pageCount != cnt) {
