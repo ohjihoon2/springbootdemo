@@ -150,6 +150,8 @@ public class AdminUserController {
         return "/adm/admin";
     }
 
+
+
     /**
      * 관리자 상세
      * @param idx
@@ -161,8 +163,6 @@ public class AdminUserController {
     @PostMapping(value = "/admin/{idx}")
     @ResponseBody
     public User adminDetails(@PathVariable int idx, Map<String, Object> paramMap , HttpServletResponse response, HttpServletRequest request) {
-        String[] roleType = {"ROLE_MANAGER"};
-        paramMap.put("roleType", roleType);
         paramMap.put("idx", idx);
         return adminService.findByIdxUser(paramMap);
     }

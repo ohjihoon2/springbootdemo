@@ -95,10 +95,6 @@
                UPDATE_DATE
           FROM users
          WHERE IDX = #{idx}
-           AND ROLE_TYPE IN
-        <foreach collection="roleType" item="roleType" open="(" close=")" separator=",">
-            #{roleType}
-        </foreach>
     </select>
 
     <update id="updateUser" parameterType="map">
