@@ -57,20 +57,20 @@
     <select id="countUser" parameterType="Criteria" resultType="int">
         SELECT COUNT(*)
           FROM (
-                    SELECT IDX,
-                           USER_ID,
-                           USER_PWD,
-                           USER_NM,
-                           USER_NICKNM,
-                           USER_EMAIL,
-                           USER_PHONE,
-                           ROLE_TYPE,
-                           VERIFICATION_CODE,
-                           VERIFICATION_YN,
-                           USE_YN,
-                           CREATE_DATE,
-                           UPDATE_DATE
-                      FROM users
+                    SELECT A.IDX,
+                           A.USER_ID,
+                           A.USER_PWD,
+                           A.USER_NM,
+                           A.USER_NICKNM,
+                           A.USER_EMAIL,
+                           A.USER_PHONE,
+                           A.ROLE_TYPE,
+                           A.VERIFICATION_CODE,
+                           A.VERIFICATION_YN,
+                           A.USE_YN,
+                           A.CREATE_DATE,
+                           A.UPDATE_DATE
+                      FROM users AS A
                      WHERE 1=1
                        AND ROLE_TYPE IN ("ROLE_USER")
                     <include refid="criteriaUser"/>

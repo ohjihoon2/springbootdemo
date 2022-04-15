@@ -37,6 +37,7 @@ public class AdminUserController {
     @GetMapping(value = "/user")
     public String userList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
         List<Map<String,Object>> resultList = adminService.findAllUser(criteria);
+        System.out.println("criteria = " + criteria);
         int total = adminService.countUser(criteria);
 
         // 참고 select - option 파라미터
