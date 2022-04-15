@@ -5,15 +5,6 @@ var oEditors = [];
 submitBtn = true;
 
 $(function(){
-    //비밀번호 수정팝업
-    // $(document).on("click", "#popubPw", function() {
-    //     var idx = $('#idx').val();
-    //     window.open("/adm/popupPw/"+idx,"","top=0, left=0, width=400, height=300, directories='no',location=no, menubar=no, resizable=no, status=yes, toolbar=no")  ;
-    //     window.opener = "nothing";
-    //     // window.open('', '_parent', '');
-    //     // window.close();
-    // });
-
     //연락처 자동 하이픈
     $util.phoneAutoHyphen("userPhone");
 
@@ -33,35 +24,27 @@ $(function(){
             searchKeyword : $('#hiddenSearchKeyword').val(),
             pageNum : $(this).data('val'),
         }
-        $page.getGoPage('/adm/user', param);
+        $page.getGoPage('/adm/admin', param);
     });
     
-    //회원수정 팝업
-    $('[name="updateBtn"]').click(function(){
-        var idx = $(this).data('val');
-
-        var res = $ajax.postAjax('/adm/user/' + idx);
+    //내정보수정 팝업
+    $('#myBtn').click(function(){
+        var res = $ajax.postAjax('/adm/admin/' + myIdx);
         res = $util.nullChkObj(res);
 
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             return;
         }
-        var verificationYn ='';
-        if(res.verificationYn == 'Y') {
-            verificationYn = 'checked';
-        }
-
-        var marketingYn ='';
-        if(res.marketingYn == 'Y') {
-            marketingYn = 'checked';
-        }
+        console.log(res);
+        var userNicknm = res.userNicknm.replace("관리자", "");
+        var roleType = "";
+        if(res.roleType == "ROLE_MANAGER") roleType = "<button type=\"button\" id=\"userDel\">탈퇴</button>";
 
         var html =
-            '<h4>회원 수정</h4>' +
+            '<h4>내정보 수정</h4>' +
             '<div class="mb20"></div>' +
-            '<form id="userUpdateForm">' +
-            '<input id="idx" type="hidden" value="'+ res.idx +'">' +
+            '<form id="myUpdateForm">' +
             '<table>' +
             '<colgroup>' +
             '<col width="15%">' +
@@ -79,8 +62,8 @@ $(function(){
             '<tr>' +
             '<tr>' +
             '<th>Nickname</th>' +
-            '<td class="text-center">' +
-            '<input id="userNicknm" type="text" value="'+ res.userNicknm +'" maxlength="10">' +
+            '<td class="text-center admin-after">' +
+            '<input id="userNicknm" type="text" value="'+ userNicknm +'" maxlength="7">' +
             '<input id="userNicknmHidden" type="hidden" value="'+ res.userNicknm +'">' +
             '</td>' +
             '<th>Tel</th>' +
@@ -88,12 +71,10 @@ $(function(){
             '</tr>' +
             '<tr>' +
             '<th>Email</th>' +
-            '<td class="text-center">' +
+            '<td colspan="3" class="text-center">' +
             '<input id="userEmail" type="text" value="'+ res.userEmail +'">' +
             '<input id="userEmailHidden" type="hidden" value="'+ res.userEmail +'">' +
             '</td>' +
-            '<th>Verification</th>' +
-            '<td class="text-center"><input id="verificationYn" type="checkbox"'+ verificationYn +'></td>' +
             '</tr>' +
             '<tr>' +
             '<th colspan="4">Memo</th>' +
@@ -101,17 +82,12 @@ $(function(){
             '<tr>' +
             '<td colspan="4"><textarea id="adminMemo" placeholder="관리자 전용으로 유저에게 출력되지 않습니다.">' + res.adminMemo + '</textarea></td>' +
             '</tr>' +
-            '<tr>' +
-            '<th colspan="2">marketing</th>' +
-            '<td class="text-center" colspan="2"><input id="marketingYn" type="checkbox"'+ marketingYn +' disabled></td>' +
-            '</tr>' +
             '</tbody>' +
             '</table>' +
             '<div class="mt50"></div>' +
             '<div class="bot-btn-box">' +
             '<div class="left">' +
-            '<button type="button" id="userResetPassword">PW초기화</button>\n' +
-            '<button type="button" id="userDel">탈퇴</button>' +
+            '<button type="button" id="userPassword">PW변경</button>\n' + roleType +
             '</div>' +
             '<button type="button" onclick="$popup.popupJsClose()">닫기</button>\n' +
             '<button type="submit">수정</button>' +
@@ -119,6 +95,14 @@ $(function(){
             '</form>';
 
         $popup.popupJs(html);
+    });
+
+    // PW변경
+    $(document).on("click", "#userPassword", function(e) {
+        window.open("/adm/admin/password","","top=0, left=0, width=465, height=350, directories='no',location=no, menubar=no, resizable=no, status=yes, toolbar=no")  ;
+        window.opener = "nothing";
+        // window.open('', '_parent', '');
+        // window.close();
     });
 
     // PW초기화
@@ -129,7 +113,7 @@ $(function(){
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             return;
         }
-        
+
         if(confirm("해당 회원의 비밀번호를 '"+ res1 +"' 로 초기화 하시겠습니까?")) {
             var idx = $('#idx').val();
 
@@ -166,7 +150,7 @@ $(function(){
     });
 
     // 회원 수정
-    $(document).on("submit", "#userUpdateForm", function(e) {
+    $(document).on("submit", "#myUpdateForm", function(e) {
         e.preventDefault();
 
         if (submitBtn) {
@@ -174,7 +158,10 @@ $(function(){
             if ($event.validationFocus("userNm")) return;
             if ($event.validationFocus("userNicknm")) return;
 
-            if($('#userNicknm').val() != $('#userNicknmHidden').val()) {
+            var userNicknm = {
+                userNicknm: $('#userNicknm').val() + "관리자",
+            }
+            if(userNicknm.userNicknm != $('#userNicknmHidden').val()) {
                 if ($('#userNicknm').val().length < 2) {
                     alert("닉네임을 2자 이상 입력해주세요.");
                     $('#userNicknm').focus();
@@ -192,10 +179,6 @@ $(function(){
                     $('#userNicknm').focus();
                     return;
                 } else {
-                    var userNicknm = {
-                        userNicknm: $('#userNicknm').val(),
-                    }
-
                     var res1 = $ajax.postAjax('/checkNicknm', userNicknm);
 
                     if (res1 == "error") {
@@ -235,28 +218,23 @@ $(function(){
                 }
             }
 
-            var verificationYn = "N";
-            if ($('#verificationYn').is(":checked")) verificationYn = "Y";
-
             var data = {
-                userNm: $('#userNm').val(),
+                userNm: $('#userNm').val() + "관리자",
                 userNicknm: $('#userNicknm').val(),
                 userPhone: $('#userPhone').val(),
                 userEmail: $('#userEmail').val(),
-                verificationYn : verificationYn,
                 adminMemo : $('#adminMemo').val(),
             };
 
-            var idx = $('#idx').val();
-
             submitBtn = false;
 
-            var res = $ajax.patchAjax('/adm/user/' + idx, data);
+            var res = $ajax.patchAjax('/adm/user/' + myIdx, data);
             if (res == "error") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
                 submitBtn = true;
             } else if (res.result == "success") {
-                alert("회원을 수정하였습니다.");
+                alert("내정보를 수정하였습니다.");
+                submitBtn = true;
             } else if (res.result == "fail") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
                 submitBtn = true;

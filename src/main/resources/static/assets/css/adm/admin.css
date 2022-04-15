@@ -13,3 +13,14 @@ table .remarks {
     font-size: 13px;
 }
 
+.admin-after {
+    position: relative;
+}
+
+.admin-after:after {
+    content: "관리자";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 25px;
+}

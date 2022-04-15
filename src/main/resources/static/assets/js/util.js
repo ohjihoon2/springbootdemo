@@ -167,6 +167,9 @@
                 boardId: '게시판ID',
                 contentId: '컨텐츠ID',
                 contentNm: '컨텐츠명',
+                userPrevPwd: '현재 비밀번호',
+                userNewPwd: '새 비밀번호',
+                userNewPwdChk: '새 비밀번호 확인',
             }
 
             if ($('#' + id).val() == '') {
@@ -326,6 +329,9 @@
         popupJsClose : function() {
             $('.background').remove();
             $('.popup-js').remove();
+        },
+        popupWindowClose : function() {
+            window.close();
         },
     },
 

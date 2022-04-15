@@ -39,7 +39,6 @@ public class AdminUserController {
         List<Map<String,Object>> resultList = adminService.findAllUser(criteria);
         int total = adminService.countUser(criteria);
 
-        System.out.println("criteria = " + criteria);
         // 참고 select - option 파라미터
         // criteria - i(userId) n(userNm) k(userNicknm)
         // 웹 페이징 설정 처리
@@ -189,10 +188,10 @@ public class AdminUserController {
      * @param request
      * @return
      */
-    @PatchMapping(value = "/admin/password")
+    @PatchMapping(value = "/admin/password/{idx}")
     @ResponseBody
-    public Map<String,Object> updatePassword(@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
-
+    public Map<String,Object> updatePassword(@PathVariable int idx,@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
+        paramMap.put("idx",idx);
         int result = adminService.updatePassword(paramMap);
         return ResultStr.set(result);
     }
@@ -242,9 +241,9 @@ public class AdminUserController {
      * 비밀번호 변경 팝업
      * @return
      */
-    @GetMapping(value = "/popupPw/{idx}")
-    public String popupPassword(@PathVariable int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
+    @GetMapping(value = "admin/password")
+    public String popupPassword(@SessionAttribute("idx") int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
         model.addAttribute("idx", idx);
-        return "/adm/popupPw";
+        return "/adm/password";
     }
 }

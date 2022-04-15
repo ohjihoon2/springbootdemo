@@ -37,15 +37,17 @@
         </th:block>
     </th:block>
 
-    <th:block th:fragment="thAdmJs">
+    <th:block th:fragment="thAdmFooter">
         <footer>
             <button type="button" id="topBtn" class="top-btn" style="display: none;">
                 <i class="fa fa-arrow-up" aria-hidden="true"></i>
             </button>
         </footer>
-        <script th:src="@{/js/externalLib/jquery/jquery-3.6.0.min.js}"></script>
-        <script th:src="@{/js/externalLib/smarteditor2/js/HuskyEZCreator.js}"></script>
-        <script th:src="@{/js/util.js}"></script>
-        <script th:src="@{/js/admCommon.js}"></script>
+        <th:block th:fragment="thAdmJs">
+            <script th:src="@{/js/externalLib/jquery/jquery-3.6.0.min.js}"></script>
+            <script th:src="@{/js/externalLib/smarteditor2/js/HuskyEZCreator.js}"></script>
+            <script th:src="@{/js/util.js}"></script>
+            <script th:src="@{/js/admCommon.js}"></script>
+        </th:block>
     </th:block>
 </html>

@@ -85,7 +85,10 @@
 
     </div>
 </section>
-<th:block th:replace="/fragments/footer.html :: thAdmJs"></th:block>
+<th:block th:replace="/fragments/footer.html :: thAdmFooter"></th:block>
+<script>
+    var myIdx = "[[${session.idx}]]";
+</script>
 <script th:src="@{/js/adm/admin.js}"></script>
 </body>
 </html>
