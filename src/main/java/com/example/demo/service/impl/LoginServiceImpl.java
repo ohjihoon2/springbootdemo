@@ -38,12 +38,12 @@ public class LoginServiceImpl implements LoginService {
         if (user.getRoleType().equals("ROLE_ADMIN")) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             user.setRoleType("ROLE_ADMIN");
-        } else if (user.getRoleType().equals("ROLE_USER")) {
+        }else if (user.getRoleType().equals("ROLE_MANAGER")) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
+            user.setRoleType("ROLE_MANAGER");
+        }else if (user.getRoleType().equals("ROLE_USER")) {
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
             user.setRoleType("ROLE_USER");
-        } else if (user.getRoleType().equals("ROLE_GENERAL")) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_GENERAL"));
-            user.setRoleType("ROLE_GENERAL");
         }
         return new org.springframework.security.core.userdetails.User(user.getUserId(), user.getUserPwd(), authorities);
     }
