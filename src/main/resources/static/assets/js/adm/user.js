@@ -133,13 +133,12 @@ $(function(){
         if(confirm("해당 회원의 비밀번호를 '"+ res1 +"' 로 초기화 하시겠습니까?")) {
             var idx = $('#idx').val();
 
-            var res2 = $ajax.deleteAjax('/adm/user/'+ idx);
+            var res2 = $ajax.patchAjax('/adm/resetPassword/'+ idx);
             if(res2 == "error") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }
             else if(res2.result == "success") {
-                alert("해당 회원을 탈퇴하였습니다.")
-                window.location.reload();
+                alert("해당 회원의 비밀번호를 초기화하였습니다.")
             }
             else if(res2.result == "fail"){
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
@@ -258,7 +257,6 @@ $(function(){
                 submitBtn = true;
             } else if (res.result == "success") {
                 alert("회원을 수정하였습니다.");
-                window.location.reload();
             } else if (res.result == "fail") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
                 submitBtn = true;

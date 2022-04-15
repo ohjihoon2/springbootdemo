@@ -45,7 +45,8 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public int resetPassword(Map<String, Object> paramMap) {
-        paramMap.put("userPwd",passwordEncoder.encode("rhdxhd12!"));
+        String resetPassword = adminMapper.getResetPassword();
+        paramMap.put("userPwd",passwordEncoder.encode(resetPassword));
 
         return adminMapper.resetPassword(paramMap);
     }

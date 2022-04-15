@@ -69,7 +69,7 @@
 
     $ajax = {
         // patch 에이작스
-        patchAjax : function (url, param, async=false) {
+        patchAjax : function (url, param = {}, async=false) {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 

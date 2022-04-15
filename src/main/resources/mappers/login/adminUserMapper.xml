@@ -126,7 +126,7 @@
     <update id="resetPassword" parameterType="map">
         UPDATE USERS
            SET USER_PWD = #{userPwd}
-         WHERE IDX = {idx}
+         WHERE IDX = #{idx}
     </update>
 
     <select id="findAllAdmin" parameterType="Criteria" resultType="User">
