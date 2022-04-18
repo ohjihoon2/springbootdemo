@@ -293,6 +293,9 @@ public class AdminBoardController {
     @PostMapping(value = "/qna/{idx}")
     @ResponseBody
     public List<Qna> qnaDetails(@PathVariable int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
+        // TODO 2022-04-19
+        //  - RETURN  QNA LIST 객체 + QNA_CONFIG MAP  (총 2개)
+
         return adminService.findByIdxQna(idx);
     }
 
@@ -306,6 +309,8 @@ public class AdminBoardController {
     @PostMapping(value = "/qna")
     @ResponseBody
     public Map<String,Object> answerQna(@RequestBody Map<String,Object> paramMap,HttpServletResponse response, HttpServletRequest request) {
+        // TODO 2022-04-19
+        //  - 테이블 변경으로 수정
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
         paramMap.put("userIdx",userIdx);
@@ -315,8 +320,7 @@ public class AdminBoardController {
         return ResultStr.set(result);
     }
 
-    // TODO
-    //  - 2022-04-15
+    // TODO 2022-04-19
     //  - QNA 답변 로직 한번더 살펴보고 USERS 테이블 USE_YN, DELETE_YN 확인
 
 

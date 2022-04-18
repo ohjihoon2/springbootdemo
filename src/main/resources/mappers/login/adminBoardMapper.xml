@@ -288,21 +288,22 @@
     <select id="findAllQna" parameterType="map" resultType="CustomMap">
         SELECT @ROWNUM:=@ROWNUM+1 AS RN,
                A.IDX,
-               A.QA_CATEGORY,
                A.QA_SUBJECT,
-               A.QA_STATUS,
-               A.SECRET_YN,
-               B.USER_NICKNM AS CREATE_NICKNM,
+               B.QA_CATEGORY,
+               B.QA_STATUS,
+               B.SECRET_YN,
+               IF( A.CREATE_IDX IS NULL , NULL, IFNULL(C.USER_NICKNM,'탈퇴된 사용자')) AS CREATE_NICKNM,
                A.CREATE_DATE,
-               C.USER_NICKNM AS UPDATE_NICKNM,
+               D.USER_NICKNM AS UPDATE_NICKNM,
                A.UPDATE_DATE
           FROM qna A
-          LEFT OUTER JOIN users B on A.CREATE_IDX = B.IDX
-          LEFT OUTER JOIN users C on A.UPDATE_IDX = C.IDX,
+          INNER JOIN qna_config B ON A.IDX = B.QNA_IDX
+          LEFT OUTER JOIN users C ON A.CREATE_IDX = C.IDX
+          LEFT OUTER JOIN users D ON B.UPDATE_IDX = D.IDX,
                (SELECT @ROWNUM:=0) temp
          WHERE PARENT_IDX IS NULL
         <if test="paramMap.status != 'ALL'">
-            AND QA_STATUS IN('Q' , 'RQ')
+            AND B.QA_STATUS IN('Q' , 'RQ')
         </if>
         <include refid="criteriaQna"/>
         ORDER BY IDX DESC
@@ -312,73 +313,43 @@
     <select id="countQna" resultType="int" parameterType="map">
         SELECT COUNT(*)
           FROM (
-                    SELECT IDX,
-                           QA_CATEGORY,
-                           QA_SUBJECT,
-                           QA_STATUS,
-                           SECRET_YN,
-                           CREATE_IDX,
-                           CREATE_DATE,
-                           UPDATE_IDX,
-                           UPDATE_DATE
-                      FROM qna
-                     WHERE PARENT_IDX IS NULL
+                    SELECT A.IDX,
+                           A.QA_SUBJECT,
+                           B.QA_CATEGORY,
+                           B.QA_STATUS,
+                           B.SECRET_YN,
+                           IF( A.CREATE_IDX IS NULL , NULL, IFNULL(C.USER_NICKNM,'탈퇴된 사용자')) AS CREATE_NICKNM,
+                           A.CREATE_DATE,
+                           D.USER_NICKNM AS UPDATE_NICKNM,
+                           B.UPDATE_DATE
+                      FROM qna A
+                     INNER JOIN qna_config B ON A.IDX = B.QNA_IDX
+                      LEFT OUTER JOIN users C ON A.CREATE_IDX = C.IDX
+                      LEFT OUTER JOIN users D ON B.UPDATE_IDX = D.IDX
+                    WHERE PARENT_IDX IS NULL
                     <if test="paramMap.status != 'ALL'">
-                        AND QA_STATUS IN('Q' , 'RQ')
+                        AND B.QA_STATUS IN('Q' , 'RQ')
                     </if>
                     <include refid="criteriaQna"/>
               ) AS CNT_TB
     </select>
 
     <select id="findByIdxQna" parameterType="int" resultType="map">
-        WITH RECURSIVE CTE AS
-                           (
-                               SELECT IDX,
-                                      convert(idx, char(100)) as CTE_PATH,
-                                      1 LVL,
-                                      PARENT_IDX,
-                                      QA_CATEGORY,
-                                      QA_SUBJECT,
-                                      QA_STATUS,
-                                      SECRET_YN,
-                                      USE_YN,
-                                      CREATE_IDX,
-                                      CREATE_DATE,
-                                      UPDATE_IDX,
-                                      UPDATE_DATE
-                                 FROM QNA Q
-                                WHERE IDX = #{idx}
-                                UNION ALL
-                               SELECT Q.IDX,
-                                      concat(CTE.CTE_PATH, '-', Q.IDX) AS CTE_PATH,
-                                      LVL + 1 LVL,
-                                      Q.PARENT_IDX,
-                                      Q.QA_CATEGORY,
-                                      Q.QA_SUBJECT,
-                                      Q.QA_STATUS,
-                                      Q.SECRET_YN,
-                                      Q.USE_YN,
-                                      Q.CREATE_IDX,
-                                      Q.CREATE_DATE,
-                                      Q.UPDATE_IDX,
-                                      Q.UPDATE_DATE
-                                 FROM QNA Q
-                                INNER JOIN CTE ON Q.PARENT_IDX = CTE.IDX
-                           )
-                    SELECT IDX,
-                           PARENT_IDX,
-                           LVL,
-                           CTE_PATH,
-                           QA_CATEGORY,
-                           QA_SUBJECT,
-                           QA_STATUS,
-                           SECRET_YN,
-                           USE_YN,
-                           CREATE_IDX,
-                           CREATE_DATE,
-                           UPDATE_IDX,
-                           UPDATE_DATE
-                    FROM CTE
+        SELECT A.IDX,
+               QA_CATEGORY,
+               QA_SUBJECT,
+               QA_CONTENT,
+               QA_STATUS,
+               QA_FILE,
+               IF( A.CREATE_IDX IS NULL , NULL, IFNULL(B.USER_NICKNM,'탈퇴된 사용자')) AS CREATE_NICKNM,
+               A.CREATE_DATE,
+               C.USER_NICKNM AS UPDATE_NICKNM,
+               B.UPDATE_DATE
+        FROM qna A
+        LEFT OUTER JOIN users B on A.CREATE_IDX = B.IDX
+        LEFT OUTER JOIN users C on B.UPDATE_IDX = C.IDX
+        WHERE A.IDX = #{idx}
+           OR A.PARENT_IDX = #{idx}
     </select>
 
     <update id="updateOriginalQna" parameterType="map">

@@ -8,13 +8,9 @@ import java.util.Date;
 public class Qna {
     private int idx;
     private int parentIdx;
-    private String qaEmailRecvYn;
-    private String qaCategory;
     private String qaSubject;
     private String qaContent;
-    private String qaStatusYn;
     private String qaFile;
-    private String secretYn;
     private String useYn;
     private int createIdx;
     private Date createDate;
