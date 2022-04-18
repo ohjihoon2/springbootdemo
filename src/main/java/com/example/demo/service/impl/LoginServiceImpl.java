@@ -6,6 +6,7 @@ import com.example.demo.service.LoginService;
 import com.example.demo.util.RandomString;
 import com.example.demo.vo.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +27,9 @@ public class LoginServiceImpl implements LoginService {
 
     private final LoginMapper loginMapper;
     private final EmailService emailService;
+
+    @Value("${site.name}")
+    private String siteName;
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException{
@@ -144,7 +148,7 @@ public class LoginServiceImpl implements LoginService {
         String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");
         String userId = map.get("userId").toString();
         String to = map.get("userEmail").toString();
-        String subject = "OO 인증 처리";
+        String subject = siteName +" 인증 처리";
         String text = "안녕하세요.<br>" +
                 "하단에 링크 클릭 시 인증 처리 됩니다. <br>" +
                 "<b><a href=\""+domain+"/verifyMail?userId="+userId+"&code="+ranPw+"\">링크</a></b> 입니다.";
@@ -189,7 +193,7 @@ public class LoginServiceImpl implements LoginService {
             String email = user.getUserEmail();
 
             String to = email;
-            String subject = "OO 임시 비밀번호 발급";
+            String subject = siteName + " 임시 비밀번호 발급";
             String text = "안녕하세요.<br>" +
                     "요청하신 이메일 주소로 임시 비밀번호를 발급하였습니다.<br>" +
                     "비밀번호는 <b>[" + ranPw + "]</b> 입니다. ";

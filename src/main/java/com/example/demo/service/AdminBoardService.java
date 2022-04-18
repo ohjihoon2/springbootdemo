@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.vo.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -37,5 +38,5 @@ public interface AdminBoardService {
 
     List<Qna> findByIdxQna(int idx);
 
-    int answerQna(Map<String, Object> paramMap);
+    int answerQna(Map<String, Object> paramMap, HttpServletRequest request);
 }

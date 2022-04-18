@@ -310,9 +310,14 @@ public class AdminBoardController {
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
         paramMap.put("userIdx",userIdx);
 
-        int result = adminService.answerQna(paramMap);
+        int result = adminService.answerQna(paramMap,request);
 
         return ResultStr.set(result);
     }
+
+    // TODO
+    //  - 2022-04-15
+    //  - QNA 답변 로직 한번더 살펴보고 USERS 테이블 USE_YN, DELETE_YN 확인
+
 
 }

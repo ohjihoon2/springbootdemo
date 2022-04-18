@@ -44,5 +44,9 @@ public interface AdminBoardMapper {
 
     int answerQna(Map<String, Object> paramMap);
 
-    int updateOriginalQna(String originalIdx);
+    int updateOriginalQna(Map<String, Object> paramMap);
+
+    Map<String, Object> findQaEmailRecvYnQaStatusCreateIdXByIdxQna(String originalIdx);
+
+    String findUserEmailByIdx(int createIdx);
 }
