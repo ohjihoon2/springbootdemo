@@ -2,6 +2,11 @@
 /* 관리자는 반응형을 사용하지 않기 위해사용*/
 body {min-width: 1440px;}
 
+input::placeholder {
+    font-size: 13px;
+    color: #999;
+}
+
 /* 체크박스 커스텀 */
 input[type="checkbox"] {
     -webkit-appearance: none;

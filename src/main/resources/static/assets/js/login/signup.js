@@ -119,7 +119,10 @@ function userIdChk() {
 
                 var res = $ajax.postAjax('/checkId', data);
 
-                if (res == "fail") {
+                if (res == "error") {
+                    alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                }
+                else if (res == "fail") {
                     $('#idMsg').html("<label class=\"mb10\"></label> 이미 사용중인 아이디입니다.");
                 }
             }
@@ -150,7 +153,7 @@ function detailUserPwChk() {
             $('#pwMsg').html("<label class=\"mb10\"></label> 비밀번호를 5자 이상입력해주세요.");
         }
         else if(!$util.isPw($('#userPwd').val())) {
-            $('#pwMsg').html("<label class=\"mb10\"></label> 비밀번호는 영문, 숫자, 특수문자 를 포함해야합니다.");
+            $('#pwMsg').html("<label class=\"mb10\"></label> 비밀번호는 영문, 숫자, 특수문자 를 모두 포함해야합니다.");
         }
         else if($('#userPwdChk').val() != "") {
             if($('#userPwd').val() != $('#userPwdChk').val()) {

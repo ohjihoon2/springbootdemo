@@ -167,9 +167,10 @@
                 boardId: '게시판ID',
                 contentId: '컨텐츠ID',
                 contentNm: '컨텐츠명',
-                userPrevPwd: '현재 비밀번호',
-                userNewPwd: '새 비밀번호',
-                userNewPwdChk: '새 비밀번호 확인',
+                password: '비밀번호',
+                passwordChk: '비밀번호 확인',
+                newPassword: '새 비밀번호',
+                newPasswordChk: '새 비밀번호 확인',
             }
 
             if ($('#' + id).val() == '') {
@@ -237,6 +238,9 @@
 
         //이메일 유효성 검사
         isEm(asValue) {
+            if(asValue == "") {
+                return true;
+            }
             var regExp = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
             return regExp.test(asValue);
         },

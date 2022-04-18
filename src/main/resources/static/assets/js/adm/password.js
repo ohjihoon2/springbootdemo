@@ -12,28 +12,29 @@ $(function(){
 
         if (submitBtn) {
             //빈값체크
-            if ($event.validationFocus("userPrevPwd")) return;
-            if ($event.validationFocus("userNewPwd")) return;
-            if ($event.validationFocus("userNewPwdChk")) return;
+            if ($event.validationFocus("password")) return;
+            if ($event.validationFocus("newPassword")) return;
+            if ($event.validationFocus("newPasswordChk")) return;
 
-            if($('#userNewPwd').val().length < 5) {
+            if($('#newPassword').val().length < 5) {
                 alert("새 비밀번호를 5자 이상입력해주세요.");
                 return;
             }
-            else if(!$util.isPw($('#userNewPwd').val())) {
-                alert("비밀번호는 영문, 숫자, 특수문자 를 포함해야합니다.");
+            else if(!$util.isPw($('#newPassword').val())) {
+                alert("비밀번호는 영문, 숫자, 특수문자 를 모두 포함해야합니다.");
                 return;
             }
-            else if($('#userNewPwd').val() != "") {
-                if($('#userNewPwd').val() != $('#userNewPwdChk').val()) {
-                    alert("새 비밀번호, 새 비밀번호 확인 이 일치하지 않습니다.");
-                    return;
-                }
+            else if($('#newPassword').val() != $('#newPasswordChk').val()) {
+                alert("새 비밀번호, 새 비밀번호 확인 이 일치하지 않습니다.");
+                return;
+            }
+            else if($('#password').val() == $('#newPassword').val()) {
+                alert("현재 비밀번호와 새 비밀번호는 동일할수 없습니다.");
             }
 
             var data = {
-                password : $('#userPrevPwd').val(),
-                newPassword : $('#userNewPwd').val(),
+                password : $('#password').val(),
+                newPassword : $('#newPassword').val(),
             };
 
             submitBtn = false;
@@ -49,7 +50,7 @@ $(function(){
                 $popup.popupWindowClose();
 
             } else if (res.result == "fail") {
-                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                alert('현재 비밀번호가 틀렸습니다.');
                 submitBtn = true;
             }
         }

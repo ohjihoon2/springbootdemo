@@ -62,7 +62,7 @@ h3{font-size: 26px;}
 h4{font-size: 24px;}
 h5{font-size: 20px;}
 
-input::placeholder {color: #999;}
+input::placeholder {color: #000;}
 input:read-only, input[readonly=true], textarea:read-only, textarea[readonly=true] {background-color: #eee;}
 
 

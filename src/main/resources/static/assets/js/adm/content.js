@@ -252,6 +252,7 @@ $(function(){
         }
         else if(res.result == "success") {
             alert("컨텐츠를 수정하였습니다.");
+            window.location.reload();
         }
         else if(res.result == "fail"){
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');

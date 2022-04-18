@@ -73,16 +73,16 @@ $(function(){
             '<tr>' +
             '<th>Id</th>' +
             '<td>'+ res.userId +'</td>' +
-            '<th>Name</th>' +
-            '<td class="text-center"><input id="userNm" type="text" value="'+ res.userNm +'" maxlength="10"></td>' +
-            '</tr>' +
-            '<tr>' +
-            '<tr>' +
             '<th>Nickname</th>' +
             '<td class="text-center">' +
             '<input id="userNicknm" type="text" value="'+ res.userNicknm +'" maxlength="10">' +
             '<input id="userNicknmHidden" type="hidden" value="'+ res.userNicknm +'">' +
             '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<tr>' +
+            '<th>Name</th>' +
+            '<td class="text-center"><input id="userNm" type="text" value="'+ res.userNm +'" maxlength="10"></td>' +
             '<th>Tel</th>' +
             '<td class="text-center"><input id="userPhone" type="text" value="'+ res.userPhone +'" maxlength="11" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\').replace(/(\\..*)\\./g, \'$1\');"></td>' +
             '</tr>' +
@@ -171,9 +171,7 @@ $(function(){
 
         if (submitBtn) {
             //빈값체크
-            if ($event.validationFocus("userNm")) return;
             if ($event.validationFocus("userNicknm")) return;
-
             if($('#userNicknm').val() != $('#userNicknmHidden').val()) {
                 if ($('#userNicknm').val().length < 2) {
                     alert("닉네임을 2자 이상 입력해주세요.");
@@ -208,6 +206,8 @@ $(function(){
                     }
                 }
             }
+
+            if ($event.validationFocus("userNm")) return;
             if ($event.validationFocus("userPhone")) return;
             if ($event.validationFocus("userEmail")) return;
 
@@ -257,6 +257,7 @@ $(function(){
                 submitBtn = true;
             } else if (res.result == "success") {
                 alert("회원을 수정하였습니다.");
+                window.location.reload();
                 submitBtn = true;
             } else if (res.result == "fail") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
