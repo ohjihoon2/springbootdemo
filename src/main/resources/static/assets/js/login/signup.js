@@ -74,7 +74,7 @@ $(function(){
             var data = {
                 userId : $('#userId').val(),
                 userPwd : $('#userPwd').val(),
-                userNm : $('#userNm').val(),
+                userNm : $util.cdIns($('#userNm').val()),
                 userNicknm : $('#userNicknm').val(),
                 userEmail : $('#userEmail1').val() + "@" + $('#userEmail2').val(),
                 userPhone : $('#userPhone1').val() + "-" + $('#userPhone1').val() + "-" + $('#userPhone3').val(),

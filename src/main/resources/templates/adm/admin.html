@@ -16,10 +16,10 @@
         <div class="top-btn-box">
             <div class="left">
                 <select id="searchType">
-                    <option value="INW" th:selected="${#httpServletRequest.getParameter('searchType') == 'INW'}">ID + 이름 + 닉네임</option>
+                    <option value="INW" th:selected="${#httpServletRequest.getParameter('searchType') == 'INW'}">ID + 닉네임 + 이름</option>
                     <option value="I" th:selected="${#httpServletRequest.getParameter('searchType') == 'I'}">ID</option>
-                    <option value="N" th:selected="${#httpServletRequest.getParameter('searchType') == 'N'}">이름</option>
                     <option value="W" th:selected="${#httpServletRequest.getParameter('searchType') == 'W'}">닉네임</option>
+                    <option value="N" th:selected="${#httpServletRequest.getParameter('searchType') == 'N'}">이름</option>
                 </select>
                 <input id="searchKeyword" type="text" th:value="${#httpServletRequest.getParameter('searchKeyword')}" />
                 <button type="button" id="searchBtn" class="color-primary">검색</button>
@@ -41,8 +41,8 @@
             <tr>
                 <th>Num</th>
                 <th>Id</th>
-                <th>Name</th>
                 <th>Nickname</th>
+                <th>Name</th>
                 <th>Date</th>
                 <th>Remarks</th>
                 <th>Update</th>
@@ -53,18 +53,12 @@
                 <tr>
                     <td class="text-center" th:text="${#numbers.formatInteger(res.rn, 0)}"></td>
                     <td class="text-center" th:text="${res.userId}"></td>
-                    <td class="text-center" th:text="${res.userNm}"></td>
                     <td class="text-center" th:text="${res.userNicknm}"></td>
+                    <td class="text-center" th:text="${res.userNm}"></td>
                     <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd')}"></td>
                     <td class="remarks text-color-red">
                         <th:block th:if="${res.idx != null && res.updateNicknm != null}">
-                            ※ [[${#dates.format(res.updateDate, 'yyyy. MM. dd')}]]
-                            <th:block th:if="${res.useYn == 'Y'}">
-                                [[${res.updateNicknm}]] 님이 수정함.
-                            </th:block>
-                            <th:block th:if="${res.useYn == 'N'}">
-                                 탈퇴함.
-                            </th:block>
+                            ※ [[${#dates.format(res.updateDate, 'yyyy. MM. dd')}]] [[${res.updateNicknm}]] 님이 수정함.
                         </th:block>
                     </td>
                     <td class="text-center update-btn">
@@ -88,8 +82,9 @@
 <th:block th:replace="/fragments/footer.html :: thAdmFooter"></th:block>
 <script>
     var myIdx = "[[${session.idx}]]";
-    var myRoleType = "[[${session.roleType}]]";
 </script>
 <script th:src="@{/js/adm/admin.js}"></script>
+<script th:src="@{/js/adm/admin_ADMIN.js}" sec:authorize="hasRole('ROLE_ADMIN')"></script>
+<script th:src="@{/js/adm/admin_MANAGER.js}" sec:authorize="hasRole('ROLE_MANAGER')"></script>
 </body>
 </html>

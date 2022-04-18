@@ -231,6 +231,7 @@
             USER_EMAIL = #{userEmail},
             ADMIN_MEMO = #{adminMemo},
             USER_PHONE = #{userPhone},
+            ADMIN_MEMO = #{adminMemo},
             UPDATE_DATE = SYSDATE()
         WHERE IDX = #{idx}
     </update>

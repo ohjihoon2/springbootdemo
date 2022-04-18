@@ -1,3 +1,10 @@
+
+/* Name util.js
+** Developer BOGUM KIM
+** Create 2021. 07. 12
+** Update 2022. 04. 18
+*/
+
 (function(W, D) {
 
     //인풋숫자만 입력 정규식
@@ -56,7 +63,7 @@
         },
 
         //셀렉트형 이동
-        goFamilyPage : function (e) {
+        goSelPage : function (e) {
             var site = $(e).val();
             if(site == '') {
                 return;
@@ -274,6 +281,12 @@
                 }
             }
             return obj;
+        },
+
+        // 연속된 공백을 하나의 공백으로 치환
+        cdIns : function (str) {
+            str = str.replace(/ +/g, " ");
+            return str;
         },
 
         // 숫자 3자리 , 처리

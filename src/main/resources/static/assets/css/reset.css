@@ -63,7 +63,7 @@ h4{font-size: 24px;}
 h5{font-size: 20px;}
 
 input::placeholder {color: #000;}
-input:read-only, input[readonly=true], textarea:read-only, textarea[readonly=true] {background-color: #eee;}
+input:read-only, input[readonly=true], textarea:read-only, textarea[readonly=true] {background-color: #f8f8f8;}
 
 
 /* margin */

@@ -207,7 +207,7 @@ section {
 .top-btn-box {
     text-align: right;
     margin-bottom: 10px;
-    min-height: 41px;
+    min-height: 40px;
 }
 
 .top-btn-box select {
@@ -241,8 +241,9 @@ section {
 
 .top-btn-box button {
     color: #fff;
-    padding: 10px 15px;
+    padding: 0px 15px;
     border-radius: 5px;
+    line-height: 38px;
 }
 
 .top-btn-box button[type='submit'] {

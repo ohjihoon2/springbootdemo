@@ -6,12 +6,12 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns="http://www.w3.org/1999/html">
 
-<th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='/css/adm/user.css')"></th:block>
+<th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='/css/adm/qna.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
 <th:block th:replace="/fragments/header.html :: thAdmHeader"></th:block>
 <section>
     <div class="section-wrap">
-        <h2>회원 관리</h2>
+        <h2>Q&A 관리</h2>
         <div class="mt40"></div>
         <div class="top-btn-box">
             <div class="left">
@@ -25,6 +25,7 @@
                 <button type="button" id="searchBtn" class="color-primary">검색</button>
             </div>
         </div>
+        [[${resultList}]]
         <table>
             <colgroup>
                 <col width="5%">
@@ -32,8 +33,7 @@
                 <col width="10%">
                 <col width="10%">
                 <col width="10%">
-                <col width="20%">
-                <col width="10%">
+                <col width="30%">
                 <col width="5%">
             </colgroup>
             <thead>
@@ -44,11 +44,12 @@
                 <th>Name</th>
                 <th>Date</th>
                 <th>Remarks</th>
-                <th>Verification</th>
                 <th>Update</th>
             </tr>
             </thead>
             <tbody>
+            <!--/*
+
             <th:block th:each="res : ${resultList}">
                 <tr>
                     <td class="text-center" th:text="${#numbers.formatInteger(res.rn, 0)}"></td>
@@ -63,16 +64,16 @@
                                 [[${res.updateNicknm}]] 님이 수정함.
                             </th:block>
                             <th:block th:if="${res.useYn == 'N'}">
-                                 탈퇴함.
+                                탈퇴함.
                             </th:block>
                         </th:block>
                     </td>
-                    <td class="text-center"><input type="checkbox" th:checked="${res.verificationYn == 'Y'}" disabled></td>
                     <td class="text-center update-btn">
                         <button type="button" name="updateBtn" th:data-val="${res.idx}">수정</button>
                     </td>
                 </tr>
             </th:block>
+            */-->
 
             <th:block th:if="${resultList.size() == 0}">
                 <tr>
@@ -87,6 +88,6 @@
     </div>
 </section>
 <th:block th:replace="/fragments/footer.html :: thAdmFooter"></th:block>
-<script th:src="@{/js/adm/user.js}"></script>
+<script th:src="@{/js/adm/qna.js}"></script>
 </body>
 </html>
