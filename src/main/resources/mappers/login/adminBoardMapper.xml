@@ -322,7 +322,7 @@
             AND B.QA_STATUS IN('Q' , 'RQ')
         </if>
         <include refid="criteriaQna"/>
-        ORDER BY IDX DESC
+        ORDER BY IDX
         LIMIT #{pageStart},#{amount}
     </select>
 
