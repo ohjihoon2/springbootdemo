@@ -115,7 +115,7 @@ public class AdminBoardController {
      */
     @PostMapping(value = "/boardMaster/{idx}")
     @ResponseBody
-    public BoardMaster boardMasterDetails(@PathVariable int idx,HttpServletResponse response, HttpServletRequest request,Model model) {
+    public Map<String, Object> boardMasterDetails(@PathVariable int idx,HttpServletResponse response, HttpServletRequest request,Model model) {
         return adminService.findByIdxBoardMaster(idx);
     }
 
@@ -324,8 +324,12 @@ public class AdminBoardController {
         return ResultStr.set(result);
     }
 
-    // TODO 2022-04-19
-    //  - QNA 답변 로직 한번더 살펴보고 USERS 테이블 USE_YN, DELETE_YN 확인
+    @GetMapping(value = "/faq")
+    public String faqList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
+        List<Map<String,Object>> resultList = adminService.findAllFaq(criteria);
 
+        model.addAttribute("resultList", resultList);
+        return "/adm/content";
+    }
 
 }

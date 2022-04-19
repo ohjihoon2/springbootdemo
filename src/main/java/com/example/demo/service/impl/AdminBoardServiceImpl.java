@@ -47,7 +47,7 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     }
 
     @Override
-    public BoardMaster findByIdxBoardMaster(int idx) {
+    public Map<String, Object> findByIdxBoardMaster(int idx) {
         return adminMapper.findByIdxBoardMaster(idx);
     }
 
@@ -135,6 +135,11 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     @Override
     public QnaConfig findByIdxQnaConfig(int idx) {
         return adminMapper.findByIdxQnaConfig(idx);
+    }
+
+    @Override
+    public List<Map<String, Object>> findAllFaq(Criteria criteria) {
+        return adminMapper.findAllFaq(criteria);
     }
 
 }

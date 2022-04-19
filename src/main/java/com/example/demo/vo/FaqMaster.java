@@ -5,14 +5,13 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class Faq {
+public class FaqMaster {
     private int idx;
-    private String masterIdx;
-    private String faqQuestion;
-    private String faqAnswer;
+    private String faqId;
+    private String faqNm;
     private String useYn;
-    private String createIdx;
+    private int createIdx;
     private Date createDate;
-    private String updateIdx;
+    private int updateIdx;
     private Date updateDate;
 }

@@ -16,7 +16,7 @@ public interface AdminBoardService {
 
     int updateBoardMaster(Map<String, Object> paramMap);
 
-    BoardMaster findByIdxBoardMaster(int idx);
+    Map<String, Object> findByIdxBoardMaster(int idx);
 
     int deleteBoardMaster(Map<String, Object> paramMap);
 
@@ -41,4 +41,6 @@ public interface AdminBoardService {
     int answerQna(Map<String, Object> paramMap, HttpServletRequest request);
 
     QnaConfig findByIdxQnaConfig(int idx);
+
+    List<Map<String, Object>> findAllFaq(Criteria criteria);
 }

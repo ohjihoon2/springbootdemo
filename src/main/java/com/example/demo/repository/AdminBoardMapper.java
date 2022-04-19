@@ -20,7 +20,7 @@ public interface AdminBoardMapper {
 
     int updateBoardMaster(Map<String, Object> paramMap);
 
-    BoardMaster findByIdxBoardMaster(int idx);
+    Map<String, Object> findByIdxBoardMaster(int idx);
 
     int deleteBoardMaster(Map<String, Object> paramMap);
 
@@ -51,4 +51,6 @@ public interface AdminBoardMapper {
     String findUserEmailByIdx(int createIdx);
 
     QnaConfig findByIdxQnaConfig(int idx);
+
+    List<Map<String, Object>> findAllFaq(Criteria criteria);
 }

@@ -17,5 +17,4 @@ public class BoardMaster {
     private Date createDate;
     private int updateIdx;
     private Date updateDate;
-    private String deleteYn;
 }

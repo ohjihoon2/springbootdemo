@@ -96,8 +96,7 @@
                A.CREATE_DATE,
                IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(D.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM,
                A.UPDATE_IDX,
-               A.UPDATE_DATE,
-               A.DELETE_YN,
+               A.UPDATE_DATE
                IFNULL(B.CNT,'0') AS CNT
           FROM board_master A
           LEFT JOIN (
@@ -110,7 +109,7 @@
                     ) B ON A.IDX = B.MASTER_IDX
           LEFT JOIN USERS C ON A.CREATE_IDX = C.IDX
           LEFT JOIN USERS D ON A.UPDATE_IDX = D.IDX
-         WHERE A.DELETE_YN = 'N'
+         WHERE 1 = 1
         <include refid="criteriaBoardMaster"/>
     </select>
 
@@ -126,8 +125,7 @@
                  CREATE_IDX,
                  CREATE_DATE,
                  UPDATE_IDX,
-                 UPDATE_DATE,
-                 DELETE_YN
+                 UPDATE_DATE
              )
         VALUES
             (
@@ -140,8 +138,7 @@
                  #{userIdx},
                  date_format(SYSDATE(), '%Y-%m-%d %h:%i:%s'),
                  NULL,
-                 NULL,
-                 'N'
+                 NULL
             )
     </insert>
 
@@ -166,7 +163,7 @@
 
     </update>
 
-    <select id="findByIdxBoardMaster" parameterType="int" resultType="BoardMaster">
+    <select id="findByIdxBoardMaster" parameterType="int" resultType="CustomMap">
         SELECT A.IDX,
                A.board_ID,
                A.BOARD_NM,
@@ -179,8 +176,7 @@
                A.CREATE_DATE,
                IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(D.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM,
                A.UPDATE_IDX,
-               A.UPDATE_DATE,
-               A.DELETE_YN,
+               A.UPDATE_DATE
                IFNULL(B.CNT,'0') AS CNT
           FROM board_master A
           LEFT JOIN (
@@ -200,8 +196,7 @@
         UPDATE board_master
            SET BOARD_ID = NULL,
                UPDATE_IDX= #{userIdx},
-               UPDATE_DATE= SYSDATE(),
-               DELETE_YN = 'Y'
+               UPDATE_DATE= SYSDATE()
          WHERE IDX= #{idx}
     </update>
 
@@ -334,7 +329,7 @@
               ) AS CNT_TB
     </select>
 
-    <select id="findByIdxQna" parameterType="int" resultType="map">
+    <select id="findByIdxQna" parameterType="int" resultType="CustomMap">
         SELECT A.IDX,
                QA_SUBJECT,
                QA_CONTENT,
@@ -411,5 +406,15 @@
          WHERE QNA_IDX = #{idx}
     </select>
 
-
+    <select id="findAllFaq" parameterType="Criteria" resultType="map">
+        SELECT FAQ_GROUP,
+               FAQ_QUESTION,
+               FAQ_ANSWER,
+               USE_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM faq
+    </select>
 </mapper>
