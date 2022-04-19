@@ -12,7 +12,7 @@ public interface AdminUserService {
 
     int countUser(Criteria criteria);
 
-    User findByIdxUser(Map<String, Object> paramMap);
+    Users findByIdxUser(Map<String, Object> paramMap);
 
     int updateUser(Map<String, Object> paramMap);
 

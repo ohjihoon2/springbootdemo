@@ -1,17 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.LoginService;
-import com.example.demo.vo.User;
+import com.example.demo.vo.Users;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -29,11 +26,11 @@ public class LoginController {
 
     /**
      * 로그인 페이지
-     * @param user
+     * @param users
      * @return
      */
     @GetMapping(value = "/login")
-    public String loginView(User user, HttpServletResponse response, HttpServletRequest request) {
+    public String loginView(Users users, HttpServletResponse response, HttpServletRequest request) {
         String referrer = request.getHeader("Referer");
         request.getSession().setAttribute("prevPage", referrer);
 
@@ -42,11 +39,11 @@ public class LoginController {
 
     /**
      * 로그인 성공페이지
-     * @param user
+     * @param users
      * @return
      */
     @GetMapping(value = "/loginSuccess")
-    public String loginProc(User user, Authentication auth) {
+    public String loginProc(Users users, Authentication auth) {
 
         log.debug("auth.getAuthorities(): {}",auth.getAuthorities());
 
@@ -112,14 +109,14 @@ public class LoginController {
 
     /**
      * 회원가입 요청
-     * @param user
+     * @param users
      * @param request
      * @return
      */
     @PostMapping(value = "/signup")
     @ResponseBody
-    public Map<String, Object> signupProc(@RequestBody User user, HttpServletRequest request){
-        int result = loginService.userSave(user, request);
+    public Map<String, Object> signupProc(@RequestBody Users users, HttpServletRequest request){
+        int result = loginService.userSave(users, request);
         Map<String, Object> resultMap = new HashMap<>();
 
         if(result == 1) {
@@ -131,7 +128,7 @@ public class LoginController {
     }
 
     @GetMapping(value = "/signup")
-    public String signupView(User user, HttpServletResponse response, HttpServletRequest request) {
+    public String signupView(Users user, HttpServletResponse response, HttpServletRequest request) {
         String referrer = request.getHeader("Referer");
         request.getSession().setAttribute("prevPage", referrer);
 
@@ -148,8 +145,8 @@ public class LoginController {
     public String forgetId(@RequestBody Map<String,Object> paraMap) {
         String result ="";
 
-        User user = loginService.findByEmailAndUserNm(paraMap);
-        result = user.getUserId();
+        Users users = loginService.findByEmailAndUserNm(paraMap);
+        result = users.getUserId();
 
         return result;
     }
@@ -176,8 +173,8 @@ public class LoginController {
     @PostMapping(value = "/checkId")
     @ResponseBody
     public String checkId(@RequestBody HashMap<String, String> paraMap) {
-        User user = loginService.checkUserByUserId(paraMap.get("userId"));
-        if (user == null) {
+        Users users = loginService.checkUserByUserId(paraMap.get("userId"));
+        if (users == null) {
             return "success";
         } else {
             return "fail";

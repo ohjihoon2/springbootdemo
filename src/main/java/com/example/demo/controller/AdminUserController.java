@@ -6,7 +6,6 @@ import com.example.demo.util.ResultStr;
 import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,7 +59,7 @@ public class AdminUserController {
      */
     @PostMapping(value = "/user/{idx}")
     @ResponseBody
-    public User userDetails(@PathVariable int idx,Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request, Model model) {
+    public Users userDetails(@PathVariable int idx, Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request, Model model) {
         paramMap.put("idx",idx);
         String[] roleType = {"ROLE_USER"};
         paramMap.put("roleType", roleType);
@@ -162,7 +160,7 @@ public class AdminUserController {
      */
     @PostMapping(value = "/admin/{idx}")
     @ResponseBody
-    public User adminDetails(@PathVariable int idx, Map<String, Object> paramMap , HttpServletResponse response, HttpServletRequest request) {
+    public Users adminDetails(@PathVariable int idx, Map<String, Object> paramMap , HttpServletResponse response, HttpServletRequest request) {
         paramMap.put("idx", idx);
         return adminService.findByIdxUser(paramMap);
     }

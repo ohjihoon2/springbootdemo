@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.LoginMapper">
 
-    <select id="findByUserId" parameterType="string" resultType="User">
+    <select id="findByUserId" parameterType="string" resultType="Users">
         SELECT IDX,
                USER_ID,
                USER_PWD,
@@ -33,7 +33,7 @@
                  VERIFICATION_YN,
                  MARKETING_YN,
                  ROLE_TYPE,
-                 USE_YN,
+                 DELETE_YN,
                  CREATE_DATE
              )
         VALUES
@@ -48,7 +48,7 @@
                 #{verificationYn},
                 #{marketingYn},
                 #{roleType},
-                #{useYn},
+                'N',
                 SYSDATE()
              )
 
@@ -65,7 +65,7 @@
                  ROLE_TYPE,
                  VERIFICATION_CODE,
                  VERIFICATION_YN,
-                 USE_YN,
+                 DELETE_YN,
                  CREATE_DATE
              )
         VALUES
@@ -78,7 +78,7 @@
                 #{roleType},
                 #{verificationCode},
                 #{verificationYn},
-                'Y',
+                'N',
                 SYSDATE()
              )
 
@@ -94,7 +94,7 @@
             USER_EMAIL,
             ROLE_TYPE,
             VERIFICATION_YN,
-            USE_YN,
+            DELETE_YN,
             CREATE_DATE
         )
         VALUES
@@ -106,7 +106,7 @@
                 '',
                 'ROLE_USER',
                 'Y',
-                'Y',
+                'N',
                 SYSDATE()
             )
 
@@ -118,7 +118,7 @@
          WHERE user_id = #{userId}
     </select>
 
-    <select id="findByEmailAndUserNm" parameterType="string" resultType="User">
+    <select id="findByEmailAndUserNm" parameterType="string" resultType="Users">
         SELECT IDX,
                USER_ID,
                USER_PWD,
@@ -130,7 +130,7 @@
                VERIFICATION_CODE,
                VERIFICATION_YN,
                MARKETING_YN,
-               USE_YN,
+               DELETE_YN,
                CREATE_DATE,
                UPDATE_DATE
           FROM USERS
@@ -138,7 +138,7 @@
            AND USER_EMAIL = #{email}
     </select>
 
-    <select id="findByUserNmAndUserId" parameterType="string" resultType="User">
+    <select id="findByUserNmAndUserId" parameterType="string" resultType="Users">
         SELECT IDX,
                USER_ID,
                USER_PWD,
@@ -150,7 +150,7 @@
                VERIFICATION_CODE,
                VERIFICATION_YN,
                MARKETING_YN,
-               USE_YN,
+               DELETE_YN,
                CREATE_DATE,
                UPDATE_DATE
           FROM USERS

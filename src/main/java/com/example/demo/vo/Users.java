@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.Date;
 
 @Data
-public class User {
+public class Users {
 
     private int idx;
     private String userId;
@@ -21,7 +21,6 @@ public class User {
     private String verificationCode;
     private String verificationYn;
     private String marketingYn;
-    private String useYn;
     private Date createDate;
     private Date updateDate;
     private String deleteYn;

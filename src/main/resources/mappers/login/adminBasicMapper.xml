@@ -4,27 +4,27 @@
 
     <insert id="insertMenuTree" parameterType="MenuTree">
         INSERT INTO menu_tree
-        (
-        IDX,
-        PARENT_IDX,
-        LVL,
-        NAME,
-        LINK,
-        CREATE_IDX,
-        CREATE_DATE,
-        USE_YN
-        )
+            (
+                IDX,
+                PARENT_IDX,
+                LVL,
+                NAME,
+                LINK,
+                CREATE_IDX,
+                CREATE_DATE,
+                USE_YN
+            )
         VALUES
         <foreach collection="list" item="item" separator=" , ">
             (
-            #{item.idx},
-            #{item.parentIdx},
-            #{item.lvl},
-            #{item.name},
-            #{item.link},
-            #{item.userIdx},
-            SYSDATE(),
-            #{item.useYn}
+                #{item.idx},
+                #{item.parentIdx},
+                #{item.lvl},
+                #{item.name},
+                #{item.link},
+                #{item.userIdx},
+                SYSDATE(),
+                #{item.useYn}
             )
         </foreach>
 

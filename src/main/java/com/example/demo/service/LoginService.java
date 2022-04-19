@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.vo.User;
+import com.example.demo.vo.Users;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,15 +8,15 @@ import java.util.Map;
 
 public interface LoginService extends UserDetailsService {
 
-    int userSave(User user,HttpServletRequest request);
+    int userSave(Users users, HttpServletRequest request);
 
-    User findByEmailAndUserNm(Map<String, Object> paraMap);
+    Users findByEmailAndUserNm(Map<String, Object> paraMap);
 
-    User findByUserNmAndUserId(String userNm, String userId);
+    Users findByUserNmAndUserId(String userNm, String userId);
 
     void updateUserPwd(Map<String, Object> map);
 
-    User checkUserByUserId(String userId);
+    Users checkUserByUserId(String userId);
 
     Map<String, Object> findUserNicknmVerificationYnEmailIdxByUserId(String userId);
 

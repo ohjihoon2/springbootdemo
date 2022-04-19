@@ -2,10 +2,8 @@ package com.example.demo.service.impl;
 
 import com.example.demo.repository.AdminUserMapper;
 import com.example.demo.service.AdminUserService;
-import com.example.demo.service.LoginService;
 import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +29,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     @Override
-    public User findByIdxUser(Map<String, Object> paramMap) {
+    public Users findByIdxUser(Map<String, Object> paramMap) {
         return adminMapper.findByIdxUser(paramMap);
     }
 

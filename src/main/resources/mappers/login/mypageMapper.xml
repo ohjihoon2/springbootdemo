@@ -3,7 +3,7 @@
 <mapper namespace="com.example.demo.repository.MypageMapper">
     <update id="withdrawUser" parameterType="map">
         UPDATE users
-           SET USE_YN = 'N',
+           SET DELETE_YN = 'Y',
                UPDATE_DATE = SYSDATE()
          WHERE IDX = #{idx}
            AND ROLE_TYPE IN

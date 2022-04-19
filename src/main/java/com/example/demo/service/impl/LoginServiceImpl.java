@@ -4,7 +4,7 @@ import com.example.demo.repository.LoginMapper;
 import com.example.demo.service.EmailService;
 import com.example.demo.service.LoginService;
 import com.example.demo.util.RandomString;
-import com.example.demo.vo.User;
+import com.example.demo.vo.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,39 +33,39 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException{
-        User user = loginMapper.findByUserId(userId);
-        if (user == null) {
+        Users users = loginMapper.findByUserId(userId);
+        if (users == null) {
             throw new UsernameNotFoundException(userId + "is not found.");
         }
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if (user.getRoleType().equals("ROLE_ADMIN")) {
+        if (users.getRoleType().equals("ROLE_ADMIN")) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            user.setRoleType("ROLE_ADMIN");
-        }else if (user.getRoleType().equals("ROLE_MANAGER")) {
+            users.setRoleType("ROLE_ADMIN");
+        }else if (users.getRoleType().equals("ROLE_MANAGER")) {
             authorities.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
-            user.setRoleType("ROLE_MANAGER");
-        }else if (user.getRoleType().equals("ROLE_USER")) {
+            users.setRoleType("ROLE_MANAGER");
+        }else if (users.getRoleType().equals("ROLE_USER")) {
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-            user.setRoleType("ROLE_USER");
+            users.setRoleType("ROLE_USER");
         }
-        return new org.springframework.security.core.userdetails.User(user.getUserId(), user.getUserPwd(), authorities);
+        return new org.springframework.security.core.userdetails.User(users.getUserId(), users.getUserPwd(), authorities);
     }
 
     @Override
     @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
-    public int userSave(User user,HttpServletRequest request) {
+    public int userSave(Users user, HttpServletRequest request) {
 
         int cnt = loginMapper.countByUserId(user.getUserId());
 
         if(cnt == 0){
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             user.setUserPwd(passwordEncoder.encode(user.getUserPwd()));
-            user.setUseYn("Y");
+            user.setDeleteYn("N");
             if(loginMapper.saveUser(user) == 1){
                 Map<String, Object> map = new HashMap<>();
-                map.put("userId",user.getUserId());
-                map.put("userEmail",user.getUserEmail());
+                map.put("userId", user.getUserId());
+                map.put("userEmail", user.getUserEmail());
                 return sendVerificationMail(request, map);
             }
 
@@ -75,20 +75,20 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public User findByEmailAndUserNm(Map<String, Object> paraMap) {
+    public Users findByEmailAndUserNm(Map<String, Object> paraMap) {
         String email = (String) paraMap.get("email");
         String userNm = (String) paraMap.get("userNm");
 
-        User user = loginMapper.findByEmailAndUserNm(email,userNm);
+        Users users = loginMapper.findByEmailAndUserNm(email,userNm);
 
-        return user;
+        return users;
     }
 
     @Override
-    public User findByUserNmAndUserId(String userNm, String userId) {
-        User user = loginMapper.findByUserNmAndUserId(userNm,userId);
+    public Users findByUserNmAndUserId(String userNm, String userId) {
+        Users users = loginMapper.findByUserNmAndUserId(userNm,userId);
 
-        return user;
+        return users;
     }
 
     @Override
@@ -97,7 +97,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public User checkUserByUserId(String userId) {
+    public Users checkUserByUserId(String userId) {
         return loginMapper.findByUserId(userId);
     }
 
@@ -177,20 +177,20 @@ public class LoginServiceImpl implements LoginService {
     @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
     public int forgetPwd(String userNm, String userId) {
         int result =0;
-        User user = findByUserNmAndUserId(userNm,userId);
+        Users users = findByUserNmAndUserId(userNm,userId);
 
-        if(user != null) {
+        if(users != null) {
 
             String ranPw = RandomString.randomStrSp();
 
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            user.setUserPwd(passwordEncoder.encode(ranPw));
+            users.setUserPwd(passwordEncoder.encode(ranPw));
             Map<String,Object> map = new HashMap<>();
             map.put("userId",userId);
             map.put("userPwd",passwordEncoder.encode(ranPw));
             updateUserPwd(map);
 
-            String email = user.getUserEmail();
+            String email = users.getUserEmail();
 
             String to = email;
             String subject = siteName + " 임시 비밀번호 발급";

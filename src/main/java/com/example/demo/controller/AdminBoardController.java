@@ -315,11 +315,9 @@ public class AdminBoardController {
     @PostMapping(value = "/qna")
     @ResponseBody
     public Map<String,Object> answerQna(@RequestBody Map<String,Object> paramMap,HttpServletResponse response, HttpServletRequest request) {
-        // TODO 2022-04-19
-        //  - 테이블 변경으로 수정
-//        HttpSession session = request.getSession();
-//        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
-        paramMap.put("userIdx",1);
+        HttpSession session = request.getSession();
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        paramMap.put("userIdx",userIdx);
 
         int result = adminService.answerQna(paramMap,request);
 

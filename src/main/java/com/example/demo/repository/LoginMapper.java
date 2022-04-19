@@ -1,6 +1,6 @@
 package com.example.demo.repository;
 
-import com.example.demo.vo.User;
+import com.example.demo.vo.Users;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -9,19 +9,19 @@ import java.util.Map;
 @Mapper
 @Repository("LoginMapper")
 public interface LoginMapper {
-    User findByUserId(String userId);
+    Users findByUserId(String userId);
 
     int countByUserId(String userId);
 
-    int saveUser(User user);
+    int saveUser(Users users);
 
     int saveAdminTest(Map<String,Object> paramMap);
 
     int saveUserTest(Map<String,Object> paramMap);
 
-    User findByEmailAndUserNm(String email, String userNm);
+    Users findByEmailAndUserNm(String email, String userNm);
 
-    User findByUserNmAndUserId(String userNm, String userId);
+    Users findByUserNmAndUserId(String userNm, String userId);
 
     void updateUserPwd(Map<String, Object> map);
 

@@ -39,7 +39,7 @@
                            A.VERIFICATION_CODE,
                            A.VERIFICATION_YN,
                            A.MARKETING_YN,
-                           A.USE_YN,
+                           A.DELETE_YN,
                            A.CREATE_DATE,
                            A.UPDATE_DATE,
                            B.USER_NICKNM AS UPDATE_NICKNM
@@ -67,7 +67,7 @@
                            A.ROLE_TYPE,
                            A.VERIFICATION_CODE,
                            A.VERIFICATION_YN,
-                           A.USE_YN,
+                           A.DELETE_YN,
                            A.CREATE_DATE,
                            A.UPDATE_DATE
                       FROM users AS A
@@ -77,7 +77,7 @@
                 ) AS CNT_TB
     </select>
 
-    <select id="findByIdxUser" resultType="User" parameterType="map">
+    <select id="findByIdxUser" resultType="Users" parameterType="map">
         SELECT IDX,
                USER_ID,
                USER_PWD,
@@ -90,7 +90,7 @@
                VERIFICATION_CODE,
                VERIFICATION_YN,
                MARKETING_YN,
-               USE_YN,
+               DELETE_YN,
                CREATE_DATE,
                UPDATE_DATE
           FROM users
@@ -140,7 +140,7 @@
                            A.VERIFICATION_CODE,
                            A.VERIFICATION_YN,
                            A.MARKETING_YN,
-                           A.USE_YN,
+                           A.DELETE_YN,
                            A.CREATE_DATE,
                            A.UPDATE_DATE,
                            B.USER_NICKNM AS UPDATE_NICKNM
@@ -168,7 +168,7 @@
                            A.ROLE_TYPE,
                            A.VERIFICATION_CODE,
                            A.VERIFICATION_YN,
-                           A.USE_YN,
+                           A.DELETE_YN,
                            A.CREATE_DATE,
                            A.UPDATE_DATE
                       FROM users A
@@ -204,7 +204,7 @@
                  ROLE_TYPE,
                  VERIFICATION_YN,
                  MARKETING_YN,
-                 USE_YN,
+                 DELETE_YN,
                  CREATE_DATE
             )
         VALUES
@@ -219,7 +219,7 @@
                  'ROLE_MANAGER',
                  NULL,
                  NULL,
-                 'Y',
+                 'N',
                  SYSDATE()
             )
     </insert>

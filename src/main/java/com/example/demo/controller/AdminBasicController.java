@@ -25,7 +25,7 @@ public class AdminBasicController {
     private final AdminBasicService adminService;
 
     @GetMapping(value = "/admIndex")
-    public String adminPage(Principal principal,User user, HttpServletResponse response, HttpServletRequest request, Model model) {
+    public String adminPage(Principal principal, Users users, HttpServletResponse response, HttpServletRequest request, Model model) {
         return "/adm/admIndex";
     }
 
