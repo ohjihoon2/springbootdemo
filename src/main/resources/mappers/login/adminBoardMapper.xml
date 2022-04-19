@@ -192,13 +192,15 @@
          WHERE A.IDX = #{idx}
     </select>
 
-    <update id="deleteBoardMaster" parameterType="map">
-        UPDATE board_master
-           SET BOARD_ID = NULL,
-               UPDATE_IDX= #{userIdx},
-               UPDATE_DATE= SYSDATE()
+    <delete id="deleteBoardMaster" parameterType="map">
+        DELETE FROM board_master
          WHERE IDX= #{idx}
-    </update>
+    </delete>
+
+    <delete id="deleteBoard" parameterType="map">
+        DELETE FROM board
+         WHERE MASTER_IDX = #{idx}
+    </delete>
 
     <select id="findAllContent" parameterType="map" resultType="CustomMap">
         SELECT A.IDX,

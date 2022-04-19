@@ -52,8 +52,19 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
     public int deleteBoardMaster(Map<String, Object> paramMap) {
-        return adminMapper.deleteBoardMaster(paramMap);
+        int result = 0;
+        if(adminMapper.deleteBoardMaster(paramMap) == 1){
+            adminMapper.deleteBoard(paramMap);
+
+            // TODO 2022-04-19
+            //  - 댓글 테이블 생성 후 BOARD 삭제 이후에 관련 댓글도 모두 삭제 코드 작성
+
+            result = 1;
+        }
+
+        return result;
     }
 
     @Override

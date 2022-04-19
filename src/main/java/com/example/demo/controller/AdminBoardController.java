@@ -93,11 +93,9 @@ public class AdminBoardController {
     @DeleteMapping(value = "/boardMaster/{idx}")
     @ResponseBody
     public Map<String,Object> deleteBoardMaster(@PathVariable int idx, Principal principal,HttpServletResponse response, HttpServletRequest request) {
-        Map<String,Object> paramMap = new HashMap<>();
-        HttpSession session = request.getSession();
-        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
 
-        paramMap.put("userIdx",userIdx);
+        Map<String,Object> paramMap = new HashMap<>();
+
         paramMap.put("idx",idx);
 
         int result = adminService.deleteBoardMaster(paramMap);

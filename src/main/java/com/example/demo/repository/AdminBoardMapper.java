@@ -53,4 +53,6 @@ public interface AdminBoardMapper {
     QnaConfig findByIdxQnaConfig(int idx);
 
     List<Map<String, Object>> findAllFaq(Criteria criteria);
+
+    void deleteBoard(Map<String, Object> paramMap);
 }
