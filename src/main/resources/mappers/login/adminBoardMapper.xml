@@ -96,7 +96,7 @@
                A.CREATE_DATE,
                IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(D.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM,
                A.UPDATE_IDX,
-               A.UPDATE_DATE
+               A.UPDATE_DATE,
                IFNULL(B.CNT,'0') AS CNT
           FROM board_master A
           LEFT JOIN (
