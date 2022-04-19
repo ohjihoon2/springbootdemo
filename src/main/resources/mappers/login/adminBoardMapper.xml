@@ -336,10 +336,8 @@
 
     <select id="findByIdxQna" parameterType="int" resultType="map">
         SELECT A.IDX,
-               QA_CATEGORY,
                QA_SUBJECT,
                QA_CONTENT,
-               QA_STATUS,
                QA_FILE,
                IF( A.CREATE_IDX IS NULL , NULL, IFNULL(B.USER_NICKNM,'탈퇴된 사용자')) AS CREATE_NICKNM,
                A.CREATE_DATE,
@@ -350,21 +348,21 @@
         LEFT OUTER JOIN users C on B.UPDATE_IDX = C.IDX
         WHERE A.IDX = #{idx}
            OR A.PARENT_IDX = #{idx}
+        ORDER BY A.IDX DESC
     </select>
 
     <update id="updateOriginalQna" parameterType="map">
-        UPDATE qna
+        UPDATE qna_config
            SET QA_STATUS = #{qaStatus},
                UPDATE_DATE = SYSDATE(),
                UPDATE_IDX = #{userIdx}
-         WHERE IDX = #{originalIdx}
+         WHERE QNA_IDX = #{originalIdx}
     </update>
 
     <insert id="answerQna" parameterType="map">
         INSERT INTO qna
             (
                  PARENT_IDX,
-                 QA_CATEGORY,
                  QA_SUBJECT,
                  QA_CONTENT,
                  QA_FILE,
@@ -375,7 +373,6 @@
         VALUES
             (
                 #{originalIdx},
-                #{qaCategory},
                 #{qaSubject},
                 #{qaContent},
                 #{qaFile},
@@ -399,4 +396,20 @@
           FROM USERS
          WHERE IDX = #{idx}
     </select>
+
+    <select id="findByIdxQnaConfig" resultType="QnaConfig" parameterType="int">
+        SELECT QNA_IDX,
+               QA_EMAIL_RECV_YN,
+               QA_CATEGORY,
+               QA_STATUS,
+               SECRET_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM qna_config
+         WHERE QNA_IDX = #{idx}
+    </select>
+
+
 </mapper>

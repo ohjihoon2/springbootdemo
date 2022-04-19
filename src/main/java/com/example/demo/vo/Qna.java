@@ -6,7 +6,6 @@ import java.util.Date;
 
 @Data
 public class Qna {
-    private int idx;
     private int parentIdx;
     private String qaSubject;
     private String qaContent;

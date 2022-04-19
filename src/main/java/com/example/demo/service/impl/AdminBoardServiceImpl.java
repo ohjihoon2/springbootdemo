@@ -105,44 +105,36 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
     public int answerQna(Map<String, Object> paramMap, HttpServletRequest request) {
         int result = 0;
-        // originalIdx : 첫 질문의 idx
-        // Quesion - Answer - ReQuestion - ReAnswer
-        String originalIdx = String.valueOf(paramMap.get("originalIdx"));
 
-        // 이메일 여부 확인 하고 이메일 보내기
-        if(adminMapper.updateOriginalQna(paramMap) ==1 ){
+        QnaConfig qnaConfig = adminMapper.findByIdxQnaConfig(Integer.parseInt(paramMap.get("originalIdx").toString()));
 
-            //
-            Map<String, Object> resultMap = adminMapper.findQaEmailRecvYnQaStatusCreateIdXByIdxQna(originalIdx);
+        // insert qna answer
+        if(adminMapper.answerQna(paramMap) == 1){
+            // QNA_STATUS 업데이트
+            if(adminMapper.updateOriginalQna(paramMap) == 1){
+                // 수신 여부에 따른 이메일 처리
+                if(qnaConfig.getQaEmailRecvYn().equals("Y")){
+                    String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");;
+                    String to = adminMapper.findUserEmailByIdx(qnaConfig.getCreateIdx());
+                    String subject = "[ "+siteName+" Qna 답변처리]";
+                    String text = "안녕하세요.<br>" +
+                            "회원님께서 질문하신 내용에 대한 답변이 등록되었습니다. <br>" +
+                            "<b><a href=\""+domain+"\">홈페이지</a></b> Q&A에서 답변을 확인하세요.";
 
-            if(resultMap.get("qaEmailRecvYn").equals("Y")){
-
-                int createIdx = Integer.parseInt(String.valueOf(resultMap.get("createIdx")));
-
-                if(resultMap.get("qaStatus").equals("ReQuestion")){
-
-                }
-
-//                -- 상태에 따라서 insert - parents_idx 수정하기
-
-
-                String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");;
-                String to = adminMapper.findUserEmailByIdx(createIdx);
-                String subject = "[ "+siteName+" Qna 답변처리]";
-                String text = "안녕하세요.<br>" +
-                        "회원님께서 질문하신 내용에 대한 답변이 등록되었습니다. <br>" +
-                        "<b><a href=\""+domain+"\">홈페이지</a></b> Q&A에서 답변을 확인하세요.";
-                if(emailService.sendMail(to, subject, text)){
-                    result = adminMapper.answerQna(paramMap);
+                    if(emailService.sendMail(to, subject, text)){
+                        result = 1;
+                    }
                 }else{
-                    result = 0;
+                        result = 1;
                 }
-
-            }else{
-                result = adminMapper.answerQna(paramMap);
             }
         }
         return result;
+    }
+
+    @Override
+    public QnaConfig findByIdxQnaConfig(int idx) {
+        return adminMapper.findByIdxQnaConfig(idx);
     }
 
 }

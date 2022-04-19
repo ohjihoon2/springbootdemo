@@ -292,11 +292,17 @@ public class AdminBoardController {
      */
     @PostMapping(value = "/qna/{idx}")
     @ResponseBody
-    public List<Qna> qnaDetails(@PathVariable int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
-        // TODO 2022-04-19
-        //  - RETURN  QNA LIST 객체 + QNA_CONFIG MAP  (총 2개)
+    public
+    Map<String, Object> qnaDetails(@PathVariable int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
+        Map<String, Object> resultMap = new HashMap<>();
 
-        return adminService.findByIdxQna(idx);
+        List<Qna> resultList = adminService.findByIdxQna(idx);
+        QnaConfig config = adminService.findByIdxQnaConfig(idx);
+
+        resultMap.put("resultList", resultList);
+        resultMap.put("config", config);
+
+        return resultMap;
     }
 
     /**
@@ -311,9 +317,9 @@ public class AdminBoardController {
     public Map<String,Object> answerQna(@RequestBody Map<String,Object> paramMap,HttpServletResponse response, HttpServletRequest request) {
         // TODO 2022-04-19
         //  - 테이블 변경으로 수정
-        HttpSession session = request.getSession();
-        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
-        paramMap.put("userIdx",userIdx);
+//        HttpSession session = request.getSession();
+//        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        paramMap.put("userIdx",1);
 
         int result = adminService.answerQna(paramMap,request);
 

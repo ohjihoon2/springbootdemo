@@ -39,4 +39,6 @@ public interface AdminBoardService {
     List<Qna> findByIdxQna(int idx);
 
     int answerQna(Map<String, Object> paramMap, HttpServletRequest request);
+
+    QnaConfig findByIdxQnaConfig(int idx);
 }

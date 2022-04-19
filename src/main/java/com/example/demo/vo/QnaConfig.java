@@ -10,8 +10,10 @@ public class QnaConfig {
     private int qnaIdx;
     private String qaEmailRecvYn;
     private String qaCategory;
-    private String qaStatusYn;
+    private String qaStatus;
     private String secretYn;
+    private int createIdx;
+    private Date createDate;
     private int updateIdx;
     private Date updateDate;
 }

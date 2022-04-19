@@ -49,4 +49,6 @@ public interface AdminBoardMapper {
     Map<String, Object> findQaEmailRecvYnQaStatusCreateIdXByIdxQna(String originalIdx);
 
     String findUserEmailByIdx(int createIdx);
+
+    QnaConfig findByIdxQnaConfig(int idx);
 }
