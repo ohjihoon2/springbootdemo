@@ -9,10 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class FileUtils {
@@ -28,7 +25,7 @@ public class FileUtils {
         return UUID.randomUUID().toString().replace("-","");
     }
 
-    public List<AttachFile> uploadFiles(MultipartFile[] files, int relatedIdx, String relatedTable, int CreateIdx){
+    public List<AttachFile> uploadFiles(MultipartFile[] files, Map<String, Object> paramMap){
         /* 파일이 비어있으면 비어있는 리스트 반환 */
         if(files[0].getSize() <1){
             return Collections.emptyList();
@@ -58,12 +55,12 @@ public class FileUtils {
 
                 /* 파일 정보 저장 */
                 AttachFile attachFile = new AttachFile();
-                attachFile.setRelatedIdx(relatedIdx);
-                attachFile.setRelatedTable(relatedTable);
+                attachFile.setRelatedIdx(Integer.parseInt(paramMap.get("relatedIdx").toString()));
+                attachFile.setRelatedTable(paramMap.get("relatedTable").toString());
                 attachFile.setOriginalName(file.getOriginalFilename());
                 attachFile.setSaveName(saveName);
                 attachFile.setSize(file.getSize());
-                attachFile.setCreateIdx(CreateIdx);
+                attachFile.setCreateIdx(Integer.parseInt(paramMap.get("createIdx").toString()));
                 /* 파일 정보 추가 */
                 fileList.add(attachFile);
 

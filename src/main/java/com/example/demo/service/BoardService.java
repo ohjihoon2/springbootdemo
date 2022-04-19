@@ -8,9 +8,9 @@ import java.util.Map;
 
 public interface BoardService {
 
-    int insertBoard(Board board);
+    int insertBoard(Map<String, Object> paramMap);
 
-    int insertBoard(MultipartFile[] files, Board board, String boardType, int masterIdx);
+    int insertBoard(MultipartFile[] files, Map<String, Object> paramMap);
 
     List<Board> findByMasterIdxSearch(Map<String, Object> paramMap);
 

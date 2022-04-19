@@ -42,5 +42,11 @@ public interface AdminBoardService {
 
     QnaConfig findByIdxQnaConfig(int idx);
 
-    List<Map<String, Object>> findAllFaq(Criteria criteria);
+    List<Map<String, Object>> findAllFaqMaster(Criteria criteria);
+
+    int insertFaqMaster(Map<String, Object> paramMap);
+
+    int updateFaqMaster(Map<String, Object> paramMap);
+
+    int deleteFaqMaster(Map<String, Object> paramMap);
 }

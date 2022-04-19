@@ -3,16 +3,16 @@ package com.example.demo.service.impl;
 import com.example.demo.repository.AdminBoardMapper;
 import com.example.demo.service.AdminBoardService;
 import com.example.demo.service.EmailService;
-import com.example.demo.util.RandomString;
-import com.example.demo.vo.*;
+import com.example.demo.vo.Content;
+import com.example.demo.vo.Criteria;
+import com.example.demo.vo.Qna;
+import com.example.demo.vo.QnaConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -149,8 +149,33 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     }
 
     @Override
-    public List<Map<String, Object>> findAllFaq(Criteria criteria) {
-        return adminMapper.findAllFaq(criteria);
+    public List<Map<String, Object>> findAllFaqMaster(Criteria criteria) {
+        return adminMapper.findAllFaqMaster(criteria);
+    }
+
+    @Override
+    public int insertFaqMaster(Map<String, Object> paramMap) {
+        return adminMapper.insertFaqMaster(paramMap);
+    }
+
+    @Override
+    public int updateFaqMaster(Map<String, Object> paramMap) {
+        return adminMapper.updateFaqMaster(paramMap);
+    }
+
+    @Override
+    public int deleteFaqMaster(Map<String, Object> paramMap) {
+        int result = 0;
+        if(adminMapper.deleteFaqMaster(paramMap) == 1){
+
+            // TODO 2022-04-19
+            //  - FAQ MASTER 삭제 시 FAQ 삭제 되도록 추가
+//            adminMapper.deleteFaq(paramMap);
+
+            result = 1;
+        }
+
+        return result;
     }
 
 }

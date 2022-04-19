@@ -83,6 +83,25 @@
         </if>
     </sql>
 
+    <sql id="criteriaFaqMaster">
+        <if test="searchType != null and searchKeyword != null">
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <foreach item="type" collection="typeArr">
+                    <trim prefix="OR">
+                        <choose>
+                            <when test="searchType=='T'.toString">
+                                (FAQ_NM LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                            <when test="searchType=='I'.toString()">
+                                (FAQ_ID LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
     <select id="findAllBoardMaster" resultType="CustomMap" parameterType="Criteria">
         SELECT A.IDX,
                A.board_ID,
@@ -380,14 +399,6 @@
 
     </insert>
 
-    <select id="findQaEmailRecvYnQaStatusCreateIdXByIdxQna" resultType="CustomMap" parameterType="string">
-        SELECT QA_EMAIL_RECV_YN,
-               QA_STATUS,
-               CREATE_IDX
-          FROM qna
-         WHERE IDX = #{idx}
-    </select>
-
     <select id="findUserEmailByIdx" parameterType="int" resultType="string">
         SELECT USER_EMAIL
           FROM USERS
@@ -408,15 +419,53 @@
          WHERE QNA_IDX = #{idx}
     </select>
 
-    <select id="findAllFaq" parameterType="Criteria" resultType="map">
-        SELECT FAQ_GROUP,
-               FAQ_QUESTION,
-               FAQ_ANSWER,
+    <select id="findAllFaqMaster" parameterType="Criteria" resultType="map">
+
+        SELECT FAQ_ID,
+               FAQ_NM,
                USE_YN,
-               CREATE_IDX,
-               CREATE_DATE,
                UPDATE_IDX,
-               UPDATE_DATE
-          FROM faq
+               UPDATE_DATE,
+               CREATE_IDX,
+               CREATE_DATE
+          FROM faq_master
+         WHERE 1 = 1
+        <include refid="criteriaFaqMaster"/>
+
     </select>
+
+    <insert id="insertFaqMaster" parameterType="map">
+        INSERT INTO faq_master
+            (
+                FAQ_ID,
+                FAQ_NM,
+                USE_YN,
+                CREATE_IDX,
+                CREATE_DATE
+             )
+        VALUES
+            (
+                #{faqId},
+                #{faqNm},
+                'Y',
+                #{userIdx},
+                SYSDATE()
+            )
+    </insert>
+
+    <update id="updateFaqMaster" parameterType="map">
+        UPDATE faq_master
+           SET FAQ_ID= #{faqId},
+               FAQ_NM= #{faqNm},
+               USE_YN= #{useYn},
+               UPDATE_IDX=#{userIdx},
+               UPDATE_DATE=SYSDATE()
+         WHERE IDX= #{idx}
+
+    </update>
+
+    <delete id="deleteFaqMaster" parameterType="map">
+        DELETE FROM faq_master
+         WHERE IDX = #{idx}
+    </delete>
 </mapper>

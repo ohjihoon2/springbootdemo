@@ -46,13 +46,17 @@ public interface AdminBoardMapper {
 
     int updateOriginalQna(Map<String, Object> paramMap);
 
-    Map<String, Object> findQaEmailRecvYnQaStatusCreateIdXByIdxQna(String originalIdx);
-
     String findUserEmailByIdx(int createIdx);
 
     QnaConfig findByIdxQnaConfig(int idx);
 
-    List<Map<String, Object>> findAllFaq(Criteria criteria);
+    List<Map<String, Object>> findAllFaqMaster(Criteria criteria);
 
     void deleteBoard(Map<String, Object> paramMap);
+
+    int insertFaqMaster(Map<String, Object> paramMap);
+
+    int updateFaqMaster(Map<String, Object> paramMap);
+
+    int deleteFaqMaster(Map<String, Object> paramMap);
 }

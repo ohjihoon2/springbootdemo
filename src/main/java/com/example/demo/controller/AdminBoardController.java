@@ -322,12 +322,100 @@ public class AdminBoardController {
         return ResultStr.set(result);
     }
 
-    @GetMapping(value = "/faq")
-    public String faqList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
-        List<Map<String,Object>> resultList = adminService.findAllFaq(criteria);
+    /**+
+     * FAQ Master 설정 리스트
+     * @param criteria
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/faqMaster")
+    public String faqMasterList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
+        List<Map<String,Object>> resultList = adminService.findAllFaqMaster(criteria);
 
+        // searchType T : FAQ_NM (FAQ 이름) / I : FAQ_ID (FAQ ID)
         model.addAttribute("resultList", resultList);
-        return "/adm/content";
+
+
+        return "/adm/faq";
     }
 
+    /**
+     * FAQ MASTER 설정 추가
+     * @param paramMap
+     * @param response
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/faqMaster")
+    @ResponseBody
+    public Map<String,Object> saveFaqMaster(@RequestBody Map<String,Object> paramMap,HttpServletResponse response, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        paramMap.put("userIdx",userIdx);
+
+        int result = adminService.insertFaqMaster(paramMap);
+
+        return ResultStr.set(result);
+    }
+
+    /**
+     * FAQ MASTER 설정 수정
+     * @param idx
+     * @param paramMap
+     * @param principal
+     * @param response
+     * @param request
+     * @return
+     */
+    @PatchMapping(value = "/faqMaster/{idx}")
+    @ResponseBody
+    public Map<String,Object> updateFaqMaster(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        paramMap.put("idx",idx);
+        paramMap.put("userIdx",userIdx);
+
+        int result = adminService.updateFaqMaster(paramMap);
+
+        return ResultStr.set(result);
+    }
+
+    @DeleteMapping(value = "/faqMaster/{idx}")
+    @ResponseBody
+    public Map<String,Object> deleteFaqMaster(@PathVariable int idx,HttpServletResponse response, HttpServletRequest request) {
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("idx",idx);
+
+        int result = adminService.deleteFaqMaster(paramMap);
+
+        return ResultStr.set(result);
+    }
+
+    /**
+     * FAQ 리스트
+     * @param criteria
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/faq")
+    public String faqList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
+        // TODO 2022-04-19
+        //  - FAQ CRUD 작성
+
+        // SELECT 카테고리 LIST
+//        List<Map<String,Object>> faqList = adminService.findNameFaqMaster();
+
+//        List<Map<String,Object>> resultList = adminService.findAllFaq(criteria);
+
+//        model.addAttribute("faqList", faqList);
+//        model.addAttribute("resultList", resultList);
+        return "/adm/boardMaster";
+    }
+
+    // TODO 2022-04-19
+    //  - Qna 첨부파일 /  FILE 테이블 , 로직 수정
 }

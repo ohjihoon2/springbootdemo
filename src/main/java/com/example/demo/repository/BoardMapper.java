@@ -11,7 +11,7 @@ import java.util.Map;
 @Mapper
 @Repository("BoardMapper")
 public interface BoardMapper {
-    int insertBoard(Board board);
+    int insertBoard(Map<String, Object> paramMap);
 
     List<Board> findByMasterIdxSearch(Map<String, Object> paramMap);
 

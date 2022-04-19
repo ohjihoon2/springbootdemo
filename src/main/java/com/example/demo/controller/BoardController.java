@@ -91,19 +91,18 @@ public class BoardController {
      */
     @PostMapping(value = "/registerWithoutFile")
     @ResponseBody
-    public Map<String, Object> insertBoard(@RequestBody Board board, Principal principal, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String, Object> insertBoard(@RequestBody Map<String, Object> paramMap, Principal principal, HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
         int idx = Integer.parseInt((String) session.getAttribute("idx"));
-        board.setCreateIdx(idx);
+        paramMap.put("createIdx",idx);
 
-        int result = boardService.insertBoard(board);
+        int result = boardService.insertBoard(paramMap);
         return ResultStr.set(result);
     }
 
     /**
      * 게시물 등록 (파일 있음)
      * @param files
-     * @param board
      * @param boardType
      * @param masterIdx
      * @param response
@@ -112,12 +111,15 @@ public class BoardController {
      */
     @PostMapping(value = "/registerWithFile")
     @ResponseBody
-    public Map<String, Object> insertBoard(@RequestPart MultipartFile[] files, @RequestBody Board board, @RequestParam String boardType, @RequestParam int masterIdx, HttpServletResponse response, HttpServletRequest request) {
+    // TODO 2022-04-19
+    //  - RequestPart 뒤에 VO 객체가 들어가야함 - 객체가 있어야 SET이 된다. 뒤에 들어갈 객체 내용 생각해보고 다시 작성하기
+    public Map<String, Object> insertBoard(@RequestPart MultipartFile[] files, @RequestPart Map<String, Object> paramMap, @RequestParam String boardType, @RequestParam int masterIdx, HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
         int idx = Integer.parseInt((String) session.getAttribute("idx"));
-        board.setCreateIdx(idx);
+        paramMap.put("idx", idx);
+//        board.setCreateIdx(idx);
 
-        int result = boardService.insertBoard(files,board,boardType,masterIdx);
+        int result = boardService.insertBoard(files,paramMap);
         return ResultStr.set(result);
     }
 }
