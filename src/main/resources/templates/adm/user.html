@@ -55,10 +55,10 @@
                     <td class="text-center" th:text="${res.userId}"></td>
                     <td class="text-center" th:text="${res.userNicknm}"></td>
                     <td class="text-center" th:text="${res.userNm}"></td>
-                    <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd')}"></td>
+                    <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.')}"></td>
                     <td class="remarks text-color-primary" th:classappend="${res.deleteYn == 'N'} ? 'text-color-primary' : 'text-color-red'">
                         <th:block th:if="${res.idx != null && res.updateNicknm != null}">
-                            ※ [[${#dates.format(res.updateDate, 'yyyy. MM. dd')}]]
+                            ※ [[${#dates.format(res.updateDate, 'yyyy. MM. dd.')}]]
                             <th:block th:if="${res.deleteYn == 'N'}">
                                 [[${res.updateNicknm}]] 님이 수정함.
                             </th:block>

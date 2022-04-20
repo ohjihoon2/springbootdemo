@@ -99,8 +99,8 @@ $(function(){
         var html =
             '<h4>FAQ 추가</h4>' +
             '<div class="mb20"></div>' +
-            '<form id="faqAddForm">' +
-            '<input type="hidden" id="'+ res.idx +'">' +
+            '<form id="faqUpdateForm">' +
+            '<input type="hidden" id="idx" value="'+ res.idx +'">' +
             '<table class="table-top">' +
             '<colgroup>' +
             '<col width="15%">' +
@@ -130,7 +130,7 @@ $(function(){
             '<button type="button" id="faqDel">삭제</button>' +
             '</div>' +
             '<button type="button" onclick="$popup.popupJsClose()">닫기</button>\n' +
-            '<button type="submit">추가</button>' +
+            '<button type="submit">수정</button>' +
             '</div>' +
             '</input>';
 
@@ -142,7 +142,7 @@ $(function(){
         if(confirm("해당 FAQ를 삭제하시겠습니까?")) {
             var idx = $('#idx').val();
 
-            var res = $ajax.deleteAjax('/adm/faq/'+ idx);
+            var res = $ajax.deleteAjax('/adm/faqMaster/'+ idx);
             if(res == "error") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }
@@ -156,55 +156,29 @@ $(function(){
         }
     });
 
-    // 컨텐츠수정
-    $(document).on("submit", "#contentUpdateForm", function(e) {
+    // faq카테고리 수정
+    $(document).on("submit", "#faqUpdateForm", function(e) {
         e.preventDefault();
 
-        if($event.validationFocus("contentId")) return;
+        if($event.validationFocus("faqNm")) return;
 
-        if(!$util.isEnNu($('#contentId').val())) {
-            alert("컨텐츠 ID는 영문, 숫자만 입력가능합니다.");
-            $('#boardId').focus();
-            return;
-        }
-        if($('#contentId').val() != $('#contentIdOrigin').val()) {
-            var param = {
-                contentId : $('#contentId').val()
-            }
-
-            var result = $ajax.postAjax('/adm/contentId', param);
-
-            if(result.result == 'success') {
-                alert("이미 사용중인 컨텐츠 ID입니다.\n컨텐츠 ID는 중복 될 수 없습니다.");
-                return;
-            }
-        }
-
-        if($event.validationFocus("contentNm")) return;
-
-        var useYn;
+        var useYn = 'N';
         if($('#useYn').is(':checked')) {
             useYn = 'Y';
         }
-        else {
-            useYn = 'N';
-        }
-
-        oEditors.getById["contentHtml"].exec("UPDATE_CONTENTS_FIELD", []);
 
         var data = {
-            contentId : $('#contentId').val(),
+            faqNm : $('#faqNm').val(),
+            fmOrder : $('#fmOrder').val(),
             useYn : useYn,
-            contentNm : $('#contentNm').val(),
-            contentHtml : $('#contentHtml').val(),
         };
         var idx = $('#idx').val();
-        var res = $ajax.patchAjax('/adm/content/'+ idx, data);
+        var res = $ajax.patchAjax('/adm/faqMaster/'+ idx, data);
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
         }
         else if(res.result == "success") {
-            alert("컨텐츠를 수정하였습니다.");
+            alert("FAQ를 수정하였습니다.");
             window.location.reload();
         }
         else if(res.result == "fail"){

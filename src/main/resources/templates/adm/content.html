@@ -63,10 +63,10 @@
                     <tr>
                         <td th:text="${res.contentNm}"></td>
                         <td class="text-center" th:text="${res.createNicknm}"></td>
-                        <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd')}"></td>
+                        <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.')}"></td>
                         <td class="remarks text-color-primary">
                             <th:block th:if="${res.updateDate != null && res.updateNicknm != null}">
-                                ※ [[${#dates.format(res.updateDate, 'yyyy. MM. dd')}]] [[${res.updateNicknm}]] 님이 수정함.
+                                ※ [[${#dates.format(res.updateDate, 'yyyy. MM. dd.')}]] [[${res.updateNicknm}]] 님이 수정함.
                             </th:block>
                         </td>
                         <td class="text-center" th:text="${res.hit}"></td>

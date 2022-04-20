@@ -58,19 +58,19 @@
                     <td class="text-center" th:text="${res.qaCategory}"></td>
                     <td th:text="${res.qaSubject}"></td>
                     <td class="text-center" th:text="${res.createNicknm}"></td>
-                    <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd')}"></td>
+                    <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.')}"></td>
                     <td class="remarks" th:classappend="${res.qaStatus == 'Q' or res.qaStatus == 'RQ'} ? 'text-color-red' : 'text-color-primary'">
                         <th:block th:if="${res.qaStatus == 'Q'}">
-                            ※ [[${#dates.format(res.createDate, 'yyyy. MM. dd')}]] [[${res.createNicknm} != null ?  ${res.createNicknm} : '탈퇴한 회원']] 님이 질문함.
+                            ※ [[${#dates.format(res.createDate, 'yyyy. MM. dd.')}]] [[${res.createNicknm} != null ?  ${res.createNicknm} : '탈퇴한 회원']] 님이 질문함.
                         </th:block>
                         <th:block th:if="${res.qaStatus == 'RQ'}">
-                            ※ [[${#dates.format(res.updateDate, 'yyyy. MM. dd')}]] [[${res.updateNicknm} != null ?  ${res.updateNicknm} : '탈퇴한 회원']] 님이 추가질문함.
+                            ※ [[${#dates.format(res.updateDate, 'yyyy. MM. dd.')}]] [[${res.updateNicknm} != null ?  ${res.updateNicknm} : '탈퇴한 회원']] 님이 추가질문함.
                         </th:block>
                         <th:block th:if="${res.qaStatus == 'A'}">
-                            ※ [[${#dates.format(res.updateDate, 'yyyy. MM. dd')}]] [[${res.updateNicknm} != null ?  ${res.updateNicknm} : '탈퇴한 관리자']] 님이 답변함.
+                            ※ [[${#dates.format(res.updateDate, 'yyyy. MM. dd.')}]] [[${res.updateNicknm} != null ?  ${res.updateNicknm} : '탈퇴한 관리자']] 님이 답변함.
                         </th:block>
                         <th:block th:if="${res.qaStatus == 'RA'}">
-                            ※ [[${#dates.format(res.updateDate, 'yyyy. MM. dd')}]] [[${res.updateNicknm} != null ?  ${res.updateNicknm} : '탈퇴한 관리자']] 님이 추가답변함.
+                            ※ [[${#dates.format(res.updateDate, 'yyyy. MM. dd.')}]] [[${res.updateNicknm} != null ?  ${res.updateNicknm} : '탈퇴한 관리자']] 님이 추가답변함.
                         </th:block>
                     </td>
                     <td class="text-center"><input type="checkbox" th:checked="${res.secretYn == 'Y'}" disabled></td>
