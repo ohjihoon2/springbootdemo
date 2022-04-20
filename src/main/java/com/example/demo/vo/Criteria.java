@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Locale;
 import java.util.Map;
 
 @Component
@@ -29,6 +30,10 @@ public class Criteria {
         this.amount = amount;
         this.searchType = searchType;
         this.searchKeyword = searchKeyword;
+    }
+
+    public void setSearchType(String searchType) {
+        this.searchType = searchType.toUpperCase();
     }
 
     public void setPageNum(int pageNum) {
@@ -70,7 +75,7 @@ public class Criteria {
 //    검색 조건이 'C'면 : 내용이 키워드인 항목을 검색
 //    검색 조건이 'W'면 : 작성자가 키워드인 항목을 검색
     public String[] getTypeArr(){
-        String[] strArr = searchType == null ? new String[]{} : searchType.split("");
+        String[] strArr = searchType == null ? new String[]{} : searchType.toUpperCase().split("");
 
         return strArr;
     }

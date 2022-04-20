@@ -62,7 +62,7 @@ public interface AdminBoardMapper {
 
     List<Map<String, Object>> findNameFaqMaster();
 
-    List<Map<String, Object>> findAllFaq(Map<String, Object> paramMap);
+    List<Map<String, Object>> findAllFaq(Criteria criteria);
 
     int insertFaq(Map<String, Object> paramMap);
 

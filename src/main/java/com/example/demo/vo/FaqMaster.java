@@ -7,8 +7,8 @@ import java.util.Date;
 @Data
 public class FaqMaster {
     private int idx;
-    private String faqId;
     private String faqNm;
+    private int fmOrder;
     private String useYn;
     private int createIdx;
     private Date createDate;

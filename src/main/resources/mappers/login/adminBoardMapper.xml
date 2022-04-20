@@ -92,8 +92,15 @@
                             <when test="searchType=='T'.toString">
                                 (FAQ_NM LIKE CONCAT('%',#{searchKeyword},'%'))
                             </when>
-                            <when test="searchType=='I'.toString()">
-                                (FAQ_ID LIKE CONCAT('%',#{searchKeyword},'%'))
+                            <when test="searchType=='W'.toString()">
+                                (
+                                A.CREATE_IDX IN
+                                    (
+                                        SELECT IDX
+                                          FROM USERS
+                                         WHERE USER_NICKNM LIKE CONCAT('%',#{searchKeyword},'%')
+                                    )
+                                )
                             </when>
                         </choose>
                     </trim>
@@ -101,6 +108,33 @@
             </trim>
         </if>
     </sql>
+
+    <sql id="criteriaFaq">
+        <if test="searchType != null and searchKeyword != null">
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <foreach item="type" collection="typeArr">
+                    <trim prefix="OR">
+                        <choose>
+                            <when test="searchType=='T'.toString">
+                                (FAQ_QUESTION LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                            <when test="searchType=='W'.toString()">
+                                (
+                                    A.CREATE_IDX IN
+                                        (
+                                            SELECT IDX
+                                              FROM USERS
+                                             WHERE USER_NICKNM LIKE CONCAT('%',#{searchKeyword},'%')
+                                        )
+                                )
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
 
 
     <select id="findAllBoardMaster" resultType="CustomMap" parameterType="Criteria">
@@ -422,32 +456,35 @@
 
     <select id="findAllFaqMaster" parameterType="Criteria" resultType="map">
 
-        SELECT FAQ_ID,
-               FAQ_NM,
-               USE_YN,
-               UPDATE_IDX,
-               UPDATE_DATE,
-               CREATE_IDX,
-               CREATE_DATE
-          FROM faq_master
+        SELECT A.FAQ_NM,
+               A.FM_ORDER,
+               A.USE_YN,
+               IFNULL(B.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
+               A.CREATE_DATE,
+               IFNULL(C.USER_NICKNM,'탈퇴된 관리자')AS UPDATE_NICKNM,
+               A.UPDATE_DATE,
+          FROM faq_master AS A
+          LEFT JOIN USERS B ON A.CREATE_IDX = B.IDX
+          LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX
          WHERE 1 = 1
         <include refid="criteriaFaqMaster"/>
+        ORDER BY FM_ORDER
 
     </select>
 
     <insert id="insertFaqMaster" parameterType="map">
         INSERT INTO faq_master
             (
-                FAQ_ID,
                 FAQ_NM,
+                FM_ORDER,
                 USE_YN,
                 CREATE_IDX,
                 CREATE_DATE
              )
         VALUES
             (
-                #{faqId},
                 #{faqNm},
+                #{fmOrder},
                 'Y',
                 #{userIdx},
                 SYSDATE()
@@ -456,8 +493,8 @@
 
     <update id="updateFaqMaster" parameterType="map">
         UPDATE faq_master
-           SET FAQ_ID= #{faqId},
-               FAQ_NM= #{faqNm},
+           SET FAQ_NM= #{faqNm},
+               FM_ORDER= #{fmOrder},
                USE_YN= #{useYn},
                UPDATE_IDX=#{userIdx},
                UPDATE_DATE=SYSDATE()
@@ -471,30 +508,32 @@
     </delete>
 
     <select id="findNameFaqMaster" resultType="CustomMap">
-        SELECT FAQ_NM,
-               FAQ_ID
+        SELECT IDX,
+               FAQ_NM
           FROM faq_master
+         ORDER BY FM_ORDER
     </select>
 
-    <select id="findAllFaq" resultType="CustomMap" parameterType="map">
-        SELECT IDX,
-               MASTER_IDX,
-               FAQ_QUESTION,
-               FAQ_ANSWER,
-               USE_YN,
-               CREATE_IDX,
-               CREATE_DATE,
-               UPDATE_IDX,
-               UPDATE_DATE
-          FROM faq
+    <select id="findAllFaq" resultType="map" parameterType="Criteria">
+        SELECT A.IDX,
+               A.MASTER_IDX,
+               A.FAQ_QUESTION,
+               A.FAQ_ANSWER,
+               A.F_ORDER,
+               A.USE_YN,
+               IFNULL(B.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
+               A.CREATE_DATE,
+               IFNULL(C.USER_NICKNM,'탈퇴된 관리자')AS UPDATE_NICKNM,
+               A.UPDATE_DATE
+          FROM faq A
+          LEFT JOIN USERS B ON A.CREATE_IDX = B.IDX
+          LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX
          WHERE 1 = 1
-        <if test='faqId != null or faqId != ""'>
-           AND MASTER_IDX IN (
-                                SELECT IDX
-                                  FROM FAQ_MASTER
-                                 WHERE FAQ_ID = #{faqId}
-                             )
+        <include refid="criteriaFaq"/>
+        <if test='paramMap.masterIdx != "all"'>
+           AND MASTER_IDX = #{paramMap.masterIdx}
         </if>
+        ORDER BY F_ORDER
     </select>
 
     <insert id="insertFaq" parameterType="map">
@@ -503,6 +542,7 @@
                  MASTER_IDX,
                  FAQ_QUESTION,
                  FAQ_ANSWER,
+                 F_ORDER,
                  USE_YN,
                  CREATE_IDX,
                  CREATE_DATE
@@ -512,6 +552,7 @@
                 #{masterIdx},
                 #{faqQuestion},
                 #{faqAnswer},
+                #{fOrder},
                 'Y',
                 #{userIdx},
                 SYSDATE()
@@ -523,6 +564,7 @@
            SET MASTER_IDX = #{masterIdx},
                FAQ_QUESTION = #{faqQuestion},
                FAQ_ANSWER = #{faqAnswer},
+               F_ORDER = #{fOrder},
                USE_YN = #{useYn},
                UPDATE_IDX = #{userIdx},
                UPDATE_DATE = SYSDATE()

@@ -334,7 +334,7 @@ public class AdminBoardController {
     public String faqMasterList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
         List<Map<String,Object>> resultList = adminService.findAllFaqMaster(criteria);
 
-        // searchType T : FAQ_NM (FAQ 이름) / I : FAQ_ID (FAQ ID)
+        // searchType T : FAQ_NM (FAQ 이름) / W : CREATE_NICKNM (작성자)
         model.addAttribute("resultList", resultList);
 
 
@@ -408,12 +408,26 @@ public class AdminBoardController {
      * @return
      */
     @GetMapping(value = "/faq")
-    public String faqList(@ModelAttribute Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request, Model model) {
+    public String faqList(@RequestParam(value = "searchType", required = false) String searchType,
+                          @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
+                          @RequestParam(value = "masterIdx", required = false, defaultValue = "all") String masterIdx,
+                          HttpServletResponse response, HttpServletRequest request, Model model) {
+//        System.out.println("paramMap = " + paramMap);
 
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("masterIdx",masterIdx);
+
+        Criteria criteria = new Criteria();
+
+        criteria.setSearchType(searchType);
+        criteria.setSearchKeyword(searchKeyword);
+        criteria.setParamMap(paramMap);
+
+        // searchType T : FAQ_QUESTION (FAQ 이름) / W : CREATE_NICKNM (작성자)
         // SELECT 카테고리 LIST
         List<Map<String,Object>> faqList = adminService.findNameFaqMaster();
 
-        List<Map<String,Object>> resultList = adminService.findAllFaq(paramMap);
+        List<Map<String,Object>> resultList = adminService.findAllFaq(criteria);
 
         model.addAttribute("faqList", faqList);
         model.addAttribute("resultList", resultList);
@@ -478,7 +492,6 @@ public class AdminBoardController {
 
         return ResultStr.set(result);
     }
-
 
     // TODO 2022-04-19
     //  - Qna 첨부파일 /  FILE 테이블 , 로직 수정

@@ -181,8 +181,8 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     }
 
     @Override
-    public List<Map<String, Object>> findAllFaq(Map<String, Object> paramMap) {
-        return adminMapper.findAllFaq(paramMap);
+    public List<Map<String, Object>> findAllFaq(Criteria criteria) {
+        return adminMapper.findAllFaq(criteria);
     }
 
     @Override
