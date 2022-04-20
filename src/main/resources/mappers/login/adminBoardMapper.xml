@@ -8,13 +8,13 @@
                 <foreach item="type" collection="typeArr">
                     <trim prefix="OR">
                         <choose>
-                            <when test="searchType=='T'.toString">
+                            <when test="type=='T'.toString()">
                                 (BOARD_NM LIKE CONCAT('%',#{searchKeyword},'%'))
                             </when>
-                            <when test="searchType=='C'.toString()">
+                            <when test="type=='C'.toString()">
                                 (BOARD_DESC LIKE CONCAT('%',#{searchKeyword},'%'))
                             </when>
-                            <when test="searchType=='W'.toString()">
+                            <when test="type=='W'.toString()">
                                 (
                                     A.CREATE_IDX IN
                                         (
@@ -37,10 +37,10 @@
                 <foreach item="type" collection="typeArr">
                     <trim prefix="OR">
                         <choose>
-                            <when test="searchType=='T'.toString">
+                            <when test="type=='T'.toString()">
                                 (QA_SUBJECT LIKE CONCAT('%',#{searchKeyword},'%'))
                             </when>
-                            <when test="searchType=='W'.toString()">
+                            <when test="type=='W'.toString()">
                                 (
                                      A.CREATE_IDX IN
                                                 (
@@ -63,10 +63,10 @@
                 <foreach item="type" collection="typeArr">
                     <trim prefix="OR">
                         <choose>
-                            <when test="searchType=='T'.toString">
+                            <when test="type=='T'.toString()">
                                 (CONTENT_NM LIKE CONCAT('%',#{searchKeyword},'%'))
                             </when>
-                            <when test="searchType=='W'.toString()">
+                            <when test="type=='W'.toString()">
                                 (
                                 A.CREATE_IDX IN
                                                 (
@@ -89,10 +89,10 @@
                 <foreach item="type" collection="typeArr">
                     <trim prefix="OR">
                         <choose>
-                            <when test="searchType=='T'.toString">
+                            <when test="type=='T'.toString()">
                                 (FAQ_NM LIKE CONCAT('%',#{searchKeyword},'%'))
                             </when>
-                            <when test="searchType=='W'.toString()">
+                            <when test="type=='W'.toString()">
                                 (
                                 A.CREATE_IDX IN
                                     (
@@ -115,10 +115,10 @@
                 <foreach item="type" collection="typeArr">
                     <trim prefix="OR">
                         <choose>
-                            <when test="searchType=='T'.toString">
+                            <when test="type=='T'.toString()">
                                 (FAQ_QUESTION LIKE CONCAT('%',#{searchKeyword},'%'))
                             </when>
-                            <when test="searchType=='W'.toString()">
+                            <when test="type=='W'.toString()">
                                 (
                                     A.CREATE_IDX IN
                                         (

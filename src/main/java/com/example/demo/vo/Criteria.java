@@ -32,10 +32,6 @@ public class Criteria {
         this.searchKeyword = searchKeyword;
     }
 
-    public void setSearchType(String searchType) {
-        this.searchType = searchType.toUpperCase();
-    }
-
     public void setPageNum(int pageNum) {
         if(pageNum<=0) {
             this.pageNum = 1;
@@ -75,8 +71,7 @@ public class Criteria {
 //    검색 조건이 'C'면 : 내용이 키워드인 항목을 검색
 //    검색 조건이 'W'면 : 작성자가 키워드인 항목을 검색
     public String[] getTypeArr(){
-        String[] strArr = searchType == null ? new String[]{} : searchType.toUpperCase().split("");
-
+        String[] strArr = searchType == null ? new String[]{} : searchType.split("");
         return strArr;
     }
 }
