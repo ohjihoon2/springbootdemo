@@ -8,7 +8,7 @@ $(function(){
             searchType : $('#searchType').val(),
             searchKeyword : $util.transferText($('#searchKeyword').val()),
         }
-        $page.getGoPage('/adm/content', param)
+        $page.getGoPage('/adm/faqMaster', param)
     });
 
     //FAQ 카테고리 추가 팝업
