@@ -60,6 +60,7 @@ $(function(){
         if($('#useYn').is(':checked')) {
             useYn = 'Y';
         }
+        console.log(useYn);
 
         var data = {
             faqNm : $('#faqNm').val(),
