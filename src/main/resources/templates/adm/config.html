@@ -1,0 +1,65 @@
+<!--/*
+    thymeleaf 주석처리
+*/-->
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
+
+<th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='/css/adm/user.css')"></th:block>
+<body ondragstart="return false" onselectstart="return false">
+<th:block th:replace="/fragments/header.html :: thAdmHeader"></th:block>
+<section>
+    <div class="section-wrap">
+        <h2>기본환경 설정</h2>
+        <div class="mt40"></div>
+        <form id="configForm">
+            <div class="top-btn-box">
+                <button type="submit">설정저장</button>
+                <button type="button" id="cancelBtn">전체취소</button>
+            </div>
+            <div class="section-scroll">
+                <div class="mb5"></div>
+                <table class="table-top">
+                    <caption>회원</caption>
+                    <colgroup>
+                        <col width="15%">
+                        <col width="35%">
+                        <col width="15%">
+                        <col width="35%">
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>비밀번호 초기화</th>
+                        <td><input type="text" placeholder="초기화 될 유저 비밀번호입니다."></td>
+                        <th></th>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="mb40"></div>
+                <table class="table-top">
+                    <caption>게시판</caption>
+                    <colgroup>
+                        <col width="15%">
+                        <col width="35%">
+                        <col width="15%">
+                        <col width="35%">
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>Q&A 타입</th>
+                        <td><input type="text" placeholder="; 으로 구분해 주세요."></td>
+                        <th></th>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</section>
+<th:block th:replace="/fragments/footer.html :: thAdmFooter"></th:block>
+<script th:src="@{/js/adm/user.js}"></script>
+</body>
+</html>

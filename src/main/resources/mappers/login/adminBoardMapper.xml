@@ -462,7 +462,7 @@
                IFNULL(B.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
                A.CREATE_DATE,
                IFNULL(C.USER_NICKNM,'탈퇴된 관리자')AS UPDATE_NICKNM,
-               A.UPDATE_DATE,
+               A.UPDATE_DATE
           FROM faq_master AS A
           LEFT JOIN USERS B ON A.CREATE_IDX = B.IDX
           LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX

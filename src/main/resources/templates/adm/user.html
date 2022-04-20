@@ -28,13 +28,13 @@
         <table>
             <colgroup>
                 <col width="5%">
+                <col width="15%">
+                <col width="15%">
                 <col width="10%">
                 <col width="10%">
+                <col width="25%">
                 <col width="10%">
                 <col width="10%">
-                <col width="20%">
-                <col width="10%">
-                <col width="5%">
             </colgroup>
             <thead>
             <tr>
@@ -56,13 +56,13 @@
                     <td class="text-center" th:text="${res.userNicknm}"></td>
                     <td class="text-center" th:text="${res.userNm}"></td>
                     <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd')}"></td>
-                    <td class="remarks text-color-red">
+                    <td class="remarks text-color-primary" th:classappend="${res.deleteYn == 'N'} ? 'text-color-primary' : 'text-color-red'">
                         <th:block th:if="${res.idx != null && res.updateNicknm != null}">
                             ※ [[${#dates.format(res.updateDate, 'yyyy. MM. dd')}]]
-                            <th:block th:if="${res.useYn == 'Y'}">
+                            <th:block th:if="${res.deleteYn == 'N'}">
                                 [[${res.updateNicknm}]] 님이 수정함.
                             </th:block>
-                            <th:block th:if="${res.useYn == 'N'}">
+                            <th:block th:if="${res.deleteYn == 'Y'}">
                                  탈퇴함.
                             </th:block>
                         </th:block>

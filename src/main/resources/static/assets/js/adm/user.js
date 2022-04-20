@@ -5,15 +5,6 @@ var oEditors = [];
 submitBtn = true;
 
 $(function(){
-    //비밀번호 수정팝업
-    // $(document).on("click", "#popubPw", function() {
-    //     var idx = $('#idx').val();
-    //     window.open("/adm/popupPw/"+idx,"","top=0, left=0, width=400, height=300, directories='no',location=no, menubar=no, resizable=no, status=yes, toolbar=no")  ;
-    //     window.opener = "nothing";
-    //     // window.open('', '_parent', '');
-    //     // window.close();
-    // });
-
     //연락처 자동 하이픈
     $util.phoneAutoHyphen("userPhone");
 
@@ -62,7 +53,7 @@ $(function(){
             '<div class="mb20"></div>' +
             '<form id="userUpdateForm">' +
             '<input id="idx" type="hidden" value="'+ res.idx +'">' +
-            '<table>' +
+            '<table class="table-top">' +
             '<colgroup>' +
             '<col width="15%">' +
             '<col width="35%">' +

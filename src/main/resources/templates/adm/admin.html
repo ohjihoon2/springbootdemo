@@ -30,12 +30,12 @@
         <table>
             <colgroup>
                 <col width="5%">
+                <col width="15%">
+                <col width="15%">
+                <col width="15%">
                 <col width="10%">
+                <col width="25%">
                 <col width="10%">
-                <col width="10%">
-                <col width="10%">
-                <col width="30%">
-                <col width="5%">
             </colgroup>
             <thead>
             <tr>
@@ -45,7 +45,14 @@
                 <th>Name</th>
                 <th>Date</th>
                 <th>Remarks</th>
-                <th>Update</th>
+                <th>
+                    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                        Update
+                    </th:block>
+                    <th:block sec:authorize="hasRole('ROLE_MANAGER')">
+                        Detail
+                    </th:block>
+                </th>
             </tr>
             </thead>
             <tbody>
@@ -56,7 +63,7 @@
                     <td class="text-center" th:text="${res.userNicknm}"></td>
                     <td class="text-center" th:text="${res.userNm}"></td>
                     <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd')}"></td>
-                    <td class="remarks text-color-red">
+                    <td class="remarks text-color-primary">
                         <th:block th:if="${res.idx != null && res.updateNicknm != null}">
                             ※ [[${#dates.format(res.updateDate, 'yyyy. MM. dd')}]] [[${res.updateNicknm}]] 님이 수정함.
                         </th:block>

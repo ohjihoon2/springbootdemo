@@ -47,7 +47,7 @@ input:focus,textarea:focus {outline: none;}
 select:focus {outline: none;}
 div:focus {outline: none;}
 body,h1,h2,h3,h4,h5,h6,input,button,select,textarea{font-family:'NotoSans', sans-serif;}
-caption,legend{font-size:0;line-height:0;text-indent:-5000px;}
+caption,legend{text-align: left; font-size: 20px; font-weight: 600; margin-bottom: 5px;}
 img,fieldset,iframe{border:0;vertical-align:top;}
 fieldset{font-size:0;}
 ul,ol{list-style:none;}
@@ -116,6 +116,7 @@ input:read-only, input[readonly=true], textarea:read-only, textarea[readonly=tru
 
 .weight600 {font-weight: 600;}
 
+.text-color-primary {color: #1fb1c7;}
 .text-color-red {color: #F52D05;}
 
 /* color */

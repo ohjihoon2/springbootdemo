@@ -3,19 +3,20 @@ $(function(){
     //내정보수정 팝업
     $('#myBtn').click(function(){
         var res = $ajax.postAjax('/adm/admin/' + myIdx);
-        res = $util.nullChkObj(res);
 
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             return;
         }
+        res = $util.nullChkObj(res);
+
         var userNicknm = res.userNicknm.replace("관리자", "");
 
         var html =
             '<h4>내정보 수정</h4>' +
             '<div class="mb20"></div>' +
             '<form id="myUpdateForm">' +
-            '<table>' +
+            '<table class="table-top">' +
             '<colgroup>' +
             '<col width="15%">' +
             '<col width="35%">' +
@@ -166,7 +167,7 @@ $(function(){
             '<h4>관리자 추가</h4>' +
             '<div class="mb20"></div>' +
             '<form id="adminAddForm">' +
-            '<table>' +
+            '<table class="table-top">' +
             '<colgroup>' +
             '<col width="15%">' +
             '<col width="35%">' +
@@ -358,12 +359,12 @@ $(function(){
     $('[name="updateBtn"]').click(function(){
         var idx = $(this).data('val');
         var res = $ajax.postAjax('/adm/admin/' + idx);
-        res = $util.nullChkObj(res);
-
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             return;
         }
+        res = $util.nullChkObj(res);
+
         var userNicknm = res.userNicknm.replace("관리자", "");
 
         var html =
@@ -371,7 +372,7 @@ $(function(){
             '<div class="mb20"></div>' +
             '<form id="adminUpdateForm">' +
             '<input id="idx" type="hidden" value="'+ res.idx +'">' +
-            '<table>' +
+            '<table class="table-top">' +
             '<colgroup>' +
             '<col width="15%">' +
             '<col width="35%">' +

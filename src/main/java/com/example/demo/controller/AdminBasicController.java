@@ -30,6 +30,23 @@ public class AdminBasicController {
     }
 
     /**
+     * admConfig 설정 페이지
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/config")
+    public String configDetails(HttpServletResponse response, HttpServletRequest request,Model model) {
+//        List<MenuTree> resultList = adminService.findAllMenuTree();
+
+//        model.addAttribute("resultList", resultList);
+        return "/adm/config";
+    }
+
+
+
+    /**
      * menuTree 설정 페이지
      * @param response
      * @param request

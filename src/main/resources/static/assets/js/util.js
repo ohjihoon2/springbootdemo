@@ -61,17 +61,6 @@
         goHomePage : function () {
             location.href = '/';
         },
-
-        //셀렉트형 이동
-        goSelPage : function (e) {
-            var site = $(e).val();
-            if(site == '') {
-                return;
-            }
-            else {
-                location.href = site;
-            }
-        },
     },
 
     $ajax = {
@@ -178,6 +167,8 @@
                 passwordChk: '비밀번호 확인',
                 newPassword: '새 비밀번호',
                 newPasswordChk: '새 비밀번호 확인',
+                qaSubject: 'Q&A답변 제목',
+                qaContent: 'Q&A답변 내용',
             }
 
             if ($('#' + id).val() == '') {

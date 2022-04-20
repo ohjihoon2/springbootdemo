@@ -149,7 +149,8 @@ header {
 }
 
 .header-list > ul > li > ul > li:hover,.header-list > ul > li > ul > li.on {
-    background: #d6d6d6;
+    background: #1fb1c7;
+    color: white;
 }
 
 .header-foot {
@@ -182,6 +183,21 @@ section {
     padding: 40px 60px;
 }
 
+.section-scroll {
+    max-height: 620px;
+    overflow-y: auto;
+}
+
+.section-scroll::-webkit-scrollbar {
+    width: 5px;
+}
+.section-scroll::-webkit-scrollbar-thumb {
+    background-color: #c0c0c0;
+}
+.section-scroll::-webkit-scrollbar-track {
+    background-color: #ededed;
+}
+
 /* 상단으로 버튼 */
 .top-btn {
     position: fixed;
@@ -211,7 +227,6 @@ section {
 }
 
 .top-btn-box select {
-    width: 200px;
     height: 40px;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -224,8 +239,11 @@ section {
     font-size: 16px;
 }
 
-.top-btn-box input[type="text"], table input[type="password"] {
-    width: 300px;
+.top-btn-box > select {
+    width: 150px;
+}
+
+.top-btn-box input[type="text"] {
     height: 40px;
     padding-left: 10px;
     padding-right: 10px;
@@ -237,6 +255,14 @@ section {
 
 .top-btn-box .left {
     float: left;
+}
+
+.top-btn-box .left select {
+    width: 200px;
+}
+
+.top-btn-box .left input[type="text"] {
+    width: 300px;
 }
 
 .top-btn-box button {
@@ -285,7 +311,15 @@ section {
 
 /* 테이블관련 */
 table {
+    table-layout:fixed;
     width: 100%;
+}
+
+table.table-top {
+    border-top: 2px solid #000;
+}
+
+table thead {
     border-top: 2px solid #000;
 }
 
@@ -300,12 +334,14 @@ table tr:hover {
 table th, table td {
     padding: 8px 10px;
     line-height: 37px;
+    overflow: hidden;
+    text-overflow:ellipsis;
 }
 table th {
     background: #ededed;
 }
 
-table input[type="text"], table input[type="password"] {
+table input[type="text"], table input[type="password"], table input[type="file"] {
     width: 100%;
     height: 37px;
     padding-left: 10px;
@@ -318,7 +354,7 @@ table input[type="text"], table input[type="password"] {
 
 table textarea {
     width: 100%;
-    height: 250px;
+    height: 350px;
     padding: 10px;
     border: 1px solid #d6d6d6;
     border-radius: 7px;
@@ -351,6 +387,23 @@ table textarea::-webkit-scrollbar-track {
     background-color: #ededed;
 }
 
+table .table-scroll {
+    height: 350px;
+    overflow-y: auto;
+    word-break:break-all;
+    line-height: normal;
+}
+
+table .table-scroll::-webkit-scrollbar {
+    width: 5px;
+}
+table .table-scroll::-webkit-scrollbar-thumb {
+    background-color: #c0c0c0;
+}
+table .table-scroll::-webkit-scrollbar-track {
+    background-color: #ededed;
+}
+
 /* 팝업관련(js) */
 .background{
     position: absolute;
@@ -364,8 +417,8 @@ table textarea::-webkit-scrollbar-track {
     left:50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 750px;
-    height: 630px;
+    width: 880px;
+    height: 740px;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0px 0px 20px rgb(0 0 0 / 20%);

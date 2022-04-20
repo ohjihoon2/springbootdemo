@@ -17,7 +17,7 @@ $(function(){
             '<h4>게시판 추가</h4>' +
             '<div class="mb20"></div>' +
             '<form id="boardAddForm">' +
-            '<table>' +
+            '<table class="table-top">' +
             '<colgroup>' +
             '<col width="15%">' +
             '<col width="35%">' +
@@ -129,12 +129,11 @@ $(function(){
         var idx = $(this).data('val');
 
         var res = $ajax.postAjax('/adm/boardMaster/' + idx);
-        res = $util.nullChkObj(res);
-
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             return;
         }
+        res = $util.nullChkObj(res);
 
         var boardTypeGeneral = '';
         var boardTypePhoto = '';
@@ -161,7 +160,7 @@ $(function(){
             '<div class="mb20"></div>' +
             '<form id="boardUpdateForm">' +
             '<input id="idx" type="hidden" value="'+ res.idx +'">' +
-            '<table>' +
+            '<table class="table-top">' +
             '<colgroup>' +
             '<col width="15%">' +
             '<col width="35%">' +
