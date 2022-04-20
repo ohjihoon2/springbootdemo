@@ -102,6 +102,7 @@
         </if>
     </sql>
 
+
     <select id="findAllBoardMaster" resultType="CustomMap" parameterType="Criteria">
         SELECT A.IDX,
                A.board_ID,
@@ -468,4 +469,77 @@
         DELETE FROM faq_master
          WHERE IDX = #{idx}
     </delete>
+
+    <select id="findNameFaqMaster" resultType="CustomMap">
+        SELECT FAQ_NM,
+               FAQ_ID
+          FROM faq_master
+    </select>
+
+    <select id="findAllFaq" resultType="CustomMap" parameterType="map">
+        SELECT IDX,
+               MASTER_IDX,
+               FAQ_QUESTION,
+               FAQ_ANSWER,
+               USE_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM faq
+         WHERE 1 = 1
+        <if test='faqId != null or faqId != ""'>
+           AND MASTER_IDX IN (
+                                SELECT IDX
+                                  FROM FAQ_MASTER
+                                 WHERE FAQ_ID = #{faqId}
+                             )
+        </if>
+    </select>
+
+    <insert id="insertFaq" parameterType="map">
+        INSERT INTO faq
+            (
+                 MASTER_IDX,
+                 FAQ_QUESTION,
+                 FAQ_ANSWER,
+                 USE_YN,
+                 CREATE_IDX,
+                 CREATE_DATE
+             )
+        VALUES
+            (
+                #{masterIdx},
+                #{faqQuestion},
+                #{faqAnswer},
+                'Y',
+                #{userIdx},
+                SYSDATE()
+            )
+    </insert>
+
+    <update id="updateFaq" parameterType="map">
+        UPDATE faq
+           SET MASTER_IDX = #{masterIdx},
+               FAQ_QUESTION = #{faqQuestion},
+               FAQ_ANSWER = #{faqAnswer},
+               USE_YN = #{useYn},
+               UPDATE_IDX = #{userIdx},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX = #{idx}
+    </update>
+
+    <delete id="deleteFaq" parameterType="map">
+        DELETE FROM faq
+         WHERE IDX = #{idx}
+    </delete>
+
+
+    <delete id="deleteFaqGroup" parameterType="map">
+        DELETE FROM faq
+         WHERE MASTER_IDX = #{idx}
+    </delete>
+
+
+
 </mapper>

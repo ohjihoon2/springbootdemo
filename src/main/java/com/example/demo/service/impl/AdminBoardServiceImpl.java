@@ -167,15 +167,37 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     public int deleteFaqMaster(Map<String, Object> paramMap) {
         int result = 0;
         if(adminMapper.deleteFaqMaster(paramMap) == 1){
-
-            // TODO 2022-04-19
-            //  - FAQ MASTER 삭제 시 FAQ 삭제 되도록 추가
-//            adminMapper.deleteFaq(paramMap);
+            adminMapper.deleteFaqGroup(paramMap);
 
             result = 1;
         }
 
         return result;
+    }
+
+    @Override
+    public List<Map<String, Object>> findNameFaqMaster() {
+        return adminMapper.findNameFaqMaster();
+    }
+
+    @Override
+    public List<Map<String, Object>> findAllFaq(Map<String, Object> paramMap) {
+        return adminMapper.findAllFaq(paramMap);
+    }
+
+    @Override
+    public int insertFaq(Map<String, Object> paramMap) {
+        return adminMapper.insertFaq(paramMap);
+    }
+
+    @Override
+    public int updateFaq(Map<String, Object> paramMap) {
+        return adminMapper.updateFaq(paramMap);
+    }
+
+    @Override
+    public int deleteFaq(Map<String, Object> paramMap) {
+        return adminMapper.deleteFaq(paramMap);
     }
 
 }

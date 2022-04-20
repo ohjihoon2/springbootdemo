@@ -59,4 +59,16 @@ public interface AdminBoardMapper {
     int updateFaqMaster(Map<String, Object> paramMap);
 
     int deleteFaqMaster(Map<String, Object> paramMap);
+
+    List<Map<String, Object>> findNameFaqMaster();
+
+    List<Map<String, Object>> findAllFaq(Map<String, Object> paramMap);
+
+    int insertFaq(Map<String, Object> paramMap);
+
+    int updateFaq(Map<String, Object> paramMap);
+
+    int deleteFaq(Map<String, Object> paramMap);
+
+    void deleteFaqGroup(Map<String, Object> paramMap);
 }
