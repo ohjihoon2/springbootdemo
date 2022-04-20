@@ -466,7 +466,8 @@
 
     <select id="findAllFaqMaster" parameterType="Criteria" resultType="CustomMap">
 
-        SELECT A.FAQ_NM,
+        SELECT A.IDX,
+               A.FAQ_NM,
                A.FM_ORDER,
                A.USE_YN,
                IFNULL(B.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
