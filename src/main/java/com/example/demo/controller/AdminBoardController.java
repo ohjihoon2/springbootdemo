@@ -240,9 +240,6 @@ public class AdminBoardController {
 
     /**
      * Qna 리스트
-     * @param pageNum
-     * @param searchType
-     * @param searchKeyword
      * @param status
      * @param response
      * @param request
@@ -317,6 +314,13 @@ public class AdminBoardController {
         return ResultStr.set(result);
     }
 
+    /**
+     * Qna 삭제
+     * @param idx
+     * @param response
+     * @param request
+     * @return
+     */
     @DeleteMapping(value = "/qna/{idx}")
     @ResponseBody
     public Map<String,Object> deleteQna(@PathVariable int idx,HttpServletResponse response, HttpServletRequest request) {
@@ -327,6 +331,9 @@ public class AdminBoardController {
 
         return ResultStr.set(result);
     }
+
+    // TODO 2022-04-20
+    //  - QNA UPDATE : 마지막 답변 수정, 수정 후 이메일 발송 추가
 
     /**+
      * FAQ Master 설정 리스트
@@ -364,6 +371,20 @@ public class AdminBoardController {
         int result = adminService.insertFaqMaster(paramMap);
 
         return ResultStr.set(result);
+    }
+
+    /**
+     * FAQ MASTER 설정 상세
+     * @param idx
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @PostMapping(value = "/faqMaster/{idx}")
+    @ResponseBody
+    public FaqMaster faqMasterDetails(@PathVariable int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
+        return adminService.findByIdxFaqMaster(idx);
     }
 
     /**

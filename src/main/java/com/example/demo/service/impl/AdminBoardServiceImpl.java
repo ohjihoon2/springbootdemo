@@ -3,10 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.repository.AdminBoardMapper;
 import com.example.demo.service.AdminBoardService;
 import com.example.demo.service.EmailService;
-import com.example.demo.vo.Content;
-import com.example.demo.vo.Criteria;
-import com.example.demo.vo.Qna;
-import com.example.demo.vo.QnaConfig;
+import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -153,6 +150,11 @@ public class AdminBoardServiceImpl implements AdminBoardService {
         }
 
         return result;
+    }
+
+    @Override
+    public FaqMaster findByIdxFaqMaster(int idx) {
+        return  adminMapper.findByIdxFaqMaster(idx);
     }
 
     @Override

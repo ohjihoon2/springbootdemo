@@ -75,4 +75,6 @@ public interface AdminBoardMapper {
     int deleteQna(Map<String, Object> paramMap);
 
     int deleteQnaConfig(Map<String, Object> paramMap);
+
+    FaqMaster findByIdxFaqMaster(int idx);
 }
