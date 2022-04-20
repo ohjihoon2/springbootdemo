@@ -12,4 +12,6 @@ import java.util.List;
 public interface FileMapper {
 
     int insertAttachFile(List<AttachFile> fileList);
+
+    int insertAttachFileMaster();
 }

@@ -13,6 +13,7 @@ public class Board {
     private int hit;
     private Date startDate;
     private Date endDate;
+    private int attachFileIdx;
     private String useYn;
     private int createIdx;
     private Date createDate;
