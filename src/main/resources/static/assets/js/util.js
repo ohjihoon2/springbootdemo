@@ -169,6 +169,7 @@
                 newPasswordChk: '새 비밀번호 확인',
                 qaSubject: 'Q&A답변 제목',
                 qaContent: 'Q&A답변 내용',
+                faqNm: 'FAQ이름',
             }
 
             if ($('#' + id).val() == '') {

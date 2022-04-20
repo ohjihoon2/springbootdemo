@@ -479,7 +479,7 @@
           LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX
          WHERE 1 = 1
         <include refid="criteriaFaqMaster"/>
-        ORDER BY FM_ORDER, CREATE_DATE
+        ORDER BY FM_ORDER IS NULL, FM_ORDER, CREATE_DATE
     </select>
 
     <insert id="insertFaqMaster" parameterType="map">

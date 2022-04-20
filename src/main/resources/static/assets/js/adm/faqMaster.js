@@ -14,9 +14,9 @@ $(function(){
     //컨텐츠추가 팝업
     $('#addBtn').click(function(){
         var html = 
-            '<h4>컨텐츠 추가</h4>' +
+            '<h4>FAQ 추가</h4>' +
             '<div class="mb20"></div>' +
-            '<form id="contentAddForm">' +
+            '<form id="faqAddForm">' +
             '<table class="table-top">' +
             '<colgroup>' +
             '<col width="15%">' +
@@ -26,26 +26,21 @@ $(function(){
             '</colgroup>' +
             '<tbody>' +
             '<tr>' +
-            '<th>Id</th>' +
-            '<td><input id="contentId" type="text" maxlength="15"></td>' +
+            '<th>Name</th>' +
+            '<td colspan="3"><input id="faqNm" type="text" maxlength="15"></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<tr>' +
+            '<th>Rank</th>' +
+            '<td><input id="fmOrder" type="text" maxlength="5" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\').replace(/(\\..*)\\./g, \'$1\');"></td>' +
             '<th>Use</th>' +
             '<td class="text-center"><input id="useYn" type="checkbox" checked></td>' +
             '</tr>' +
-            '<tr>' +
-            '<th>Name</th>' +
-            '<td colspan="3"><input id="contentNm" type="text" maxlength="15"></td>' +
-            '</tr>' +
-            '<tr>' +
-            '<th colspan="4">Html</th>' +
-            '</tr>' +
-            '<tr>' +
-            '<td colspan="4" class="p0"><textarea id="contentHtml"></textarea></td>' +
-            '</tr>' +
-            '<tr>' +
-            '</tr>' +
             '</tbody>' +
             '</table>' +
-            '<div class="mt50"></div>' +
+            '<div class="mt5"></div>' +
+            '<span class="text-color-primary">※ 같은 순위를 지정하면 등록순으로 출력됩니다.</span>' +
+            '<div class="mt400"></div>' +
             '<div class="bot-btn-box">' +
             '<button type="button" onclick="$popup.popupJsClose()">닫기</button>\n' +
             '<button type="submit">추가</button>' +
@@ -53,63 +48,31 @@ $(function(){
             '</form>';
 
         $popup.popupJs(html);
-
-        oEditors = [];
-        nhn.husky.EZCreator.createInIFrame({
-            oAppRef : oEditors,
-            elPlaceHolder : "contentHtml",
-            sSkinURI : "/js/externalLib/smarteditor2/SmartEditor2Skin.html",
-            fCreator : "createSEditor2"
-        });
     });
 
     // 컨텐츠추가
-    $(document).on("submit", "#contentAddForm", function(e) {
+    $(document).on("submit", "#faqAddForm", function(e) {
         e.preventDefault();
 
-        if($event.validationFocus("contentId")) return;
+        if($event.validationFocus("faqNm")) return;
 
-        if(!$util.isEnNu($('#contentId').val())) {
-            alert("컨텐츠 ID는 영문, 숫자만 입력가능합니다.");
-            $('#contentId').focus();
-            return;
-        }
-        var param = {
-            contentId : $('#contentId').val()
-        }
-
-        var result = $ajax.postAjax('/adm/contentId', param);
-
-        if(result.result == 'success') {
-            alert("이미 사용중인 컨텐츠 ID입니다.\n컨텐츠 ID는 중복 될 수 없습니다.");
-            return;
-        }
-
-        if($event.validationFocus("contentNm")) return;
-
-        var useYn;
+        var useYn = 'N';
         if($('#useYn').is(':checked')) {
             useYn = 'Y';
         }
-        else {
-            useYn = 'N';
-        }
-
-        oEditors.getById["contentHtml"].exec("UPDATE_CONTENTS_FIELD", []);
 
         var data = {
-            contentId : $('#contentId').val(),
+            faqNm : $('#faqNm').val(),
+            fmOrder : $('#fmOrder').val(),
             useYn : useYn,
-            contentNm : $('#contentNm').val(),
-            contentHtml : $('#contentHtml').val(),
         };
 
-        var res = $ajax.postAjax('/adm/content', data);
+        var res = $ajax.postAjax('/adm/faqMaster', data);
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
         }
         else if(res.result == "success") {
-            alert("컨텐츠를 추가하였습니다.")
+            alert("FAQ를 추가하였습니다.")
             window.location.reload();
         }
         else if(res.result == "fail"){
