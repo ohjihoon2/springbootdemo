@@ -42,7 +42,7 @@
                             </when>
                             <when test="searchType=='W'.toString()">
                                 (
-                                     CREATE_IDX IN
+                                     A.CREATE_IDX IN
                                                 (
                                                     SELECT IDX
                                                       FROM USERS
@@ -434,6 +434,16 @@
 
     </insert>
 
+    <delete id="deleteQnaConfig" parameterType="map">
+        DELETE FROM qna_config
+         WHERE QNA_IDX = #{idx}
+    </delete>
+
+    <delete id="deleteQna" parameterType="map">
+        DELETE FROM qna
+         WHERE IDX=#{idx}
+    </delete>
+
     <select id="findUserEmailByIdx" parameterType="int" resultType="string">
         SELECT USER_EMAIL
           FROM USERS
@@ -454,7 +464,7 @@
          WHERE QNA_IDX = #{idx}
     </select>
 
-    <select id="findAllFaqMaster" parameterType="Criteria" resultType="map">
+    <select id="findAllFaqMaster" parameterType="Criteria" resultType="CustomMap">
 
         SELECT A.FAQ_NM,
                A.FM_ORDER,
@@ -514,7 +524,7 @@
          ORDER BY FM_ORDER
     </select>
 
-    <select id="findAllFaq" resultType="map" parameterType="Criteria">
+    <select id="findAllFaq" resultType="map" parameterType="CustomMap">
         SELECT A.IDX,
                A.MASTER_IDX,
                A.FAQ_QUESTION,
@@ -530,7 +540,7 @@
           LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX
          WHERE 1 = 1
         <include refid="criteriaFaq"/>
-        <if test='paramMap.masterIdx != "all"'>
+        <if test='paramMap.masterIdx != "" and paramMap.masterIdx != null'>
            AND MASTER_IDX = #{paramMap.masterIdx}
         </if>
         ORDER BY F_ORDER

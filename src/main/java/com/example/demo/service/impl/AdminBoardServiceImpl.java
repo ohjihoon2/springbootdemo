@@ -144,6 +144,18 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
+    public int deleteQna(Map<String, Object> paramMap) {
+        int result = 0;
+        if(adminMapper.deleteQnaConfig(paramMap) == 1){
+            adminMapper.deleteQna(paramMap);
+            result = 1;
+        }
+
+        return result;
+    }
+
+    @Override
     public QnaConfig findByIdxQnaConfig(int idx) {
         return adminMapper.findByIdxQnaConfig(idx);
     }

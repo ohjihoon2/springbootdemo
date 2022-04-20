@@ -71,4 +71,8 @@ public interface AdminBoardMapper {
     int deleteFaq(Map<String, Object> paramMap);
 
     void deleteFaqGroup(Map<String, Object> paramMap);
+
+    int deleteQna(Map<String, Object> paramMap);
+
+    int deleteQnaConfig(Map<String, Object> paramMap);
 }

@@ -250,20 +250,15 @@ public class AdminBoardController {
      * @return
      */
     @GetMapping(value = "/qna")
-    public String qnaList(@RequestParam(value = "pageNum", required = false, defaultValue = "1") String pageNum,
-                          @RequestParam(value = "searchType", required = false, defaultValue = "Q") String searchType,
-                          @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
-                          @RequestParam(value = "status", required = false, defaultValue = "wait") String status,
+    public String qnaList(@ModelAttribute Criteria criteria,
+                          @RequestParam(value = "status", required = false, defaultValue = "") String status,
                           HttpServletResponse response, HttpServletRequest request, Model model) {
 
         Map<String ,Object> mMap = new HashMap<>();
         mMap.put("status",status);
 
-        Criteria criteria = new Criteria();
-        criteria.setPageNum(Integer.parseInt(pageNum));
-        criteria.setSearchKeyword(searchKeyword);
-        criteria.setSearchType(searchType);
         criteria.setParamMap(mMap);
+
 
         List<Map<String,Object>> resultList = adminService.findAllQna(criteria);
 
@@ -318,6 +313,17 @@ public class AdminBoardController {
         paramMap.put("userIdx",userIdx);
 
         int result = adminService.answerQna(paramMap,request);
+
+        return ResultStr.set(result);
+    }
+
+    @DeleteMapping(value = "/qna/{idx}")
+    @ResponseBody
+    public Map<String,Object> deleteQna(@PathVariable int idx,HttpServletResponse response, HttpServletRequest request) {
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("idx",idx);
+
+        int result = adminService.deleteQna(paramMap);
 
         return ResultStr.set(result);
     }
@@ -408,19 +414,13 @@ public class AdminBoardController {
      * @return
      */
     @GetMapping(value = "/faq")
-    public String faqList(@RequestParam(value = "searchType", required = false) String searchType,
-                          @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
-                          @RequestParam(value = "masterIdx", required = false, defaultValue = "all") String masterIdx,
+    public String faqList(@ModelAttribute Criteria criteria,
+                          @RequestParam(value = "masterIdx", required = false, defaultValue = "") String masterIdx,
                           HttpServletResponse response, HttpServletRequest request, Model model) {
-//        System.out.println("paramMap = " + paramMap);
 
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("masterIdx",masterIdx);
 
-        Criteria criteria = new Criteria();
-
-        criteria.setSearchType(searchType);
-        criteria.setSearchKeyword(searchKeyword);
         criteria.setParamMap(paramMap);
 
         // searchType T : FAQ_QUESTION (FAQ 이름) / W : CREATE_NICKNM (작성자)

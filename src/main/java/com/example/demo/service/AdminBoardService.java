@@ -59,4 +59,6 @@ public interface AdminBoardService {
     int updateFaq(Map<String, Object> paramMap);
 
     int deleteFaq(Map<String, Object> paramMap);
+
+    int deleteQna(Map<String, Object> paramMap);
 }
