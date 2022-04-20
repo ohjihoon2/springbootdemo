@@ -593,7 +593,8 @@
     </delete>
 
     <select id="findByIdxFaqMaster" parameterType="int" resultType="FaqMaster">
-        SELECT FAQ_NM,
+        SELECT IDX,
+               FAQ_NM,
                FM_ORDER,
                USE_YN,
                UPDATE_IDX,

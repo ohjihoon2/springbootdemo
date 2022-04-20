@@ -11,7 +11,7 @@ $(function(){
         $page.getGoPage('/adm/content', param)
     });
 
-    //컨텐츠추가 팝업
+    //FAQ 카테고리 추가 팝업
     $('#addBtn').click(function(){
         var html = 
             '<h4>FAQ 추가</h4>' +
@@ -60,7 +60,6 @@ $(function(){
         if($('#useYn').is(':checked')) {
             useYn = 'Y';
         }
-        console.log(useYn);
 
         var data = {
             faqNm : $('#faqNm').val(),
@@ -85,7 +84,7 @@ $(function(){
     $('[name="updateBtn"]').click(function(){
         var idx = $(this).data('val');
 
-        var res = $ajax.postAjax('/adm/content/' + idx);
+        var res = $ajax.postAjax('/adm/faqMaster/' + idx);
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             return;
@@ -98,10 +97,10 @@ $(function(){
         }
 
         var html =
-            '<h4>컨텐츠 수정</h4>' +
+            '<h4>FAQ 추가</h4>' +
             '<div class="mb20"></div>' +
-            '<form id="contentUpdateForm">' +
-            '<input id="idx" type="hidden" value="'+ res.idx +'">' +
+            '<form id="faqAddForm">' +
+            '<input type="hidden" id="'+ res.idx +'">' +
             '<table class="table-top">' +
             '<colgroup>' +
             '<col width="15%">' +
@@ -111,55 +110,44 @@ $(function(){
             '</colgroup>' +
             '<tbody>' +
             '<tr>' +
-            '<th>Id</th>' +
-            '<td><input id="contentId" type="text" value="'+ res.contentId +'" maxlength="15"><input id="contentIdOrigin" type="hidden" value="'+ res.contentId +'"></td>' +
-            '<th>Use</th>' +
-            '<td class="text-center"><input id="useYn" type="checkbox"'+ useYn +'></td>' +
-            '</tr>' +
-            '<tr>' +
             '<th>Name</th>' +
-            '<td colspan="3"><input id="contentNm" type="text" value="'+ res.contentNm +'" maxlength="15"></td>' +
+            '<td colspan="3"><input id="faqNm" type="text" maxlength="15" value="'+ res.faqNm +'"></td>' +
             '</tr>' +
             '<tr>' +
-            '<th colspan="4">Html</th>' +
-            '</tr>' +
             '<tr>' +
-            '<td colspan="4"><textarea id="contentHtml">' + res.contentHtml + '</textarea></td>' +
+            '<th>Rank</th>' +
+            '<td><input id="fmOrder" type="text" maxlength="5" value="'+ res.fmOrder +'" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\').replace(/(\\..*)\\./g, \'$1\');"></td>' +
+            '<th>Use</th>' +
+            '<td class="text-center"><input id="useYn" type="checkbox" '+ useYn +'></td>' +
             '</tr>' +
             '</tbody>' +
             '</table>' +
-            '<div class="mt50"></div>' +
+            '<div class="mt5"></div>' +
+            '<span class="text-color-primary">※ 같은 순위를 지정하면 등록순으로 출력됩니다.</span>' +
+            '<div class="mt400"></div>' +
             '<div class="bot-btn-box">' +
             '<div class="left">' +
-            '<button type="button" id="contentDel">삭제</button>' +
+            '<button type="button" id="faqDel">삭제</button>' +
             '</div>' +
             '<button type="button" onclick="$popup.popupJsClose()">닫기</button>\n' +
-            '<button type="submit">수정</button>' +
+            '<button type="submit">추가</button>' +
             '</div>' +
-            '</form>';
+            '</input>';
 
         $popup.popupJs(html);
-
-        oEditors = [];
-        nhn.husky.EZCreator.createInIFrame({
-            oAppRef : oEditors,
-            elPlaceHolder : "contentHtml",
-            sSkinURI : "/js/externalLib/smarteditor2/SmartEditor2Skin.html",
-            fCreator : "createSEditor2"
-        });
     });
 
     // 컨텐츠삭제
-    $(document).on("click", "#contentDel", function(e) {
-        if(confirm("해당 컨텐츠를 삭제하시겠습니까?")) {
+    $(document).on("click", "#faqDel", function(e) {
+        if(confirm("해당 FAQ를 삭제하시겠습니까?")) {
             var idx = $('#idx').val();
 
-            var res = $ajax.deleteAjax('/adm/content/'+ idx);
+            var res = $ajax.deleteAjax('/adm/faq/'+ idx);
             if(res == "error") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }
             else if(res.result == "success") {
-                alert("해당 컨텐츠를 삭제하였습니다.")
+                alert("해당 FAQ를 삭제하였습니다.")
                 window.location.reload();
             }
             else if(res.result == "fail"){
