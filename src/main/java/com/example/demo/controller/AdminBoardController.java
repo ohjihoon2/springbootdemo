@@ -251,7 +251,7 @@ public class AdminBoardController {
      */
     @GetMapping(value = "/qna")
     public String qnaList(@RequestParam(value = "pageNum", required = false, defaultValue = "1") String pageNum,
-                          @RequestParam(value = "searchType", required = false) String searchType,
+                          @RequestParam(value = "searchType", required = false, defaultValue = "Q") String searchType,
                           @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
                           @RequestParam(value = "status", required = false, defaultValue = "wait") String status,
                           HttpServletResponse response, HttpServletRequest request, Model model) {
