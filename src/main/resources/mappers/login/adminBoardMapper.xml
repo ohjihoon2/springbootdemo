@@ -524,12 +524,12 @@
          ORDER BY FM_ORDER IS NULL, FM_ORDER, CREATE_DATE
     </select>
 
-    <select id="findAllFaq" resultType="map" parameterType="CustomMap">
+    <select id="findAllFaq" parameterType="Criteria" resultType="CustomMap">
         SELECT A.IDX,
                D.FAQ_NM,
                A.FAQ_QUESTION,
                A.FAQ_ANSWER,
-               A.F_ORDER,
+               A.FAQ_ORDER,
                A.USE_YN,
                IFNULL(B.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
                A.CREATE_DATE,
@@ -547,7 +547,7 @@
         ORDER BY F_ORDER
     </select>
 
-    <insert id="insertFaq" parameterType="CustomMap">
+    <insert id="insertFaq" parameterType="map">
         INSERT INTO faq
             (
                  MASTER_IDX,
