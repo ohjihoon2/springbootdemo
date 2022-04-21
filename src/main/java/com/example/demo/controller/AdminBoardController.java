@@ -497,12 +497,12 @@ public class AdminBoardController {
      */
     @PostMapping(value = "/faq")
     @ResponseBody
-    public Map<String,Object> saveFaq(@RequestBody Map<String,Object> paramMap,HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> saveFaq(@RequestBody Faq faq,HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
-        paramMap.put("userIdx",userIdx);
+        faq.setCreateIdx(userIdx);
 
-        int result = adminService.insertFaq(paramMap);
+        int result = adminService.insertFaq(faq);
 
         return ResultStr.set(result);
     }

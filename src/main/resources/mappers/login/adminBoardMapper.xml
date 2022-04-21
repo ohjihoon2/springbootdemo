@@ -547,7 +547,7 @@
         ORDER BY FAQ_ORDER
     </select>
 
-    <insert id="insertFaq" parameterType="map">
+    <insert id="insertFaq" parameterType="Faq">
         INSERT INTO faq
             (
                  MASTER_IDX,
@@ -565,7 +565,7 @@
                 #{faqAnswer},
                 #{faqOrder},
                 #{useYn},
-                #{userIdx},
+                #{createIdx},
                 SYSDATE()
             )
     </insert>
