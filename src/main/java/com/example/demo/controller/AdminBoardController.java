@@ -446,13 +446,26 @@ public class AdminBoardController {
 
         // searchType T : FAQ_QUESTION (FAQ 이름) / W : CREATE_NICKNM (작성자)
         // SELECT 카테고리 LIST
-        List<Map<String,Object>> faqList = adminService.findNameFaqMaster();
+        List<Map<String,Object>> fmList = adminService.findNameFaqMaster();
 
         List<Map<String,Object>> resultList = adminService.findAllFaq(criteria);
 
-        model.addAttribute("faqList", faqList);
+        model.addAttribute("fmList", fmList);
         model.addAttribute("resultList", resultList);
         return "/adm/faq";
+    }
+
+    /**
+     * FAQ 추가 상세
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @PostMapping(value = "/fmList")
+    @ResponseBody
+    public List<Map<String, Object>> fmList(HttpServletResponse response, HttpServletRequest request, Model model) {
+        return adminService.findNameFaqMaster();
     }
 
     /**

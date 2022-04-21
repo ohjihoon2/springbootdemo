@@ -20,10 +20,10 @@ $(function(){
         $page.getGoPage('/adm/faq', param)
     });
 
-    //컨텐츠추가 팝업
+    //FAQ추가 팝업
     $('#addBtn').click(function(){
         var html = 
-            '<h4>컨텐츠 추가</h4>' +
+            '<h4>FAQ 추가</h4>' +
             '<div class="mb20"></div>' +
             '<form id="contentAddForm">' +
             '<table class="table-top">' +
@@ -35,7 +35,7 @@ $(function(){
             '</colgroup>' +
             '<tbody>' +
             '<tr>' +
-            '<th>Id</th>' +
+            '<th>Type</th>' +
             '<td><input id="contentId" type="text" maxlength="15"></td>' +
             '<th>Use</th>' +
             '<td class="text-center"><input id="useYn" type="checkbox" checked></td>' +
