@@ -1,7 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.vo.AttachFile;
-import com.example.demo.vo.Board;
+import com.example.demo.vo.AttachFileMaster;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -13,5 +13,5 @@ public interface FileMapper {
 
     int insertAttachFile(List<AttachFile> fileList);
 
-    int insertAttachFileMaster();
+    int insertAttachFileMaster(AttachFileMaster attachFileMaster);
 }

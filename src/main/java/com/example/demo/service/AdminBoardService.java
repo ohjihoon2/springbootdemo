@@ -63,4 +63,6 @@ public interface AdminBoardService {
     int deleteQna(Map<String, Object> paramMap);
 
     FaqMaster findByIdxFaqMaster(int idx);
+
+    Faq findByIdxFaq(int idx);
 }

@@ -111,7 +111,7 @@
     </update>
 
     <delete id="forceDeleteUser" parameterType="map">
-        DELETE FROM USERS
+        DELETE FROM users
          WHERE IDX = #{idx}
            AND ROLE_TYPE IN
         <foreach collection="roleType" item="roleType" open="(" close=")" separator=",">
@@ -120,7 +120,7 @@
     </delete>
 
     <update id="resetPassword" parameterType="map">
-        UPDATE USERS
+        UPDATE users
            SET USER_PWD = #{userPwd}
          WHERE IDX = #{idx}
     </update>
@@ -180,19 +180,19 @@
 
     <select id="findPasswordByIdx" parameterType="map" resultType="string">
         SELECT USER_PWD
-          FROM USERS
+          FROM users
          WHERE IDX = #{idx}
     </select>
 
     <update id="updatePassword" parameterType="map">
-        UPDATE USERS
+        UPDATE users
            SET USER_PWD = #{newPwd},
                UPDATE_DATE = SYSDATE()
          WHERE IDX =#{idx}
     </update>
 
     <insert id="insertAdmin" parameterType="map">
-        INSERT INTO USERS
+        INSERT INTO users
             (
                  USER_ID,
                  USER_PWD,

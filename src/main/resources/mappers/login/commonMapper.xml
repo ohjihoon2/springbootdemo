@@ -33,7 +33,7 @@
 
     <delete id="deleteWithdrawUser">
         <![CDATA[
-        DELETE FROM USERS
+        DELETE FROM users
          WHERE DELETE_YN = 'Y'
            AND UPDATE_DATE <= date_add(now(), interval -1 month)
         ]]>

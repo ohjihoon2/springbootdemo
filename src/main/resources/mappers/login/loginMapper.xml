@@ -16,12 +16,12 @@
                MARKETING_YN,
                CREATE_DATE,
                UPDATE_DATE
-          FROM USERS
+          FROM users
          WHERE USER_ID = #{userId}
     </select>
 
     <insert id="saveUser" parameterType="map">
-        INSERT INTO USERS
+        INSERT INTO users
             (
                  USER_ID,
                  USER_PWD,
@@ -55,7 +55,7 @@
     </insert>
 
     <insert id="saveAdminTest" parameterType="map">
-        INSERT INTO USERS
+        INSERT INTO users
             (
                  USER_ID,
                  USER_PWD,
@@ -85,7 +85,7 @@
     </insert>
 
     <insert id="saveUserTest" parameterType="map">
-        INSERT INTO USERS
+        INSERT INTO users
         (
             USER_ID,
             USER_PWD,
@@ -114,7 +114,7 @@
 
     <select id="countByUserId" parameterType="string" resultType="int">
         SELECT COUNT(*)
-          FROM USERS
+          FROM users
          WHERE user_id = #{userId}
     </select>
 
@@ -133,7 +133,7 @@
                DELETE_YN,
                CREATE_DATE,
                UPDATE_DATE
-          FROM USERS
+          FROM users
          WHERE USER_NM = #{userNm}
            AND USER_EMAIL = #{email}
     </select>
@@ -153,13 +153,13 @@
                DELETE_YN,
                CREATE_DATE,
                UPDATE_DATE
-          FROM USERS
+          FROM users
          WHERE USER_NM = #{userNm}
            AND USER_ID = #{userId}
     </select>
 
     <update id="updateUserPwd" parameterType="map">
-        UPDATE USERS
+        UPDATE users
            SET USER_PWD = #{userPwd},
                UPDATE_DATE = SYSDATE()
          WHERE USER_ID = #{userId}
@@ -170,12 +170,12 @@
                USER_NICKNM,
                VERIFICATION_YN,
                USER_EMAIL
-          FROM USERS
+          FROM users
          WHERE USER_ID = #{userId}
     </select>
 
     <update id="updateVerificationCode" parameterType="map">
-        UPDATE USERS
+        UPDATE users
            SET VERIFICATION_CODE = #{VerificationCode},
                UPDATE_DATE = SYSDATE()
          WHERE USER_ID = #{userId}
@@ -185,14 +185,14 @@
     <select id="findVerificationCodeByUserIdCode" parameterType="string" resultType="int">
         SELECT EXISTS(
                        SELECT VERIFICATION_CODE
-                       FROM USERS
+                       FROM users
                        WHERE USER_ID = #{userId}
                          AND VERIFICATION_CODE = #{code}
                      ) AS EXIST
     </select>
 
     <update id="updateverificationYn" parameterType="string">
-        UPDATE USERS
+        UPDATE users
            SET VERIFICATION_YN = 'Y',
                UPDATE_DATE = SYSDATE()
          WHERE USER_ID = #{userId}
@@ -201,7 +201,7 @@
     <select id="existByUserNicknm" parameterType="string" resultType="int">
         SELECT EXISTS(
                         SELECT USER_NICKNM
-                          FROM USERS
+                          FROM users
                          WHERE USER_NICKNM = #{userNicknm}
                      )
     </select>
@@ -209,7 +209,7 @@
     <select id="existByUserEmail" parameterType="string" resultType="int">
         SELECT EXISTS(
                        SELECT USER_EMAIL
-                       FROM USERS
+                       FROM users
                        WHERE USER_EMAIL = #{userEmail}
                    )
     </select>

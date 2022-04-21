@@ -158,6 +158,12 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     }
 
     @Override
+    public Faq findByIdxFaq(int idx) {
+        return adminMapper.findByIdxFaq(idx);
+
+    }
+
+    @Override
     public QnaConfig findByIdxQnaConfig(int idx) {
         return adminMapper.findByIdxQnaConfig(idx);
     }

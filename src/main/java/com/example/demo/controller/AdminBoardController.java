@@ -455,14 +455,34 @@ public class AdminBoardController {
         return "/adm/faq";
     }
 
+
     /**
-     * FAQ 추가 상세
+     * FAQ 상세
+     * @param idx
      * @param response
      * @param request
      * @param model
      * @return
      */
-    @PostMapping(value = "/fmList")
+    @PostMapping(value = "/faq/{idx}")
+    @ResponseBody
+    public Map<String, Object> faqDetails(@PathVariable int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        resultMap.put("typeList",adminService.findNameFaqMaster());
+        resultMap.put("faq",adminService.findByIdxFaq(idx));
+        return resultMap;
+    }
+
+
+    /**
+     * FAQ 타입 list
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @PostMapping(value = "/faq/faqNm")
     @ResponseBody
     public List<Map<String, Object>> fmList(HttpServletResponse response, HttpServletRequest request, Model model) {
         return adminService.findNameFaqMaster();

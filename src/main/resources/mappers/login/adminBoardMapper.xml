@@ -19,7 +19,7 @@
                                     A.CREATE_IDX IN
                                         (
                                             SELECT IDX
-                                              FROM USERS
+                                              FROM users
                                              WHERE USER_NICKNM LIKE CONCAT('%',#{searchKeyword},'%')
                                         )
                                 )
@@ -45,7 +45,7 @@
                                      A.CREATE_IDX IN
                                                 (
                                                     SELECT IDX
-                                                      FROM USERS
+                                                      FROM users
                                                      WHERE USER_NICKNM LIKE CONCAT('%',#{searchKeyword},'%')
                                                 )
                                 )
@@ -71,7 +71,7 @@
                                 A.CREATE_IDX IN
                                                 (
                                                     SELECT IDX
-                                                      FROM USERS
+                                                      FROM users
                                                      WHERE USER_NICKNM LIKE CONCAT('%',#{searchKeyword},'%')
                                                 )
                                 )
@@ -97,7 +97,7 @@
                                 A.CREATE_IDX IN
                                     (
                                         SELECT IDX
-                                          FROM USERS
+                                          FROM users
                                          WHERE USER_NICKNM LIKE CONCAT('%',#{searchKeyword},'%')
                                     )
                                 )
@@ -123,7 +123,7 @@
                                     A.CREATE_IDX IN
                                         (
                                             SELECT IDX
-                                              FROM USERS
+                                              FROM users
                                              WHERE USER_NICKNM LIKE CONCAT('%',#{searchKeyword},'%')
                                         )
                                 )
@@ -161,8 +161,8 @@
                          WHERE A.MASTER_IDX = B.IDX
                          GROUP BY MASTER_IDX
                     ) B ON A.IDX = B.MASTER_IDX
-          LEFT JOIN USERS C ON A.CREATE_IDX = C.IDX
-          LEFT JOIN USERS D ON A.UPDATE_IDX = D.IDX
+          LEFT JOIN users C ON A.CREATE_IDX = C.IDX
+          LEFT JOIN users D ON A.UPDATE_IDX = D.IDX
          WHERE 1 = 1
         <include refid="criteriaBoardMaster"/>
     </select>
@@ -241,8 +241,8 @@
                          WHERE A.MASTER_IDX = B.IDX
                          GROUP BY MASTER_IDX
                     ) B ON A.IDX = B.MASTER_IDX
-          LEFT JOIN USERS C ON A.CREATE_IDX = C.IDX
-          LEFT JOIN USERS D ON A.UPDATE_IDX = D.IDX
+          LEFT JOIN users C ON A.CREATE_IDX = C.IDX
+          LEFT JOIN users D ON A.UPDATE_IDX = D.IDX
          WHERE A.IDX = #{idx}
     </select>
 
@@ -270,8 +270,8 @@
                IFNULL(B.USER_NICKNM,'탈퇴된 관리자') AS CREATE_NICKNM,
                IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(C.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM
           FROM content A
-          LEFT JOIN USERS B ON A.CREATE_IDX = B.IDX
-          LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX
+          LEFT JOIN users B ON A.CREATE_IDX = B.IDX
+          LEFT JOIN users C ON A.UPDATE_IDX = C.IDX
          WHERE 1=1
         <include refid="criteriaContent"/>
     </select>
@@ -446,7 +446,7 @@
 
     <select id="findUserEmailByIdx" parameterType="int" resultType="string">
         SELECT USER_EMAIL
-          FROM USERS
+          FROM users
          WHERE IDX = #{idx}
     </select>
 
@@ -475,8 +475,8 @@
                IFNULL(C.USER_NICKNM,'탈퇴된 관리자')AS UPDATE_NICKNM,
                A.UPDATE_DATE
           FROM faq_master AS A
-          LEFT JOIN USERS B ON A.CREATE_IDX = B.IDX
-          LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX
+          LEFT JOIN users B ON A.CREATE_IDX = B.IDX
+          LEFT JOIN users C ON A.UPDATE_IDX = C.IDX
          WHERE 1 = 1
         <include refid="criteriaFaqMaster"/>
         ORDER BY FM_ORDER IS NULL, FM_ORDER, CREATE_DATE
@@ -536,8 +536,8 @@
                IFNULL(C.USER_NICKNM,'탈퇴된 관리자')AS UPDATE_NICKNM,
                A.UPDATE_DATE
           FROM faq A
-          LEFT JOIN USERS B ON A.CREATE_IDX = B.IDX
-          LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX
+          LEFT JOIN users B ON A.CREATE_IDX = B.IDX
+          LEFT JOIN users C ON A.UPDATE_IDX = C.IDX
           LEFT JOIN faq_master D ON A.MASTER_IDX = D.IDX
          WHERE 1 = 1
         <include refid="criteriaFaq"/>
@@ -603,6 +603,21 @@
                CREATE_IDX,
                CREATE_DATE
           FROM faq_master
+         WHERE IDX =#{idx}
+    </select>
+
+    <select id="findByIdxFaq" parameterType="int" resultType="Faq">
+        SELECT IDX,
+               MASTER_IDX,
+               FAQ_QUESTION,
+               FAQ_ANSWER,
+               FAQ_ORDER,
+               USE_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM faq
          WHERE IDX =#{idx}
     </select>
 </mapper>

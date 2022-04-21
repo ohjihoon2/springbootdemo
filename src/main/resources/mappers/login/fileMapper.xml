@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.FileMapper">
 
-    <insert id="insertAttachFileMaster">
+    <insert id="insertAttachFileMaster" useGeneratedKeys="true" keyProperty="idx" parameterType="AttachFileMaster">
         INSERT INTO attach_file_master
             (
                 CREATE_DATE
@@ -11,17 +11,14 @@
             (
                 SYSDATE()
             )
-        <selectKey resultType="int" keyProperty="IDX" order="AFTER">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
     </insert>
 
     <insert id="insertAttachFile" parameterType="AttachFile">
 
         INSERT INTO attach_file
             (
-                 RELATED_TABLE,
-                 RELATED_IDX,
+                 IDX,
+                 FILE_SN,
                  ORIGINAL_NAME,
                  SAVE_NAME,
                  `SIZE`,
@@ -32,18 +29,20 @@
                  DELETE_DATE
             )
         VALUES
+        <foreach collection="list" item="item" separator=" , ">
             (
-                 #{relatedTable},
-                 #{relatedIdx},
-                 #{originalName},
-                 #{saveName},
-                 #{size},
-                 #{extension},
-                 #{createIdx},
+                 #{item.idx},
+                 #{item.fileSn},
+                 #{item.originalName},
+                 #{item.saveName},
+                 #{item.size},
+                 #{item.extension},
+                 #{item.createIdx},
                  SYSDATE(),
                  'N',
                  NULL
             )
+        </foreach>
 
     </insert>
 </mapper>

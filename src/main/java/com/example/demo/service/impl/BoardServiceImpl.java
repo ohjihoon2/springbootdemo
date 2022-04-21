@@ -5,10 +5,12 @@ import com.example.demo.repository.FileMapper;
 import com.example.demo.service.BoardService;
 import com.example.demo.util.FileUtils;
 import com.example.demo.vo.AttachFile;
+import com.example.demo.vo.AttachFileMaster;
 import com.example.demo.vo.Board;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,17 +33,18 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
     public int insertBoard(MultipartFile[] files, Board board) {
         int result = 0;
 
-        List<AttachFile> fileList = fileUtils.uploadFiles(files, board);
+        List<AttachFile> fileList = fileUtils.uploadFiles(files, board.getCreateIdx());
         if (CollectionUtils.isEmpty(fileList) == false) {
-            int idx = fileMapper.insertAttachFileMaster();
-
+            AttachFileMaster attachFileMaster = new AttachFileMaster();
+            fileMapper.insertAttachFileMaster(attachFileMaster);
+            int idx = attachFileMaster.getIdx();
             for (AttachFile attachFile : fileList) {
                 attachFile.setIdx(idx);
             }
-
             result = fileMapper.insertAttachFile(fileList);
             if (result < 1) {
                 result = 0;
