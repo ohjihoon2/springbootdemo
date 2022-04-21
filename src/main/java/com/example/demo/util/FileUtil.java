@@ -112,7 +112,7 @@ public class FileUtil {
         File file = new File(resourcesLocation + "\\" + saveFileName);
         System.out.println("fileName = "+ file.getName());
         System.out.println("file = " + file);
-//        break;
+
         if(file.exists()) { // 파일이 존재하면
             file.delete();
             // 파일 삭제

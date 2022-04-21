@@ -1,56 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.CommonMapper">
-
     <select id="findLinkNameLvlByUseYn" resultType="CustomMap">
         WITH RECURSIVE CTE AS
-            (
-                SELECT IDX,
-                       PARENT_IDX,
-                       NAME,
-                       LINK,
-                       LVL,
-                       USE_YN
-                  FROM MENU_TREE
-                 WHERE LVL = 1
-                 UNION ALL
-                SELECT IDX,
-                       PARENT_IDX,
-                       NAME,
-                       LINK,
-                       LVL,
-                       USE_YN
-                  FROM MENU_TREE
-                 WHERE IDX != PARENT_IDX
+                           (
+                               SELECT IDX,
+                                      PARENT_IDX,
+                                      NAME,
+                                      LINK,
+                                      LVL,
+                                      USE_YN
+                               FROM MENU_TREE
+                               WHERE LVL = 1
+                               UNION ALL
+                               SELECT IDX,
+                                      PARENT_IDX,
+                                      NAME,
+                                      LINK,
+                                      LVL,
+                                      USE_YN
+                               FROM MENU_TREE
+                               WHERE IDX != PARENT_IDX
             )
         SELECT NAME,
                LINK,
                LVL
-          FROM CTE
-         WHERE USE_YN = 'Y'
-         ORDER BY PARENT_IDX, IDX
+        FROM CTE
+        WHERE USE_YN = 'Y'
+        ORDER BY PARENT_IDX, IDX
     </select>
 
     <delete id="deleteWithdrawUser">
         <![CDATA[
         DELETE FROM users
-         WHERE DELETE_YN = 'Y'
-           AND UPDATE_DATE <= date_add(now(), interval -1 month)
+        WHERE DELETE_YN = 'Y'
+          AND UPDATE_DATE <= date_add(now(), interval -1 month)
         ]]>
     </delete>
-
-    <select id="findAllAttachFile" resultType="AttachFile" parameterType="string">
-        SELECT IDX,
-               FILE_SN,
-               ORIGINAL_NAME,
-               SAVE_NAME,
-               SIZE,
-               EXTENSION,
-               CREATE_IDX,
-               CREATE_DATE,
-               DELETE_YN,
-               DELETE_DATE
-          FROM attach_file
-         WHERE SAVE_NAME = #{saveName}
-    </select>
 </mapper>
