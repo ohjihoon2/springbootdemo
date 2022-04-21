@@ -239,10 +239,6 @@ section {
     font-size: 16px;
 }
 
-.top-btn-box > select {
-    width: 150px;
-}
-
 .top-btn-box input[type="text"] {
     height: 40px;
     padding-left: 10px;

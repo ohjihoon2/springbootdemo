@@ -6,25 +6,34 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns="http://www.w3.org/1999/html">
 
-<th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='/css/adm/faqMaster.css')"></th:block>
+<th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='/css/adm/faq.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
 <th:block th:replace="/fragments/header.html :: thAdmHeader"></th:block>
 <section>
     <div class="section-wrap">
-        <h2>FAQ타입 설정</h2>
+        <h2>FAQ 관리</h2>
         <span class="text-color-primary text-line20">※ 같은 순위를 지정하면 등록순으로 출력됩니다.</span>
         <div class="mt20"></div>
         <div class="top-btn-box">
             <div class="left">
                 <select id="searchType">
-                    <option value="TW" th:selected="${#httpServletRequest.getParameter('searchType') == 'TW'}">타입명 + 작성자</option>
-                    <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'T'}">타입명</option>
+                    <option value="TW" th:selected="${#httpServletRequest.getParameter('searchType') == 'TW'}">FAQ명 + 작성자</option>
+                    <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'T'}">FAQ명</option>
                     <option value="W" th:selected="${#httpServletRequest.getParameter('searchType') == 'W'}">작성자</option>
                 </select>
                 <input id="searchKeyword" type="text" th:value="${#httpServletRequest.getParameter('searchKeyword')}" />
                 <button type="button" id="searchBtn" class="color-primary">검색</button>
             </div>
-            <button type="button" id="addBtn" class="color-primary">타입추가</button>
+            <select id="masterIdx" th:with="masterIdx = ${#httpServletRequest.getParameter('masterIdx')}">
+                <option value="" th:selected="${masterIdx == ''}">전체 보기</option>
+
+
+                <th:block th:each="res : ${faqList}">
+                    <option th:value="${res.idx}" th:selected="${masterIdx == #strings.toString(res.idx)}">[[${res.faqNm}]] 보기</option>
+                </th:block>
+
+            </select>
+            <button type="button" id="addBtn" class="color-primary" th:if="${#httpServletRequest.getParameter('masterIdx') != ''}">FAQ추가</button>
         </div>
         <table>
             <colgroup>
@@ -38,7 +47,7 @@
             </colgroup>
             <thead>
             <tr>
-                <th>Type</th>
+                <th>Name</th>
                 <th>Creater</th>
                 <th>Date</th>
                 <th>Remarks</th>
@@ -51,7 +60,8 @@
         <div class="section-scroll">
             <table>
                 <colgroup>
-                    <col width="30%">
+                    <col width="10%">
+                    <col width="20%">
                     <col width="15%">
                     <col width="10%">
                     <col width="25%">
@@ -62,6 +72,7 @@
                 <tbody>
                 <th:block th:each="res : ${resultList}">
                     <tr>
+                        <td th:text="${res.faqNm}"></td>
                         <td th:text="${res.faqNm}"></td>
                         <td class="text-center" th:text="${res.createNicknm}"></td>
                         <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.')}"></td>
@@ -88,6 +99,6 @@
     </div>
 </section>
 <th:block th:replace="/fragments/footer.html :: thAdmFooter"></th:block>
-<script th:src="@{/js/adm/faqMaster.js}"></script>
+<script th:src="@{/js/adm/faq.js}"></script>
 </body>
 </html>

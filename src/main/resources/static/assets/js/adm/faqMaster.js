@@ -11,10 +11,10 @@ $(function(){
         $page.getGoPage('/adm/faqMaster', param)
     });
 
-    //FAQ 카테고리 추가 팝업
+    //FAQ 타입 추가 팝업
     $('#addBtn').click(function(){
         var html = 
-            '<h4>FAQ 추가</h4>' +
+            '<h4>FAQ타입 추가</h4>' +
             '<div class="mb20"></div>' +
             '<form id="faqAddForm">' +
             '<table class="table-top">' +
@@ -26,7 +26,7 @@ $(function(){
             '</colgroup>' +
             '<tbody>' +
             '<tr>' +
-            '<th>Name</th>' +
+            '<th>Type</th>' +
             '<td colspan="3"><input id="faqNm" type="text" maxlength="15"></td>' +
             '</tr>' +
             '<tr>' +
@@ -72,7 +72,7 @@ $(function(){
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
         }
         else if(res.result == "success") {
-            alert("FAQ를 추가하였습니다.")
+            alert("FAQ 타입를 추가하였습니다.")
             window.location.reload();
         }
         else if(res.result == "fail"){
@@ -97,7 +97,7 @@ $(function(){
         }
 
         var html =
-            '<h4>FAQ 추가</h4>' +
+            '<h4>FAQ 타입 수정</h4>' +
             '<div class="mb20"></div>' +
             '<form id="faqUpdateForm">' +
             '<input type="hidden" id="idx" value="'+ res.idx +'">' +
@@ -110,7 +110,7 @@ $(function(){
             '</colgroup>' +
             '<tbody>' +
             '<tr>' +
-            '<th>Name</th>' +
+            '<th>Type</th>' +
             '<td colspan="3"><input id="faqNm" type="text" maxlength="15" value="'+ res.faqNm +'"></td>' +
             '</tr>' +
             '<tr>' +
@@ -139,7 +139,7 @@ $(function(){
 
     // 컨텐츠삭제
     $(document).on("click", "#faqDel", function(e) {
-        if(confirm("해당 FAQ를 삭제하시겠습니까?")) {
+        if(confirm("해당 FAQ 타입를 삭제하시겠습니까?")) {
             var idx = $('#idx').val();
 
             var res = $ajax.deleteAjax('/adm/faqMaster/'+ idx);
@@ -147,7 +147,7 @@ $(function(){
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }
             else if(res.result == "success") {
-                alert("해당 FAQ를 삭제하였습니다.")
+                alert("해당 FAQ 타입를 삭제하였습니다.")
                 window.location.reload();
             }
             else if(res.result == "fail"){
@@ -156,7 +156,7 @@ $(function(){
         }
     });
 
-    // faq카테고리 수정
+    // faq 타입 수정
     $(document).on("submit", "#faqUpdateForm", function(e) {
         e.preventDefault();
 
@@ -178,7 +178,7 @@ $(function(){
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
         }
         else if(res.result == "success") {
-            alert("FAQ를 수정하였습니다.");
+            alert("FAQ 타입를 수정하였습니다.");
             window.location.reload();
         }
         else if(res.result == "fail"){

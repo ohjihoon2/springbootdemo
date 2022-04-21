@@ -521,12 +521,12 @@
         SELECT IDX,
                FAQ_NM
           FROM faq_master
-         ORDER BY FM_ORDER
+         ORDER BY FM_ORDER IS NULL, FM_ORDER, CREATE_DATE
     </select>
 
     <select id="findAllFaq" resultType="map" parameterType="CustomMap">
         SELECT A.IDX,
-               A.MASTER_IDX,
+               D.FAQ_NM,
                A.FAQ_QUESTION,
                A.FAQ_ANSWER,
                A.F_ORDER,
@@ -538,6 +538,7 @@
           FROM faq A
           LEFT JOIN USERS B ON A.CREATE_IDX = B.IDX
           LEFT JOIN USERS C ON A.UPDATE_IDX = C.IDX
+          LEFT JOIN faq_master D ON A.MASTER_IDX = D.IDX
          WHERE 1 = 1
         <include refid="criteriaFaq"/>
         <if test='paramMap.masterIdx != "" and paramMap.masterIdx != null'>
