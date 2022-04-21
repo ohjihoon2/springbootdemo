@@ -23,7 +23,7 @@ $(function(){
     //FAQ추가 팝업
     $('#addBtn').click(function(){
         var fm = $(this).data('val');
-        var res = $ajax.postAjax('/adm/fmList');
+        var res = $ajax.postAjax('/adm/faq/faqNm');
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             return;
@@ -44,18 +44,22 @@ $(function(){
             '<th>Type</th>' +
             '<td>' +
             '<select id="masterIdx">' +
-            '<option value="">타입 설정</option>';
+            '<option value="">타입 선택</option>';
         for (var i=0; i<res.length; i++) {
-            html += '<option value="'+ res[i].idx +'">'+ res[i].faqNm +'</option>';
+            var masterIdx = '';
+            if(res[i].idx == fm) {
+                masterIdx = 'selected';
+            }
+            html += '<option value="'+ res[i].idx +'"'+ masterIdx +'>'+ res[i].faqNm +'</option>';
         }
         html +=
             '</select>' +
             '<th>Rank</th>' +
-            '<td class="text-center"><input id="faqOrder" type="text" maxlength="5"></td>' +
+            '<td class="text-center"><input id="faqOrder" type="text" maxlength="5" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\').replace(/(\\..*)\\./g, \'$1\');"></td>' +
             '</tr>' +
             '<tr>' +
             '<th>Name</th>' +
-            '<td colspan="3"><input id="faqQuestion" type="text" maxlength="15"></td>' +
+            '<td colspan="3"><input id="faqQuestion" type="text" maxlength="70"></td>' +
             '</tr>' +
             '<tr>' +
             '<th colspan="4">Answer</th>' +
@@ -69,6 +73,8 @@ $(function(){
             '</tr>' +
             '</tbody>' +
             '</table>' +
+            '<div class="mt5"></div>' +
+            '<span class="text-color-primary">※ 같은 순위를 지정하면 등록순으로 출력됩니다.</span>' +
             '<div class="mt50"></div>' +
             '<div class="bot-btn-box">' +
             '<button type="button" onclick="$popup.popupJsClose()">닫기</button>\n' +
@@ -104,11 +110,14 @@ $(function(){
         if($('#useYn').is(':checked')) {
             useYn = 'Y';
         }
-
+        var faqOrder = null;
+        if($('#faqOrder').val() != '') {
+            faqOrder = $('#faqOrder').val();
+        }
 
         var data = {
             masterIdx : $('#masterIdx').val(),
-            faqOrder : $('#faqOrder').val(),
+            faqOrder : faqOrder,
             faqQuestion : $('#faqQuestion').val(),
             faqAnswer : $('#faqAnswer').val(),
             useYn : useYn,
@@ -131,12 +140,13 @@ $(function(){
     $('[name="updateBtn"]').click(function(){
         var idx = $(this).data('val');
 
-        var res = $ajax.postAjax('/adm/content/' + idx);
+        var res = $ajax.postAjax('/adm/faq/' + idx);
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             return;
         }
-        res = $util.nullChkObj(res);
+
+        res.faq = $util.nullChkObj(res.faq);
 
         var useYn ='';
         if(res.useYn == 'Y') {
@@ -144,10 +154,10 @@ $(function(){
         }
 
         var html =
-            '<h4>컨텐츠 수정</h4>' +
+            '<h4>FAQ 수정</h4>' +
             '<div class="mb20"></div>' +
-            '<form id="contentUpdateForm">' +
-            '<input id="idx" type="hidden" value="'+ res.idx +'">' +
+            '<form id="faqUpdateForm">' +
+            '<input type="hidden" id="idx" value="'+ res.faq.idx +'">' +
             '<table class="table-top">' +
             '<colgroup>' +
             '<col width="15%">' +
@@ -157,55 +167,71 @@ $(function(){
             '</colgroup>' +
             '<tbody>' +
             '<tr>' +
-            '<th>Id</th>' +
-            '<td><input id="contentId" type="text" value="'+ res.contentId +'" maxlength="15"><input id="contentIdOrigin" type="hidden" value="'+ res.contentId +'"></td>' +
-            '<th>Use</th>' +
-            '<td class="text-center"><input id="useYn" type="checkbox"'+ useYn +'></td>' +
+            '<th>Type</th>' +
+            '<td>' +
+            '<select id="masterIdx">' +
+            '<option value="">타입 선택</option>';
+        for (var i=0; i<res.typeList.length; i++) {
+            var masterIdx = '';
+            if(res.typeList[i].idx == res.faq.masterIdx) {
+                masterIdx = 'selected';
+            }
+            html += '<option value="'+ res.typeList[i].idx +'"'+ masterIdx +'>'+ res.typeList[i].faqNm +'</option>';
+        }
+        html +=
+            '</select>' +
+            '<th>Rank</th>' +
+            '<td class="text-center"><input id="faqOrder" type="text" maxlength="5" value="'+ res.faq.faqOrder +'" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\').replace(/(\\..*)\\./g, \'$1\');"></td>' +
             '</tr>' +
             '<tr>' +
             '<th>Name</th>' +
-            '<td colspan="3"><input id="contentNm" type="text" value="'+ res.contentNm +'" maxlength="15"></td>' +
+            '<td colspan="3"><input id="faqQuestion" type="text" maxlength="70" value="'+ res.faq.faqQuestion +'"></td>' +
             '</tr>' +
             '<tr>' +
-            '<th colspan="4">Html</th>' +
+            '<th colspan="4">Answer</th>' +
             '</tr>' +
             '<tr>' +
-            '<td colspan="4"><textarea id="contentHtml">' + res.contentHtml + '</textarea></td>' +
+            '<td colspan="4" class="p0 pb10"><textarea id="faqAnswer">'+ res.faq.faqAnswer +'</textarea></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th colspan="2" class="mt10">Use</th>' +
+            '<td colspan="2" class="text-center"><input id="useYn" type="checkbox" '+ useYn +'></td>' +
             '</tr>' +
             '</tbody>' +
             '</table>' +
+            '<div class="mt5"></div>' +
+            '<span class="text-color-primary">※ 같은 순위를 지정하면 등록순으로 출력됩니다.</span>' +
             '<div class="mt50"></div>' +
             '<div class="bot-btn-box">' +
             '<div class="left">' +
-            '<button type="button" id="contentDel">삭제</button>' +
+            '<button type="button" id="faqDel">삭제</button>' +
             '</div>' +
             '<button type="button" onclick="$popup.popupJsClose()">닫기</button>\n' +
             '<button type="submit">수정</button>' +
             '</div>' +
             '</form>';
-
         $popup.popupJs(html);
 
         oEditors = [];
         nhn.husky.EZCreator.createInIFrame({
             oAppRef : oEditors,
-            elPlaceHolder : "contentHtml",
+            elPlaceHolder : "faqAnswer",
             sSkinURI : "/js/externalLib/smarteditor2/SmartEditor2Skin.html",
             fCreator : "createSEditor2"
         });
     });
 
     // 컨텐츠삭제
-    $(document).on("click", "#contentDel", function(e) {
-        if(confirm("해당 컨텐츠를 삭제하시겠습니까?")) {
+    $(document).on("click", "#faqDel", function(e) {
+        if(confirm("해당 FAQ를 삭제하시겠습니까?")) {
             var idx = $('#idx').val();
 
-            var res = $ajax.deleteAjax('/adm/content/'+ idx);
+            var res = $ajax.deleteAjax('/adm/faq/'+ idx);
             if(res == "error") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }
             else if(res.result == "success") {
-                alert("해당 컨텐츠를 삭제하였습니다.")
+                alert("해당 FAQ를 삭제하였습니다.")
                 window.location.reload();
             }
             else if(res.result == "fail"){
@@ -214,55 +240,45 @@ $(function(){
         }
     });
 
-    // 컨텐츠수정
-    $(document).on("submit", "#contentUpdateForm", function(e) {
+    // FAQ수정
+    $(document).on("submit", "#faqUpdateForm", function(e) {
         e.preventDefault();
 
-        if($event.validationFocus("contentId")) return;
+        if($event.validationFocus("masterIdx")) return;
+        if($event.validationFocus("faqQuestion")) return;
 
-        if(!$util.isEnNu($('#contentId').val())) {
-            alert("컨텐츠 ID는 영문, 숫자만 입력가능합니다.");
-            $('#boardId').focus();
-            return;
+        //에디터 내용 가져오기
+        oEditors.getById["faqAnswer"].exec("UPDATE_CONTENTS_FIELD", []);
+        if($('#faqAnswer').val() == "<p>&nbsp;</p>") {
+            $('#faqAnswer').val('');
         }
-        if($('#contentId').val() != $('#contentIdOrigin').val()) {
-            var param = {
-                contentId : $('#contentId').val()
-            }
+        if($event.validationFocus("faqAnswer")) return;
 
-            var result = $ajax.postAjax('/adm/contentId', param);
-
-            if(result.result == 'success') {
-                alert("이미 사용중인 컨텐츠 ID입니다.\n컨텐츠 ID는 중복 될 수 없습니다.");
-                return;
-            }
-        }
-
-        if($event.validationFocus("contentNm")) return;
-
-        var useYn;
+        var useYn = 'N';
         if($('#useYn').is(':checked')) {
             useYn = 'Y';
         }
-        else {
-            useYn = 'N';
+
+        var faqOrder = null;
+        if($('#faqOrder').val() != '') {
+            faqOrder = $('#faqOrder').val();
         }
 
-        oEditors.getById["contentHtml"].exec("UPDATE_CONTENTS_FIELD", []);
-
-        var data = {
-            contentId : $('#contentId').val(),
-            useYn : useYn,
-            contentNm : $('#contentNm').val(),
-            contentHtml : $('#contentHtml').val(),
-        };
         var idx = $('#idx').val();
-        var res = $ajax.patchAjax('/adm/content/'+ idx, data);
+        var data = {
+            masterIdx : $('#masterIdx').val(),
+            faqOrder : faqOrder,
+            faqQuestion : $('#faqQuestion').val(),
+            faqAnswer : $('#faqAnswer').val(),
+            useYn : useYn,
+        };
+
+        var res = $ajax.patchAjax('/adm/faq/'+ idx, data);
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
         }
         else if(res.result == "success") {
-            alert("컨텐츠를 수정하였습니다.");
+            alert("FAQ를 수정하였습니다.");
             window.location.reload();
         }
         else if(res.result == "fail"){

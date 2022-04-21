@@ -33,7 +33,7 @@ $(function(){
         window.opener = "nothing";
     });
 
-    // 회원 수정
+    // 내정보 수정
     $(document).on("submit", "#myUpdateForm", function(e) {
         e.preventDefault();
 

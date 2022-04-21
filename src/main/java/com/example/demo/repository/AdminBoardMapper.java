@@ -64,9 +64,9 @@ public interface AdminBoardMapper {
 
     List<Map<String, Object>> findAllFaq(Criteria criteria);
 
-    int insertFaq(Faq faq);
+    int insertFaq(Map<String, Object> paramMap);
 
-    int updateFaq(Faq faq);
+    int updateFaq(Map<String, Object> paramMap);
 
     int deleteFaq(Map<String, Object> paramMap);
 

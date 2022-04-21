@@ -184,6 +184,7 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
     public int deleteFaqMaster(Map<String, Object> paramMap) {
         int result = 0;
         if(adminMapper.deleteFaqMaster(paramMap) == 1){
@@ -206,13 +207,13 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     }
 
     @Override
-    public int insertFaq(Faq faq) {
-        return adminMapper.insertFaq(faq);
+    public int insertFaq(Map<String, Object> paramMap) {
+        return adminMapper.insertFaq(paramMap);
     }
 
     @Override
-    public int updateFaq(Faq faq) {
-        return adminMapper.updateFaq(faq);
+    public int updateFaq(Map<String, Object> paramMap) {
+        return adminMapper.updateFaq(paramMap);
     }
 
     @Override

@@ -61,9 +61,14 @@ $(function(){
             useYn = 'Y';
         }
 
+        var fmOrder = null;
+        if($('#fmOrder').val() != '') {
+            fmOrder = $('#fmOrder').val();
+        }
+
         var data = {
-            faqNm : $('#faqNm').val(),
-            fmOrder : $('#fmOrder').val(),
+            faqNm : $util.cdIns($('#faqNm').val()),
+            fmOrder : fmOrder,
             useYn : useYn,
         };
 
@@ -139,7 +144,7 @@ $(function(){
 
     // 컨텐츠삭제
     $(document).on("click", "#faqDel", function(e) {
-        if(confirm("해당 FAQ 타입를 삭제하시겠습니까?")) {
+        if(confirm("해당 FAQ 타입를 삭제하시겠습니까?\n(해당 Q&A도 모두 삭제됩니다. 필요한 Q&A는 이동후 삭제해 주세요.)")) {
             var idx = $('#idx').val();
 
             var res = $ajax.deleteAjax('/adm/faqMaster/'+ idx);
@@ -166,12 +171,17 @@ $(function(){
         if($('#useYn').is(':checked')) {
             useYn = 'Y';
         }
+        var fmOrder = null;
+        if($('#fmOrder').val() != '') {
+            fmOrder = $('#fmOrder').val();
+        }
 
         var data = {
-            faqNm : $('#faqNm').val(),
-            fmOrder : $('#fmOrder').val(),
+            faqNm : $util.cdIns($('#faqNm').val()),
+            fmOrder : fmOrder,
             useYn : useYn,
         };
+
         var idx = $('#idx').val();
         var res = $ajax.patchAjax('/adm/faqMaster/'+ idx, data);
         if(res == "error") {

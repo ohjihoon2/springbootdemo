@@ -8,6 +8,13 @@
 
 <th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='/css/adm/faq.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
+<th:block th:if="${fmList.size() == 0}">
+    <script>
+        alert("FAQ타입을 등록후 이용해주세요.");
+        location.href = '/adm/faqMaster';
+    </script>
+</th:block>
+
 <th:block th:replace="/fragments/header.html :: thAdmHeader"></th:block>
 <section>
     <div class="section-wrap">

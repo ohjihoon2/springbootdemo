@@ -497,12 +497,12 @@ public class AdminBoardController {
      */
     @PostMapping(value = "/faq")
     @ResponseBody
-    public Map<String,Object> saveFaq(@RequestBody Faq faq,HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> saveFaq(@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
-        faq.setCreateIdx(userIdx);
+        paramMap.put("createIdx", userIdx);
 
-        int result = adminService.insertFaq(faq);
+        int result = adminService.insertFaq(paramMap);
 
         return ResultStr.set(result);
     }
@@ -518,12 +518,12 @@ public class AdminBoardController {
      */
     @PatchMapping(value = "/faq/{idx}")
     @ResponseBody
-    public Map<String,Object> updateFaq(@PathVariable int idx, @RequestBody Faq faq, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> updateFaq(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
-        faq.setIdx(idx);
-        faq.setUpdateIdx(userIdx);
-        int result = adminService.updateFaq(faq);
+        paramMap.put("idx", idx);
+        paramMap.put("updateIdx", userIdx);
+        int result = adminService.updateFaq(paramMap);
 
         return ResultStr.set(result);
     }
