@@ -2,6 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.FileMapper">
 
+    <insert id="insertAttachFileMaster">
+        INSERT INTO attach_file_master
+            (
+                CREATE_DATE
+            )
+        VALUES
+            (
+                SYSDATE()
+            )
+        <selectKey resultType="int" keyProperty="IDX" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
     <insert id="insertAttachFile" parameterType="AttachFile">
 
         INSERT INTO attach_file
@@ -28,5 +42,6 @@
                  'N',
                  NULL
             )
+
     </insert>
 </mapper>

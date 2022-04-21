@@ -39,10 +39,10 @@ public class FileUtils {
         if(dir.exists() == false){
             dir.mkdirs();
         }
-
+        int cnt = 0;
         /* 파일 개수만큼 forEach 실행 */
         for(MultipartFile file : files){
-
+            cnt++;
             try {
                 /* 파일 확장자 */
                 final String extension = FilenameUtils.getExtension(file.getOriginalFilename());
@@ -55,8 +55,7 @@ public class FileUtils {
 
                 /* 파일 정보 저장 */
                 AttachFile attachFile = new AttachFile();
-                attachFile.setRelatedIdx(Integer.parseInt(paramMap.get("relatedIdx").toString()));
-                attachFile.setRelatedTable(paramMap.get("relatedTable").toString());
+                attachFile.setFileSn(cnt);
                 attachFile.setOriginalName(file.getOriginalFilename());
                 attachFile.setSaveName(saveName);
                 attachFile.setSize(file.getSize());

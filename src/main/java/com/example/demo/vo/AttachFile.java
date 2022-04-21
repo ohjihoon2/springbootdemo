@@ -5,8 +5,7 @@ import lombok.Data;
 @Data
 public class AttachFile {
     private int idx;
-    private String relatedTable;
-    private int relatedIdx;
+    private int fileSn;
     private String originalName;
     private String saveName;
     private Long size;

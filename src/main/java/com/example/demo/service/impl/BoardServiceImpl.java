@@ -34,18 +34,25 @@ public class BoardServiceImpl implements BoardService {
     public int insertBoard(MultipartFile[] files, Map<String, Object> paramMap) {
         int result = 0;
 
-        if (insertBoard(paramMap) != 1) {
-            return result;
-        }
-
-
         List<AttachFile> fileList = fileUtils.uploadFiles(files, paramMap);
         if (CollectionUtils.isEmpty(fileList) == false) {
+            int idx = fileMapper.insertAttachFileMaster();
+
+            for (AttachFile attachFile : fileList) {
+                attachFile.setIdx(idx);
+            }
+
             result = fileMapper.insertAttachFile(fileList);
             if (result < 1) {
                 result = 0;
             }
+            paramMap.put("attachFileIdx", idx);
         }
+
+        if (insertBoard(paramMap) != 1) {
+            return result;
+        }
+
         return result;
     }
 
