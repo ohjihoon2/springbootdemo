@@ -547,7 +547,7 @@
         ORDER BY F_ORDER
     </select>
 
-    <insert id="insertFaq" parameterType="map">
+    <insert id="insertFaq" parameterType="CustomMap">
         INSERT INTO faq
             (
                  MASTER_IDX,
