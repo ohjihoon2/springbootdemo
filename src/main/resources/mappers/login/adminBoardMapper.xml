@@ -544,7 +544,7 @@
         <if test='paramMap.masterIdx != "" and paramMap.masterIdx != null'>
            AND MASTER_IDX = #{paramMap.masterIdx}
         </if>
-        ORDER BY F_ORDER
+        ORDER BY FAQ_ORDER
     </select>
 
     <insert id="insertFaq" parameterType="map">
@@ -553,7 +553,7 @@
                  MASTER_IDX,
                  FAQ_QUESTION,
                  FAQ_ANSWER,
-                 F_ORDER,
+                 FAQ_ORDER,
                  USE_YN,
                  CREATE_IDX,
                  CREATE_DATE
@@ -563,7 +563,7 @@
                 #{masterIdx},
                 #{faqQuestion},
                 #{faqAnswer},
-                #{fOrder},
+                #{faqOrder},
                 'Y',
                 #{userIdx},
                 SYSDATE()
@@ -575,7 +575,7 @@
            SET MASTER_IDX = #{masterIdx},
                FAQ_QUESTION = #{faqQuestion},
                FAQ_ANSWER = #{faqAnswer},
-               F_ORDER = #{fOrder},
+               FAQ_ORDER = #{faqOrder},
                USE_YN = #{useYn},
                UPDATE_IDX = #{userIdx},
                UPDATE_DATE = SYSDATE()

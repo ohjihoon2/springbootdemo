@@ -26,15 +26,15 @@ public class BoardServiceImpl implements BoardService {
     private final FileMapper fileMapper;
 
     @Override
-    public int insertBoard(Map<String, Object> paramMap) {
-        return boardMapper.insertBoard(paramMap);
+    public int insertBoard(Board board) {
+        return boardMapper.insertBoard(board);
     }
 
     @Override
-    public int insertBoard(MultipartFile[] files, Map<String, Object> paramMap) {
+    public int insertBoard(MultipartFile[] files, Board board) {
         int result = 0;
 
-        List<AttachFile> fileList = fileUtils.uploadFiles(files, paramMap);
+        List<AttachFile> fileList = fileUtils.uploadFiles(files, board);
         if (CollectionUtils.isEmpty(fileList) == false) {
             int idx = fileMapper.insertAttachFileMaster();
 
@@ -46,10 +46,10 @@ public class BoardServiceImpl implements BoardService {
             if (result < 1) {
                 result = 0;
             }
-            paramMap.put("attachFileIdx", idx);
+            board.setAttachFileIdx(idx);
         }
 
-        if (insertBoard(paramMap) != 1) {
+        if (insertBoard(board) != 1) {
             return result;
         }
 

@@ -2,6 +2,7 @@ package com.example.demo.util;
 
 import com.example.demo.exception.AttachFileException;
 import com.example.demo.vo.AttachFile;
+import com.example.demo.vo.Board;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,10 @@ public class FileUtils {
         return UUID.randomUUID().toString().replace("-","");
     }
 
-    public List<AttachFile> uploadFiles(MultipartFile[] files, Map<String, Object> paramMap){
+    public List<AttachFile> uploadFiles(MultipartFile[] files, Board board){
+        // parameter board 는 실제로 createIdx를 가져오는 역할
+
+
         /* 파일이 비어있으면 비어있는 리스트 반환 */
         if(files[0].getSize() <1){
             return Collections.emptyList();
@@ -59,7 +63,8 @@ public class FileUtils {
                 attachFile.setOriginalName(file.getOriginalFilename());
                 attachFile.setSaveName(saveName);
                 attachFile.setSize(file.getSize());
-                attachFile.setCreateIdx(Integer.parseInt(paramMap.get("createIdx").toString()));
+                attachFile.setExtension(extension);
+                attachFile.setCreateIdx(board.getCreateIdx());
                 /* 파일 정보 추가 */
                 fileList.add(attachFile);
 

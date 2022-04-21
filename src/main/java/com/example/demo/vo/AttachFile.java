@@ -9,6 +9,7 @@ public class AttachFile {
     private String originalName;
     private String saveName;
     private Long size;
+    private String extension;
     private int createIdx;
     private String createDate;
     private String deleteYn;

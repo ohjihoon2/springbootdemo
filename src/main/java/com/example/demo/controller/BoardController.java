@@ -91,20 +91,18 @@ public class BoardController {
      */
     @PostMapping(value = "/registerWithoutFile")
     @ResponseBody
-    public Map<String, Object> insertBoard(@RequestBody Map<String, Object> paramMap, Principal principal, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String, Object> insertBoard(@RequestBody Board board, Principal principal, HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
         int idx = Integer.parseInt((String) session.getAttribute("idx"));
-        paramMap.put("createIdx",idx);
+        board.setCreateIdx(idx);
 
-        int result = boardService.insertBoard(paramMap);
+        int result = boardService.insertBoard(board);
         return ResultStr.set(result);
     }
 
     /**
      * 게시물 등록 (파일 있음)
      * @param files
-     * @param boardType
-     * @param masterIdx
      * @param response
      * @param request
      * @return
@@ -113,13 +111,13 @@ public class BoardController {
     @ResponseBody
     // TODO 2022-04-19
     //  - RequestPart 뒤에 VO 객체가 들어가야함 - 객체가 있어야 SET이 된다. 뒤에 들어갈 객체 내용 생각해보고 다시 작성하기
-    public Map<String, Object> insertBoard(@RequestPart MultipartFile[] files, @RequestPart Map<String, Object> paramMap, @RequestParam String boardType, @RequestParam int masterIdx, HttpServletResponse response, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        int idx = Integer.parseInt((String) session.getAttribute("idx"));
-        paramMap.put("idx", idx);
+    public Map<String, Object> insertBoard(@RequestPart MultipartFile[] files, @RequestPart Board board, HttpServletResponse response, HttpServletRequest request) {
+//        HttpSession session = request.getSession();
+//        int idx = Integer.parseInt((String) session.getAttribute("idx"));
 //        board.setCreateIdx(idx);
+        board.setCreateIdx(1);
 
-        int result = boardService.insertBoard(files,paramMap);
+        int result = boardService.insertBoard(files,board);
         return ResultStr.set(result);
     }
 }
