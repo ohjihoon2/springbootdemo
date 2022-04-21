@@ -570,7 +570,7 @@
             )
     </insert>
 
-    <update id="updateFaq" parameterType="map">
+    <update id="updateFaq" parameterType="Faq">
         UPDATE faq
            SET MASTER_IDX = #{masterIdx},
                FAQ_QUESTION = #{faqQuestion},

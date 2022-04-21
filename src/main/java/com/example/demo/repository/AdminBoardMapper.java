@@ -66,7 +66,7 @@ public interface AdminBoardMapper {
 
     int insertFaq(Map<String, Object> paramMap);
 
-    int updateFaq(Map<String, Object> paramMap);
+    int updateFaq(Faq faq);
 
     int deleteFaq(Map<String, Object> paramMap);
 

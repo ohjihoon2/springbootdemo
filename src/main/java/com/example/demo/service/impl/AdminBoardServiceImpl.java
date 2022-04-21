@@ -211,8 +211,8 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     }
 
     @Override
-    public int updateFaq(Map<String, Object> paramMap) {
-        return adminMapper.updateFaq(paramMap);
+    public int updateFaq(Faq faq) {
+        return adminMapper.updateFaq(faq);
     }
 
     @Override

@@ -12,8 +12,8 @@ public class Faq {
     private String faqAnswer;
     private int faqOrder;
     private String useYn;
-    private String createIdx;
+    private int createIdx;
     private Date createDate;
-    private String updateIdx;
+    private int updateIdx;
     private Date updateDate;
 }

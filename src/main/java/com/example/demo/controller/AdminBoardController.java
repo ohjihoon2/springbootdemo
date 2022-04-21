@@ -518,13 +518,12 @@ public class AdminBoardController {
      */
     @PatchMapping(value = "/faq/{idx}")
     @ResponseBody
-    public Map<String,Object> updateFaq(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> updateFaq(@PathVariable int idx, @RequestBody Faq faq, Principal principal,HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
-        paramMap.put("idx",idx);
-        paramMap.put("userIdx",userIdx);
-
-        int result = adminService.updateFaq(paramMap);
+        faq.setIdx(idx);
+        faq.setUpdateIdx(userIdx);
+        int result = adminService.updateFaq(faq);
 
         return ResultStr.set(result);
     }
