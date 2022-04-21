@@ -564,7 +564,7 @@
                 #{faqQuestion},
                 #{faqAnswer},
                 #{faqOrder},
-                'Y',
+                #{useYn},
                 #{userIdx},
                 SYSDATE()
             )

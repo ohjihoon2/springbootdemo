@@ -169,7 +169,10 @@
                 newPasswordChk: '새 비밀번호 확인',
                 qaSubject: 'Q&A답변 제목',
                 qaContent: 'Q&A답변 내용',
-                faqNm: 'FAQ이름',
+                faqNm: 'FAQ타입명',
+                masterIdx: 'FAQ타입',
+                faqQuestion: 'FAQ명',
+                faqAnswer: 'FAQ답변',
             }
 
             if ($('#' + id).val() == '') {
@@ -178,7 +181,7 @@
                 return true;
             }
         },
-        // 인풋 빈값 벨리데이션
+        // 체크박스 빈값 벨리데이션
         validationChk: function (id) {
             var msg = {
                 agree1: '이메일 인증메일 수신동의',

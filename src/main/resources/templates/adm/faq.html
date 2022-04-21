@@ -24,7 +24,7 @@
                 <input id="searchKeyword" type="text" th:value="${#httpServletRequest.getParameter('searchKeyword')}" />
                 <button type="button" id="searchBtn" class="color-primary">검색</button>
             </div>
-            <select id="masterIdx">
+            <select id="faqNm">
                 <option value="" th:selected="${masterIdx == ''}">전체 보기</option>
                 <th:block th:each="res : ${fmList}">
                     <option th:value="${res.idx}" th:selected="${masterIdx == #strings.toString(res.idx)}">[[${res.faqNm}]] 보기</option>

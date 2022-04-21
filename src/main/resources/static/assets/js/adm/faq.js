@@ -7,25 +7,31 @@ $(function(){
         var param = {
             searchType : $('#searchType').val(),
             searchKeyword : $util.transferText($('#searchKeyword').val()),
-            masterIdx : $('#masterIdx').val(),
+            masterIdx : $('#faqNm').val(),
         }
         $page.getGoPage('/adm/faq', param)
     });
 
     //페이지상태
-    $('#masterIdx').change(function() {
+    $('#faqNm').change(function() {
         var param = {
-            masterIdx : $('#masterIdx').val(),
+            masterIdx : $('#faqNm').val(),
         }
         $page.getGoPage('/adm/faq', param)
     });
 
     //FAQ추가 팝업
     $('#addBtn').click(function(){
-        var html = 
+        var fm = $(this).data('val');
+        var res = $ajax.postAjax('/adm/fmList');
+        if(res == "error") {
+            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            return;
+        }
+        var html =
             '<h4>FAQ 추가</h4>' +
             '<div class="mb20"></div>' +
-            '<form id="contentAddForm">' +
+            '<form id="faqAddForm">' +
             '<table class="table-top">' +
             '<colgroup>' +
             '<col width="15%">' +
@@ -36,21 +42,30 @@ $(function(){
             '<tbody>' +
             '<tr>' +
             '<th>Type</th>' +
-            '<td><input id="contentId" type="text" maxlength="15"></td>' +
-            '<th>Use</th>' +
-            '<td class="text-center"><input id="useYn" type="checkbox" checked></td>' +
+            '<td>' +
+            '<select id="masterIdx">' +
+            '<option value="">타입 설정</option>';
+        for (var i=0; i<res.length; i++) {
+            html += '<option value="'+ res[i].idx +'">'+ res[i].faqNm +'</option>';
+        }
+        html +=
+            '</select>' +
+            '<th>Rank</th>' +
+            '<td class="text-center"><input id="faqOrder" type="text" maxlength="5"></td>' +
             '</tr>' +
             '<tr>' +
             '<th>Name</th>' +
-            '<td colspan="3"><input id="contentNm" type="text" maxlength="15"></td>' +
+            '<td colspan="3"><input id="faqQuestion" type="text" maxlength="15"></td>' +
             '</tr>' +
             '<tr>' +
-            '<th colspan="4">Html</th>' +
+            '<th colspan="4">Answer</th>' +
             '</tr>' +
             '<tr>' +
-            '<td colspan="4" class="p0"><textarea id="contentHtml"></textarea></td>' +
+            '<td colspan="4" class="p0 pb10"><textarea id="faqAnswer"></textarea></td>' +
             '</tr>' +
             '<tr>' +
+            '<th colspan="2" class="mt10">Use</th>' +
+            '<td colspan="2" class="text-center"><input id="useYn" type="checkbox" checked></td>' +
             '</tr>' +
             '</tbody>' +
             '</table>' +
@@ -60,65 +75,51 @@ $(function(){
             '<button type="submit">추가</button>' +
             '</div>' +
             '</form>';
-
         $popup.popupJs(html);
 
         oEditors = [];
         nhn.husky.EZCreator.createInIFrame({
             oAppRef : oEditors,
-            elPlaceHolder : "contentHtml",
+            elPlaceHolder : "faqAnswer",
             sSkinURI : "/js/externalLib/smarteditor2/SmartEditor2Skin.html",
             fCreator : "createSEditor2"
         });
     });
 
-    // 컨텐츠추가
-    $(document).on("submit", "#contentAddForm", function(e) {
+    // FAQ추가
+    $(document).on("submit", "#faqAddForm", function(e) {
         e.preventDefault();
 
-        if($event.validationFocus("contentId")) return;
+        if($event.validationFocus("masterIdx")) return;
+        if($event.validationFocus("faqQuestion")) return;
 
-        if(!$util.isEnNu($('#contentId').val())) {
-            alert("컨텐츠 ID는 영문, 숫자만 입력가능합니다.");
-            $('#contentId').focus();
-            return;
+        //에디터 내용 가져오기
+        oEditors.getById["faqAnswer"].exec("UPDATE_CONTENTS_FIELD", []);
+        if($('#faqAnswer').val() == "<p>&nbsp;</p>") {
+            $('#faqAnswer').val('');
         }
-        var param = {
-            contentId : $('#contentId').val()
-        }
+        if($event.validationFocus("faqAnswer")) return;
 
-        var result = $ajax.postAjax('/adm/contentId', param);
-
-        if(result.result == 'success') {
-            alert("이미 사용중인 컨텐츠 ID입니다.\n컨텐츠 ID는 중복 될 수 없습니다.");
-            return;
-        }
-
-        if($event.validationFocus("contentNm")) return;
-
-        var useYn;
+        var useYn = 'N';
         if($('#useYn').is(':checked')) {
             useYn = 'Y';
         }
-        else {
-            useYn = 'N';
-        }
 
-        oEditors.getById["contentHtml"].exec("UPDATE_CONTENTS_FIELD", []);
 
         var data = {
-            contentId : $('#contentId').val(),
+            masterIdx : $('#masterIdx').val(),
+            faqOrder : $('#faqOrder').val(),
+            faqQuestion : $('#faqQuestion').val(),
+            faqAnswer : $('#faqAnswer').val(),
             useYn : useYn,
-            contentNm : $('#contentNm').val(),
-            contentHtml : $('#contentHtml').val(),
         };
 
-        var res = $ajax.postAjax('/adm/content', data);
+        var res = $ajax.postAjax('/adm/faq', data);
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
         }
         else if(res.result == "success") {
-            alert("컨텐츠를 추가하였습니다.")
+            alert("FAQ를 추가하였습니다.")
             window.location.reload();
         }
         else if(res.result == "fail"){
