@@ -38,4 +38,19 @@
            AND UPDATE_DATE <= date_add(now(), interval -1 month)
         ]]>
     </delete>
+
+    <select id="findAllAttachFile" resultType="AttachFile" parameterType="string">
+        SELECT IDX,
+               FILE_SN,
+               ORIGINAL_NAME,
+               SAVE_NAME,
+               SIZE,
+               EXTENSION,
+               CREATE_IDX,
+               CREATE_DATE,
+               DELETE_YN,
+               DELETE_DATE
+          FROM attach_file
+         WHERE SAVE_NAME = #{saveName}
+    </select>
 </mapper>

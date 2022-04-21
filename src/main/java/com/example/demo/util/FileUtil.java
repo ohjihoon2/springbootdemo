@@ -2,23 +2,32 @@ package com.example.demo.util;
 
 import com.example.demo.exception.AttachFileException;
 import com.example.demo.vo.AttachFile;
-import com.example.demo.vo.Board;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 
 @Component
-public class FileUtils {
+public class FileUtil {
     /** 업로드 경로 */
     @Value("${resources.location}")
     private String resourcesLocation;
+
+    /** 다운로드 경로 */
+    @Value("${file.downloadPath}")
+    private String fileDownloadPath;
 
     /**
      * 서버에 생성할 파일명을 처리할 랜덤 문자열 반환
@@ -77,50 +86,38 @@ public class FileUtils {
 
         return fileList;
     }
-/*
 
-    public ResponseEntity<Resource> downloadFile(String filename, int seq) throws IOException {
-        //경로 설정
-//        String fuploadPath = req.getServletContext().getRealPath("/upload");
+    public void downloadFile(AttachFile file, HttpServletResponse response) throws IOException {
+        String saveFileName = file.getSaveName();
+        String originalFileName = file.getOriginalName();
 
-        //파일정보 설정
-        AttachFile attachFile = pdsService.getOnePds(seq);
-        String fileName = AttachFile.getFilename();
-        String origin_fileName = AttachFile.getOrigin_filename();
-        File file = new File(resourcesLocation + "/" + fileName);
+        File downloadFile = new File(fileDownloadPath + saveFileName);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        headers.add("Pragma", "no-cache");
-        headers.add("Expires", "0");
-        headers.add("Content-Disposition", "attatchment; filename=\"" +
-                new String(origin_fileName.getBytes("UTF-8"), "ISO-8859-1") +
-                "\"");
+        byte fileByte[] = FileUtils.readFileToByteArray(downloadFile);
 
-        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        response.setContentType("application/octet-stream");
+        response.setContentLength(fileByte.length);
 
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(file.length())
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .body(resource);
+        response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(originalFileName,"UTF-8") +"\";");
+        response.setHeader("Content-Transfer-Encoding", "binary");
+
+        response.getOutputStream().write(fileByte);
+        response.getOutputStream().flush();
+        response.getOutputStream().close();
+
     }
-*/
 
+    public void deleteFile(String saveFileName){
+        //현재 게시판에 존재하는 파일객체를 만듬
+        File file = new File(resourcesLocation + "\\" + saveFileName);
+        System.out.println("fileName = "+ file.getName());
+        System.out.println("file = " + file);
+//        break;
+        if(file.exists()) { // 파일이 존재하면
+            file.delete();
+            // 파일 삭제
+        }
 
-/*
-    @GetMapping("/attached/{itemId}")
-    public ResponseEntity<Resource> downloadAttach(@PathVariable Long fileId) throws MalformedURLException {
-        DownloadFile file = fileService.findById(fileId);
-        String storedFileName = file.getAttachedFile().getStoredFileName();
-        String uploadFileName = file.getAttachedFile().getUploadFileName();
-        UrlResource resource = new UrlResource("file:" + resourcesLocation + storedFileName);
-        log.info("uploadFileName = {}", uploadFileName);
-        String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
-        String contentDispostion = "attachment; filename=\"" + encodedUploadFileName + "\"";
-
-        return ResponseEntity.ok() .header(HttpHeaders.CONTENT_DISPOSITION, contentDispostion) .body(resource);
     }
-*/
 
 }

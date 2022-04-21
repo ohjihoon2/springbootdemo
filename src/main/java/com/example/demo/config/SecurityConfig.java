@@ -41,7 +41,7 @@ import java.util.List;
 @EnableWebSecurity
 /** Controller에서 특정 페이지에 특정 권한이 있는 유저만 접근을 허용할 경우 @PreAuthorize 어노테이션을 사용하는데, 해당 어노테이션에 대한 설정을 활성화시키는 어노테이션 (필수는 아님) */
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // 1.LoginService 자동주입
     @Autowired
@@ -53,23 +53,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     @Autowired
     private DataSource dataSource;
 
-    @Value("${resources.location}")
-    private String resourcesLocation;
-    @Value("${resources.uri_path}")
-    private String resourcesUriPath;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // URI 가 resourcesUriPath 이하로 요청이 될 경우 로컬의 resourcesLocation 경로에 있는 파일을 사용자에게 제공
-        registry.addResourceHandler(resourcesUriPath + "/**")
-                .addResourceLocations("file://" + resourcesLocation);
-    }
-
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -95,7 +82,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .and()
 
                 .csrf().ignoringAntMatchers("/sendVerificationMail") //csrf 예외 처리
-                        .ignoringAntMatchers("/cmm/singleImageUploader"); //csrf 예외 처리
+                        .ignoringAntMatchers("/cmm/singleImageUploader") //csrf 예외 처리
+                        .ignoringAntMatchers("/"); //csrf 예외 처리
 //                .and()
 
         http.csrf()

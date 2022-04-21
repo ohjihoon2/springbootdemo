@@ -109,13 +109,10 @@ public class BoardController {
      */
     @PostMapping(value = "/registerWithFile", consumes = {"multipart/form-data"})
     @ResponseBody
-    // TODO 2022-04-19
-    //  - RequestPart 뒤에 VO 객체가 들어가야함 - 객체가 있어야 SET이 된다. 뒤에 들어갈 객체 내용 생각해보고 다시 작성하기
     public Map<String, Object> insertBoard(@RequestPart MultipartFile[] files, @RequestPart(value = "board") Board board, HttpServletResponse response, HttpServletRequest request) {
-//        HttpSession session = request.getSession();
-//        int idx = Integer.parseInt((String) session.getAttribute("idx"));
-//        board.setCreateIdx(idx);
-        board.setCreateIdx(1);
+        HttpSession session = request.getSession();
+        int idx = Integer.parseInt((String) session.getAttribute("idx"));
+        board.setCreateIdx(idx);
 
         int result = boardService.insertBoard(files,board);
         return ResultStr.setMulti(result);

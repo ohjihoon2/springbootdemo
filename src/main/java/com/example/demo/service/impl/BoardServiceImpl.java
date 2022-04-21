@@ -3,7 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.repository.BoardMapper;
 import com.example.demo.repository.FileMapper;
 import com.example.demo.service.BoardService;
-import com.example.demo.util.FileUtils;
+import com.example.demo.util.FileUtil;
 import com.example.demo.vo.AttachFile;
 import com.example.demo.vo.AttachFileMaster;
 import com.example.demo.vo.Board;
@@ -22,7 +22,7 @@ import java.util.Map;
 public class BoardServiceImpl implements BoardService {
 
     @Autowired
-    private FileUtils fileUtils;
+    private FileUtil fileUtil;
 
     private final BoardMapper boardMapper;
     private final FileMapper fileMapper;
@@ -37,7 +37,7 @@ public class BoardServiceImpl implements BoardService {
     public int insertBoard(MultipartFile[] files, Board board) {
         int result = 0;
 
-        List<AttachFile> fileList = fileUtils.uploadFiles(files, board.getCreateIdx());
+        List<AttachFile> fileList = fileUtil.uploadFiles(files, board.getCreateIdx());
         if (CollectionUtils.isEmpty(fileList) == false) {
             AttachFileMaster attachFileMaster = new AttachFileMaster();
             fileMapper.insertAttachFileMaster(attachFileMaster);

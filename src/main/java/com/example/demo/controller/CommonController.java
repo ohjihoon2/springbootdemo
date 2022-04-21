@@ -1,15 +1,18 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.CommonService;
+import com.example.demo.util.FileUtil;
+import com.example.demo.vo.AttachFile;
 import com.example.demo.vo.MenuTree;
 import com.example.demo.vo.SmarteditorVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,17 +28,9 @@ import java.util.UUID;
 @Slf4j
 @RequestMapping("cmm")
 public class CommonController {
-    private CommonService commonService;
 
-    @GetMapping(value = "/menuTree")
-    public String useMenuTree(HttpServletResponse response, HttpServletRequest request, Model model) {
-        List<MenuTree> resultList = commonService.findLinkNameLvlByUseYn();
-
-        String[] split = request.getRequestURI().split("/");
-        model.addAttribute("page",split[2]);
-        model.addAttribute("resultList", resultList);
-        return "/adm/menuTree";
-    }
+    private final CommonService commonService;
+    private final FileUtil fileUtil;
 
     @RequestMapping(value="/singleImageUploader")
     public String simpleImageUploader(HttpServletRequest req, SmarteditorVO smarteditorVO) throws UnsupportedEncodingException{
@@ -72,4 +67,26 @@ public class CommonController {
                 "?callback_func=" + URLEncoder.encode(callback_func,"UTF-8") + file_result;
         return result;
     }
+
+    /**
+     * 파일 다운로드
+     * @param saveName
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    @GetMapping(value="/downloadFile/{saveName}")
+    public void downloadFile(@PathVariable String saveName, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("saveName = " + saveName);
+        AttachFile attachFile = commonService.findAllAttachFile(saveName);
+        fileUtil.downloadFile(attachFile, response);
+    }
+
+    @DeleteMapping(value="/downloadFile/{saveName}")
+    public void deleteFile(@PathVariable String saveName, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("saveName = " + saveName);
+        AttachFile attachFile = commonService.findAllAttachFile(saveName);
+        fileUtil.downloadFile(attachFile, response);
+    }
+
 }

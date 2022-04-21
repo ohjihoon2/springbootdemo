@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.vo.AttachFile;
 import com.example.demo.vo.MenuTree;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,6 @@ public interface CommonMapper {
     List<MenuTree>  findLinkNameLvlByUseYn();
 
     int deleteWithdrawUser();
+
+    AttachFile findAllAttachFile(String saveName);
 }
