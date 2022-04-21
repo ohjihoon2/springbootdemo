@@ -10,7 +10,7 @@ public class Faq {
     private String masterIdx;
     private String faqQuestion;
     private String faqAnswer;
-    private int faqOrder;
+    private String faqOrder;
     private String useYn;
     private int createIdx;
     private Date createDate;
