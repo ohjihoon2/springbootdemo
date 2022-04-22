@@ -126,12 +126,14 @@
                 contentType = false;
                 var data = new FormData();
                 data.append("param", new Blob([JSON.stringify(param)], {type: "application/json"}));
-                data.append('files',$('#' + files)[0].files[0]);
+                data.append('files',$('#' + files)[0]);
                 param = data;
             }
             else {
                 param = JSON.stringify(param);
             }
+
+
             var res;
 
             $.ajax({
