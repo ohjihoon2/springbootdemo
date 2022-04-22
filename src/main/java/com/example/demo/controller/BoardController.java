@@ -90,7 +90,7 @@ public class BoardController {
      */
     @PostMapping(value = "/register")
     @ResponseBody
-    public Map<String, Object> insertBoard(MultipartFile[] files, Board board, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String, Object> insertBoard(MultipartFile[] files, @RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         int idx = Integer.parseInt((String) session.getAttribute("idx"));
