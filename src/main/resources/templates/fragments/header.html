@@ -21,20 +21,17 @@
                 </form>
             </div>
             <div id="headerMenu" class="header-menu mb50">
-                <!--/*
-                <ul class="mb20" th:with="lvl1=${@menuTreeUtil.getMenuTree()}">
-                <th:block th:each="lvl1, i : ${lvl1}">
-                    <li class="off" th:with="lvl2=${@menuTreeUtil.getMenuTreeDetail(lvl1.idx)}">
+                <ul class="mb20">
+                    <!--/*
+                    <li class="off" th:each="lvl1 : ${@menuTreeUtil.getMenuTree()}">
                         <span th:data-val="${lvl1.link}" th:text="${lvl1.name}"></span>
-                        <ul>
-                        <th:block th:each="lvl2, i : ${lvl2}">
+
+                        <ul th:each="lvl2 : ${@menuTreeUtil.getMenuTreeDetail(lvl1.idx)}">
                             <li th:data-val="${lvl2.link}" th:text="${lvl2.name}">메뉴2</li>
-                        </th:block>
                         </ul>
+                        */-->
                     </li>
-                </th:block>
                 </ul>
-                */-->
             </div>
             <div class="header-bot">
                 <a th:href="${#authorization.expr('isAuthenticated()') ? '' : '/login'}">[[${#authorization.expr('isAuthenticated()') ? '내정보' : '로그인'}]]</a>
