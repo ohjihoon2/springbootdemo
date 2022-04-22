@@ -117,18 +117,31 @@
         },
 
         // post 에이작스
-        postAjax : function (url, param = {}, async=false) {
+        postAjax : function (url, param = {}, files='', async=false) {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
+            var contentType = "application/json";
+
+            if(files != '') {
+                var contentType = false;
+                var data = new FormData();
+                data.append("param", new Blob([JSON.stringify(param)], {type: "application/json"}));
+                data.append('files',$('#' + files)[0].files[0]);
+                param = data;
+            }
+            else {
+                param = JSON.stringify(param);
+            }
 
             var res;
 
             $.ajax({
                 type: "POST",
                 url: url,
-                data: JSON.stringify(param),
+                data: param,
                 async: async,
-                contentType: "application/json",
+                contentType: contentType,
+                cache: false,
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
                 },
@@ -147,20 +160,9 @@
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
-            param = {
-                idx: 0,
-                masterIdx: 3,
-                boardSubject: '안녕',
-                boardContent: '안녕',
-            }
-
-
-            // param = JSON.stringify(param);
-
-            console.log(param);
             var sendingData = new FormData();
-            sendingData.append("board", new Blob([JSON.stringify(param)], {type: "application/json"}))
-            sendingData.append('files',$('#' + files)[0].files[0]);
+            sendingData.append("param", new Blob([JSON.stringify(param)], {type: "application/json"}))
+            sendingData.append('files', $('#' + files)[0].files[0]);
 
             var res;
 

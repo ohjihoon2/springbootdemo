@@ -20,7 +20,7 @@
                     </button>
                 </form>
             </div>
-            <div id="headerMenu" class="header-menu mb50">
+            <div id="headerList" class="header-list mb50">
                 <ul class="mb20">
                     <li class="off" th:each="lvl1 : ${@menuTreeUtil.getMenuTree()}">
                         <span th:data-val="${lvl1.link}" th:text="${lvl1.name}"></span>
@@ -44,7 +44,7 @@
             <a href="/"><img th:src="@{/img/adm/home.png}"></a>
         </div>
         <div class="header-bot">
-            <div class="header-list" th:with="page=${url[1] != null} ? ${url[1]} : ''">
+            <div id="headerList" class="header-list" th:with="page=${url[1] != null} ? ${url[1]} : ''">
                 <ul>
                     <li th:classappend="${page == 'config' or page == 'menuTree'} ? 'on' : 'off'">
                         <span>환경설정</span>

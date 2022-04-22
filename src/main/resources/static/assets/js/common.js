@@ -6,7 +6,7 @@ $(function(){
 //메뉴를 컨트롤한다
 function headerMenuControl() {
     $('#headerList > ul > li > span').click(function(){
-        if($(this).data('val') == '') {
+        if($(this).data('val') === undefined) {
             if($(this).parent('li').hasClass('on')) {
                 $(this).parent('li').addClass("off");
                 $(this).parent('li').removeClass("on");
@@ -21,8 +21,7 @@ function headerMenuControl() {
         }
     });
     $('#headerList > ul > li > ul > li').click(function () {
-        $(this).data('val')
-        if ($(this).data('val') != '') {
+        if($(this).data('val') !== undefined) {
             location.href = $(this).data('val');
         }
         // else {
