@@ -1,33 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.CommonMapper">
-    <select id="findLinkNameLvlByUseYn" resultType="CustomMap">
-        WITH RECURSIVE CTE AS
-                           (
-                               SELECT IDX,
-                                      PARENT_IDX,
-                                      NAME,
-                                      LINK,
-                                      LVL,
-                                      USE_YN
-                               FROM MENU_TREE
-                               WHERE LVL = 1
-                               UNION ALL
-                               SELECT IDX,
-                                      PARENT_IDX,
-                                      NAME,
-                                      LINK,
-                                      LVL,
-                                      USE_YN
-                               FROM MENU_TREE
-                               WHERE IDX != PARENT_IDX
-            )
+    <select id="findLinkNameLvl1ByUseYn" resultType="CustomMap">
+        SELECT IDX,
+               NAME,
+               LINK,
+               LVL
+          FROM menu_tree
+         WHERE USE_YN = 'Y'
+           AND LVL = 1
+         ORDER BY IDX
+    </select>
+
+    <select id="findLinkNameLvl2ByUseYn" parameterType="int" resultType="CustomMap">
         SELECT NAME,
                LINK,
                LVL
-        FROM CTE
+        FROM menu_tree
         WHERE USE_YN = 'Y'
-        ORDER BY PARENT_IDX, IDX
+          AND LVL = 2
+          AND PARENT_IDX = #{lvl}
+        ORDER BY IDX
     </select>
 
     <delete id="deleteWithdrawUser">
