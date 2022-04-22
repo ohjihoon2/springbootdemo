@@ -298,7 +298,6 @@ public class AdminBoardController {
 
     /**
      * Qna 답변
-     * @param paramMap
      * @param response
      * @param request
      * @return
@@ -311,6 +310,7 @@ public class AdminBoardController {
 
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        qna.setCreateIdx(userIdx);
         int result = adminService.answerQna(files,qna,request);
 
         return ResultStr.set(result);

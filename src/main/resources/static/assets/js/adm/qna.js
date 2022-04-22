@@ -94,7 +94,7 @@ $(function(){
                 }
                 if((res.config.qaStatus == 'A' || res.config.qaStatus == 'RA') && i == (res.resultList.length - 1)) {
                     html +=
-                        '<tr><th colspan="4">' + subject + '<input id="qaStatus" type="hidden" value="'+ qaStatus +'"></th></tr>' +
+                        '<tr><th colspan="4">' + subject + '</th></tr>' +
                         '<tr>' +
                         '<th>Title</th>' +
                         '<td colspan="3"><input type="text" id="qaSubject" value="'+ res.resultList[i].qaSubject +'"></td></th>' +
@@ -125,14 +125,12 @@ $(function(){
             }
             if(res.config.qaStatus == 'Q' || res.config.qaStatus == 'RQ') {
                 var subject = 'Answer';
-                var qaStatus = "A"
                 if (res.config.qaStatus == 'RQ') {
                     subject = "Add " + subject;
-                    qaStatus = "RA";
                 }
 
                 html +=
-                    '<tr><th colspan="4">' + subject + '<input id="qaStatus" type="hidden" value="'+ qaStatus +'"> +</th></tr>' +
+                    '<tr><th colspan="4">' + subject + '</th></tr>' +
                     '<tr>' +
                     '<th>Title</th>' +
                     '<td colspan="3"><input type="text" id="qaSubject"></td></th>' +
@@ -197,15 +195,14 @@ $(function(){
             if ($event.validationFocus("qaContent")) return;
 
             var data = {
-                originalIdx: $('#idx').val(),
+                parentIdx: $('#idx').val(),
                 qaSubject: $('#qaSubject').val(),
                 qaContent: $('#qaContent').val(),
-                qaStatus: $('#qaStatus').val(),
             };
 
             submitBtn = false;
 
-            var res = $ajax.postFileAjax('/board/registerWithFile', data, 'files');
+            var res = $ajax.postAjax('/adm/qna', data, 'files');
             if (res == "error") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
                 submitBtn = true;

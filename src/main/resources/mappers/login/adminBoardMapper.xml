@@ -428,7 +428,7 @@
                 #{qaContent},
                 #{attachFileIdx},
                 'Y',
-                #{userIdx},
+                #{createIdx},
                 SYSDATE()
              )
 

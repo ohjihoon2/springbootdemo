@@ -123,7 +123,7 @@
             var contentType = "application/json";
 
             if(files != '') {
-                var contentType = false;
+                contentType = false;
                 var data = new FormData();
                 data.append("param", new Blob([JSON.stringify(param)], {type: "application/json"}));
                 data.append('files',$('#' + files)[0].files[0]);
@@ -132,7 +132,6 @@
             else {
                 param = JSON.stringify(param);
             }
-
             var res;
 
             $.ajax({
@@ -140,40 +139,8 @@
                 url: url,
                 data: param,
                 async: async,
-                contentType: contentType,
-                cache: false,
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(header, token);
-                },
-                success: function (response) {
-                    res = response;
-                },
-                error: function (XMLHttpRequest, textStatus) {
-                    res = textStatus;
-                }
-            });
-            return res;
-        },
-
-        // file을 포함한 post 에이작스
-        postFileAjax : function (url, param = {}, files, async=false) {
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
-
-            var sendingData = new FormData();
-            sendingData.append("param", new Blob([JSON.stringify(param)], {type: "application/json"}))
-            sendingData.append('files', $('#' + files)[0].files[0]);
-
-            var res;
-
-            console.log(sendingData);
-
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: sendingData,
                 processData: false,
-                contentType: false,
+                contentType: contentType,
                 cache: false,
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
