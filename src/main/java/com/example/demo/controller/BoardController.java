@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,7 @@ public class BoardController {
 
     /**
      * 게시물 리스트
-     * @param masterIdx
+     * @param boardId
      * @param criteria
      * @param response
      * @param request
@@ -83,31 +82,13 @@ public class BoardController {
     }
 
     /**
-     * 게시물 등록(파일 없음)
-     * @param board
-     * @param response
-     * @param request
-     * @return
-     */
-    @PostMapping(value = "/registerWithoutFile")
-    @ResponseBody
-    public Map<String, Object> insertBoard(@RequestBody Board board, Principal principal, HttpServletResponse response, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        int idx = Integer.parseInt((String) session.getAttribute("idx"));
-        board.setCreateIdx(idx);
-
-        int result = boardService.insertBoard(board);
-        return ResultStr.set(result);
-    }
-
-    /**
-     * 게시물 등록 (파일 있음)
+     * 게시물 등록
      * @param files
      * @param response
      * @param request
      * @return
      */
-    @PostMapping(value = "/registerWithFile")
+    @PostMapping(value = "/register")
     @ResponseBody
     public Map<String, Object> insertBoard(MultipartFile[] files, Board board, HttpServletResponse response, HttpServletRequest request) {
 

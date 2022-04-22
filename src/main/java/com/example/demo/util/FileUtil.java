@@ -1,14 +1,17 @@
 package com.example.demo.util;
 
 import com.example.demo.exception.AttachFileException;
+import com.example.demo.repository.FileMapper;
 import com.example.demo.vo.AttachFile;
+import com.example.demo.vo.AttachFileMaster;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +23,7 @@ import java.util.UUID;
 
 
 @Component
+@RequiredArgsConstructor
 public class FileUtil {
     /** 업로드 경로 */
     @Value("${resources.location}")
@@ -28,6 +32,8 @@ public class FileUtil {
     /** 다운로드 경로 */
     @Value("${file.downloadPath}")
     private String fileDownloadPath;
+
+    private final FileMapper fileMapper;
 
     /**
      * 서버에 생성할 파일명을 처리할 랜덤 문자열 반환
@@ -120,4 +126,28 @@ public class FileUtil {
 
     }
 
+    /**
+     * 파일 저장
+     * @param fileList
+     * @return
+     */
+    public int saveFile(List<AttachFile> fileList) {
+        int idx = 0;
+
+        if (CollectionUtils.isEmpty(fileList) == false) {
+
+            AttachFileMaster attachFileMaster = new AttachFileMaster();
+            fileMapper.insertAttachFileMaster(attachFileMaster);
+
+            idx = attachFileMaster.getIdx();
+
+            for (AttachFile attachFile : fileList) {
+                attachFile.setIdx(idx);
+            }
+
+            fileMapper.insertAttachFile(fileList);
+        }
+
+        return idx;
+    }
 }

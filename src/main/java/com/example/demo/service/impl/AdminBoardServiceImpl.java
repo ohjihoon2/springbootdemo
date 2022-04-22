@@ -3,11 +3,13 @@ package com.example.demo.service.impl;
 import com.example.demo.repository.AdminBoardMapper;
 import com.example.demo.service.AdminBoardService;
 import com.example.demo.service.EmailService;
+import com.example.demo.util.FileUtil;
 import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -19,6 +21,7 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 
     private final AdminBoardMapper adminMapper;
     private final EmailService emailService;
+    private final FileUtil fileUtil;
 
     @Value("${site.name}")
     private String siteName;
@@ -111,15 +114,30 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
-    public int answerQna(Map<String, Object> paramMap, HttpServletRequest request) {
+    public int answerQna(MultipartFile[] files, Qna qna, QnaConfig qcParam, HttpServletRequest request) {
         int result = 0;
 
-        QnaConfig qnaConfig = adminMapper.findByIdxQnaConfig(Integer.parseInt(paramMap.get("originalIdx").toString()));
+        qcParam.setQnaIdx(qna.getParentIdx());
+
+        QnaConfig qnaConfig = adminMapper.findByIdxQnaConfig(qna.getParentIdx());
+
+
+        if(files != null){
+            // 실제 파일 업로드
+            List<AttachFile> fileList = fileUtil.uploadFiles(files, qna.getCreateIdx());
+
+            // DB에 파일 저장
+            int idx = fileUtil.saveFile(fileList);
+
+            //attachFileIdx 저장
+            qna.setAttachFileIdx(idx);
+        }
 
         // insert qna answer
-        if(adminMapper.answerQna(paramMap) == 1){
+        if(adminMapper.answerQna(qna) == 1){
             // QNA_STATUS 업데이트
-            if(adminMapper.updateOriginalQna(paramMap) == 1){
+//            if(adminMapper.updateOriginalQna(paramMap) == 1){
+            if(adminMapper.updateQnaConfig(qcParam) == 1){
                 // 수신 여부에 따른 이메일 처리
                 if(qnaConfig.getQaEmailRecvYn().equals("Y")){
                     String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");;

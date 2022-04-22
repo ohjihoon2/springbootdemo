@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -304,15 +305,23 @@ public class AdminBoardController {
      */
     @PostMapping(value = "/qna")
     @ResponseBody
-    public Map<String,Object> answerQna(@RequestBody Map<String,Object> paramMap,HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> answerQna(MultipartFile[] files, Qna qna, QnaConfig qnaConfig, HttpServletResponse response, HttpServletRequest request) {
+        System.out.println("files = " + files);
+        System.out.println("qna = " + qna);
+        System.out.println("qnaConfig = " + qnaConfig);
+
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
-        paramMap.put("userIdx",userIdx);
 
-        int result = adminService.answerQna(paramMap,request);
+        qna.setCreateIdx(userIdx);
+        qnaConfig.setCreateIdx(userIdx);
 
-        return ResultStr.set(result);
+        int result = adminService.answerQna(files,qna,qnaConfig,request);
+
+//        return ResultStr.set(result);
+        return null;
     }
+
 
     /**
      * Qna 삭제

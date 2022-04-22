@@ -8,8 +8,6 @@ import java.util.Map;
 
 public interface BoardService {
 
-    int insertBoard(Board board);
-
     int insertBoard(MultipartFile[] files, Board board);
 
     List<Board> findByMasterIdxSearch(Map<String, Object> paramMap);

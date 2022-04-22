@@ -21,38 +21,28 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
-    @Autowired
-    private FileUtil fileUtil;
+    private final FileUtil fileUtil;
 
     private final BoardMapper boardMapper;
-    private final FileMapper fileMapper;
-
-    @Override
-    public int insertBoard(Board board) {
-        return boardMapper.insertBoard(board);
-    }
 
     @Override
     @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
     public int insertBoard(MultipartFile[] files, Board board) {
         int result = 0;
 
-        List<AttachFile> fileList = fileUtil.uploadFiles(files, board.getCreateIdx());
-        if (CollectionUtils.isEmpty(fileList) == false) {
-            AttachFileMaster attachFileMaster = new AttachFileMaster();
-            fileMapper.insertAttachFileMaster(attachFileMaster);
-            int idx = attachFileMaster.getIdx();
-            for (AttachFile attachFile : fileList) {
-                attachFile.setIdx(idx);
-            }
-            result = fileMapper.insertAttachFile(fileList);
-            if (result < 1) {
-                result = 0;
-            }
+        if(files != null){
+            // 실제 파일 업로드
+            List<AttachFile> fileList = fileUtil.uploadFiles(files, board.getCreateIdx());
+
+            // DB에 파일 저장
+            int idx = fileUtil.saveFile(fileList);
+
+            //attachFileIdx 저장
             board.setAttachFileIdx(idx);
         }
 
-        if (insertBoard(board) != 1) {
+        if (boardMapper.insertBoard(board) == 1) {
+            result = 1;
             return result;
         }
 

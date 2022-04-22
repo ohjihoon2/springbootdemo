@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.vo.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -38,7 +39,7 @@ public interface AdminBoardService {
 
     List<Qna> findByIdxQna(int idx);
 
-    int answerQna(Map<String, Object> paramMap, HttpServletRequest request);
+    int answerQna(MultipartFile[] files, Qna qna,QnaConfig qnaConfig, HttpServletRequest request);
 
     QnaConfig findByIdxQnaConfig(int idx);
 
