@@ -17,8 +17,13 @@ public class CommonServiceImpl implements CommonService {
     private final CommonMapper commonMapper;
 
     @Override
-    public List<MenuTree> findLinkNameLvlByUseYn() {
-        return commonMapper.findLinkNameLvlByUseYn();
+    public List<MenuTree> findLinkNameLvl1ByUseYn() {
+        return commonMapper.findLinkNameLvl1ByUseYn();
+    }
+
+    @Override
+    public List<MenuTree> findLinkNameLvl2ByUseYn(int lvl) {
+        return commonMapper.findLinkNameLvl2ByUseYn(lvl);
     }
 
 }

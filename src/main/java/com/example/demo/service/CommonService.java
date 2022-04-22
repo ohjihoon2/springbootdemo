@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface CommonService {
 
-    List<MenuTree> findLinkNameLvlByUseYn();
+    List<MenuTree> findLinkNameLvl1ByUseYn();
+
+    List<MenuTree> findLinkNameLvl2ByUseYn(int lvl);
 }
