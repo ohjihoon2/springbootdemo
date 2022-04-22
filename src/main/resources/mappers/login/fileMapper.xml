@@ -60,4 +60,31 @@
         FROM attach_file
         WHERE SAVE_NAME = #{saveName}
     </select>
+
+    <select id="countFileIdx" parameterType="string" resultType="int">
+        SELECT COUNT(*)
+          FROM ATTACH_FILE AS A
+         WHERE IDX IN (
+                           SELECT IDX
+                             FROM ATTACH_FILE B
+                            WHERE SAVE_NAME = #{saveName}
+                      )
+    </select>
+
+    <select id="findMasterIdxBySaveName" parameterType="string" resultType="int">
+        SELECT IDX
+          FROM attach_file
+         WHERE SAVE_NAME = #{saveName}
+    </select>
+
+
+    <delete id="deleteAttachFileMaster" parameterType="string">
+        DELETE FROM attach_file_master
+         WHERE IDX =#{masterIdx}
+    </delete>
+
+    <delete id="deleteAttachFile" parameterType="string">
+        DELETE FROM attach_file
+         WHERE SAVE_NAME =#{saveName}
+    </delete>
 </mapper>

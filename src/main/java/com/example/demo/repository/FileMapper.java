@@ -18,4 +18,12 @@ public interface FileMapper {
     int insertAttachFile(List<AttachFile> fileList);
 
     int insertAttachFileMaster(AttachFileMaster attachFileMaster);
+
+    int countFileIdx(String saveName);
+
+    int deleteAttachFileMaster(int masterIdx);
+
+    int deleteAttachFile(String saveName);
+
+    int findMasterIdxBySaveName(String saveName);
 }

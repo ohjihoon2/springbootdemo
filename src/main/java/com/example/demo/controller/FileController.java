@@ -81,11 +81,18 @@ public class FileController {
         fileUtil.downloadFile(attachFile, response);
     }
 
+    /**
+     * 파일 삭제
+     * @param saveName
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
     @DeleteMapping(value="/delete/{saveName}")
     public Map<String, Object> deleteFile(@PathVariable String saveName, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        int result = fileService.DeleteAttachFile(saveName);
-        fileUtil.deleteFile(saveName);
+        int result = fileService.deleteAttachFile(saveName);
 
         return ResultStr.set(result);
     }

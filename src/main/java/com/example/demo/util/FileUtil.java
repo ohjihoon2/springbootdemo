@@ -107,16 +107,16 @@ public class FileUtil {
 
     }
 
-    public void deleteFile(String saveFileName){
+    public boolean deleteRealFile(String saveFileName){
         //현재 게시판에 존재하는 파일객체를 만듬
         File file = new File(resourcesLocation + "\\" + saveFileName);
-        System.out.println("fileName = "+ file.getName());
-        System.out.println("file = " + file);
 
         if(file.exists()) { // 파일이 존재하면
             file.delete();
             // 파일 삭제
         }
+
+        return true;
 
     }
 
