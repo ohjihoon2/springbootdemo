@@ -12,7 +12,9 @@ import java.util.List;
 @Repository("CommonMapper")
 public interface CommonMapper {
 
-    List<MenuTree>  findLinkNameLvlByUseYn();
+    List<MenuTree>  findLinkNameLvl1ByUseYn();
+
+    List<MenuTree>  findLinkNameLvl2ByUseYn(int lvl);
 
     int deleteWithdrawUser();
 
