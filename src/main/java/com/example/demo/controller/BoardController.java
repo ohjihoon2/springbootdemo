@@ -107,12 +107,9 @@ public class BoardController {
      * @param request
      * @return
      */
-    @PostMapping(value = "/registerWithFile", consumes = {"multipart/form-data"})
+    @PostMapping(value = "/registerWithFile")
     @ResponseBody
-    public Map<String, Object> insertBoard(@RequestPart MultipartFile[] files,
-                                           Board board, HttpServletResponse response, HttpServletRequest request) {
-        System.out.println("files = " + files);
-        System.out.println("board = " + board);
+    public Map<String, Object> insertBoard(MultipartFile[] files, Board board, HttpServletResponse response, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         int idx = Integer.parseInt((String) session.getAttribute("idx"));

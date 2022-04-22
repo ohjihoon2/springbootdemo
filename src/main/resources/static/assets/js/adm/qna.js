@@ -138,7 +138,7 @@ $(function(){
                     '<td colspan="3"><input type="text" id="qaSubject"></td></th>' +
                     '</tr>' +
                     '<th>file</th>' +
-                    '<td colspan="3"><input type="file"></td></th>' +
+                    '<td colspan="3"><input id="files" type="file" multiple></td></th>' +
                     '</tr>' +
                     '<tr>' +
                     '<th>Detail</th>' +
@@ -197,17 +197,15 @@ $(function(){
             if ($event.validationFocus("qaContent")) return;
 
             var data = {
-                originalIdx : $('#idx').val(),
+                originalIdx: $('#idx').val(),
                 qaSubject: $('#qaSubject').val(),
                 qaContent: $('#qaContent').val(),
                 qaStatus: $('#qaStatus').val(),
             };
 
-            console.log(data);
-
             submitBtn = false;
 
-            var res = $ajax.postAjax('/adm/qna', data);
+            var res = $ajax.postFileAjax('/board/registerWithFile', data, 'files');
             if (res == "error") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
                 submitBtn = true;

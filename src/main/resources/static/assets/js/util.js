@@ -141,6 +141,50 @@
             });
             return res;
         },
+
+        // file을 포함한 post 에이작스
+        postFileAjax : function (url, param = {}, files, async=false) {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            param = {
+                idx: 0,
+                masterIdx: 3,
+                boardSubject: '안녕',
+                boardContent: '안녕',
+            }
+
+
+            // param = JSON.stringify(param);
+
+            console.log(param);
+            var sendingData = new FormData();
+            sendingData.append("board", new Blob([JSON.stringify(param)], {type: "application/json"}))
+            sendingData.append('files',$('#' + files)[0].files[0]);
+
+            var res;
+
+            console.log(sendingData);
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: sendingData,
+                processData: false,
+                contentType: false,
+                cache: false,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                success: function (response) {
+                    res = response;
+                },
+                error: function (XMLHttpRequest, textStatus) {
+                    res = textStatus;
+                }
+            });
+            return res;
+        },
     }
 
     $event = {
