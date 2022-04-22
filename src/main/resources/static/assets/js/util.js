@@ -126,7 +126,9 @@
                 contentType = false;
                 var data = new FormData();
                 data.append("param", new Blob([JSON.stringify(param)], {type: "application/json"}));
-                data.append('files',$('#' + files)[0]);
+                for(var i=0; i < $('#' + files)[0].files.length; i++) {
+                    data.append('files', $('#' + files)[0].files[i]);
+                }
                 param = data;
             }
             else {
