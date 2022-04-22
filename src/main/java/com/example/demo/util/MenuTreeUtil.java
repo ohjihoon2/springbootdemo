@@ -14,6 +14,10 @@ public class MenuTreeUtil {
     private final CommonService commonService;
 
     public List<MenuTree> getMenuTree(){
-        return commonService.findLinkNameLvlByUseYn();
+        return commonService.findLinkNameLvl1ByUseYn();
+    }
+
+    public List<MenuTree> getMenuTreeDetail(int lvl){
+        return commonService.findLinkNameLvl2ByUseYn(lvl);
     }
 }
