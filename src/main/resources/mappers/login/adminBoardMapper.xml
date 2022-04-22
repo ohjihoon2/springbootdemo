@@ -402,7 +402,7 @@
         ORDER BY A.IDX DESC
     </select>
 
-    <update id="updateQnaConfig" parameterType="QnaConfig">
+    <update id="updateQnaConfig" parameterType="map">
         UPDATE qna_config
            SET QA_STATUS = #{qaStatus},
                UPDATE_DATE = SYSDATE(),

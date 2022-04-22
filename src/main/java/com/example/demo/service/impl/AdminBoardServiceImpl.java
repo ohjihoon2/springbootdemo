@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -114,13 +115,22 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
-    public int answerQna(MultipartFile[] files, Qna qna, QnaConfig qcParam, HttpServletRequest request) {
+    public int answerQna(MultipartFile[] files, Qna qna, HttpServletRequest request) {
         int result = 0;
 
-        qcParam.setQnaIdx(qna.getParentIdx());
-
         QnaConfig qnaConfig = adminMapper.findByIdxQnaConfig(qna.getParentIdx());
+        Map<String, Object> paramMap = new HashMap<>();
 
+        String qaStatus = "";
+        if(qnaConfig.getQaStatus().equals("Q")){
+            qaStatus = "A";
+        }else{
+            qaStatus = "RA";
+        }
+
+        paramMap.put("qaStatus", qaStatus);
+        paramMap.put("userIdx", qna.getCreateIdx());
+        paramMap.put("qnaIdx", qna.getParentIdx());
 
         if(files != null){
             // 실제 파일 업로드
@@ -137,7 +147,7 @@ public class AdminBoardServiceImpl implements AdminBoardService {
         if(adminMapper.answerQna(qna) == 1){
             // QNA_STATUS 업데이트
 //            if(adminMapper.updateOriginalQna(paramMap) == 1){
-            if(adminMapper.updateQnaConfig(qcParam) == 1){
+            if(adminMapper.updateQnaConfig(paramMap) == 1){
                 // 수신 여부에 따른 이메일 처리
                 if(qnaConfig.getQaEmailRecvYn().equals("Y")){
                     String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");;

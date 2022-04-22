@@ -39,7 +39,7 @@ public interface AdminBoardService {
 
     List<Qna> findByIdxQna(int idx);
 
-    int answerQna(MultipartFile[] files, Qna qna,QnaConfig qnaConfig, HttpServletRequest request);
+    int answerQna(MultipartFile[] files, Qna qna, HttpServletRequest request);
 
     QnaConfig findByIdxQnaConfig(int idx);
 

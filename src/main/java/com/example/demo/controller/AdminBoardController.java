@@ -305,21 +305,18 @@ public class AdminBoardController {
      */
     @PostMapping(value = "/qna")
     @ResponseBody
-    public Map<String,Object> answerQna(MultipartFile[] files, Qna qna, QnaConfig qnaConfig, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> answerQna(MultipartFile[] files, Qna qna, HttpServletResponse response, HttpServletRequest request) {
         System.out.println("files = " + files);
         System.out.println("qna = " + qna);
-        System.out.println("qnaConfig = " + qnaConfig);
 
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
 
         qna.setCreateIdx(userIdx);
-        qnaConfig.setCreateIdx(userIdx);
 
-        int result = adminService.answerQna(files,qna,qnaConfig,request);
+        int result = adminService.answerQna(files,qna,request);
 
-//        return ResultStr.set(result);
-        return null;
+        return ResultStr.set(result);
     }
 
 

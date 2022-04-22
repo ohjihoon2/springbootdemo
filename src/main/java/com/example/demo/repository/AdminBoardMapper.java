@@ -44,7 +44,7 @@ public interface AdminBoardMapper {
 
     int answerQna(Qna qna);
 
-    int updateQnaConfig(QnaConfig qnaConfig);
+    int updateQnaConfig(Map<String, Object> paramMap);
 
     String findUserEmailByIdx(int createIdx);
 
