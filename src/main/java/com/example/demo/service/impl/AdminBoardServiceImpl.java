@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -189,6 +190,24 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     public Faq findByIdxFaq(int idx) {
         return adminMapper.findByIdxFaq(idx);
 
+    }
+
+    @Override
+    public int updateQna(Map<String, Object> paramMap) {
+        return adminMapper.updateQna(paramMap);
+    }
+
+    @Override
+    public List<List<AttachFile>> findAttachFileIdxByIdxQna(int idx) {
+        List<List<AttachFile>> resultList = new ArrayList<>();
+
+        List<Map<String, Object>> attachFileIdxByIdxQnaList = adminMapper.findAttachFileIdxByIdxQna(idx);
+
+        for (Map<String, Object> map : attachFileIdxByIdxQnaList) {
+            resultList.add(adminMapper.findByAttachFileIdx(map.get("attachFileIdx")));
+        }
+
+        return resultList;
     }
 
     @Override

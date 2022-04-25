@@ -66,4 +66,8 @@ public interface AdminBoardService {
     FaqMaster findByIdxFaqMaster(int idx);
 
     Faq findByIdxFaq(int idx);
+
+    int updateQna(Map<String, Object> paramMap);
+
+    List<List<AttachFile>> findAttachFileIdxByIdxQna(int idx);
 }

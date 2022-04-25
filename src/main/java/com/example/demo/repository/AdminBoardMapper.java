@@ -79,4 +79,10 @@ public interface AdminBoardMapper {
     FaqMaster findByIdxFaqMaster(int idx);
 
     Faq findByIdxFaq(int idx);
+
+    int updateQna(Map<String, Object> paramMap);
+
+    List<Map<String, Object>> findAttachFileIdxByIdxQna(int idx);
+
+    List<AttachFile> findByAttachFileIdx(Object attachFileIdx);
 }

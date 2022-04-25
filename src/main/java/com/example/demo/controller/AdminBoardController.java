@@ -288,9 +288,11 @@ public class AdminBoardController {
         Map<String, Object> resultMap = new HashMap<>();
 
         List<Qna> resultList = adminService.findByIdxQna(idx);
+        List<List<AttachFile>> fileList = adminService.findAttachFileIdxByIdxQna(idx);
         QnaConfig config = adminService.findByIdxQnaConfig(idx);
 
         resultMap.put("resultList", resultList);
+        resultMap.put("fileList", fileList);
         resultMap.put("config", config);
 
         return resultMap;
@@ -335,8 +337,23 @@ public class AdminBoardController {
         return ResultStr.set(result);
     }
 
-    // TODO 2022-04-20
-    //  - QNA UPDATE : 마지막 답변 수정, 수정 후 이메일 발송 추가
+    @PatchMapping(value = "/qna/{idx}")
+    @ResponseBody
+    public Map<String,Object> updateQna(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        paramMap.put("idx", idx);
+        paramMap.put("updateIdx", userIdx);
+
+        // TODO 2022-04-20
+        //  - QNA UPDATE : 마지막 답변 수정, 수정 후 이메일 발송 추가
+
+        int result = adminService.updateQna(paramMap);
+
+//        return ResultStr.set(result);
+        return null;
+    }
+
 
     /**+
      * FAQ Master 설정 리스트
@@ -549,6 +566,4 @@ public class AdminBoardController {
         return ResultStr.set(result);
     }
 
-    // TODO 2022-04-19
-    //  - Qna 첨부파일 /  FILE 테이블 , 로직 수정
 }

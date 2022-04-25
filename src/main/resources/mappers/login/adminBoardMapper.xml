@@ -389,7 +389,6 @@
         SELECT A.IDX,
                QA_SUBJECT,
                QA_CONTENT,
-               ATTACH_FILE_IDX,
                IF( A.CREATE_IDX IS NULL , NULL, IFNULL(B.USER_NICKNM,'탈퇴된 사용자')) AS CREATE_NICKNM,
                A.CREATE_DATE,
                C.USER_NICKNM AS UPDATE_NICKNM,
@@ -399,7 +398,31 @@
         LEFT OUTER JOIN users C on B.UPDATE_IDX = C.IDX
         WHERE A.IDX = #{idx}
            OR A.PARENT_IDX = #{idx}
-        ORDER BY A.IDX DESC
+        ORDER BY A.IDX
+    </select>
+
+    <select id="findAttachFileIdxByIdxQna" parameterType="int" resultType="CustomMap">
+        SELECT IDX,
+               ATTACH_FILE_IDX
+          FROM qna
+         WHERE IDX = #{idx}
+            OR PARENT_IDX = #{idx}
+         ORDER BY IDX
+    </select>
+
+    <select id="findByAttachFileIdx" resultType="AttachFile" parameterType="int">
+        SELECT IDX,
+               FILE_SN,
+               ORIGINAL_NAME,
+               SAVE_NAME,
+               `SIZE`,
+               EXTENSION,
+               CREATE_IDX,
+               CREATE_DATE,
+               DELETE_YN,
+               DELETE_DATE
+          FROM attach_file
+         WHERE IDX = #{idx}
     </select>
 
     <update id="updateQnaConfig" parameterType="map">
@@ -620,4 +643,14 @@
           FROM faq
          WHERE IDX =#{idx}
     </select>
+
+    <update id="updateQna" parameterType="map">
+        UPDATE qna
+           SET QA_SUBJECT = #{qaSubject},
+               QA_CONTENT = #{qaContent},
+               ATTACH_FILE_IDX = #{attachFileIdx},
+               UPDATE_IDX = #{updateIdx},
+               UPDATE_DATE = SYSDATE()
+          FROM IDX = #{idx}
+    </update>
 </mapper>
