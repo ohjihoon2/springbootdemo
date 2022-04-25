@@ -43,7 +43,7 @@ public class FileUtil {
         return UUID.randomUUID().toString().replace("-","");
     }
 
-    public List<AttachFile> uploadFiles(MultipartFile[] files, int createIdx){
+    public List<AttachFile> uploadFiles(MultipartFile[] files, int attachFileIdx, int createIdx){
 
         /* 파일이 비어있으면 비어있는 리스트 반환 */
         if(files[0].getSize() <1){
@@ -58,7 +58,10 @@ public class FileUtil {
         if(dir.exists() == false){
             dir.mkdirs();
         }
-        int cnt = 0;
+
+        // TODO
+        int cnt = fileMapper.maxAttachIdx(attachFileIdx);
+
         /* 파일 개수만큼 forEach 실행 */
         for(MultipartFile file : files){
             cnt++;
@@ -131,22 +134,26 @@ public class FileUtil {
      * @param fileList
      * @return
      */
-    public int saveFile(List<AttachFile> fileList) {
+    public int saveFile(List<AttachFile> fileList, int attachFileIdx) {
         int idx = 0;
 
         if (CollectionUtils.isEmpty(fileList) == false) {
 
-            AttachFileMaster attachFileMaster = new AttachFileMaster();
-            fileMapper.insertAttachFileMaster(attachFileMaster);
+            if(fileMapper.findAttachFileIdxByAttatchFileMaster(attachFileIdx) == 0){
 
-            idx = attachFileMaster.getIdx();
+                AttachFileMaster attachFileMaster = new AttachFileMaster();
+                fileMapper.insertAttachFileMaster(attachFileMaster);
+                idx = attachFileMaster.getIdx();
 
-            for (AttachFile attachFile : fileList) {
-                attachFile.setIdx(idx);
+            }else {
+                idx = attachFileIdx;
             }
-
-            fileMapper.insertAttachFile(fileList);
         }
+
+        for (AttachFile attachFile : fileList) {
+            attachFile.setIdx(idx);
+        }
+        fileMapper.insertAttachFile(fileList);
 
         return idx;
     }

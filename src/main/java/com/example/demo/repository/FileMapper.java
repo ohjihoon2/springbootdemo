@@ -26,4 +26,8 @@ public interface FileMapper {
     int deleteAttachFile(String saveName);
 
     int findMasterIdxBySaveName(String saveName);
+
+    int maxAttachIdx(int attachFileIdx);
+
+    int findAttachFileIdxByAttatchFileMaster(int attachFileIdx);
 }
