@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,7 +73,6 @@ public class FileController {
      */
     @GetMapping(value="/download/{saveName}")
     public void downloadFile(@PathVariable String saveName, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("saveName = " + saveName);
         AttachFile attachFile = fileService.findAllAttachFile(saveName);
         fileUtil.downloadFile(attachFile, response);
     }
@@ -90,9 +86,12 @@ public class FileController {
      * @throws IOException
      */
     @DeleteMapping(value="/delete/{saveName}")
+    @ResponseBody
     public Map<String, Object> deleteFile(@PathVariable String saveName, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         int result = fileService.deleteAttachFile(saveName);
+
+        System.out.println("result = " + result);
 
         return ResultStr.set(result);
     }

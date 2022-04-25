@@ -107,6 +107,8 @@
                     xhr.setRequestHeader(header, token);
                 },
                 success: function (response) {
+                    alert(response);
+                    console.log(response);
                     res = response;
                 },
                 error: function (XMLHttpRequest, textStatus) {
@@ -117,31 +119,17 @@
         },
 
         // post 에이작스
-        postAjax : function (url, param = {}, files='', async=false) {
+        postAjax : function (url, param = {}, async=false) {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
             var contentType = "application/json";
-
-            if(files != '') {
-                contentType = false;
-                var data = new FormData();
-                data.append("param", new Blob([JSON.stringify(param)], {type: "application/json"}));
-                for(var i=0; i < $('#' + files)[0].files.length; i++) {
-                    data.append('files', $('#' + files)[0].files[i]);
-                }
-                param = data;
-            }
-            else {
-                param = JSON.stringify(param);
-            }
-
 
             var res;
 
             $.ajax({
                 type: "POST",
                 url: url,
-                data: param,
+                data: JSON.stringify(param),
                 async: async,
                 processData: false,
                 contentType: contentType,
@@ -154,6 +142,63 @@
                 },
                 error: function (XMLHttpRequest, textStatus) {
                     res = textStatus;
+                }
+            });
+            return res;
+        },
+
+        // post 로딩에이작스 , 파일첨부
+        // 로딩으로 인해 동기화를 기본으로 실행한다.
+        postFileAjax : function (url, param = {}, files='', success = '', loding = '') {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var contentType = "application/json";
+
+            if(files != '') {
+                contentType = false;
+                var data = new FormData();
+                data.append("param", new Blob([JSON.stringify(param)], {type: "application/json"}));
+                for(var i=0; i < $('#' + files)[0].files.length; i++) {
+                    data.append('files',$('#' + files)[0].files[i]);
+                }
+                param = data;
+            }
+            else {
+                param = JSON.stringify(param);
+            }
+
+            var res;
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: param,
+                async: true,
+                processData: false,
+                contentType: contentType,
+                cache: false,
+                beforeSend: function (xhr) {
+                    if(loding != '') {
+                        $popup.LoadingWithMask(loding);
+                    }
+                    xhr.setRequestHeader(header, token);
+                },
+                success: function (response) {
+                    if (response == "error") {
+                        alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                    }
+                    else {
+                        alert(success);
+                        window.location.reload();
+                    }
+                },
+                error: function () {
+                    alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                },
+                complete: function () {
+                    if(loding != '') {
+                        $popup.closeLoadingWithMask();
+                    }
                 }
             });
             return res;
@@ -362,6 +407,46 @@
         popupWindowClose : function() {
             window.close();
         },
+
+        LoadingWithMask : function(html) {
+        var maskHeight = window.document.body.clientHeight;
+        var maskWidth  = window.document.body.clientWidth;
+
+        var mask ="<div id='mask' style='position:fixed; z-index:9000; background-color:#000000; display:none; left:0; top:0;'>";
+        mask +="</div>";
+        var loadingImg = "<div id='loadingImg' style='position:fixed; top:0; z-index:8999; width: 100%; margin: 0px auto; text-align: center;'>";
+        loadingImg +=" <img src='/img/common/rolling.gif' width='60px;' style='margin-bottom: 10px;'/>";
+        loadingImg +=" <p>"+ html +"</p>";
+        loadingImg +="</div>";
+
+
+        $('body').append(mask);
+        $('body').append(loadingImg);
+
+        $('#mask').css({
+            'width' : maskWidth
+            ,'height': '100%'
+            ,'opacity' :'0.3'
+        });
+
+        $('#loadingImg').css({
+            'margin-top' : (maskHeight/2-80)
+            ,'opacity' :'1'
+        });
+
+        //마스크 표시
+        $('#mask').show();
+
+        //로딩중 이미지 표시
+        $('#loadingImg').show();
+
+        return true;
+    },
+
+    closeLoadingWithMask : function() {
+        $('#mask, #loadingImg').hide();
+        $('#mask, #loadingImg').remove();
+    }
     },
 
     $etc = {

@@ -78,7 +78,7 @@
     </select>
 
 
-    <delete id="deleteAttachFileMaster" parameterType="string">
+    <delete id="deleteAttachFileMaster" parameterType="int">
         DELETE FROM attach_file_master
          WHERE IDX =#{masterIdx}
     </delete>

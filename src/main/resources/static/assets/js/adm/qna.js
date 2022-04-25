@@ -34,7 +34,7 @@ $(function(){
     });
     
     //Q&A 상세
-    $('[name="updateBtn"]').click(function(){
+    $('[name="detailBtn"]').click(function(){
         var idx = $(this).data('val');
 
         var res = $ajax.postAjax('/adm/qna/' + idx);
@@ -42,6 +42,8 @@ $(function(){
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             return;
         }
+
+        console.log(res);
         res.config = $util.nullChkObj(res.config);
         for(var i = 0; i < res.resultList.length; i++) {
             res.resultList[i] = $util.nullChkObj(res.resultList[i]);
@@ -99,9 +101,23 @@ $(function(){
                         '<th>Title</th>' +
                         '<td colspan="3"><input type="text" id="qaSubject" value="'+ res.resultList[i].qaSubject +'"></td></th>' +
                         '</tr>' +
-                        '<th>file</th>' +
-                        '<td colspan="3"><input type="file"></td></th>' +
-                        '</tr>' +
+                        '<th>Upload</th>' +
+                        '<td colspan="3"><input id="files" type="file" multiple></td></th>' +
+                        '</tr>';
+                    if(res.fileList[i].length > 0) {
+                        html +=
+                            '<tr>' +
+                            '<th>file</th>' +
+                            '<td colspan="3" class="file">';
+                        for(var j=0; j < res.fileList[i].length; j++) {
+                            html +=
+                                '<p><a href="/file/download/'+ res.fileList[i][j].saveName +'" >'+ res.fileList[i][j].originalName +'</a><span data-val="'+ res.fileList[i][j].saveName +'">×</span></p>';
+                        }
+                        html +=
+                            '</td>' +
+                            '</tr>';
+                    }
+                    html +=
                         '<tr>' +
                         '<th>Detail</th>' +
                         '<td colspan="3"><textarea id="qaContent">'+ res.resultList[i].qaContent +'</textarea></td></tr>';
@@ -112,12 +128,21 @@ $(function(){
                         '<tr>' +
                         '<th>Title</th>' +
                         '<td colspan="3">' + res.resultList[i].qaSubject + '</td></th>' +
-                        '<tr>' +
-                        '<th>Create</th>' +
-                        '<td>' + updateNicknm + '</td>' +
-                        '<th>file</th>' +
-                        '<td><a>내용테스트.html</a></td>' +
-                        '</tr>' +
+                        '</tr>';
+                        if(res.fileList[i].length > 0) {
+                            html +=
+                                '<tr>' +
+                                '<th>file</th>' +
+                                '<td colspan="3" class="file">';
+                                for(var j=0; j < res.fileList[i].length; j++) {
+                                    html +=
+                                    '<p><a href="/file/download/'+ res.fileList[i][j].saveName +'" >'+ res.fileList[i][j].originalName +'</a><span>×</span></p>';
+                                }
+                            html +=
+                                '</td>' +
+                                '</tr>';
+                        }
+                    html +=
                         '<tr>' +
                         '<th>Detail</th>' +
                         '<td colspan="3"><div class="table-scroll">' + res.resultList[i].qaContent + '</div></td></tr>';
@@ -135,7 +160,7 @@ $(function(){
                     '<th>Title</th>' +
                     '<td colspan="3"><input type="text" id="qaSubject"></td></th>' +
                     '</tr>' +
-                    '<th>file</th>' +
+                    '<th>Upload</th>' +
                     '<td colspan="3"><input id="files" type="file" multiple></td></th>' +
                     '</tr>' +
                     '<tr>' +
@@ -161,7 +186,7 @@ $(function(){
         }
         else {
             html +=
-                '<button type="button" class="color-primary">수정</button>';
+                '<button type="button" id="updateBtn" class="color-primary">수정</button>';
         }
         html +=
             '</div>' +
@@ -180,40 +205,26 @@ $(function(){
 
 
     // Q&A 답변
-    $(document).on("submit", "#qnaDetailForm", function(e) {
+    $(document).on("submit", "#qnaDetailForm", async function (e) {
         e.preventDefault();
 
-        if (submitBtn) {
-            //에디터 내용 가져오기
-            oEditors.getById["qaContent"].exec("UPDATE_CONTENTS_FIELD", []);
-            
-            //빈값체크
-            if ($event.validationFocus("qaSubject")) return;
-            if($('#qaContent').val() == "<p>&nbsp;</p>") {
-                $('#qaContent').val('');
-            }
-            if ($event.validationFocus("qaContent")) return;
+        //에디터 내용 가져오기
+        oEditors.getById["qaContent"].exec("UPDATE_CONTENTS_FIELD", []);
 
-            var data = {
-                parentIdx: $('#idx').val(),
-                qaSubject: $('#qaSubject').val(),
-                qaContent: $('#qaContent').val(),
-            };
-
-            submitBtn = false;
-
-            var res = $ajax.postAjax('/adm/qna', data, 'files');
-            if (res == "error") {
-                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
-                submitBtn = true;
-            } else if (res.result == "success") {
-                alert("Q&A 답변을 완료하였습니다.");
-                window.location.reload();
-            } else if (res.result == "fail") {
-                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
-                submitBtn = true;
-            }
+        //빈값체크
+        if ($event.validationFocus("qaSubject")) return;
+        if ($('#qaContent').val() == "<p>&nbsp;</p>") {
+            $('#qaContent').val('');
         }
+        if ($event.validationFocus("qaContent")) return;
+
+        var data = {
+            parentIdx: $('#idx').val(),
+            qaSubject: $('#qaSubject').val(),
+            qaContent: $('#qaContent').val(),
+        };
+
+        res = $ajax.postFileAjax('/adm/qna', data, 'files', 'Q&A 답변을 완료하였습니다.', '파일 업로드 및 메일발송 중입니다.');
     });
 
     // 컨텐츠삭제
@@ -233,5 +244,58 @@ $(function(){
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }
         }
+    });
+
+    // Q&A 답변
+    $(document).on("click", "#updateBtn", function(e) {
+        e.preventDefault();
+
+        //에디터 내용 가져오기
+        oEditors.getById["qaContent"].exec("UPDATE_CONTENTS_FIELD", []);
+
+        //빈값체크
+        if ($event.validationFocus("qaSubject")) return;
+        if($('#qaContent').val() == "<p>&nbsp;</p>") {
+            $('#qaContent').val('');
+        }
+        if ($event.validationFocus("qaContent")) return;
+
+        var data = {
+            parentIdx: $('#idx').val(),
+            qaSubject: $('#qaSubject').val(),
+            qaContent: $('#qaContent').val(),
+        };
+
+        $popup.LoadingWithMask("메일 발송중입니다.");
+        var res = $ajax.postAjax('/adm/qna', data, 'files');
+        $popup.closeLoadingWithMask();
+        if (res == "error") {
+            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+        } else if (res.result == "success") {
+            alert("Q&A 답변을 완료하였습니다.");
+            window.location.reload();
+        } else if (res.result == "fail") {
+            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+        }
+    });
+
+    // 파일삭제
+    $(document).on("click", ".file > p > span", function(e) {
+        if(confirm("해당 파일를 삭제하시겠습니까?\n(파일은 즉시 삭제되며, 복구 할수 없습니다.)")) {
+            var saveName = $(this).data('val');
+
+            var res = $ajax.deleteAjax('/file/delete/'+ saveName);
+            console.log(res);
+            if(res == "error") {
+                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            }
+            else if(res.result == "success") {
+                $(this).closest('p').remove();
+            }
+            else if(res.result == "fail"){
+                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            }
+        }
+
     });
 });

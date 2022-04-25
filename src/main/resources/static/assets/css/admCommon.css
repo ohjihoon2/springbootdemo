@@ -337,11 +337,32 @@ table th {
     background: #ededed;
 }
 
+table td.file {
+    line-height: normal!important;
+}
+
+table td.file p a {
+    text-decoration: underline;
+    font-size: 14px;
+}
+
+table td.file p span {
+    display: inline-block;
+    background-color: #ededeb;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    margin-left:5px;
+    cursor: pointer;
+}
+
 table input[type="text"], table input[type="password"], table input[type="file"] {
     width: 100%;
     height: 37px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 6px;
     border: 1px solid #d6d6d6;
     border-radius: 7px;
     outline: none;

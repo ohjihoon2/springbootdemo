@@ -307,9 +307,6 @@ public class AdminBoardController {
     @PostMapping(value = "/qna")
     @ResponseBody
     public Map<String,Object> answerQna(MultipartFile[] files,@RequestPart("param") Qna qna, HttpServletResponse response, HttpServletRequest request) {
-        System.out.println("files = " + files);
-        System.out.println("qna = " + qna);
-
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
         qna.setCreateIdx(userIdx);
