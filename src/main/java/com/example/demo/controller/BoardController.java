@@ -35,7 +35,7 @@ public class BoardController {
      * @param model
      * @return
      */
-    @GetMapping("/boardList/{boardId}")
+    @GetMapping("/{boardId}")
     public String boardList(@PathVariable("boardId") String boardId, @RequestParam Criteria criteria
                             , HttpServletResponse response, HttpServletRequest request, Model model) {
         Map<String, Object> paramMap = new HashMap<>();
@@ -58,7 +58,7 @@ public class BoardController {
      * @param model
      * @return
      */
-    @GetMapping("/board/{idx}")
+    @GetMapping("/{boardId}/{idx}")
     public String boardDetails(@PathVariable("idx") String idx, HttpServletResponse response, HttpServletRequest request, Model model) {
         Map<String, Object> paramMap = new HashMap<>();
 
