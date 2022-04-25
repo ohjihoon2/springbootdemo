@@ -405,10 +405,9 @@
         SELECT A.IDX ,
                B.IDX AS ATTACH_FILE_IDX
           FROM qna A
-          LEFT JOIN ATTACH_FILE B ON A.ATTACH_FILE_IDX = B.IDX
+          LEFT JOIN ATTACH_FILE_MASTER B ON A.ATTACH_FILE_IDX = B.IDX
          WHERE A.IDX = #{idx}
             OR PARENT_IDX =#{idx}
-         GROUP BY A.IDX
          ORDER BY A.IDX
     </select>
 

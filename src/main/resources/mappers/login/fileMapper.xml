@@ -87,4 +87,16 @@
         DELETE FROM attach_file
          WHERE SAVE_NAME =#{saveName}
     </delete>
+
+    <select id="maxAttachIdx" parameterType="int" resultType="int">
+        SELECT MAX(FILE_SN)
+          FROM attach_file
+         WHERE IDX = #{attachFileIdx}
+    </select>
+
+    <select id="findAttachFileIdxByAttatchFileMaster" resultType="int" parameterType="int">
+        SELECT COUNT(*)
+          FROM attach_file_master
+         WHERE IDX = #{attachFileIdx}
+    </select>
 </mapper>

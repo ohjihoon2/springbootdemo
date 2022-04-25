@@ -32,10 +32,10 @@ public class BoardServiceImpl implements BoardService {
 
         if(files != null){
             // 실제 파일 업로드
-            List<AttachFile> fileList = fileUtil.uploadFiles(files, board.getCreateIdx());
+            List<AttachFile> fileList = fileUtil.uploadFiles(files, 0,board.getCreateIdx());
 
             // DB에 파일 저장
-            int idx = fileUtil.saveFile(fileList);
+            int idx = fileUtil.saveFile(fileList, 0);
 
             //attachFileIdx 저장
             board.setAttachFileIdx(idx);
