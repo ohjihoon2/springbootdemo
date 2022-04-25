@@ -122,8 +122,6 @@ input:read-only, input[readonly=true], textarea:read-only, textarea[readonly=tru
 .text-color-primary {color: #1fb1c7;}
 .text-color-red {color: #F52D05;}
 
-.text-line20 {line-height: 20px;}
-
 /* color */
 .color-primary {background: #1fb1c7!important; border-color: #00a6bc!important;}
 

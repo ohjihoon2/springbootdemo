@@ -156,8 +156,8 @@
           LEFT JOIN (
                         SELECT COUNT(A.IDX) AS CNT,
                                MASTER_IDX
-                          FROM BOARD A
-                          LEFT JOIN BOARD_MASTER B ON A.MASTER_IDX = B.IDX
+                          FROM board A
+                          LEFT JOIN board_master B ON A.MASTER_IDX = B.IDX
                          WHERE A.MASTER_IDX = B.IDX
                          GROUP BY MASTER_IDX
                     ) B ON A.IDX = B.MASTER_IDX
@@ -230,14 +230,14 @@
                A.CREATE_DATE,
                IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(D.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM,
                A.UPDATE_IDX,
-               A.UPDATE_DATE
+               A.UPDATE_DATE,
                IFNULL(B.CNT,'0') AS CNT
           FROM board_master A
           LEFT JOIN (
                         SELECT COUNT(A.IDX) AS CNT,
                                MASTER_IDX
-                          FROM BOARD A
-                          LEFT JOIN BOARD_MASTER B ON A.MASTER_IDX = B.IDX
+                          FROM board A
+                          LEFT JOIN board_master B ON A.MASTER_IDX = B.IDX
                          WHERE A.MASTER_IDX = B.IDX
                          GROUP BY MASTER_IDX
                     ) B ON A.IDX = B.MASTER_IDX

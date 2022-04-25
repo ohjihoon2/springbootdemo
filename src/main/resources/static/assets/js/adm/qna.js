@@ -35,20 +35,22 @@ $(function(){
     
     //Q&A 상세
     $('[name="detailBtn"]').click(function(){
-        var idx = $(this).data('val');
+        var qnaIdx = $(this).data('val');
 
-        var res = $ajax.postAjax('/adm/qna/' + idx);
+        var res = $ajax.postAjax('/adm/qna/' + qnaIdx);
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             return;
         }
 
-        console.log(res);
+
         res.config = $util.nullChkObj(res.config);
         for(var i = 0; i < res.resultList.length; i++) {
             res.resultList[i] = $util.nullChkObj(res.resultList[i]);
         }
 
+
+        console.log(res);
         var secretYn ='';
         if(res.config.secretYn == 'Y') {
             secretYn = 'checked';
@@ -63,7 +65,7 @@ $(function(){
             '<h4>Q&A 상세</h4>' +
             '<div class="mb20"></div>' +
             '<form id="qnaDetailForm">' +
-            '<input id="idx" type="hidden" value="'+ res.config.qnaIdx +'">' +
+            '<input id="qnaIdx" type="hidden" value="'+ res.config.qnaIdx +'">' +
             '<table class="table-top">' +
             '<colgroup>' +
             '<col width="15%">' +
@@ -96,7 +98,10 @@ $(function(){
                 }
                 if((res.config.qaStatus == 'A' || res.config.qaStatus == 'RA') && i == (res.resultList.length - 1)) {
                     html +=
-                        '<tr><th colspan="4">' + subject + '</th></tr>' +
+                        '<tr><th colspan="4">' + subject + '' +
+                        '<input id="idx" type="hidden" value="'+ res.resultList[i].idx +'">' +
+                        '<input id="attachFileIdx" type="hidden" value="'+ res.resultList[i].attachFileIdx +'">' +
+                        '</th></tr>' +
                         '<tr>' +
                         '<th>Title</th>' +
                         '<td colspan="3"><input type="text" id="qaSubject" value="'+ res.resultList[i].qaSubject +'"></td></th>' +
@@ -219,20 +224,20 @@ $(function(){
         if ($event.validationFocus("qaContent")) return;
 
         var data = {
-            parentIdx: $('#idx').val(),
+            parentIdx: $('#qnaIdx').val(),
             qaSubject: $('#qaSubject').val(),
             qaContent: $('#qaContent').val(),
         };
 
-        res = $ajax.postFileAjax('/adm/qna', data, 'files', 'Q&A 답변을 완료하였습니다.', '파일 업로드 및 메일발송 중입니다.');
+        var res = $ajax.postFileAjax('/adm/qna', data, 'files', 'Q&A 답변을 완료하였습니다.', '파일 업로드 및 메일발송 중입니다.');
     });
 
     // 컨텐츠삭제
     $(document).on("click", "#qnaDel", function(e) {
         if(confirm("해당 Q&A를 삭제하시겠습니까?")) {
-            var idx = $('#idx').val();
+            var qnaIdx = $('#qnaIdx').val();
 
-            var res = $ajax.deleteAjax('/adm/content/'+ idx);
+            var res = $ajax.deleteAjax('/adm/content/'+ qnaIdx);
             if(res == "error") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }
@@ -246,7 +251,7 @@ $(function(){
         }
     });
 
-    // Q&A 답변
+    // Q&A 답변수정
     $(document).on("click", "#updateBtn", function(e) {
         e.preventDefault();
 
@@ -255,28 +260,20 @@ $(function(){
 
         //빈값체크
         if ($event.validationFocus("qaSubject")) return;
-        if($('#qaContent').val() == "<p>&nbsp;</p>") {
+        if ($('#qaContent').val() == "<p>&nbsp;</p>") {
             $('#qaContent').val('');
         }
         if ($event.validationFocus("qaContent")) return;
 
         var data = {
-            parentIdx: $('#idx').val(),
+            parentIdx: $('#qnaIdx').val(),
             qaSubject: $('#qaSubject').val(),
             qaContent: $('#qaContent').val(),
+            attachFileIdx: $('#attachFileIdx').val(),
         };
 
-        $popup.LoadingWithMask("메일 발송중입니다.");
-        var res = $ajax.postAjax('/adm/qna', data, 'files');
-        $popup.closeLoadingWithMask();
-        if (res == "error") {
-            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
-        } else if (res.result == "success") {
-            alert("Q&A 답변을 완료하였습니다.");
-            window.location.reload();
-        } else if (res.result == "fail") {
-            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
-        }
+        var idx = $('#idx').val();
+        var res = $ajax.patchFileAjax('/adm/qna/' + idx, data, 'files', 'Q&A 답변을 완료하였습니다.', '파일 업로드 및 메일발송 중입니다.');
     });
 
     // 파일삭제
@@ -285,17 +282,25 @@ $(function(){
             var saveName = $(this).data('val');
 
             var res = $ajax.deleteAjax('/file/delete/'+ saveName);
-            console.log(res);
             if(res == "error") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }
             else if(res.result == "success") {
-                $(this).closest('p').remove();
+                removeFileHtml(this);
             }
             else if(res.result == "fail"){
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }
         }
-
     });
 });
+
+// 파일 TR 또는 TD를 삭제한다.
+function removeFileHtml(th) {
+    if($(th).closest('.file').find('p').length > 1) {
+        $(th).closest('p').remove();
+    }
+    else {
+        $(th).closest('tr').remove();
+    }
+}

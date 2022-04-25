@@ -90,6 +90,63 @@
             return res;
         },
 
+        // patch 로딩에이작스 , 파일첨부
+        // 로딩으로 인해 동기화를 기본으로 실행한다.
+        patchFileAjax : function (url, param = {}, files='', success = '', loding = '') {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            var contentType = "application/json";
+
+            if(files != '') {
+                contentType = false;
+                var data = new FormData();
+                data.append("param", new Blob([JSON.stringify(param)], {type: "application/json"}));
+                for(var i=0; i < $('#' + files)[0].files.length; i++) {
+                    data.append('files',$('#' + files)[0].files[i]);
+                }
+                param = data;
+            }
+            else {
+                param = JSON.stringify(param);
+            }
+
+            var res;
+
+            $.ajax({
+                type: "PATCH",
+                url: url,
+                data: param,
+                async: true,
+                processData: false,
+                contentType: contentType,
+                cache: false,
+                beforeSend: function (xhr) {
+                    if(loding != '') {
+                        $popup.LoadingWithMask(loding);
+                    }
+                    xhr.setRequestHeader(header, token);
+                },
+                success: function (response) {
+                    if (response == "error") {
+                        alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                    }
+                    else {
+                        alert(success);
+                        window.location.reload();
+                    }
+                },
+                error: function () {
+                    alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                },
+                complete: function () {
+                    if(loding != '') {
+                        $popup.closeLoadingWithMask();
+                    }
+                }
+            });
+            return res;
+        },
+
         // delete 에이작스
         deleteAjax : function (url, param, async=false) {
             var token = $("meta[name='_csrf']").attr("content");
@@ -107,8 +164,6 @@
                     xhr.setRequestHeader(header, token);
                 },
                 success: function (response) {
-                    alert(response);
-                    console.log(response);
                     res = response;
                 },
                 error: function (XMLHttpRequest, textStatus) {
@@ -122,7 +177,6 @@
         postAjax : function (url, param = {}, async=false) {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
-            var contentType = "application/json";
 
             var res;
 
@@ -132,7 +186,7 @@
                 data: JSON.stringify(param),
                 async: async,
                 processData: false,
-                contentType: contentType,
+                contentType: "application/json",
                 cache: false,
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);

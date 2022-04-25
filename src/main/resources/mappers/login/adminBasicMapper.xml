@@ -32,37 +32,16 @@
 
 
     <select id="findAllMenuTree" resultType="MenuTree">
-        WITH RECURSIVE CTE AS
-                           (
-                               SELECT IDX,
-                                      PARENT_IDX,
-                                      NAME,
-                                      LVL,
-                                      CREATE_IDX,
-                                      CREATE_DATE,
-                                      USE_YN
-                               FROM MENU_TREE
-                               WHERE LVL = 1
-                               UNION ALL
-                               SELECT IDX,
-                                      PARENT_IDX,
-                                      NAME,
-                                      LVL,
-                                      CREATE_IDX,
-                                      CREATE_DATE,
-                                      USE_YN
-                               FROM MENU_TREE
-                               WHERE IDX != PARENT_IDX
-            )
         SELECT IDX,
                PARENT_IDX,
                NAME,
                LVL,
+               LINK,
                CREATE_IDX,
                CREATE_DATE,
                USE_YN
-        FROM CTE
-        ORDER BY PARENT_IDX, IDX
+        FROM MENU_TREE
+        ORDER BY IDX
     </select>
 
 
