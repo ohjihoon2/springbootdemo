@@ -195,25 +195,21 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
-    public int updateQna(MultipartFile[] files, Map<String, Object> paramMap, HttpServletRequest request) {
+    public int updateQna(MultipartFile[] files, Qna qna, HttpServletRequest request) {
 
         int result = 0;
 
-        int idx = Integer.parseInt(paramMap.get("idx").toString());
-        QnaConfig qnaConfig = adminMapper.findByIdxQnaConfig(idx);
-
-        int attachFileIdx = Integer.parseInt(paramMap.get("attachFileIdx").toString());
-        int updateIdx = Integer.parseInt(paramMap.get("updateIdx").toString());
+        QnaConfig qnaConfig = adminMapper.findByIdxQnaConfig(qna.getParentIdx());
 
         if(files != null){
             // 실제 파일 업로드
-            List<AttachFile> fileList = fileUtil.uploadFiles(files, attachFileIdx,updateIdx);
+            List<AttachFile> fileList = fileUtil.uploadFiles(files, qna.getAttachFileIdx(), qna.getUpdateIdx());
 
             // DB에 파일 저장
-            fileUtil.updateFile(fileList,attachFileIdx);
+            fileUtil.updateFile(fileList,qna.getAttachFileIdx());
         }
 
-        if(adminMapper.updateQna(paramMap) == 1){
+        if(adminMapper.updateQna(qna) == 1){
             // 수신 여부에 따른 이메일 처리
             if(qnaConfig.getQaEmailRecvYn().equals("Y")){
                 String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");

@@ -455,8 +455,18 @@
                 #{createIdx},
                 SYSDATE()
              )
-
     </insert>
+
+
+    <update id="updateQna" parameterType="Qna">
+        UPDATE qna
+           SET QA_SUBJECT  = #{qaSubject},
+               QA_CONTENT = #{qaContent},
+               ATTACH_FILE_IDX = #{attachFileIdx},
+               UPDATE_IDX = #{updateIdx},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX = #{idx}
+    </update>
 
     <delete id="deleteQnaConfig" parameterType="map">
         DELETE FROM qna_config

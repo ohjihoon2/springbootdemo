@@ -334,17 +334,26 @@ public class AdminBoardController {
         return ResultStr.set(result);
     }
 
+    /**
+     *
+     * @param files
+     * @param idx
+     * @param paramMap
+     * @param principal
+     * @param response
+     * @param request
+     * @return
+     */
     @PatchMapping(value = "/qna/{idx}")
     @ResponseBody
-    public Map<String,Object> updateQna(MultipartFile[] files, @PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal,HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> updateQna(MultipartFile[] files, @PathVariable int idx, @RequestPart("param") Qna qna, Principal principal,HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
-        paramMap.put("idx", idx);
-        paramMap.put("updateIdx", userIdx);
 
-        // TODO 2022-04-20
-        //  - QNA UPDATE : 마지막 답변 수정, 수정 후 이메일 발송 추가
-        int result = adminService.updateQna(files,paramMap, request);
+        qna.setIdx(idx);
+        qna.setUpdateIdx(userIdx);
+
+        int result = adminService.updateQna(files,qna, request);
 
         return ResultStr.set(result);
     }
