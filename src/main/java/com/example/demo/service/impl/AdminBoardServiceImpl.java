@@ -238,10 +238,9 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     public List<List<AttachFile>> findAttachFileIdxByIdxQna(int idx) {
         List<List<AttachFile>> resultList = new ArrayList<>();
 
-        List<Map<String, Object>> attachFileIdxByIdxQnaList = adminMapper.findAttachFileIdxByIdxQna(idx);
-
-        for (Map<String, Object> map : attachFileIdxByIdxQnaList) {
-            resultList.add(adminMapper.findByAttachFileIdx(Integer.parseInt(map.get("attachFileIdx").toString())));
+        List<Qna> attachFileIdxByIdxQnaList = adminMapper.findAttachFileIdxByIdxQna(idx);
+        for (Qna qna : attachFileIdxByIdxQnaList) {
+            resultList.add(adminMapper.findByAttachFileIdx(qna.getAttachFileIdx()));
         }
 
         return resultList;

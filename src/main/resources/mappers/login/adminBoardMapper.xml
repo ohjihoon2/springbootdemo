@@ -401,8 +401,8 @@
         ORDER BY A.IDX
     </select>
 
-    <select id="findAttachFileIdxByIdxQna" parameterType="int" resultType="CustomMap">
-        SELECT A.IDX ,
+    <select id="findAttachFileIdxByIdxQna" parameterType="int" resultType="Qna">
+        SELECT A.IDX AS IDX,
                B.IDX AS ATTACH_FILE_IDX
           FROM qna A
           LEFT JOIN ATTACH_FILE_MASTER B ON A.ATTACH_FILE_IDX = B.IDX

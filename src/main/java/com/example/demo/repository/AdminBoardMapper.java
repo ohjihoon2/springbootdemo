@@ -82,7 +82,7 @@ public interface AdminBoardMapper {
 
     int updateQna(Map<String, Object> paramMap);
 
-    List<Map<String, Object>> findAttachFileIdxByIdxQna(int idx);
+    List<Qna> findAttachFileIdxByIdxQna(int idx);
 
     List<AttachFile> findByAttachFileIdx(int attachFileIdx);
 }
