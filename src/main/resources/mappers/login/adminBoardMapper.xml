@@ -399,7 +399,7 @@
         LEFT OUTER JOIN users C on B.UPDATE_IDX = C.IDX
         WHERE A.IDX = #{idx}
            OR A.PARENT_IDX = #{idx}
-        ORDER BY A.IDX DESC
+        ORDER BY A.IDX
     </select>
 
     <update id="updateQnaConfig" parameterType="map">
