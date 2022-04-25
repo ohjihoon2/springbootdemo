@@ -389,6 +389,7 @@
         SELECT A.IDX,
                QA_SUBJECT,
                QA_CONTENT,
+               ATTACH_FILE_IDX,
                IF( A.CREATE_IDX IS NULL , NULL, IFNULL(B.USER_NICKNM,'탈퇴된 사용자')) AS CREATE_NICKNM,
                A.CREATE_DATE,
                C.USER_NICKNM AS UPDATE_NICKNM,
