@@ -643,14 +643,4 @@
           FROM faq
          WHERE IDX =#{idx}
     </select>
-
-    <update id="updateQna" parameterType="map">
-        UPDATE qna
-           SET QA_SUBJECT = #{qaSubject},
-               QA_CONTENT = #{qaContent},
-               ATTACH_FILE_IDX = #{attachFileIdx},
-               UPDATE_IDX = #{updateIdx},
-               UPDATE_DATE = SYSDATE()
-          FROM IDX = #{idx}
-    </update>
 </mapper>
