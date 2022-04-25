@@ -335,10 +335,10 @@ public class AdminBoardController {
     }
 
     /**
-     *
+     * qna 수정
      * @param files
      * @param idx
-     * @param paramMap
+     * @param qna
      * @param principal
      * @param response
      * @param request

@@ -206,7 +206,7 @@ public class AdminBoardServiceImpl implements AdminBoardService {
             List<AttachFile> fileList = fileUtil.uploadFiles(files, qna.getAttachFileIdx(), qna.getUpdateIdx());
 
             // DB에 파일 저장
-            fileUtil.updateFile(fileList,qna.getAttachFileIdx());
+            qna.setAttachFileIdx(fileUtil.updateFile(fileList,qna.getAttachFileIdx()));
         }
 
         if(adminMapper.updateQna(qna) == 1){
