@@ -35,7 +35,7 @@ public class BoardServiceImpl implements BoardService {
             List<AttachFile> fileList = fileUtil.uploadFiles(files, 0,board.getCreateIdx());
 
             // DB에 파일 저장
-            int idx = fileUtil.saveFile(fileList, 0);
+            int idx = fileUtil.saveFile(fileList);
 
             //attachFileIdx 저장
             board.setAttachFileIdx(idx);

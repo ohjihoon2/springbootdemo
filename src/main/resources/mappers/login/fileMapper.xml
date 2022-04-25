@@ -89,7 +89,7 @@
     </delete>
 
     <select id="maxAttachIdx" parameterType="int" resultType="int">
-        SELECT MAX(FILE_SN)
+        SELECT IFNULL(MAX(FILE_SN), 0)
           FROM attach_file
          WHERE IDX = #{attachFileIdx}
     </select>

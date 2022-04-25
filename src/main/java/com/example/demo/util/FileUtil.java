@@ -59,7 +59,6 @@ public class FileUtil {
             dir.mkdirs();
         }
 
-        // TODO
         int cnt = fileMapper.maxAttachIdx(attachFileIdx);
 
         /* 파일 개수만큼 forEach 실행 */
@@ -130,11 +129,38 @@ public class FileUtil {
     }
 
     /**
-     * 파일 저장
+     * 파일 저장 (저장 로직)
      * @param fileList
      * @return
      */
-    public int saveFile(List<AttachFile> fileList, int attachFileIdx) {
+    public int saveFile(List<AttachFile> fileList) {
+        int idx = 0;
+
+        if (CollectionUtils.isEmpty(fileList) == false) {
+
+            AttachFileMaster attachFileMaster = new AttachFileMaster();
+            fileMapper.insertAttachFileMaster(attachFileMaster);
+
+            idx = attachFileMaster.getIdx();
+
+            for (AttachFile attachFile : fileList) {
+                attachFile.setIdx(idx);
+            }
+
+            fileMapper.insertAttachFile(fileList);
+        }
+
+        return idx;
+    }
+
+    /**
+     * 파일 수정(저장 후 수정 로직)
+     * 파일이 수정되는 것이 아닌 기존의 FILE_SN 이후로 추가됨.
+     * @param fileList
+     * @param attachFileIdx
+     * @return
+     */
+    public int updateFile(List<AttachFile> fileList, int attachFileIdx) {
         int idx = 0;
 
         if (CollectionUtils.isEmpty(fileList) == false) {
@@ -153,6 +179,7 @@ public class FileUtil {
         for (AttachFile attachFile : fileList) {
             attachFile.setIdx(idx);
         }
+
         fileMapper.insertAttachFile(fileList);
 
         return idx;

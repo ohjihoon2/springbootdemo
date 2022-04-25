@@ -67,7 +67,7 @@ public interface AdminBoardService {
 
     Faq findByIdxFaq(int idx);
 
-    int updateQna(Map<String, Object> paramMap);
+    int updateQna(MultipartFile[] files, Map<String, Object> paramMap, HttpServletRequest request);
 
     List<List<AttachFile>> findAttachFileIdxByIdxQna(int idx);
 }

@@ -138,7 +138,7 @@ public class AdminBoardServiceImpl implements AdminBoardService {
             List<AttachFile> fileList = fileUtil.uploadFiles(files, qna.getAttachFileIdx(), qna.getCreateIdx());
 
             // DB에 파일 저장
-            int idx = fileUtil.saveFile(fileList, qna.getAttachFileIdx());
+            int idx = fileUtil.saveFile(fileList);
 
             //attachFileIdx 저장
             qna.setAttachFileIdx(idx);
@@ -151,7 +151,7 @@ public class AdminBoardServiceImpl implements AdminBoardService {
             if(adminMapper.updateQnaConfig(paramMap) == 1){
                 // 수신 여부에 따른 이메일 처리
                 if(qnaConfig.getQaEmailRecvYn().equals("Y")){
-                    String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");;
+                    String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");
                     String to = adminMapper.findUserEmailByIdx(qnaConfig.getCreateIdx());
                     String subject = "[ "+siteName+" Qna 답변처리]";
                     String text = "안녕하세요.<br>" +
@@ -166,6 +166,7 @@ public class AdminBoardServiceImpl implements AdminBoardService {
                 }
             }
         }
+        
         return result;
     }
 
@@ -193,8 +194,44 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     }
 
     @Override
-    public int updateQna(Map<String, Object> paramMap) {
-        return adminMapper.updateQna(paramMap);
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
+    public int updateQna(MultipartFile[] files, Map<String, Object> paramMap, HttpServletRequest request) {
+
+        int result = 0;
+
+        int idx = Integer.parseInt(paramMap.get("idx").toString());
+        QnaConfig qnaConfig = adminMapper.findByIdxQnaConfig(idx);
+
+        int attachFileIdx = Integer.parseInt(paramMap.get("attachFileIdx").toString());
+        int updateIdx = Integer.parseInt(paramMap.get("updateIdx").toString());
+
+        if(files != null){
+            // 실제 파일 업로드
+            List<AttachFile> fileList = fileUtil.uploadFiles(files, attachFileIdx,updateIdx);
+
+            // DB에 파일 저장
+            fileUtil.updateFile(fileList,attachFileIdx);
+        }
+
+        if(adminMapper.updateQna(paramMap) == 1){
+            // 수신 여부에 따른 이메일 처리
+            if(qnaConfig.getQaEmailRecvYn().equals("Y")){
+                String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");
+                String to = adminMapper.findUserEmailByIdx(qnaConfig.getCreateIdx());
+                String subject = "[ "+siteName+" Qna 답변 수정 처리]";
+                String text = "안녕하세요.<br>" +
+                        "회원님께서 질문하신 내용에 대한 답변이 수정되었습니다. <br>" +
+                        "<b><a href=\""+domain+"\">홈페이지</a></b> Q&A에서 답변을 확인하세요.";
+
+                if(emailService.sendMail(to, subject, text)){
+                    result = 1;
+                }
+            }else{
+                result = 1;
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -204,7 +241,7 @@ public class AdminBoardServiceImpl implements AdminBoardService {
         List<Map<String, Object>> attachFileIdxByIdxQnaList = adminMapper.findAttachFileIdxByIdxQna(idx);
 
         for (Map<String, Object> map : attachFileIdxByIdxQnaList) {
-            resultList.add(adminMapper.findByAttachFileIdx(map.get("attachFileIdx")));
+            resultList.add(adminMapper.findByAttachFileIdx(Integer.parseInt(map.get("attachFileIdx").toString())));
         }
 
         return resultList;

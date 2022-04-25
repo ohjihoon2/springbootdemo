@@ -84,5 +84,5 @@ public interface AdminBoardMapper {
 
     List<Map<String, Object>> findAttachFileIdxByIdxQna(int idx);
 
-    List<AttachFile> findByAttachFileIdx(Object attachFileIdx);
+    List<AttachFile> findByAttachFileIdx(int attachFileIdx);
 }
