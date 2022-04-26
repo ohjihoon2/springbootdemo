@@ -16,7 +16,7 @@ public class BoardMaster {
     private String writeLevel;
     private String commentLevel;
     private String uploadLevel;
-    private String downloadLevel;
+    private String editorLevel;
     private String useYn;
     private int createIdx;
     private Date createDate;

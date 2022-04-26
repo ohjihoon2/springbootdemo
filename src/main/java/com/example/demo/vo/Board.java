@@ -14,6 +14,7 @@ public class Board {
     private Date startDate;
     private Date endDate;
     private int attachFileIdx;
+    private String commentYn;
     private String useYn;
     private int createIdx;
     private Date createDate;
