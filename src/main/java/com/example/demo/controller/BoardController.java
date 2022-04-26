@@ -38,15 +38,15 @@ public class BoardController {
     @GetMapping("/{boardId}")
     public String boardList(@PathVariable("boardId") String boardId, @ModelAttribute Criteria criteria
                             , HttpServletResponse response, HttpServletRequest request, Model model) {
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("boardId", boardId);
-
-        criteria.setParamMap(paramMap);
-
-        List<Map<String,Object>> boardList = boardService.findByMasterIdxSearch(criteria);
-
-        model.addAttribute("boardList", boardList);
-        model.addAttribute("criteria", criteria);
+//        Map<String, Object> paramMap = new HashMap<>();
+//        paramMap.put("boardId", boardId);
+//
+//        criteria.setParamMap(paramMap);
+//
+//        List<Map<String,Object>> boardList = boardService.findByMasterIdxSearch(criteria);
+//
+//        model.addAttribute("boardList", boardList);
+//        model.addAttribute("criteria", criteria);
 
         return "/board/boardList";
     }

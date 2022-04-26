@@ -2,39 +2,68 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<th:block th:replace="/fragments/head.html :: thHead(pageCss='')"></th:block>
+<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/board/boardList.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
 <th:block th:replace="/fragments/header.html :: thHeader"></th:block>
 <section>
     <div class="section-wrap">
-        <h2>메인 페이지입니다.</h2>
-        <!--                <span th:text="${#authentication.authorities}">  </span>-->
-
-
-        <!--                <a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="btn btn-outline-danger my-2 my-sm-0 btn-sm">Logout</a>-->
-        <!--                <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-outline-info my-2 my-sm-0 btn-sm">Login</a>-->
-
-        <!--                <div sec:authentication="principal"></div>-->
-        <!--                <div sec:authentication="name"></div>-->
-        <!--                <div sec:authentication="authorities"></div>-->
-
-        <!--                <div th:if="${#authorization.expr('isAuthenticated()')}">-->
-        <!--                    <h2 th:text="${#authentication.name}">Name</h2>-->
-        <!--                    <a href="/logout" th:href="@{/logout}">Logout</a>-->
-        <!--                </div>-->
-
-        <!--                &lt;!&ndash;ROLE_USER 권한을 갖는다면 이 글이 보임&ndash;&gt;-->
-        <!--                <h1 sec:authorize="hasRole('ADMIN')">Has admin Role</h1>-->
-
-        <!--                &lt;!&ndash;ROLE_ADMIN 권한을 갖는다면 이 글이 보임&ndash;&gt;-->
-        <!--                <h1 sec:authorize="hasRole('USER')">Has user Role</h1>-->
-
-        <!--                &lt;!&ndash;어떤 권한이건 상관없이 인증이 되었다면 이 글이 보임&ndash;&gt;-->
-        <!--                <div sec:authorize="isAuthenticated()">-->
-        <!--                    Only Authenticated user can see this Text-->
-        <!--                </div>-->
+        <form id="boardList">
+            <div class="mt70"></div>
+            <div class="top-btn-box">
+                <div class="left">일반게시판</div>
+                <select>
+                    <option>제목</option>
+                    <option>내용</option>
+                    <option>닉네임</option>
+                </select>
+                <input type="text" placeholder="검색어를 입력해주세요.">
+                <button type="button">검색</button>
+            </div>
+            <div class="mb10"></div>
+            <table class="board-table">
+                <colgroup>
+                    <col width="5%">
+                    <col width="60%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="10%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>번호</th>
+                        <th>번호</th>
+                        <th>번호</th>
+                        <th>번호</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>내용</td>
+                        <td>내용</td>
+                        <td>내용</td>
+                        <td>내용</td>
+                        <td>내용</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="mb5"></div>
+            <div class="bot-btn-box">
+                <div class="left">Total 2건 1 페이지</div>
+                <a>
+                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                    <ul class="more_opt is_list_btn" style="display: block;">
+                        <li><button type="submit" name="btn_submit" value="선택삭제"><i class="fa fa-trash-o" aria-hidden="true"></i> 선택삭제</button></li>
+<!--                        <li><button type="submit" name="btn_submit" value="선택복사"><i class="fa fa-files-o" aria-hidden="true"></i> 선택복사</button></li>-->
+                        <li><button type="submit" name="btn_submit" value="선택이동"><i class="fa fa-arrows" aria-hidden="true"></i> 선택이동</button></li>
+                    </ul>
+                </a>
+                <button type="button">글쓰기</button>
+            </div>
+        </form>
     </div>
 </section>
 <th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
+<script th:src="@{/js/board/boardList.js}"></script>
 </body>
 </html>

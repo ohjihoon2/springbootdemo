@@ -191,7 +191,7 @@ section {
 /* 컨텐츠, 풋터 */
 .section-wrap, .footer-wrap {
     width: 100%;
-    max-width: 1240px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
