@@ -7,6 +7,7 @@ import com.example.demo.util.FileUtil;
 import com.example.demo.vo.AttachFile;
 import com.example.demo.vo.AttachFileMaster;
 import com.example.demo.vo.Board;
+import com.example.demo.vo.Criteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,12 +51,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<Board> findByMasterIdxSearch(Map<String, Object> paramMap) {
-        return boardMapper.findByMasterIdxSearch(paramMap);
+    public List<Map<String,Object>> findByMasterIdxSearch(Criteria criteria) {
+        return boardMapper.findByMasterIdxSearch(criteria);
     }
 
     @Override
-    public Board findAllByIdx(String idx) {
-        return boardMapper.findAllByIdx(idx);
+    public Board findAllByIdx(Map<String, Object> paramMap) {
+        return boardMapper.findAllByIdx(paramMap);
     }
 }

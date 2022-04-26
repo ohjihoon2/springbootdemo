@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.vo.AttachFile;
 import com.example.demo.vo.Board;
+import com.example.demo.vo.Criteria;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +14,7 @@ import java.util.Map;
 public interface BoardMapper {
     int insertBoard(Board board);
 
-    List<Board> findByMasterIdxSearch(Map<String, Object> paramMap);
+    List<Map<String,Object>> findByMasterIdxSearch(Criteria criteria);
 
-    Board findAllByIdx(String idx);
+    Board findAllByIdx(Map<String, Object> paramMap);
 }

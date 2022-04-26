@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.vo.Board;
+import com.example.demo.vo.Criteria;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface BoardService {
 
     int insertBoard(MultipartFile[] files, Board board);
 
-    List<Board> findByMasterIdxSearch(Map<String, Object> paramMap);
+    List<Map<String,Object>> findByMasterIdxSearch(Criteria criteria);
 
-    Board findAllByIdx(String idx);
+    Board findAllByIdx(Map<String, Object> paramMap);
 }

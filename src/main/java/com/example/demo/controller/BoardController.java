@@ -36,13 +36,14 @@ public class BoardController {
      * @return
      */
     @GetMapping("/{boardId}")
-    public String boardList(@PathVariable("boardId") String boardId, @RequestParam Criteria criteria
+    public String boardList(@PathVariable("boardId") String boardId, @ModelAttribute Criteria criteria
                             , HttpServletResponse response, HttpServletRequest request, Model model) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("boardId", boardId);
-        paramMap.put("criteria", criteria);
 
-        List<Board> boardList = boardService.findByMasterIdxSearch(paramMap);
+        criteria.setParamMap(paramMap);
+
+        List<Map<String,Object>> boardList = boardService.findByMasterIdxSearch(criteria);
 
         model.addAttribute("boardList", boardList);
         model.addAttribute("criteria", criteria);
@@ -59,10 +60,17 @@ public class BoardController {
      * @return
      */
     @GetMapping("/{boardId}/{idx}")
-    public String boardDetails(@PathVariable("idx") String idx, HttpServletResponse response, HttpServletRequest request, Model model) {
+    public String boardDetails(@PathVariable("idx") String boardId, @PathVariable("idx") int idx,HttpServletResponse response, HttpServletRequest request, Model model) {
+        // TODO 2022-04-25
+        //  - boardMaster와 join해서 list가 맞는 애들만 뿌려주게 수정
+        //  - 게시판 쓰기, 댓글, 읽기 권한 설정
+
         Map<String, Object> paramMap = new HashMap<>();
 
-        Board board = boardService.findAllByIdx(idx);
+        paramMap.put("idx",idx);
+        paramMap.put("boardId",boardId);
+
+        Board board = boardService.findAllByIdx(paramMap);
 
         model.addAttribute("board", board);
 
