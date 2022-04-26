@@ -222,7 +222,6 @@
                A.BOARD_NM,
                A.BOARD_DESC,
                A.BOARD_TYPE,
-               A.FILE_ATTACH_YN,
                A.USE_YN,
                IFNULL(C.USER_NICKNM,'탈퇴된 관리자') AS CREATE_NICKNM,
                A.CREATE_IDX,
