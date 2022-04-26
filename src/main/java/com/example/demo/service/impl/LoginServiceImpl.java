@@ -39,7 +39,10 @@ public class LoginServiceImpl implements LoginService {
         }
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if (users.getRoleType().equals("ROLE_ADMIN")) {
+        if (users.getRoleType().equals("ROLE_SYSTEM")) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_SYSTEM"));
+            users.setRoleType("ROLE_SYSTEM");
+        }else if (users.getRoleType().equals("ROLE_ADMIN")) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             users.setRoleType("ROLE_ADMIN");
         }else if (users.getRoleType().equals("ROLE_MANAGER")) {
