@@ -181,9 +181,7 @@
                  EDITOR_LEVEL,
                  USE_YN,
                  CREATE_IDX,
-                 CREATE_DATE,
-                 UPDATE_IDX,
-                 UPDATE_DATE
+                 CREATE_DATE
              )
         VALUES
             (
@@ -199,9 +197,7 @@
                  #{editorLevel},
                  #{useYn},
                  #{userIdx},
-                 date_format(SYSDATE(), '%Y-%m-%d %h:%i:%s'),
-                 NULL,
-                 NULL
+                 date_format(SYSDATE(), '%Y-%m-%d %h:%i:%s')
             )
     </insert>
 

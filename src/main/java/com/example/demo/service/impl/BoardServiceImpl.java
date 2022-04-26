@@ -3,14 +3,13 @@ package com.example.demo.service.impl;
 import com.example.demo.repository.BoardMapper;
 import com.example.demo.service.BoardService;
 import com.example.demo.util.FileUtil;
-import com.example.demo.vo.AttachFile;
-import com.example.demo.vo.Board;
-import com.example.demo.vo.Criteria;
+import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +44,35 @@ public class BoardServiceImpl implements BoardService {
 
         return result;
     }
+
+    @Override
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
+    public int updateBoard(MultipartFile[] files, Board board) {
+
+        int result = 0;
+
+        if(files != null){
+            // 실제 파일 업로드
+            List<AttachFile> fileList = fileUtil.uploadFiles(files, board.getAttachFileIdx(), board.getUpdateIdx());
+
+            // DB에 파일 저장
+            board.setAttachFileIdx(fileUtil.updateFile(fileList,board.getAttachFileIdx()));
+        }
+
+        result = boardMapper.updateBoard(board);
+
+        return result;
+    }
+
+    @Override
+    public int deleteBoard(Map<String, Object> paramMap) {
+
+        // TODO
+        //  - SESSION 으로 작성자가 맞는지 확인 하거나 ADMIN인 경우 삭제
+
+        return boardMapper.deleteBoard(paramMap);
+    }
+
 
     @Override
     public List<Map<String,Object>> findAllByBoardIdBoard(Criteria criteria) {

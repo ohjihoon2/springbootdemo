@@ -18,4 +18,8 @@ public interface BoardService {
     Map<String, Object> findByBoardIdBoardMaster(String boardId);
 
     int countByBoardIdBoard(Criteria criteria);
+
+    int updateBoard(MultipartFile[] files, Board board);
+
+    int deleteBoard(Map<String, Object> paramMap);
 }

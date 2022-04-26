@@ -74,7 +74,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/user/**").hasAnyRole("USER")
 //                .antMatchers("/login/member/**").hasRole("MANAGER") // authenticated() - 인증된 유저만 접근을 허용
                 .antMatchers("/forgetPwd").permitAll() // permitAll() - 모든 유저에게 접근을 허용
-//                .antMatchers("/adm/**").hasAnyRole("ADMIN","MANAGER")
+                .antMatchers("/board/move").hasAnyRole("SYSTEM","ADMIN","MANAGER")
+//                .antMatchers("/adm/**").hasAnyRole("SYSTEM","ADMIN","MANAGER")
                 .antMatchers("/**").permitAll() // permitAll() - 모든 유저에게 접근을 허용
 
                 // anonymous() - 인증되지 않은 유저만 허용합니다.

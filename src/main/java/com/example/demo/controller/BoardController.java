@@ -69,7 +69,7 @@ public class BoardController {
      * @return
      */
     @GetMapping("/{boardId}/{idx}")
-    public String boardDetails(@PathVariable("idx") String boardId, @PathVariable("idx") int idx,HttpServletResponse response, HttpServletRequest request, Model model) {
+    public String boardDetails(@PathVariable("boardId") String boardId, @PathVariable("idx") int idx,HttpServletResponse response, HttpServletRequest request, Model model) {
         // TODO 2022-04-25
         //  - 게시판 쓰기, 댓글, 읽기 권한 설정
 
@@ -77,6 +77,9 @@ public class BoardController {
 
         paramMap.put("idx",idx);
         paramMap.put("boardId",boardId);
+
+        // TODO
+        //  - BOARD_MASTER 값 로직 필요
 
         Board board = boardService.findAllByIdx(paramMap);
 
@@ -92,8 +95,8 @@ public class BoardController {
      * @param model
      * @return
      */
-    @GetMapping("/register")
-    public String registerPage(HttpServletResponse response, HttpServletRequest request, Model model) {
+    @GetMapping("/{boardId}/detail")
+    public String registerPage(@PathVariable("boardId") String boardId,HttpServletResponse response, HttpServletRequest request, Model model) {
         return "/board/registBoard";
     }
 
@@ -104,9 +107,9 @@ public class BoardController {
      * @param request
      * @return
      */
-    @PostMapping(value = "/register")
+    @PostMapping(value = "/{boardId}/detail")
     @ResponseBody
-    public Map<String, Object> insertBoard(MultipartFile[] files, @RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String, Object> insertBoard(@PathVariable("boardId") String boardId, MultipartFile[] files, @RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         int idx = Integer.parseInt((String) session.getAttribute("idx"));
@@ -115,4 +118,78 @@ public class BoardController {
         int result = boardService.insertBoard(files,board);
         return ResultStr.setMulti(result);
     }
+
+
+    /**
+     * 게시물 수정 페이지
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @GetMapping("/{boardId}/detail/{idx}")
+    public String updatePage(@PathVariable("boardId") String boardId, @PathVariable("idx") int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
+        // TODO
+        //  - 수정페이지 데이터 MODEL
+
+        return "/board/updateBoard";
+    }
+
+    /**
+     * 게시물 수정 처리
+     * @param files
+     * @param board
+     * @param response
+     * @param request
+     * @return
+     */
+    @PatchMapping(value = "/{boardId}/detail/{idx}")
+    @ResponseBody
+    public Map<String, Object> updateBoard(@PathVariable("boardId") String boardId, MultipartFile[] files, @RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        int idx = Integer.parseInt((String) session.getAttribute("idx"));
+        board.setUpdateIdx(idx);
+
+        int result = boardService.updateBoard(files,board);
+        return ResultStr.setMulti(result);
+    }
+
+
+    /**
+     * 게시물 삭제 처리
+     * @param idx
+     * @param response
+     * @param request
+     * @return
+     */
+    @DeleteMapping(value = "/{boardId}/detail/{idx}")
+    @ResponseBody
+    public Map<String,Object> deleteQna(@PathVariable("boardId") String boardId, @PathVariable int idx,HttpServletResponse response, HttpServletRequest request) {
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("idx",idx);
+
+        int result = boardService.deleteBoard(paramMap);
+
+        return ResultStr.set(result);
+    }
+
+
+    @PatchMapping(value = "/move")
+    @ResponseBody
+    public Map<String, Object> moveBoardMaster(@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
+
+        // masterIdx, 바뀔 ㄱㅔ시물 idx
+
+        HttpSession session = request.getSession();
+        int idx = Integer.parseInt((String) session.getAttribute("idx"));
+
+//        int result = boardService.moveBoard(board);
+//        return ResultStr.setMulti(result);
+        return null;
+    }
+
+    // TODO
+    //  - 게시물 이동
+    //  - 상세 조회수 처리
 }

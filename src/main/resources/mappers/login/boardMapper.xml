@@ -110,7 +110,6 @@
                  START_DATE,
                  END_DATE,
                  ATTACH_FILE_IDX,
-                 COMMENT_YN,
                  USE_YN,
                  CREATE_IDX,
                  CREATE_DATE,
@@ -126,7 +125,6 @@
                  #{startDate},
                  #{endDate},
                  #{attachFileIdx},
-                 #{commentYn},
                  'Y',
                  #{createIdx},
                  SYSDATE(),
@@ -207,4 +205,23 @@
                UPDATE_DATE
         FROM CTE
     </select>
+
+    <update id="updateBoard" parameterType="Board">
+        UPDATE board
+           SET BOARD_SUBJECT=#{boardSubject},
+               BOARD_CONTENT=#{boardContent},
+               START_DATE=#{startDate},
+               END_DATE= #{endDate},
+               ATTACH_FILE_IDX= #{attachFileIdx},
+               NOTICE_YN= #{noticeYn},
+               USE_YN= #{useYn},
+               UPDATE_IDX= #{updateIdx},
+               UPDATE_DATE= SYSDATE()
+         WHERE IDX= #{idx}
+    </update>
+
+    <delete id="deleteBoard" parameterType="map">
+        DELETE FROM board
+         WHERE MASTER_IDX = #{idx}
+    </delete>
 </mapper>

@@ -21,4 +21,8 @@ public interface BoardMapper {
     Map<String, Object> findByBoardIdBoardMaster(String boardId);
 
     int countByBoardIdBoard(Criteria criteria);
+
+    int updateBoard(Board board);
+
+    int deleteBoard(Map<String, Object> paramMap);
 }
