@@ -11,7 +11,11 @@ public interface BoardService {
 
     int insertBoard(MultipartFile[] files, Board board);
 
-    List<Map<String,Object>> findByMasterIdxSearch(Criteria criteria);
+    List<Map<String,Object>> findAllByBoardIdBoard(Criteria criteria);
 
     Board findAllByIdx(Map<String, Object> paramMap);
+
+    Map<String, Object> findByBoardIdBoardMaster(String boardId);
+
+    int countByBoardIdBoard(Criteria criteria);
 }

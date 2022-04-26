@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.BoardService;
+import com.example.demo.util.DeviceCheck;
 import com.example.demo.util.ResultStr;
 import com.example.demo.vo.Board;
 import com.example.demo.vo.Criteria;
+import com.example.demo.vo.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -43,10 +45,17 @@ public class BoardController {
 
         criteria.setParamMap(paramMap);
 
-        List<Map<String,Object>> boardList = boardService.findByMasterIdxSearch(criteria);
+        int total = boardService.countByBoardIdBoard(criteria);
+        List<Map<String,Object>> boardList = boardService.findAllByBoardIdBoard(criteria);
 
+        Map<String,Object> boardMaster = boardService.findByBoardIdBoardMaster(boardId);
+
+        int webPageCount = DeviceCheck.getWebPageCount();
+        Page pageMaker = new Page(total, webPageCount, criteria);
+
+        model.addAttribute("pageMaker", pageMaker);
         model.addAttribute("boardList", boardList);
-        model.addAttribute("criteria", criteria);
+        model.addAttribute("boardMaster", boardMaster);
 
         return "/board/boardList";
     }

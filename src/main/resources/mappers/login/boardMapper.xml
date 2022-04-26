@@ -2,29 +2,97 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.BoardMapper">
 
-    <select id="findByMasterIdxSearch" resultType="CustomMap" parameterType="Criteria">
-        SELECT A.IDX,
-               A.MASTER_IDX,
-               A.BOARD_SUBJECT,
-               A.BOARD_CONTENT,
-               A.HIT,
-               A.START_DATE,
-               A.END_DATE,
-               A.USE_YN,
-               A.CREATE_IDX,
-               A.CREATE_DATE,
-               A.UPDATE_IDX,
-               A.UPDATE_DATE,
-               B.USE_YN AS MASTER_USE_YN
-          FROM board A
-         INNER JOIN board_master B ON A.MASTER_IDX = B.IDX
-         WHERE B.BOARD_ID = #{boardId}
-            <!--
-            <if test="criteria != null">
-                #{searchType}
-                #{keyword}
-            </if>
-            -->
+    <sql id="criteriaBoard">
+        <if test="searchType != null and searchKeyword != null">
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <foreach item="type" collection="typeArr">
+                    <trim prefix="OR">
+                        <choose>
+                            <when test="type=='T'.toString()">
+                                (BOARD_SUBJECT LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                            <when test="type=='C'.toString()">
+                                (BOARD_CONTENT LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                            <when test="type=='W'.toString()">
+                                (
+                                    A.CREATE_IDX IN
+                                        (
+                                            SELECT IDX
+                                              FROM users
+                                             WHERE USER_NICKNM LIKE CONCAT('%',#{searchKeyword},'%')
+                                        )
+                                )
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
+    <select id="countByBoardIdBoard" parameterType="Criteria" resultType="int">
+        SELECT COUNT(*)
+          FROM (
+                    SELECT A.IDX,
+                           A.MASTER_IDX,
+                           A.BOARD_SUBJECT,
+                           A.BOARD_CONTENT,
+                           A.HIT,
+                           A.START_DATE,
+                           A.END_DATE,
+                           A.USE_YN,
+                           A.CREATE_IDX,
+                           A.CREATE_DATE,
+                           A.UPDATE_IDX,
+                           A.UPDATE_DATE
+                      FROM board A
+                     INNER JOIN board_master B ON A.MASTER_IDX = B.IDX
+                     WHERE B.BOARD_ID = #{paramMap.boardId}
+                    <include refid="criteriaBoard"/>
+                ) AS CNT_TB
+    </select>
+
+    <select id="findAllByBoardIdBoard" resultType="CustomMap" parameterType="Criteria">
+        SELECT ROWNUM_TB.*
+          FROM (
+                    SELECT @ROWNUM:=@ROWNUM+1 AS RN,
+                           A.IDX,
+                           A.MASTER_IDX,
+                           A.BOARD_SUBJECT,
+                           A.BOARD_CONTENT,
+                           A.HIT,
+                           A.START_DATE,
+                           A.END_DATE,
+                           A.USE_YN,
+                           A.CREATE_IDX,
+                           A.CREATE_DATE,
+                           A.UPDATE_IDX,
+                           A.UPDATE_DATE
+                      FROM board A
+                     INNER JOIN board_master B ON A.MASTER_IDX = B.IDX,
+                           (SELECT @ROWNUM:=0) temp
+                     WHERE B.BOARD_ID = #{paramMap.boardId}
+                    <include refid="criteriaBoard"/>
+                ) AS ROWNUM_TB
+         ORDER BY IDX desc
+         LIMIT #{pageStart},#{amount}
+    </select>
+
+    <select id="findByBoardIdBoardMaster" parameterType="string" resultType="CustomMap">
+        SELECT IDX,
+               BOARD_ID,
+               BOARD_NM,
+               BOARD_DESC,
+               BOARD_TYPE,
+               FILE_ATTACH_YN,
+               USE_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM board_master
+         WHERE BOARD_ID = #{boardId}
     </select>
 
     <insert id="insertBoard" parameterType="Board">
