@@ -71,7 +71,6 @@ public class BoardController {
     @GetMapping("/{boardId}/{idx}")
     public String boardDetails(@PathVariable("idx") String boardId, @PathVariable("idx") int idx,HttpServletResponse response, HttpServletRequest request, Model model) {
         // TODO 2022-04-25
-        //  - boardMaster와 join해서 list가 맞는 애들만 뿌려주게 수정
         //  - 게시판 쓰기, 댓글, 읽기 권한 설정
 
         Map<String, Object> paramMap = new HashMap<>();
