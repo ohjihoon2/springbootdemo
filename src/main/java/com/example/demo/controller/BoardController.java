@@ -40,7 +40,7 @@ public class BoardController {
                             , HttpServletResponse response, HttpServletRequest request, Model model) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("boardId", boardId);
-        paramMap.put("sriteria", criteria);
+        paramMap.put("criteria", criteria);
 
         List<Board> boardList = boardService.findByMasterIdxSearch(paramMap);
 
