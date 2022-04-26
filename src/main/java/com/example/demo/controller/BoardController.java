@@ -45,7 +45,7 @@ public class BoardController {
         List<Board> boardList = boardService.findByMasterIdxSearch(paramMap);
 
         model.addAttribute("boardList", boardList);
-        model.addAttribute("sriteria", criteria);
+        model.addAttribute("criteria", criteria);
 
         return "/board/boardList";
     }
