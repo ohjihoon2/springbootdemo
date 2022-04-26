@@ -1,18 +1,14 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.repository.BoardMapper;
-import com.example.demo.repository.FileMapper;
 import com.example.demo.service.BoardService;
 import com.example.demo.util.FileUtil;
 import com.example.demo.vo.AttachFile;
-import com.example.demo.vo.AttachFileMaster;
 import com.example.demo.vo.Board;
 import com.example.demo.vo.Criteria;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -51,12 +47,22 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<Map<String,Object>> findByMasterIdxSearch(Criteria criteria) {
-        return boardMapper.findByMasterIdxSearch(criteria);
+    public List<Map<String,Object>> findAllByBoardIdBoard(Criteria criteria) {
+        return boardMapper.findAllByBoardIdBoard(criteria);
     }
 
     @Override
     public Board findAllByIdx(Map<String, Object> paramMap) {
         return boardMapper.findAllByIdx(paramMap);
+    }
+
+    @Override
+    public Map<String, Object> findByBoardIdBoardMaster(String boardId) {
+        return boardMapper.findByBoardIdBoardMaster(boardId);
+    }
+
+    @Override
+    public int countByBoardIdBoard(Criteria criteria) {
+        return boardMapper.countByBoardIdBoard(criteria);
     }
 }
