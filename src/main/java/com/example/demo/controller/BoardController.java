@@ -14,9 +14,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,8 +86,6 @@ public class BoardController {
 
         BoardMaster boardMaster = boardService.findAllByIdxBoardMaster(paramMap);
         Board board = boardService.findAllByIdx(paramMap);
-
-
 
         model.addAttribute("board", board);
         model.addAttribute("boardMaster", boardMaster);
@@ -204,6 +206,16 @@ public class BoardController {
         return ResultStr.setMulti(result);
     }
 
-    // TODO
-    //  - 상세 조회수 처리
+    /**
+     * 조회수 up
+     * @param idx
+     * @param response
+     * @param request
+     */
+    @PostMapping(value = "/hit/{idx}")
+    @ResponseBody
+    public void addHit(@PathVariable("idx") int idx, HttpServletResponse response, HttpServletRequest request){
+        boardService.addHit(request, response,idx);
+    }
+
 }

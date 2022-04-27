@@ -30,4 +30,6 @@ public interface BoardMapper {
     BoardMaster findAllByIdxBoardMaster(Map<String, Object> paramMap);
 
     int moveBoard(Map<String, Object> paramMap);
+
+    void incrementBoardHit(int idx);
 }

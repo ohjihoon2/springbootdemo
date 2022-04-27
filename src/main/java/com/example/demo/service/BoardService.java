@@ -5,6 +5,8 @@ import com.example.demo.vo.BoardMaster;
 import com.example.demo.vo.Criteria;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -27,4 +29,6 @@ public interface BoardService {
     BoardMaster findAllByIdxBoardMaster(Map<String, Object> paramMap);
 
     int moveBoard(Map<String, Object> paramMap);
+
+    void addHit(HttpServletRequest request, HttpServletResponse response, int idx);
 }

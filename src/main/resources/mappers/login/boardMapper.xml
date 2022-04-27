@@ -65,7 +65,7 @@
                            A.START_DATE,
                            A.END_DATE,
                            A.USE_YN,
-                           IFNULL(C.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
+                           IFNULL(C.USER_NICKNM,'탈퇴된 회원')AS CREATE_NICKNM,
                            A.CREATE_DATE,
                            A.UPDATE_IDX,
                            A.UPDATE_DATE
@@ -258,4 +258,9 @@
         </foreach>
     </update>
 
+    <update id="incrementBoardHit" parameterType="int">
+        UPDATE board
+           SET HIT = HIT +1
+         WHERE IDX = #{idx}
+    </update>
 </mapper>
