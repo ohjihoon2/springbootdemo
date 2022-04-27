@@ -32,4 +32,6 @@ public interface BoardMapper {
     int moveBoard(Map<String, Object> paramMap);
 
     void incrementBoardHit(int idx);
+
+    List<Map<String, Object>> findNoticeByBoardIdBoard(Criteria criteria);
 }

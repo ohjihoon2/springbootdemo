@@ -4,7 +4,10 @@ import com.example.demo.repository.BoardMapper;
 import com.example.demo.service.BoardService;
 import com.example.demo.util.FileUtil;
 import com.example.demo.util.HitCookie;
-import com.example.demo.vo.*;
+import com.example.demo.vo.AttachFile;
+import com.example.demo.vo.Board;
+import com.example.demo.vo.BoardMaster;
+import com.example.demo.vo.Criteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,8 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +115,11 @@ public class BoardServiceImpl implements BoardService {
             boardMapper.incrementBoardHit(idx);                        // 조회수 증가 쿼리 수행
         }
 
+    }
+
+    @Override
+    public List<Map<String, Object>> findNoticeByBoardIdBoard(Criteria criteria) {
+        return boardMapper.findNoticeByBoardIdBoard(criteria);
     }
 
     @Override

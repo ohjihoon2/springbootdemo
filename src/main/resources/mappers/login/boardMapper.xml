@@ -80,6 +80,28 @@
          LIMIT #{pageStart},#{amount}
     </select>
 
+    <select id="findNoticeByBoardIdBoard" resultType="CustomMap" parameterType="Criteria">
+        SELECT A.IDX,
+               A.MASTER_IDX,
+               A.BOARD_SUBJECT,
+               A.BOARD_CONTENT,
+               A.HIT,
+               A.START_DATE,
+               A.END_DATE,
+               A.USE_YN,
+               IFNULL(C.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
+               A.CREATE_DATE,
+               A.UPDATE_IDX,
+               A.UPDATE_DATE
+          FROM board A
+         INNER JOIN board_master B ON A.MASTER_IDX = B.IDX
+          LEFT JOIN users C ON A.CREATE_IDX = C.IDX
+         WHERE B.BOARD_ID = #{paramMap.boardId}
+           AND A.NOTICE_YN = 'Y'
+           AND A.USE_YN = 'Y'
+         ORDER BY IDX desc
+    </select>
+
     <select id="findByBoardIdBoardMaster" parameterType="string" resultType="CustomMap">
         SELECT IDX,
                BOARD_ID,

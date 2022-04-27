@@ -47,21 +47,23 @@ public class BoardController {
                             , HttpServletResponse response, HttpServletRequest request, Model model) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("boardId", boardId);
-
         criteria.setParamMap(paramMap);
 
-        // TODO
-        //  - 해당 BOARD ID에 해당하는 공지사항 리스트 MODEL
-
-        int total = boardService.countByBoardIdBoard(criteria);
-        List<Map<String,Object>> boardList = boardService.findAllByBoardIdBoard(criteria);
+        List<Map<String,Object>> noticeList = null;
+        if(criteria.getPageNum() == 1){
+            noticeList = boardService.findNoticeByBoardIdBoard(criteria);
+        }
 
         Map<String,Object> boardMaster = boardService.findByBoardIdBoardMaster(boardId);
+        List<Map<String,Object>> boardList = boardService.findAllByBoardIdBoard(criteria);
 
+
+        int total = boardService.countByBoardIdBoard(criteria);
         int webPageCount = DeviceCheck.getWebPageCount();
         Page pageMaker = new Page(total, webPageCount, criteria);
 
         model.addAttribute("pageMaker", pageMaker);
+        model.addAttribute("noticeList", noticeList);
         model.addAttribute("boardList", boardList);
         model.addAttribute("boardMaster", boardMaster);
 

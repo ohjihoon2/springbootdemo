@@ -31,4 +31,6 @@ public interface BoardService {
     int moveBoard(Map<String, Object> paramMap);
 
     void addHit(HttpServletRequest request, HttpServletResponse response, int idx);
+
+    List<Map<String, Object>> findNoticeByBoardIdBoard(Criteria criteria);
 }
