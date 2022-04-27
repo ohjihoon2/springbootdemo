@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.vo.Board;
+import com.example.demo.vo.BoardMaster;
 import com.example.demo.vo.Criteria;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,4 +23,8 @@ public interface BoardService {
     int updateBoard(MultipartFile[] files, Board board);
 
     int deleteBoard(Map<String, Object> paramMap);
+
+    BoardMaster findAllByIdxBoardMaster(Map<String, Object> paramMap);
+
+    int moveBoard(Map<String, Object> paramMap);
 }

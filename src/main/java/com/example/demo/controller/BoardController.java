@@ -4,6 +4,7 @@ import com.example.demo.service.BoardService;
 import com.example.demo.util.DeviceCheck;
 import com.example.demo.util.ResultStr;
 import com.example.demo.vo.Board;
+import com.example.demo.vo.BoardMaster;
 import com.example.demo.vo.Criteria;
 import com.example.demo.vo.Page;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,9 @@ public class BoardController {
 
         criteria.setParamMap(paramMap);
 
+        // TODO
+        //  - 해당 BOARD ID에 해당하는 공지사항 리스트 MODEL
+
         int total = boardService.countByBoardIdBoard(criteria);
         List<Map<String,Object>> boardList = boardService.findAllByBoardIdBoard(criteria);
 
@@ -70,20 +74,19 @@ public class BoardController {
      */
     @GetMapping("/{boardId}/{idx}")
     public String boardDetails(@PathVariable("boardId") String boardId, @PathVariable("idx") int idx,HttpServletResponse response, HttpServletRequest request, Model model) {
-        // TODO 2022-04-25
-        //  - 게시판 쓰기, 댓글, 읽기 권한 설정
 
         Map<String, Object> paramMap = new HashMap<>();
 
         paramMap.put("idx",idx);
         paramMap.put("boardId",boardId);
 
-        // TODO
-        //  - BOARD_MASTER 값 로직 필요
-
+        BoardMaster boardMaster = boardService.findAllByIdxBoardMaster(paramMap);
         Board board = boardService.findAllByIdx(paramMap);
 
+
+
         model.addAttribute("board", board);
+        model.addAttribute("boardMaster", boardMaster);
 
         return "/board/boardList";
     }
@@ -129,9 +132,16 @@ public class BoardController {
      */
     @GetMapping("/{boardId}/detail/{idx}")
     public String updatePage(@PathVariable("boardId") String boardId, @PathVariable("idx") int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
-        // TODO
-        //  - 수정페이지 데이터 MODEL
+        Map<String, Object> paramMap = new HashMap<>();
 
+        paramMap.put("idx",idx);
+        paramMap.put("boardId",boardId);
+
+        BoardMaster boardMaster = boardService.findAllByIdxBoardMaster(paramMap);
+        Board board = boardService.findAllByIdx(paramMap);
+
+        model.addAttribute("boardMaster", boardMaster);
+        model.addAttribute("board", board);
         return "/board/updateBoard";
     }
 
@@ -175,21 +185,25 @@ public class BoardController {
     }
 
 
+    /**
+     * 게시물 이동 처리
+     * @param paramMap
+     * @param response
+     * @param request
+     * @return
+     */
     @PatchMapping(value = "/move")
     @ResponseBody
     public Map<String, Object> moveBoardMaster(@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
 
-        // masterIdx, 바뀔 ㄱㅔ시물 idx
-
         HttpSession session = request.getSession();
-        int idx = Integer.parseInt((String) session.getAttribute("idx"));
+        int userIdx = Integer.parseInt((String) session.getAttribute("idx"));
+        paramMap.put("userIdx", userIdx);
 
-//        int result = boardService.moveBoard(board);
-//        return ResultStr.setMulti(result);
-        return null;
+        int result = boardService.moveBoard(paramMap);
+        return ResultStr.setMulti(result);
     }
 
     // TODO
-    //  - 게시물 이동
     //  - 상세 조회수 처리
 }

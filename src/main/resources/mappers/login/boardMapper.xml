@@ -65,12 +65,13 @@
                            A.START_DATE,
                            A.END_DATE,
                            A.USE_YN,
-                           A.CREATE_IDX,
+                           IFNULL(C.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
                            A.CREATE_DATE,
                            A.UPDATE_IDX,
                            A.UPDATE_DATE
                       FROM board A
-                     INNER JOIN board_master B ON A.MASTER_IDX = B.IDX,
+                     INNER JOIN board_master B ON A.MASTER_IDX = B.IDX
+                      LEFT JOIN users C ON A.CREATE_IDX = C.IDX,
                            (SELECT @ROWNUM:=0) temp
                      WHERE B.BOARD_ID = #{paramMap.boardId}
                     <include refid="criteriaBoard"/>
@@ -133,7 +134,7 @@
              )
     </insert>
 
-    <select id="findAllByIdx" parameterType="int" resultType="Board">
+    <select id="findAllByIdx" parameterType="map" resultType="Board">
         SELECT A.IDX,
                A.MASTER_IDX,
                A.BOARD_SUBJECT,
@@ -224,4 +225,37 @@
         DELETE FROM board
          WHERE MASTER_IDX = #{idx}
     </delete>
+
+    <select id="findAllByIdxBoardMaster" parameterType="map" resultType="BoardMaster">
+        SELECT IDX,
+               BOARD_ID,
+               BOARD_NM,
+               BOARD_DESC,
+               BOARD_TYPE,
+               LIST_LEVEL,
+               READ_LEVEL,
+               WRITE_LEVEL,
+               COMMENT_LEVEL,
+               UPLOAD_LEVEL,
+               EDITOR_LEVEL,
+               USE_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM board_master
+         WHERE BOARD_ID = #{boardId}
+    </select>
+
+    <update id="moveBoard" parameterType="map">
+        UPDATE board
+           SET MASTER_IDX  = #{masterIdx},
+               UPDATE_IDX = #{userIdx},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX IN
+        <foreach collection="idx" item="idx" open="(" close=")" separator=",">
+            #{roleType}
+        </foreach>
+    </update>
+
 </mapper>

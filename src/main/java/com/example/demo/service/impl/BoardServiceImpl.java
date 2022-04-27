@@ -73,6 +73,17 @@ public class BoardServiceImpl implements BoardService {
         return boardMapper.deleteBoard(paramMap);
     }
 
+    @Override
+    public BoardMaster findAllByIdxBoardMaster(Map<String, Object> paramMap) {
+
+        return boardMapper.findAllByIdxBoardMaster(paramMap);
+    }
+
+    @Override
+    public int moveBoard(Map<String, Object> paramMap) {
+        return boardMapper.moveBoard(paramMap);
+    }
+
 
     @Override
     public List<Map<String,Object>> findAllByBoardIdBoard(Criteria criteria) {
