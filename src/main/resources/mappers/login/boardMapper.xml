@@ -39,9 +39,6 @@
                            A.BOARD_SUBJECT,
                            A.BOARD_CONTENT,
                            A.HIT,
-                           A.START_DATE,
-                           A.END_DATE,
-                           A.USE_YN,
                            A.CREATE_IDX,
                            A.CREATE_DATE,
                            A.UPDATE_IDX,
@@ -62,9 +59,6 @@
                            A.BOARD_SUBJECT,
                            A.BOARD_CONTENT,
                            A.HIT,
-                           A.START_DATE,
-                           A.END_DATE,
-                           A.USE_YN,
                            IFNULL(C.USER_NICKNM,'탈퇴된 회원')AS CREATE_NICKNM,
                            A.CREATE_DATE,
                            A.UPDATE_IDX,
@@ -86,9 +80,6 @@
                A.BOARD_SUBJECT,
                A.BOARD_CONTENT,
                A.HIT,
-               A.START_DATE,
-               A.END_DATE,
-               A.USE_YN,
                IFNULL(C.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
                A.CREATE_DATE,
                A.UPDATE_IDX,
@@ -98,7 +89,6 @@
           LEFT JOIN users C ON A.CREATE_IDX = C.IDX
          WHERE B.BOARD_ID = #{paramMap.boardId}
            AND A.NOTICE_YN = 'Y'
-           AND A.USE_YN = 'Y'
          ORDER BY IDX desc
     </select>
 
@@ -130,10 +120,8 @@
                  BOARD_SUBJECT,
                  BOARD_CONTENT,
                  HIT,
-                 START_DATE,
-                 END_DATE,
                  ATTACH_FILE_IDX,
-                 USE_YN,
+                 DELETE_YN,
                  CREATE_IDX,
                  CREATE_DATE,
                  UPDATE_IDX,
@@ -145,10 +133,8 @@
                  #{boardSubject},
                  #{boardContent},
                  0,
-                 #{startDate},
-                 #{endDate},
                  #{attachFileIdx},
-                 'Y',
+                 'N',
                  #{createIdx},
                  SYSDATE(),
                  NULL,
@@ -162,9 +148,7 @@
                A.BOARD_SUBJECT,
                A.BOARD_CONTENT,
                A.HIT,
-               A.START_DATE,
-               A.END_DATE,
-               A.USE_YN,
+               A.DELETE_YN,
                A.CREATE_IDX,
                A.CREATE_DATE,
                A.UPDATE_IDX,
@@ -233,17 +217,23 @@
         UPDATE board
            SET BOARD_SUBJECT=#{boardSubject},
                BOARD_CONTENT=#{boardContent},
-               START_DATE=#{startDate},
-               END_DATE= #{endDate},
                ATTACH_FILE_IDX= #{attachFileIdx},
                NOTICE_YN= #{noticeYn},
-               USE_YN= #{useYn},
+               DELETE_YN= #{deleteYn},
                UPDATE_IDX= #{updateIdx},
                UPDATE_DATE= SYSDATE()
          WHERE IDX= #{idx}
     </update>
 
-    <delete id="deleteBoard" parameterType="map">
+    <update id="deleteBoardUser" parameterType="map">
+        UPDATE board
+           SET DELETE_YN = 'Y',
+               UPDATE_DATE = SYSDATE(),
+               UPDATE_IDX = #{userIdx}
+         WHERE IDX = #{idx}
+    </update>
+
+    <delete id="deleteBoardAdmin" parameterType="map">
         DELETE FROM board
          WHERE MASTER_IDX = #{idx}
     </delete>
@@ -285,4 +275,10 @@
            SET HIT = HIT +1
          WHERE IDX = #{idx}
     </update>
+
+    <select id="findCreateIdxByIdx" parameterType="map" resultType="int">
+        SELECT CREATE_IDX
+          FROM board
+         WHERE IDX = #{idx}
+    </select>
 </mapper>

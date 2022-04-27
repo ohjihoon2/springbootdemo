@@ -1,6 +1,8 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.repository.AdminBoardMapper;
 import com.example.demo.repository.BoardMapper;
+import com.example.demo.service.AdminBoardService;
 import com.example.demo.service.BoardService;
 import com.example.demo.util.FileUtil;
 import com.example.demo.util.HitCookie;
@@ -73,11 +75,24 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public int deleteBoard(Map<String, Object> paramMap) {
+        int result = 0;
 
-        // TODO
-        //  - SESSION 으로 작성자가 맞는지 확인 하거나 ADMIN인 경우 삭제
+        int userIdx = Integer.parseInt(paramMap.get("userIdx").toString());
+        int createIdx = boardMapper.findCreateIdxByIdx(paramMap);
 
-        return boardMapper.deleteBoard(paramMap);
+        // SESSION 으로 작성자가 맞으면 delete_yn 변경 / ADMIN인 경우 완전 삭제
+        if(createIdx == userIdx){
+            result = boardMapper.deleteBoardUser(paramMap);
+        }else{
+            result = boardMapper.deleteBoardAdmin(paramMap);
+
+            // TODO
+            //  - 관리자 게시글 삭제 시에 게시물의 댓글도 모두 삭제 처리 추가
+
+
+        }
+
+        return result;
     }
 
     @Override

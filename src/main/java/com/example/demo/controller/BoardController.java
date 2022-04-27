@@ -180,8 +180,12 @@ public class BoardController {
     @DeleteMapping(value = "/{boardId}/detail/{idx}")
     @ResponseBody
     public Map<String,Object> deleteQna(@PathVariable("boardId") String boardId, @PathVariable int idx,HttpServletResponse response, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        int userIdx = Integer.parseInt((String) session.getAttribute("idx"));
         Map<String,Object> paramMap = new HashMap<>();
+
         paramMap.put("idx",idx);
+        paramMap.put("userIdx", userIdx);
 
         int result = boardService.deleteBoard(paramMap);
 

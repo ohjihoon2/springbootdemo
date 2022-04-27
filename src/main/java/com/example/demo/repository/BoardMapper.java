@@ -25,7 +25,7 @@ public interface BoardMapper {
 
     int updateBoard(Board board);
 
-    int deleteBoard(Map<String, Object> paramMap);
+    int deleteBoardAdmin(Map<String, Object> paramMap);
 
     BoardMaster findAllByIdxBoardMaster(Map<String, Object> paramMap);
 
@@ -34,4 +34,8 @@ public interface BoardMapper {
     void incrementBoardHit(int idx);
 
     List<Map<String, Object>> findNoticeByBoardIdBoard(Criteria criteria);
+
+    int findCreateIdxByIdx(Map<String, Object> paramMap);
+
+    int deleteBoardUser(Map<String, Object> paramMap);
 }

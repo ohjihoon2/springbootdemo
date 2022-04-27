@@ -11,10 +11,8 @@ public class Board {
     private String boardSubject;
     private String boardContent;
     private int hit;
-    private Date startDate;
-    private Date endDate;
     private int attachFileIdx;
-    private String useYn;
+    private String deleteYn;
     private int createIdx;
     private Date createDate;
     private int updateIdx;
