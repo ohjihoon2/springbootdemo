@@ -32,7 +32,7 @@
             </div>
             <div class="header-bot">
                 <a th:href="${#authorization.expr('isAuthenticated()') ? '' : '/login'}">[[${#authorization.expr('isAuthenticated()') ? '내정보' : '로그인'}]]</a>
-                <a href="/adm/admIndex" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')">관리자</a>
+                <a href="/adm/admIndex" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER','ROLE_SYSTEM')">관리자</a>
                 <a th:href="${#authorization.expr('isAuthenticated()') ? '/logout' : '/signup'}">[[${#authorization.expr('isAuthenticated()') ? '로그아웃' : '회원가입'}]]</a>
             </div>
         </div>

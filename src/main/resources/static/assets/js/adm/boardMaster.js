@@ -39,15 +39,31 @@ $(function(){
             '<th>Name</th>' +
             '<td colspan="3"><input id="boardNm" type="text" maxlength="15"></td>' +
             '</tr>' +
-            '<tr>' +
+            '<tr class="tr-auth">' +
+            '<th colspan="4">Auth</th>' +
+            '</tr>' +
+            '<tr class="tr-auth">' +
+            '<th>List</th>' +
+            '<td class="text-center"><select id="listLevel">'+ authoritySelect() +'</select></td>' +
+            '<th>Read</th>' +
+            '<td class="text-center"><select id="readLevel">'+ authoritySelect() +'</select></td>' +
+            '</tr>' +
+            '<tr class="tr-auth">' +
+            '<th>Write</th>' +
+            '<td class="text-center"><select id="writeLevel">'+ authoritySelect() +'</select></td>' +
+            '<th>Comment</th>' +
+            '<td class="text-center"><select id="commentLevel">'+ authoritySelect() +'</select></td>' +
+            '</tr>' +
+            '<tr class="tr-auth"">' +
+            '<th>Editor Photo</th>' +
+            '<td class="text-center"><select id="editorLevel">'+ authoritySelect() +'</select></td>' +
+            '<th>File</th>' +
+            '<td class="text-center"><select id="uploadLevel">'+ authoritySelect() +'</select></td>' +
+            '</tr>' +
             '<th colspan="4">Desc</th>' +
             '</tr>' +
             '<tr>' +
             '<td colspan="4"><textarea id="boardDesc"></textarea></td>' +
-            '</tr>' +
-            '<tr>' +
-            '<th colspan="2">File Attach</th>' +
-            '<td colspan="2" class="text-center"><input id="fileAttachYn" type="checkbox" checked></td>' +
             '</tr>' +
             '</tbody>' +
             '</table>' +
@@ -93,22 +109,18 @@ $(function(){
             useYn = 'N';
         }
 
-        var fileAttachYn;
-        if($('#fileAttachYn').is(':checked')) {
-            fileAttachYn = 'Y';
-        }
-        else {
-            fileAttachYn = 'N';
-        }
-
-
         var data = {
             boardType : $('#boardType').val(),
             useYn : useYn,
             boardId : $('#boardId').val(),
             boardNm : $('#boardNm').val(),
             boardDesc : $('#boardDesc').val(),
-            fileAttachYn : fileAttachYn,
+            listLevel : $('#listLevel').val(),
+            readLevel : $('#readLevel').val(),
+            writeLevel : $('#writeLevel').val(),
+            commentLevel : $('#commentLevel').val(),
+            editorLevel : $('#editorLevel').val(),
+            uploadLevel : $('#uploadLevel').val(),
         };
 
         var res = $ajax.postAjax('/adm/boardMaster', data);
@@ -182,15 +194,31 @@ $(function(){
             '<th>Name</th>' +
             '<td colspan="3"><input id="boardNm" type="text" value="'+ res.boardNm +'" maxlength="15"></td>' +
             '</tr>' +
-            '<tr>' +
+            '<tr class="tr-auth" style="display: none;">' +
+            '<th colspan="4">Auth</th>' +
+            '</tr>' +
+            '<tr class="tr-auth" style="display: none;">' +
+            '<th>List</th>' +
+            '<td class="text-center"><select id="listLevel">'+ authoritySelect(res.listLevel) +'</select></td>' +
+            '<th>Read</th>' +
+            '<td class="text-center"><select id="readLevel">'+ authoritySelect(res.readLevel) +'</select></td>' +
+            '</tr>' +
+            '<tr class="tr-auth" style="display: none;">' +
+            '<th>Write</th>' +
+            '<td class="text-center"><select id="writeLevel">'+ authoritySelect(res.writeLevel) +'</select></td>' +
+            '<th>Comment</th>' +
+            '<td class="text-center"><select id="commentLevel">'+ authoritySelect(res.commentLevel) +'</select></td>' +
+            '</tr>' +
+            '<tr class="tr-auth" style="display: none;">' +
+            '<th>Editor Photo</th>' +
+            '<td class="text-center"><select id="editorLevel">'+ authoritySelect(res.editorLevel) +'</select></td>' +
+            '<th>File</th>' +
+            '<td class="text-center"><select id="uploadLevel">'+ authoritySelect(res.uploadLevel) +'</select></td>' +
+            '</tr>' +
             '<th colspan="4">Desc</th>' +
             '</tr>' +
             '<tr>' +
             '<td colspan="4"><textarea id="boardDesc">' + res.boardDesc + '</textarea></td>' +
-            '</tr>' +
-            '<tr>' +
-            '<th colspan="2">File Attach</th>' +
-            '<td colspan="2" class="text-center"><input id="fileAttachYn" type="checkbox"'+ fileAttachYn +'></td>' +
             '</tr>' +
             '</tbody>' +
             '</table>' +
@@ -205,6 +233,10 @@ $(function(){
             '</form>';
 
         $popup.popupJs(html);
+
+        if(res.useYn == 'Y') {
+            $('.tr-auth').show();
+        }
     });
 
     // 게시판삭제
@@ -260,23 +292,20 @@ $(function(){
             useYn = 'N';
         }
 
-        var fileAttachYn;
-        if($('#fileAttachYn').is(':checked')) {
-            fileAttachYn = 'Y';
-        }
-        else {
-            fileAttachYn = 'N';
-        }
-
-
         var data = {
             boardType : $('#boardType').val(),
             useYn : useYn,
             boardId : $('#boardId').val(),
             boardNm : $('#boardNm').val(),
             boardDesc : $('#boardDesc').val(),
-            fileAttachYn : fileAttachYn,
+            listLevel : $('#listLevel').val(),
+            readLevel : $('#readLevel').val(),
+            writeLevel : $('#writeLevel').val(),
+            commentLevel : $('#commentLevel').val(),
+            editorLevel : $('#editorLevel').val(),
+            uploadLevel : $('#uploadLevel').val(),
         };
+
         var idx = $('#idx').val();
         var res = $ajax.patchAjax('/adm/boardMaster/'+ idx, data);
         if(res == "error") {
@@ -290,4 +319,42 @@ $(function(){
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
         }
     });
+
+    // Auth설정 숨이기
+    $(document).on("change", "#useYn", function(e) {
+        if($('#useYn').is(':checked')) {
+            $('.tr-auth').show();
+        }
+        else {
+            $('.tr-auth').hide();
+        }
+    });
 });
+
+//셀렉트박스를 만든다
+function authoritySelect(au='') {
+
+    if(au == '') {
+        var html =
+            '<option value="ALL">전체사용</option>' +
+            '<option value="ADMIN">관리자</option>' +
+            '<option value="USER">회원</option>' +
+            '<option value="NONE">사용안함</option>';
+    }
+    else {
+        var auth = {
+            ALL : '',
+            ADMIN : '',
+            USER : '',
+            NONE : '',
+        }
+        auth[au] = 'selected';
+
+        var html =
+            '<option value="ALL"' + auth['ALL'] + '>전체사용</option>' +
+            '<option value="ADMIN"' + auth['ADMIN'] + '>관리자</option>' +
+            '<option value="USER"' + auth['USER'] + '>회원</option>' +
+            '<option value="NONE"' + auth['NONE'] + '>사용안함</option>';
+    }
+    return html;
+}
