@@ -3,24 +3,19 @@ package com.example.demo.controller;
 import com.example.demo.service.BoardService;
 import com.example.demo.util.DeviceCheck;
 import com.example.demo.util.ResultStr;
-import com.example.demo.vo.Board;
-import com.example.demo.vo.BoardMaster;
-import com.example.demo.vo.Criteria;
-import com.example.demo.vo.Page;
+import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,11 +45,12 @@ public class BoardController {
         criteria.setParamMap(paramMap);
 
         List<Map<String,Object>> noticeList = null;
-        if(criteria.getPageNum() == 1){
+        if(criteria.getPageNum() == 1 && criteria.getSearchKeyword() == null){
             noticeList = boardService.findNoticeByBoardIdBoard(criteria);
         }
 
         Map<String,Object> boardMaster = boardService.findByBoardIdBoardMaster(boardId);
+        // TODO 댓글 개수 - BOARDLIST에 서브 쿼리로 추가
         List<Map<String,Object>> boardList = boardService.findAllByBoardIdBoard(criteria);
 
 
@@ -88,12 +84,93 @@ public class BoardController {
 
         BoardMaster boardMaster = boardService.findAllByIdxBoardMaster(paramMap);
         Board board = boardService.findAllByIdx(paramMap);
+        List<Map<String,Object>> commentList = boardService.findAllByIdxBoardComment(paramMap);
 
-        model.addAttribute("board", board);
+
         model.addAttribute("boardMaster", boardMaster);
+        model.addAttribute("board", board);
+        model.addAttribute("commentList", commentList);
 
         return "/board/boardList";
     }
+
+
+    /**
+     * 게시물 댓글 작성
+     * @param comment
+     * @param response
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/comment")
+    @ResponseBody
+    public Map<String, Object> insertBoardComment(@RequestBody BoardComment comment, HttpServletResponse response, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        int idx = Integer.parseInt((String) session.getAttribute("idx"));
+        comment.setCreateIdx(idx);
+
+        int result = boardService.insertBoardComment(comment);
+        return ResultStr.setMulti(result);
+    }
+
+    /**
+     * 게시물 댓글 수정
+     * @param comment
+     * @param response
+     * @param request
+     * @return
+     */
+    @PatchMapping(value = "/comment")
+    @ResponseBody
+    public Map<String, Object> updateBoardComment(@RequestBody BoardComment comment, HttpServletResponse response, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        int idx = Integer.parseInt((String) session.getAttribute("idx"));
+        comment.setUpdateIdx(idx);
+
+        int result = boardService.updateBoardComment(comment);
+        return ResultStr.setMulti(result);
+    }
+
+    /**
+     * 게시물 댓글 유저가 삭제
+     * @param comment
+     * @param response
+     * @param request
+     * @return
+     */
+    @DeleteMapping(value = "/comment/user")
+    @ResponseBody
+    public Map<String, Object> deleteBoardCommentUser(@RequestBody BoardComment comment, HttpServletResponse response, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        int idx = Integer.parseInt((String) session.getAttribute("idx"));
+        comment.setUpdateIdx(idx);
+
+        int result = boardService.deleteBoardCommentUser(comment);
+        return ResultStr.setMulti(result);
+    }
+
+    /**
+     * 게시물 댓글 관리자가 삭제
+     * @param comment
+     * @param response
+     * @param request
+     * @return
+     */
+    @DeleteMapping(value = "/comment/admin")
+    @ResponseBody
+    public Map<String, Object> deleteBoardCommentAdmin(@RequestBody BoardComment comment, HttpServletResponse response, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        int idx = Integer.parseInt((String) session.getAttribute("idx"));
+        comment.setUpdateIdx(idx);
+
+        int result = boardService.deleteBoardCommentAdmin(comment);
+        return ResultStr.setMulti(result);
+    }
+
 
     /**
      * 게시물 등록 페이지

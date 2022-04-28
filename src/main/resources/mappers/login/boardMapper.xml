@@ -62,7 +62,10 @@
                            IFNULL(C.USER_NICKNM,'탈퇴된 회원')AS CREATE_NICKNM,
                            A.CREATE_DATE,
                            A.UPDATE_IDX,
-                           A.UPDATE_DATE
+                           A.UPDATE_DATE,
+                           (SELECT COUNT(*)
+                              FROM BOARD_COMMENT
+                             WHERE BOARD_IDX = A.IDX ) AS CMMT_CNT
                       FROM board A
                      INNER JOIN board_master B ON A.MASTER_IDX = B.IDX
                       LEFT JOIN users C ON A.CREATE_IDX = C.IDX,
@@ -162,56 +165,102 @@
      <!--TODO 재귀 예시-->
 
     <!-- 재귀쿼리 예시 -->
-    <select id="EXAMPLE" parameterType="int" resultType="map">
+    <select id="findAllByIdxBoardComment" parameterType="int" resultType="map">
         WITH RECURSIVE CTE AS
                            (
                                SELECT IDX,
-                                      convert(idx, char(100)) as CTE_PATH,
+                                      convert(idx, char(100)) AS CTE_PATH,
                                       1 LVL,
+                                      BOARD_IDX,
                                       PARENT_IDX,
-                                      QA_CATEGORY,
-                                      QA_SUBJECT,
-                                      QA_STATUS,
-                                      SECRET_YN,
-                                      USE_YN,
+                                      COMMENT_CONTENT,
+                                      DELETE_YN,
                                       CREATE_IDX,
                                       CREATE_DATE,
                                       UPDATE_IDX,
                                       UPDATE_DATE
-                               FROM QNA Q
-                               WHERE IDX = #{idx}
-                               UNION ALL
-                               SELECT Q.IDX,
-                                      concat(CTE.CTE_PATH, '-', Q.IDX) AS CTE_PATH,
+                                 FROM board_comment
+                                WHERE IDX = #{idx}
+                                UNION ALL
+                               SELECT A.IDX,
+                                      concat(CTE.CTE_PATH, '-', A.IDX) AS CTE_PATH,
                                       LVL + 1 LVL,
-                                      Q.PARENT_IDX,
-                                      Q.QA_CATEGORY,
-                                      Q.QA_SUBJECT,
-                                      Q.QA_STATUS,
-                                      Q.SECRET_YN,
-                                      Q.USE_YN,
-                                      Q.CREATE_IDX,
-                                      Q.CREATE_DATE,
-                                      Q.UPDATE_IDX,
-                                      Q.UPDATE_DATE
-                               FROM QNA Q
-                                        INNER JOIN CTE ON Q.PARENT_IDX = CTE.IDX
+                                      A.BOARD_IDX,
+                                      A.PARENT_IDX,
+                                      A.COMMENT_CONTENT,
+                                      A.DELETE_YN,
+                                      A.CREATE_IDX,
+                                      A.CREATE_DATE,
+                                      A.UPDATE_IDX,
+                                      A.UPDATE_DATE
+                                 FROM board_comment A
+                                INNER JOIN CTE ON A.PARENT_IDX = CTE.IDX
                            )
         SELECT IDX,
                PARENT_IDX,
                LVL,
                CTE_PATH,
-               QA_CATEGORY,
-               QA_SUBJECT,
-               QA_STATUS,
-               SECRET_YN,
-               USE_YN,
+               COMMENT_CONTENT,
+               DELETE_YN,
                CREATE_IDX,
                CREATE_DATE,
                UPDATE_IDX,
                UPDATE_DATE
         FROM CTE
     </select>
+
+    <insert id="insertBoardComment" parameterType="BoardComment">
+        INSERT INTO board_comment
+            (
+                 BOARD_IDX,
+                 PARENT_IDX,
+                 COMMENT_CONTENT,
+                 CREATE_IDX,
+                 CREATE_DATE
+            )
+        VALUES
+            (
+                 #{boardIdx},
+                 #{parentIdx},
+                 #{commentContent},
+                 #{createIdx},
+                 SYSDATE()
+            )
+    </insert>
+
+    <update id="updateBoardComment" parameterType="BoardComment">
+        UPDATE board_comment
+           SET COMMENT_CONTENT = #{commentContent},
+               UPDATE_IDX = #{updateIdx},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX= #{idx}
+    </update>
+
+    <update id="deleteBoardCommentUser" parameterType="BoardComment">
+        UPDATE board_comment
+           SET DELETE_YN = 'Y',
+               UPDATE_IDX = #{updateIdx},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX= #{idx}
+    </update>
+
+    <delete id="deleteBoardCommentAdmin" parameterType="BoardComment">
+        DELETE FROM board_comment
+         WHERE IDX IN (
+                           WITH RECURSIVE CTE AS
+                               (
+                                    SELECT IDX
+                                      FROM board_comment
+                                     WHERE IDX = #{idx}
+                                     UNION ALL
+                                    SELECT A.IDX
+                                      FROM board_comment A
+                                     INNER JOIN CTE ON A.PARENT_IDX = CTE.IDX
+                                )
+                           SELECT IDX
+                             FROM CTE
+                      )
+    </delete>
 
     <update id="updateBoard" parameterType="Board">
         UPDATE board

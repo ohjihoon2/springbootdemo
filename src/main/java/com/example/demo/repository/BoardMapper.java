@@ -1,9 +1,6 @@
 package com.example.demo.repository;
 
-import com.example.demo.vo.AttachFile;
-import com.example.demo.vo.Board;
-import com.example.demo.vo.BoardMaster;
-import com.example.demo.vo.Criteria;
+import com.example.demo.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -38,4 +35,14 @@ public interface BoardMapper {
     int findCreateIdxByIdx(Map<String, Object> paramMap);
 
     int deleteBoardUser(Map<String, Object> paramMap);
+
+    List<Map<String, Object>> findAllByIdxBoardComment(Map<String, Object> paramMap);
+
+    int insertBoardComment(BoardComment comment);
+
+    int updateBoardComment(BoardComment comment);
+
+    int deleteBoardCommentUser(BoardComment comment);
+
+    int deleteBoardCommentAdmin(BoardComment comment);
 }

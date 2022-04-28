@@ -6,11 +6,10 @@ import com.example.demo.service.AdminBoardService;
 import com.example.demo.service.BoardService;
 import com.example.demo.util.FileUtil;
 import com.example.demo.util.HitCookie;
-import com.example.demo.vo.AttachFile;
-import com.example.demo.vo.Board;
-import com.example.demo.vo.BoardMaster;
-import com.example.demo.vo.Criteria;
+import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -135,6 +134,30 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<Map<String, Object>> findNoticeByBoardIdBoard(Criteria criteria) {
         return boardMapper.findNoticeByBoardIdBoard(criteria);
+    }
+
+    @Override
+    public List<Map<String, Object>> findAllByIdxBoardComment(Map<String, Object> paramMap) {
+        return boardMapper.findAllByIdxBoardComment(paramMap);
+    }
+
+    @Override
+    public int insertBoardComment(BoardComment comment) {
+        return boardMapper.insertBoardComment(comment);
+    }
+
+    @Override
+    public int updateBoardComment(BoardComment comment) {
+        return boardMapper.updateBoardComment(comment);
+    }
+
+    @Override
+    public int deleteBoardCommentUser(BoardComment comment) {
+        return boardMapper.deleteBoardCommentUser(comment);
+    }
+    @Override
+    public int deleteBoardCommentAdmin(BoardComment comment) {
+       return boardMapper.deleteBoardCommentAdmin(comment);
     }
 
     @Override

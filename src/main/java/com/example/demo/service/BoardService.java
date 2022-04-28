@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.vo.Board;
+import com.example.demo.vo.BoardComment;
 import com.example.demo.vo.BoardMaster;
 import com.example.demo.vo.Criteria;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,4 +34,14 @@ public interface BoardService {
     void addHit(HttpServletRequest request, HttpServletResponse response, int idx);
 
     List<Map<String, Object>> findNoticeByBoardIdBoard(Criteria criteria);
+
+    List<Map<String, Object>> findAllByIdxBoardComment(Map<String, Object> paramMap);
+
+    int insertBoardComment(BoardComment comment);
+
+    int updateBoardComment(BoardComment comment);
+
+    int deleteBoardCommentUser(BoardComment comment);
+
+    int deleteBoardCommentAdmin(BoardComment comment);
 }
