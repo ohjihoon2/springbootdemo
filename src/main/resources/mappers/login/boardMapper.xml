@@ -318,7 +318,7 @@
          WHERE BOARD_ID = #{boardId}
     </select>
 
-    <select id="findBoardMaster" resultType="map">
+    <select id="findBoardMaster" resultType="CustomMap">
         SELECT IDX,
                BOARD_NM,
                BOARD_TYPE,
