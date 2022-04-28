@@ -85,4 +85,6 @@ public interface AdminBoardMapper {
     List<Qna> findAttachFileIdxByIdxQna(int idx);
 
     List<AttachFile> findByAttachFileIdx(int attachFileIdx);
+
+    void deleteBoardCommentWithBoardMaster(Map<String, Object> paramMap);
 }

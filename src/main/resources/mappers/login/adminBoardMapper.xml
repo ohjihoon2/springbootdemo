@@ -271,6 +271,15 @@
          WHERE MASTER_IDX = #{idx}
     </delete>
 
+    <delete id="deleteBoardCommentWithBoardMaster" parameterType="map">
+        DELETE FROM board_comment
+         WHERE BOARD_IDX IN (
+                                 SELECT IDX
+                                   FROM board
+                                  WHERE MASTER_IDX = #{idx}
+                            )
+    </delete>
+
     <select id="findAllContent" parameterType="map" resultType="CustomMap">
         SELECT A.IDX,
                A.CONTENT_ID,

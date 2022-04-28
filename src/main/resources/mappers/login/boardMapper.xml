@@ -319,9 +319,11 @@
     </select>
 
     <select id="findBoardMaster" resultType="map">
-        SELECT BOARD_NM
+        SELECT IDX,
+               BOARD_NM,
+               BOARD_TYPE,
+               USE_YN
           FROM board_master
-         WHERE USE_YN = 'Y'
     </select>
     <update id="moveBoards" parameterType="map">
         UPDATE board
