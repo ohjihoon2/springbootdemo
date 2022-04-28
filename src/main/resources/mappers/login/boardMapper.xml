@@ -291,7 +291,7 @@
 
     <delete id="deleteBoardAdmin" parameterType="map">
         DELETE FROM board
-         WHERE MASTER_IDX IN
+         WHERE IDX IN
         <foreach collection="idx" item="idx" open="(" close=")" separator=",">
             #{idx}
         </foreach>

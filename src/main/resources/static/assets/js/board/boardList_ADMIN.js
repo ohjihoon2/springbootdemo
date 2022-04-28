@@ -27,11 +27,26 @@ $(function() {
         else {
             $('#admBtn').next('ul').hide();
 
+            var idx = [];
+            for(var i = 0; i < check.length; i++) {
+                idx.push($(check).eq(i).closest('tr').data('val'));
+            }
+
             var data = {
-                boardType : $('#boardType').val(),
+                idx : idx,
             };
 
-            var res = $ajax.postAjax('/adm/boardMaster', data);
+            var res = $ajax.deleteAjax('/board/'+ boardId, data);
+            if(res == "error") {
+                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            }
+            else if(res.result == "success") {
+                alert("선택 된 게시물을 삭제하였습니다.")
+                window.location.reload();
+            }
+            else if(res.result == "fail"){
+                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            }
         }
     });
     
@@ -116,12 +131,12 @@ $(function() {
                 idx : idx
             };
 
-            var res = $ajax.patchAjax('/adm/faq/'+ idx, data);
+            var res = $ajax.patchAjax('/board/move', data);
             if(res == "error") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }
             else if(res.result == "success") {
-                alert("FAQ를 수정하였습니다.");
+                alert("게시물을 이동하였습니다.");
                 window.location.reload();
             }
             else if(res.result == "fail"){
