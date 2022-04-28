@@ -26,7 +26,7 @@ public interface BoardMapper {
 
     BoardMaster findAllByIdxBoardMaster(Map<String, Object> paramMap);
 
-    int moveBoard(Map<String, Object> paramMap);
+    int moveBoards(Map<String, Object> paramMap);
 
     void incrementBoardHit(int idx);
 
@@ -45,4 +45,8 @@ public interface BoardMapper {
     int deleteBoardCommentUser(BoardComment comment);
 
     int deleteBoardCommentAdmin(BoardComment comment);
+
+    void deleteBoardCommentWithBoard(Map<String, Object> paramMap);
+
+    List<Map<String, Object>> findBoardMaster();
 }

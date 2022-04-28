@@ -262,6 +262,13 @@
                       )
     </delete>
 
+    <delete id="deleteBoardCommentWithBoard" parameterType="map">
+        DELETE FROM board_comment
+         WHERE BOARD_IDX IN
+        <foreach collection="idx" item="idx" open="(" close=")" separator=",">
+            #{idx}
+        </foreach>
+    </delete>
     <update id="updateBoard" parameterType="Board">
         UPDATE board
            SET BOARD_SUBJECT=#{boardSubject},
@@ -284,7 +291,10 @@
 
     <delete id="deleteBoardAdmin" parameterType="map">
         DELETE FROM board
-         WHERE MASTER_IDX = #{idx}
+         WHERE MASTER_IDX IN
+        <foreach collection="idx" item="idx" open="(" close=")" separator=",">
+            #{idx}
+        </foreach>
     </delete>
 
     <select id="findAllByIdxBoardMaster" parameterType="map" resultType="BoardMaster">
@@ -308,7 +318,12 @@
          WHERE BOARD_ID = #{boardId}
     </select>
 
-    <update id="moveBoard" parameterType="map">
+    <select id="findBoardMaster" resultType="map">
+        SELECT BOARD_NM
+          FROM board_master
+         WHERE USE_YN = 'Y'
+    </select>
+    <update id="moveBoards" parameterType="map">
         UPDATE board
            SET MASTER_IDX  = #{masterIdx},
                UPDATE_IDX = #{userIdx},

@@ -25,11 +25,13 @@ public interface BoardService {
 
     int updateBoard(MultipartFile[] files, Board board);
 
-    int deleteBoard(Map<String, Object> paramMap);
+    int deleteBoardUser(Map<String, Object> paramMap);
+
+    int deleteBoardAdmin(Map<String, Object> paramMap);
 
     BoardMaster findAllByIdxBoardMaster(Map<String, Object> paramMap);
 
-    int moveBoard(Map<String, Object> paramMap);
+    int moveBoards(Map<String, Object> paramMap);
 
     void addHit(HttpServletRequest request, HttpServletResponse response, int idx);
 
@@ -44,4 +46,6 @@ public interface BoardService {
     int deleteBoardCommentUser(BoardComment comment);
 
     int deleteBoardCommentAdmin(BoardComment comment);
+
+    List<Map<String, Object>> findBoardMaster();
 }

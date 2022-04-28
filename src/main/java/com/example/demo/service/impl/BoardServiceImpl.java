@@ -1,15 +1,11 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.repository.AdminBoardMapper;
 import com.example.demo.repository.BoardMapper;
-import com.example.demo.service.AdminBoardService;
 import com.example.demo.service.BoardService;
 import com.example.demo.util.FileUtil;
 import com.example.demo.util.HitCookie;
 import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -73,22 +69,17 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public int deleteBoard(Map<String, Object> paramMap) {
+    public int deleteBoardUser(Map<String, Object> paramMap) {
+        return boardMapper.deleteBoardUser(paramMap);
+    }
+
+    @Override
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
+    public int deleteBoardAdmin(Map<String, Object> paramMap) {
         int result = 0;
-
-        int userIdx = Integer.parseInt(paramMap.get("userIdx").toString());
-        int createIdx = boardMapper.findCreateIdxByIdx(paramMap);
-
-        // SESSION 으로 작성자가 맞으면 delete_yn 변경 / ADMIN인 경우 완전 삭제
-        if(createIdx == userIdx){
-            result = boardMapper.deleteBoardUser(paramMap);
-        }else{
-            result = boardMapper.deleteBoardAdmin(paramMap);
-
-            // TODO
-            //  - 관리자 게시글 삭제 시에 게시물의 댓글도 모두 삭제 처리 추가
-
-
+        if(boardMapper.deleteBoardAdmin(paramMap) != 0){
+            boardMapper.deleteBoardCommentWithBoard(paramMap);
+            result = 1;
         }
 
         return result;
@@ -101,8 +92,8 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public int moveBoard(Map<String, Object> paramMap) {
-        return boardMapper.moveBoard(paramMap);
+    public int moveBoards(Map<String, Object> paramMap) {
+        return boardMapper.moveBoards(paramMap);
     }
 
     @Override
@@ -158,6 +149,11 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public int deleteBoardCommentAdmin(BoardComment comment) {
        return boardMapper.deleteBoardCommentAdmin(comment);
+    }
+
+    @Override
+    public List<Map<String, Object>> findBoardMaster() {
+       return boardMapper.findBoardMaster();
     }
 
     @Override

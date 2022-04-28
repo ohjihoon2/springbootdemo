@@ -6,7 +6,6 @@ import com.example.demo.util.ResultStr;
 import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +65,58 @@ public class BoardController {
     }
 
     /**
+     * 게시물 삭제(다중)
+     * @param boardId
+     * @param paramMap
+     * @param response
+     * @param request
+     * @return
+     */
+    @DeleteMapping(value = "/{boardId}")
+    @ResponseBody
+    public Map<String,Object> deleteBoards(@PathVariable("boardId") String boardId, @RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
+        int result = boardService.deleteBoardAdmin(paramMap);
+        return ResultStr.set(result);
+    }
+
+//     TODO
+//      썸네일 올리기 / 수정 / 삭제
+
+    /**
+     * 게시판 목록
+     * @param response
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/boardMaster")
+    @ResponseBody
+    public List<Map<String, Object>> boardMasterList(HttpServletResponse response, HttpServletRequest request) {
+        List<Map<String, Object>> resultList = boardService.findBoardMaster();
+        return resultList;
+    }
+
+    /**
+     * 게시물 이동 처리 (다중)
+     * @param paramMap
+     * @param response
+     * @param request
+     * @return
+     */
+    @PatchMapping(value = "/move")
+    @ResponseBody
+    public Map<String, Object> moveBoardMaster(@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        int userIdx = Integer.parseInt((String) session.getAttribute("idx"));
+        paramMap.put("userIdx", userIdx);
+
+        int result = boardService.moveBoards(paramMap);
+        return ResultStr.setMulti(result);
+    }
+
+
+
+    /**
      * 게시물 상세
      * @param idx
      * @param response
@@ -93,7 +143,6 @@ public class BoardController {
 
         return "/board/boardList";
     }
-
 
     /**
      * 게시물 댓글 작성
@@ -134,7 +183,7 @@ public class BoardController {
     }
 
     /**
-     * 게시물 댓글 유저가 삭제
+     * 게시물 댓글 삭제(유저)
      * @param comment
      * @param response
      * @param request
@@ -153,7 +202,7 @@ public class BoardController {
     }
 
     /**
-     * 게시물 댓글 관리자가 삭제
+     * 게시물 댓글 삭제(관리자)
      * @param comment
      * @param response
      * @param request
@@ -203,6 +252,24 @@ public class BoardController {
         return ResultStr.setMulti(result);
     }
 
+    /**
+     * 게시물 이동 처리(단일)
+     * @param paramMap
+     * @param response
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/{boardId}/detail/{idx}/move")
+    @ResponseBody
+    public Map<String, Object> boardMasterList(@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        int userIdx = Integer.parseInt((String) session.getAttribute("idx"));
+        paramMap.put("userIdx", userIdx);
+
+        int result = boardService.moveBoards(paramMap);
+        return ResultStr.setMulti(result);
+    }
 
     /**
      * 게시물 수정 페이지
@@ -248,15 +315,15 @@ public class BoardController {
 
 
     /**
-     * 게시물 삭제 처리
+     * 게시물 삭제 처리(유저)
      * @param idx
      * @param response
      * @param request
      * @return
      */
-    @DeleteMapping(value = "/{boardId}/detail/{idx}")
+    @DeleteMapping(value = "/{boardId}/detail/{idx}/user")
     @ResponseBody
-    public Map<String,Object> deleteQna(@PathVariable("boardId") String boardId, @PathVariable int idx,HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> deleteBoardUser(@PathVariable("boardId") String boardId, @PathVariable int idx,HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt((String) session.getAttribute("idx"));
         Map<String,Object> paramMap = new HashMap<>();
@@ -264,29 +331,32 @@ public class BoardController {
         paramMap.put("idx",idx);
         paramMap.put("userIdx", userIdx);
 
-        int result = boardService.deleteBoard(paramMap);
+        int result = boardService.deleteBoardUser(paramMap);
 
         return ResultStr.set(result);
     }
 
-
     /**
-     * 게시물 이동 처리
-     * @param paramMap
+     * 게시물 삭제 처리(관리자)
+     * @param boardId
+     * @param idx
      * @param response
      * @param request
      * @return
      */
-    @PatchMapping(value = "/move")
+    @DeleteMapping(value = "/{boardId}/detail/{idx}/admin")
     @ResponseBody
-    public Map<String, Object> moveBoardMaster(@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
-
+    public Map<String,Object> deleteBoardAdmin(@PathVariable("boardId") String boardId, @PathVariable int idx,HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt((String) session.getAttribute("idx"));
+        Map<String,Object> paramMap = new HashMap<>();
+
+        paramMap.put("idx",idx);
         paramMap.put("userIdx", userIdx);
 
-        int result = boardService.moveBoard(paramMap);
-        return ResultStr.setMulti(result);
+        int result = boardService.deleteBoardAdmin(paramMap);
+
+        return ResultStr.set(result);
     }
 
     /**
