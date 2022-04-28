@@ -75,7 +75,6 @@ public class BoardController {
     @DeleteMapping(value = "/{boardId}")
     @ResponseBody
     public Map<String,Object> deleteBoards(@PathVariable("boardId") String boardId, @RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
-        System.out.println("paramMap = " + paramMap);
         int result = boardService.deleteBoardAdmin(paramMap);
         return ResultStr.set(result);
     }
