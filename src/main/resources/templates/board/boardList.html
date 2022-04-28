@@ -4,23 +4,35 @@
 
 <th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/board/boardList.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
+<th:block th:if="${boardMaster.useYn == 'N'}">
+    <script>
+        alert("사용이 불가능한 페이지입니다.");
+        window.history.back();
+    </script>
+</th:block>
+<th:block th:if="!${@compareAuth.getAuth(boardMaster.listLevel)}">
+    <script>
+        alert("접근이 불가능한 페이지입니다.");
+        window.history.back();
+    </script>
+</th:block>
 <th:block th:replace="/fragments/header.html :: thHeader"></th:block>
 <section>
     <div class="section-wrap">
-        <form id="boardList">
+        <form id="boardListForm">
             <div class="pt80"></div>
             <div class="top-btn-box">
-                <div class="left">일반게시판</div>
-                <select>
-                    <option>제목</option>
-                    <option>내용</option>
-                    <option>닉네임</option>
+                <div class="left" th:text="${boardMaster.boardNm}">일반게시판</div>
+                <select id="searchType">
+                    <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'T'}">제목</option>
+                    <option value="C" th:selected="${#httpServletRequest.getParameter('searchType') == 'C'}">내용</option>
+                    <option value="W" th:selected="${#httpServletRequest.getParameter('searchType') == 'W'}">작성자</option>
                 </select>
-                <input type="text" placeholder="검색어를 입력해주세요.">
-                <button type="button">검색</button>
+                <input id="searchKeyword" type="text" placeholder="검색어를 입력해주세요." th:value="${#httpServletRequest.getParameter('searchKeyword')}">
+                <button id="searchBtn" type="submit">검색</button>
             </div>
             <div class="mb10"></div>
-            <table class="board-table">
+            <table id="boardTable" class="board-table">
                 <colgroup>
                     <col width="5%">
                     <col width="60%">
@@ -30,40 +42,64 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>번호</th>
-                        <th>번호</th>
-                        <th>번호</th>
-                        <th>번호</th>
-                        <th>번호</th>
+                        <th th:utext="${@compareAuth.getAuth('ADMIN') ? '<input id=''checkAll'' type=''checkbox'' />' : '번호'}"></th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                        <th>조회</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>내용</td>
-                        <td>내용</td>
-                        <td>내용</td>
-                        <td>내용</td>
-                        <td>내용</td>
+                <th:block th:each="res : ${noticeList}">
+                    <tr class="notice" th:data-val="${res.idx}">
+                        <td class="text-center"><i class="fa fa-bullhorn"></i></td>
+                        <td th:text="${res.boardSubject}"></td>
+                        <td class="text-center" th:text="${res.createNicknm}"></td>
+                        <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.')}"></td>
+                        <td class="text-center" th:text="${res.hit}"></td>
                     </tr>
+                </th:block>
+                <th:block th:each="res, i : ${boardList}">
+                    <tr th:data-val="${res.idx}" th:classappend="${i.even} ? 'even'">
+                        <td class="text-center"
+                            th:utext="${@compareAuth.getAuth('ADMIN') ? '<input type=''checkbox'' />' : #numbers.formatInteger(res.rn, 0)}"
+                            th:classappend="${@compareAuth.getAuth('ADMIN')} ? 'off'">
+                        </td>
+                        <td th:text="${res.boardContent}"></td>
+                        <td class="text-center" th:text="${res.createNicknm}"></td>
+                        <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.')}"></td>
+                        <td class="text-center" th:text="${res.hit}"></td>
+                    </tr>
+                </th:block>
+                <th:block th:if="${boardList.size() == 0}">
+                    <tr>
+                        <td colspan="100%" class="text-center off">등록된 게시물이 없습니다.</td>
+                    </tr>
+                </th:block>
                 </tbody>
             </table>
             <div class="mb5"></div>
             <div class="bot-btn-box">
-                <div class="left">Total 2건 1 페이지</div>
-                <a>
-                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                    <ul class="more_opt is_list_btn" style="display: block;">
-                        <li><button type="submit" name="btn_submit" value="선택삭제"><i class="fa fa-trash-o" aria-hidden="true"></i> 선택삭제</button></li>
-<!--                        <li><button type="submit" name="btn_submit" value="선택복사"><i class="fa fa-files-o" aria-hidden="true"></i> 선택복사</button></li>-->
-                        <li><button type="submit" name="btn_submit" value="선택이동"><i class="fa fa-arrows" aria-hidden="true"></i> 선택이동</button></li>
+                <div class="left">Total [[${#numbers.formatInteger(pageMaker.getTotal(), 0, 'COMMA')}]] Page [[${pageMaker.criteria.getPageNum()}]] / [[${pageMaker.getRealEnd() == 0 ? '1' : pageMaker.getRealEnd()}]]</div>
+                <a th:if="${@compareAuth.getAuth('ADMIN')}">
+                    <i id="admBtn" class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                    <ul style="display: none;">
+                        <li><button id="boardDel" type="button" value="선택삭제"><i class="fa fa-trash-o" aria-hidden="true"></i> 선택삭제</button></li>
+                        <li><button id="boardMove" type="button" value="선택이동"><i class="fa fa-arrows" aria-hidden="true"></i> 선택이동</button></li>
                     </ul>
                 </a>
-                <button type="button">글쓰기</button>
+                <button id="boardAdd" type="button" th:if="${@compareAuth.getAuth(boardMaster.writeLevel)}">글쓰기</button>
             </div>
+            <div class="mb50"></div>
+            <th:block th:replace="/fragments/pagination :: pagination"></th:block>
         </form>
     </div>
 </section>
 <th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
+<script>
+    var boardId = "[[${boardMaster.boardId}]]";
+</script>
 <script th:src="@{/js/board/boardList.js}"></script>
+<script th:src="@{/js/board/boardList_ADMIN.js}" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_SYSTEM','ROLE_MANAGER')"></script>
 </body>
 </html>
