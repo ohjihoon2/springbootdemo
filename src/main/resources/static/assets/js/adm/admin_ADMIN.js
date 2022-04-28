@@ -65,7 +65,7 @@ $(function(){
             '</div>' +
             '</form>';
 
-        $popup.popupJs(html);
+        $popup.admPopupJs(html);
     });
 
     //관리자추가 팝업
@@ -124,7 +124,7 @@ $(function(){
             '</div>' +
             '</form>';
 
-        $popup.popupJs(html);
+        $popup.admPopupJs(html);
     });
 
     // 관리자추가
@@ -329,7 +329,7 @@ $(function(){
             '</div>' +
             '</form>';
 
-        $popup.popupJs(html);
+        $popup.admPopupJs(html);
     });
 
     // PW초기화

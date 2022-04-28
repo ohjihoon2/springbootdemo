@@ -52,7 +52,7 @@ $(function(){
             '</div>' +
             '</form>';
 
-        $popup.popupJs(html);
+        $popup.admPopupJs(html);
 
         oEditors = [];
         nhn.husky.EZCreator.createInIFrame({
@@ -174,7 +174,7 @@ $(function(){
             '</div>' +
             '</form>';
 
-        $popup.popupJs(html);
+        $popup.admPopupJs(html);
 
         oEditors = [];
         nhn.husky.EZCreator.createInIFrame({

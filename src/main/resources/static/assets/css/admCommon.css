@@ -391,7 +391,7 @@ table select  {
     border: 1px solid #e2e2e2;
     border-radius: 7px;
     outline: none;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 table textarea::-webkit-scrollbar {

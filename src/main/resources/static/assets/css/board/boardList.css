@@ -179,3 +179,11 @@
     vertical-align: top;
     min-height: 36px;
 }
+
+/* 팝업관련 */
+
+.popup-js-content table tbody tr.sel, .popup-js-content table tbody tr:hover {
+    cursor: pointer;
+    background: rgba(31,177,199,0.05);
+    color: #1fb1c7;
+}

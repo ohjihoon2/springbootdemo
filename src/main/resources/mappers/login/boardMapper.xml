@@ -332,7 +332,7 @@
                UPDATE_DATE = SYSDATE()
          WHERE IDX IN
         <foreach collection="idx" item="idx" open="(" close=")" separator=",">
-            #{roleType}
+            #{idx}
         </foreach>
     </update>
 

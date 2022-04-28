@@ -109,7 +109,7 @@ $(function(){
             '</div>' +
             '</form>';
 
-        $popup.popupJs(html);
+        $popup.admPopupJs(html);
     });
 
     // PW초기화

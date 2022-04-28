@@ -50,15 +50,15 @@ $(function(){
             '</tr>' +
             '<tr class="tr-auth">' +
             '<th>Write</th>' +
-            '<td class="text-center"><select id="writeLevel">'+ authoritySelect() +'</select></td>' +
+            '<td class="text-center"><select id="writeLevel">'+ authoritySelect('N') +'</select></td>' +
             '<th>Comment</th>' +
-            '<td class="text-center"><select id="commentLevel">'+ authoritySelect() +'</select></td>' +
+            '<td class="text-center"><select id="commentLevel">'+ authoritySelect('N') +'</select></td>' +
             '</tr>' +
             '<tr class="tr-auth"">' +
             '<th>Editor Photo</th>' +
-            '<td class="text-center"><select id="editorLevel">'+ authoritySelect() +'</select></td>' +
+            '<td class="text-center"><select id="editorLevel">'+ authoritySelect('N') +'</select></td>' +
             '<th>File</th>' +
-            '<td class="text-center"><select id="uploadLevel">'+ authoritySelect() +'</select></td>' +
+            '<td class="text-center"><select id="uploadLevel">'+ authoritySelect('N') +'</select></td>' +
             '</tr>' +
             '<th colspan="4">Desc</th>' +
             '</tr>' +
@@ -74,7 +74,7 @@ $(function(){
             '</div>' +
             '</form>';
 
-        $popup.popupJs(html);
+        $popup.admPopupJs(html);
     });
 
     // 게시판추가
@@ -199,21 +199,21 @@ $(function(){
             '</tr>' +
             '<tr class="tr-auth" style="display: none;">' +
             '<th>List</th>' +
-            '<td class="text-center"><select id="listLevel">'+ authoritySelect(res.listLevel) +'</select></td>' +
+            '<td class="text-center"><select id="listLevel">'+ authoritySelect('Y',res.listLevel) +'</select></td>' +
             '<th>Read</th>' +
-            '<td class="text-center"><select id="readLevel">'+ authoritySelect(res.readLevel) +'</select></td>' +
+            '<td class="text-center"><select id="readLevel">'+ authoritySelect('Y',res.readLevel) +'</select></td>' +
             '</tr>' +
             '<tr class="tr-auth" style="display: none;">' +
             '<th>Write</th>' +
-            '<td class="text-center"><select id="writeLevel">'+ authoritySelect(res.writeLevel) +'</select></td>' +
+            '<td class="text-center"><select id="writeLevel">'+ authoritySelect('N',res.writeLevel) +'</select></td>' +
             '<th>Comment</th>' +
-            '<td class="text-center"><select id="commentLevel">'+ authoritySelect(res.commentLevel) +'</select></td>' +
+            '<td class="text-center"><select id="commentLevel">'+ authoritySelect('N',res.commentLevel) +'</select></td>' +
             '</tr>' +
             '<tr class="tr-auth" style="display: none;">' +
             '<th>Editor Photo</th>' +
-            '<td class="text-center"><select id="editorLevel">'+ authoritySelect(res.editorLevel) +'</select></td>' +
+            '<td class="text-center"><select id="editorLevel">'+ authoritySelect('N',res.editorLevel) +'</select></td>' +
             '<th>File</th>' +
-            '<td class="text-center"><select id="uploadLevel">'+ authoritySelect(res.uploadLevel) +'</select></td>' +
+            '<td class="text-center"><select id="uploadLevel">'+ authoritySelect('N',res.uploadLevel) +'</select></td>' +
             '</tr>' +
             '<th colspan="4">Desc</th>' +
             '</tr>' +
@@ -232,7 +232,7 @@ $(function(){
             '</div>' +
             '</form>';
 
-        $popup.popupJs(html);
+        $popup.admPopupJs(html);
 
         if(res.useYn == 'Y') {
             $('.tr-auth').show();
@@ -332,29 +332,52 @@ $(function(){
 });
 
 //셀렉트박스를 만든다
-function authoritySelect(au='') {
+function authoritySelect(all = 'Y',au='') {
+    if(all == 'Y') {
+        if(au == '') {
+            var html =
+                '<option value="ALL">전체사용</option>' +
+                '<option value="USER">회원</option>' +
+                '<option value="ADMIN">관리자</option>' +
+                '<option value="NONE">사용안함</option>';
+        }
+        else {
+            var auth = {
+                ALL : '',
+                ADMIN : '',
+                USER : '',
+                NONE : '',
+            }
+            auth[au] = 'selected';
 
-    if(au == '') {
-        var html =
-            '<option value="ALL">전체사용</option>' +
-            '<option value="ADMIN">관리자</option>' +
-            '<option value="USER">회원</option>' +
-            '<option value="NONE">사용안함</option>';
+            var html =
+                '<option value="ALL"' + auth['ALL'] + '>전체사용</option>' +
+                '<option value="USER"' + auth['USER'] + '>회원</option>' +
+                '<option value="ADMIN"' + auth['ADMIN'] + '>관리자</option>' +
+                '<option value="NONE"' + auth['NONE'] + '>사용안함</option>';
+        }
     }
     else {
-        var auth = {
-            ALL : '',
-            ADMIN : '',
-            USER : '',
-            NONE : '',
+        if(au == '') {
+            var html =
+                '<option value="USER">회원</option>' +
+                '<option value="ADMIN">관리자</option>' +
+                '<option value="NONE">사용안함</option>';
         }
-        auth[au] = 'selected';
+        else {
+            var auth = {
+                ALL : '',
+                ADMIN : '',
+                USER : '',
+                NONE : '',
+            }
+            auth[au] = 'selected';
 
-        var html =
-            '<option value="ALL"' + auth['ALL'] + '>전체사용</option>' +
-            '<option value="ADMIN"' + auth['ADMIN'] + '>관리자</option>' +
-            '<option value="USER"' + auth['USER'] + '>회원</option>' +
-            '<option value="NONE"' + auth['NONE'] + '>사용안함</option>';
+            var html =
+                '<option value="USER"' + auth['USER'] + '>회원</option>' +
+                '<option value="ADMIN"' + auth['ADMIN'] + '>관리자</option>' +
+                '<option value="NONE"' + auth['NONE'] + '>사용안함</option>';
+        }
     }
     return html;
 }

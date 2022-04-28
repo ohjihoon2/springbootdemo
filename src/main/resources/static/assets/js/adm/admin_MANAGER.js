@@ -64,7 +64,7 @@ $(function(){
             '</div>' +
             '</form>';
 
-        $popup.popupJs(html);
+        $popup.admPopupJs(html);
     });
 
     // 회원탈퇴
@@ -137,6 +137,6 @@ $(function(){
             '</div>' +
             '</form>';
 
-        $popup.popupJs(html);
+        $popup.admPopupJs(html);
     });
 });

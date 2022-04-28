@@ -81,7 +81,7 @@ $(function(){
             '<button type="submit">추가</button>' +
             '</div>' +
             '</form>';
-        $popup.popupJs(html);
+        $popup.admPopupJs(html);
 
         oEditors = [];
         nhn.husky.EZCreator.createInIFrame({
@@ -210,7 +210,7 @@ $(function(){
             '<button type="submit">수정</button>' +
             '</div>' +
             '</form>';
-        $popup.popupJs(html);
+        $popup.admPopupJs(html);
 
         oEditors = [];
         nhn.husky.EZCreator.createInIFrame({

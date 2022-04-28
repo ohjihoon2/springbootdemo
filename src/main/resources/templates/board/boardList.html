@@ -85,7 +85,7 @@
                     <i id="admBtn" class="fa fa-ellipsis-v" aria-hidden="true"></i>
                     <ul style="display: none;">
                         <li><button id="boardDel" type="button" value="선택삭제"><i class="fa fa-trash-o" aria-hidden="true"></i> 선택삭제</button></li>
-                        <li><button id="boardMove" type="button" value="선택이동"><i class="fa fa-arrows" aria-hidden="true"></i> 선택이동</button></li>
+                        <li><button id="boardMovePopup" type="button" value="선택이동"><i class="fa fa-arrows" aria-hidden="true"></i> 선택이동</button></li>
                     </ul>
                 </a>
                 <button id="boardAdd" type="button" th:if="${@compareAuth.getAuth(boardMaster.writeLevel)}">글쓰기</button>

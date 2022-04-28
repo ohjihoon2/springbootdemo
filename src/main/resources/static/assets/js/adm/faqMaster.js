@@ -47,7 +47,7 @@ $(function(){
             '</div>' +
             '</form>';
 
-        $popup.popupJs(html);
+        $popup.admPopupJs(html);
     });
 
     // 컨텐츠추가
@@ -139,7 +139,7 @@ $(function(){
             '</div>' +
             '</input>';
 
-        $popup.popupJs(html);
+        $popup.admPopupJs(html);
     });
 
     // 컨텐츠삭제
