@@ -13,7 +13,7 @@ import java.util.Map;
 
 public interface BoardService {
 
-    int insertBoard(MultipartFile[] files, Board board);
+    int insertBoard(MultipartFile[] files,MultipartFile thumb, Board board);
 
     List<Map<String,Object>> findAllByBoardIdBoard(Criteria criteria);
 

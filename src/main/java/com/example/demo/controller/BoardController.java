@@ -48,7 +48,6 @@ public class BoardController {
         }
 
         Map<String,Object> boardMaster = boardService.findByBoardIdBoardMaster(boardId);
-        // TODO 댓글 개수 - BOARDLIST에 서브 쿼리로 추가
         List<Map<String,Object>> boardList = boardService.findAllByBoardIdBoard(criteria);
 
 
@@ -242,7 +241,28 @@ public class BoardController {
      */
     @PostMapping(value = "/{boardId}/detail")
     @ResponseBody
-    public Map<String, Object> insertBoard(@PathVariable("boardId") String boardId, MultipartFile[] files, @RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String, Object> insertBoard(@PathVariable("boardId") String boardId, MultipartFile[] files, MultipartFile thumb,@RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        int idx = Integer.parseInt((String) session.getAttribute("idx"));
+        board.setCreateIdx(idx);
+
+        int result = boardService.insertBoard(files,thumb,board);
+        return ResultStr.setMulti(result);
+    }
+
+
+
+/**
+     * 썸네일 등록
+     * @param files
+     * @param response
+     * @param request
+     * @return
+     */
+/*
+    @PostMapping(value = "/thumbnail")
+    @ResponseBody
+    public Map<String, Object> insertThumbnail(@PathVariable("boardId") String boardId, MultipartFile[] files, @RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         int idx = Integer.parseInt((String) session.getAttribute("idx"));
@@ -251,6 +271,7 @@ public class BoardController {
         int result = boardService.insertBoard(files,board);
         return ResultStr.setMulti(result);
     }
+*/
 
     /**
      * 게시물 이동 처리(단일)

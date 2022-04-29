@@ -131,9 +131,11 @@ custom:
 resources:
   location: D:/upload/@project.name@
   uri_path: /upload
+  thumbnail: D:/upload/@project.name@/thumbnail
 
 file:
   downloadPath: D:/upload/@project.name@/
+  thumbnailPath: D:/upload/@project.name@/thumbnail/
 
 # 사이트명 -> 이메일에 사이트명 첨부
 site:

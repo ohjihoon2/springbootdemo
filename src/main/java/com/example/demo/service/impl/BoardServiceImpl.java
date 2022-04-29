@@ -27,7 +27,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
-    public int insertBoard(MultipartFile[] files, Board board) {
+    public int insertBoard(MultipartFile[] files,MultipartFile thumb, Board board) {
         int result = 0;
 
         if(files != null){
@@ -41,9 +41,12 @@ public class BoardServiceImpl implements BoardService {
             board.setAttachFileIdx(idx);
         }
 
-        if (boardMapper.insertBoard(board) == 1) {
+        if(boardMapper.insertBoard(board) != 0){
+            // 썸네일 파일 저장
+            if(thumb != null){
+                fileUtil.uploadThumbnail(thumb, board.getIdx());
+            }
             result = 1;
-            return result;
         }
 
         return result;
