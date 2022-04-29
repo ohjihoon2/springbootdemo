@@ -32,7 +32,7 @@
                 <button id="searchBtn" type="submit">검색</button>
             </div>
             <div class="mb10"></div>
-            <table id="boardTable" class="board-table">
+            <table id="boardTable" class="board-table" th:if="${boardMaster.boardType == 'GENERAL' or noticeList.size() != 0}">
                 <colgroup>
                     <col width="5%">
                     <col width="60%">
@@ -65,7 +65,10 @@
                             th:utext="${@compareAuth.getAuth('ADMIN') ? '<input type=''checkbox'' />' : #numbers.formatInteger(res.rn, 0)}"
                             th:classappend="${@compareAuth.getAuth('ADMIN')} ? 'off'">
                         </td>
-                        <td th:text="${res.boardContent}"></td>
+                        <td class="flex">
+                            <span th:text="${res.boardSubject}"></span>
+                            <i class="text-color-red" th:text="'[' + ${res.cmmtCnt} + ']'" th:if="${res.cmmtCnt > 0}"></i>
+                        </td>
                         <td class="text-center" th:text="${res.createNicknm}"></td>
                         <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.')}"></td>
                         <td class="text-center" th:text="${res.hit}"></td>
@@ -78,6 +81,34 @@
                 </th:block>
                 </tbody>
             </table>
+            <div class="board-photo" th:if="${boardMaster.boardType == 'PHOTO'}">
+                <div class="off" th:if="${boardList.size() == 0}">등록된 게시물이 없습니다.</div>
+                <ul>
+                    <li>
+                        <img th:src="@{/img/board/thumbnail_basic.jpg}">
+                        <div>
+                            <span>역시 야밤에 세차를 해야야야야야야야야야야야야야야</span>
+                            <i class="text-color-red">[17]</i>
+                        </div>
+                        <p>최고관리자</p>
+                        <p class="dd">2022.04.24. · 조회364</p>
+                    </li>
+                    <li>
+                        <img th:src="@{/img/board/thumbnail_basic.jpg}">
+                        <span>역시 야야</span>
+                        <i>[17]</i>
+                    </li>
+                    <li>
+                        <img th:src="@{/img/board/thumbnail_basic.jpg}">
+                    </li>
+                    <li>
+                        <img th:src="@{/img/board/thumbnail_basic.jpg}">
+                    </li>
+                    <li>
+                        <img th:src="@{/img/board/thumbnail_basic.jpg}">
+                    </li>
+                </ul>
+            </div>
             <div class="mb5"></div>
             <div class="bot-btn-box">
                 <div class="left">Total [[${#numbers.formatInteger(pageMaker.getTotal(), 0, 'COMMA')}]] Page [[${pageMaker.criteria.getPageNum()}]] / [[${pageMaker.getRealEnd() == 0 ? '1' : pageMaker.getRealEnd()}]]</div>

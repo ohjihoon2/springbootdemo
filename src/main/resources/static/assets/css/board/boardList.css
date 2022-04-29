@@ -36,6 +36,7 @@
     border-bottom: 1px solid #ededed;
     width: 100%;
     border-collapse: collapse;
+    table-layout:fixed;
     border-spacing: 0;
 }
 
@@ -78,6 +79,26 @@
     line-height: 22px;
     word-break: break-all;
     font-size: 14px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.board-table td.flex {
+   display: flex;
+}
+
+.board-table td.flex span {
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-right: 4px;
+
+}
+
+.board-table td.flex i {
+    right: -10px;
 }
 
 .board-table tbody tr td:not(.off) {
@@ -186,4 +207,63 @@
     cursor: pointer;
     background: rgba(31,177,199,0.05);
     color: #1fb1c7;
+}
+
+/* 포토게시판 */
+.board-photo {
+    font-size: 14px;
+
+}
+
+.board-photo .off {
+    margin: 150px 0;
+    text-align: center;
+}
+
+.board-photo ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.board-photo ul li{
+    width: calc((100% - 60px) / 4);
+    margin-bottom: 30px;
+}
+
+.board-photo ul li:nth-child(n+2):nth-child(-n+4){
+    margin-left:20px;
+}
+
+.board-photo ul li img{
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+.board-photo ul li div{
+    display: flex;
+}
+
+.board-photo ul li div span{
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-right: 4px;
+    font-weight: 600;
+}
+
+.board-photo ul li div i{
+    font-size: 12px;
+    line-height: 20px;
+}
+
+.board-photo ul li p{
+    color: #666;
+}
+
+.board-photo ul li p.dd{
+    font-size: 12px;
+    line-height: 10px;
 }

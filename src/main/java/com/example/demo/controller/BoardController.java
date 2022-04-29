@@ -107,7 +107,7 @@ public class BoardController {
     public Map<String, Object> moveBoardMaster(@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
-        int userIdx = Integer.parseInt((String) session.getAttribute("idx"));
+        int userIdx = Integer.parseInt( String.valueOf(session.getAttribute("idx")));
         paramMap.put("userIdx", userIdx);
 
         int result = boardService.moveBoards(paramMap);
