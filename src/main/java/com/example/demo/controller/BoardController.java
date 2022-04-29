@@ -250,29 +250,6 @@ public class BoardController {
         return ResultStr.setMulti(result);
     }
 
-
-
-/**
-     * 썸네일 등록
-     * @param files
-     * @param response
-     * @param request
-     * @return
-     */
-/*
-    @PostMapping(value = "/thumbnail")
-    @ResponseBody
-    public Map<String, Object> insertThumbnail(@PathVariable("boardId") String boardId, MultipartFile[] files, @RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request) {
-
-        HttpSession session = request.getSession();
-        int idx = Integer.parseInt((String) session.getAttribute("idx"));
-        board.setCreateIdx(idx);
-
-        int result = boardService.insertBoard(files,board);
-        return ResultStr.setMulti(result);
-    }
-*/
-
     /**
      * 게시물 이동 처리(단일)
      * @param paramMap
@@ -324,16 +301,15 @@ public class BoardController {
      */
     @PatchMapping(value = "/{boardId}/detail/{idx}")
     @ResponseBody
-    public Map<String, Object> updateBoard(@PathVariable("boardId") String boardId, MultipartFile[] files, @RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String, Object> updateBoard(@PathVariable("boardId") String boardId, MultipartFile[] files, MultipartFile thumb,@RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         int idx = Integer.parseInt((String) session.getAttribute("idx"));
         board.setUpdateIdx(idx);
 
-        int result = boardService.updateBoard(files,board);
+        int result = boardService.updateBoard(files,thumb,board);
         return ResultStr.setMulti(result);
     }
-
 
     /**
      * 게시물 삭제 처리(유저)

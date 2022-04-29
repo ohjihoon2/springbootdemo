@@ -127,6 +127,7 @@
                  BOARD_CONTENT,
                  HIT,
                  ATTACH_FILE_IDX,
+                 THUMBNAIL_YN,
                  DELETE_YN,
                  CREATE_IDX,
                  CREATE_DATE,
@@ -140,6 +141,7 @@
                  #{boardContent},
                  0,
                  #{attachFileIdx},
+                 #{thumbnailYn},
                  'N',
                  #{createIdx},
                  SYSDATE(),
@@ -225,12 +227,14 @@
             #{idx}
         </foreach>
     </delete>
+
     <update id="updateBoard" parameterType="Board">
         UPDATE board
            SET BOARD_SUBJECT=#{boardSubject},
                BOARD_CONTENT=#{boardContent},
                ATTACH_FILE_IDX= #{attachFileIdx},
                NOTICE_YN= #{noticeYn},
+               THUMBNAIL_YN= #{thumbnailYn},
                DELETE_YN= #{deleteYn},
                UPDATE_IDX= #{updateIdx},
                UPDATE_DATE= SYSDATE()

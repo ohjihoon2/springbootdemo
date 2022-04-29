@@ -23,7 +23,7 @@ public interface BoardService {
 
     int countByBoardIdBoard(Criteria criteria);
 
-    int updateBoard(MultipartFile[] files, Board board);
+    int updateBoard(MultipartFile[] files, MultipartFile thumb,Board board);
 
     int deleteBoardUser(Map<String, Object> paramMap);
 

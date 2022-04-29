@@ -198,8 +198,6 @@ public class FileUtil {
     }
 
     public AttachFile uploadThumbnail(MultipartFile thumb, int boardIdx){
-        System.out.println("FileUtil.uploadThumbnail");
-        System.out.println("boardIdx = " + boardIdx);
         /* 업로드 파일 정보를 담을 비어있는 리스트 */
         AttachFile attachFile= new AttachFile();
 
@@ -212,22 +210,14 @@ public class FileUtil {
         try {
             /* 파일 확장자 */
             final String extension = FilenameUtils.getExtension(thumb.getOriginalFilename());
-            /* 서버에 저장할 파일명 (랜덤 문자열 + 확장자) */
-            final String saveName = String.valueOf(boardIdx);
-            final String saveStr = saveName+"."+extension;
+            /* 서버에 저장할 파일명 (게시판 idx + 확장자) */
+            final String saveName = boardIdx+"."+extension;
 
             /* 업로드 경로에 saveName과 동일한 이름을 가진 파일 생성 */
-            File target = new File(resourcesThumbnail, saveStr);
+            File target = new File(resourcesThumbnail, saveName);
             thumb.transferTo(target);
 
-            makeThumbnail(target.getAbsolutePath(), saveStr, extension);
-
-
-            /* 파일 정보 저장 */
-            attachFile.setOriginalName(thumb.getOriginalFilename());
-            attachFile.setSaveName(saveName);
-            attachFile.setSize(thumb.getSize());
-            attachFile.setExtension(extension);
+            makeThumbnail(target.getAbsolutePath(), saveName, extension);
 
         } catch (IOException e) {
             throw new AttachFileException("[" + thumb.getOriginalFilename() + "] failed to save file...");
