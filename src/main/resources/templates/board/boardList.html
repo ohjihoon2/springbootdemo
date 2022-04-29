@@ -1,3 +1,7 @@
+<!--/*
+    thymeleaf 주석처리
+*/-->
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
@@ -22,7 +26,7 @@
         <form id="boardListForm">
             <div class="pt80"></div>
             <div class="top-btn-box">
-                <div class="left" th:text="${boardMaster.boardNm}">일반게시판</div>
+                <div class="left" th:text="${boardMaster.boardNm}">게시판</div>
                 <select id="searchType">
                     <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'T'}">제목</option>
                     <option value="C" th:selected="${#httpServletRequest.getParameter('searchType') == 'C'}">내용</option>
@@ -81,32 +85,21 @@
                 </th:block>
                 </tbody>
             </table>
-            <div class="board-photo" th:if="${boardMaster.boardType == 'PHOTO'}">
+            <div id="boardPhoto" class="board-photo" th:if="${boardMaster.boardType == 'PHOTO'}">
                 <div class="off" th:if="${boardList.size() == 0}">등록된 게시물이 없습니다.</div>
                 <ul>
-                    <li>
-                        <img th:src="@{/img/board/thumbnail_basic.jpg}">
-                        <div>
-                            <span>역시 야밤에 세차를 해야야야야야야야야야야야야야야</span>
-                            <i class="text-color-red">[17]</i>
-                        </div>
-                        <p>최고관리자</p>
-                        <p class="dd">2022.04.24. · 조회364</p>
-                    </li>
-                    <li>
-                        <img th:src="@{/img/board/thumbnail_basic.jpg}">
-                        <span>역시 야야</span>
-                        <i>[17]</i>
-                    </li>
-                    <li>
-                        <img th:src="@{/img/board/thumbnail_basic.jpg}">
-                    </li>
-                    <li>
-                        <img th:src="@{/img/board/thumbnail_basic.jpg}">
-                    </li>
-                    <li>
-                        <img th:src="@{/img/board/thumbnail_basic.jpg}">
-                    </li>
+                    <th:block th:each="res, i : ${boardList}">
+                        <li th:data-val="${res.idx}">
+                            <img th:src="@{/img/board/thumbnail_basic.jpg}">
+                            <div>
+                                <th:block th:if="${@compareAuth.getAuth('ADMIN')}"><input type="checkbox"/></th:block>
+                                <span th:text="${res.boardSubject}"></span>
+                                <i class="text-color-red" th:text="${'[' + res.cmmtCnt + ']'}" th:if="${res.cmmtCnt > 0}"></i>
+                            </div>
+                            <p th:text="${res.createNicknm}">작성자</p>
+                            <p class="dd" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.') +' · 조회 ' + res.hit}">2022.04.24. · 조회364</p>
+                        </li>
+                    </th:block>
                 </ul>
             </div>
             <div class="mb5"></div>
@@ -129,6 +122,7 @@
 <th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
 <script>
     var boardId = "[[${boardMaster.boardId}]]";
+    var boardType = "[[${boardMaster.boardType}]]";
 </script>
 <script th:src="@{/js/board/boardList.js}"></script>
 <script th:src="@{/js/board/boardList_ADMIN.js}" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_SYSTEM','ROLE_MANAGER')"></script>

@@ -229,20 +229,25 @@
 
 .board-photo ul li{
     width: calc((100% - 60px) / 4);
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
-.board-photo ul li:nth-child(n+2):nth-child(-n+4){
+.board-photo ul li:not(:nth-child(4n+1)) {
     margin-left:20px;
 }
 
 .board-photo ul li img{
     width: 100%;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
+    cursor: pointer;
 }
 
 .board-photo ul li div{
     display: flex;
+}
+
+.board-photo ul li div input[type="checkbox"]{
+    margin: 3px 3px 0 0;
 }
 
 .board-photo ul li div span{
@@ -252,6 +257,11 @@
     white-space: nowrap;
     margin-right: 4px;
     font-weight: 600;
+}
+
+.board-photo ul li div span:hover{
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .board-photo ul li div i{

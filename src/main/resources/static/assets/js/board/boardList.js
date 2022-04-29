@@ -20,9 +20,15 @@ $(function() {
         $page.getGoPage('/board/' + boardId, param);
     });
     
-    //상세 이동
+    //상세 이동(일반)
     $('#boardTable tbody tr td').not('.off').click(function() {
         var idx = $(this).closest('tr').data('val');
+        $page.goPage('/board/' + boardId + '/' + idx)
+    });
+
+    //상세 이동(포토)
+    $('#boardPhoto ul li img, #boardPhoto ul li div span').click(function() {
+        var idx = $(this).closest('li').data('val');
         $page.goPage('/board/' + boardId + '/' + idx)
     });
 

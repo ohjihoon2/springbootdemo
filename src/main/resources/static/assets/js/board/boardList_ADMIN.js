@@ -20,7 +20,13 @@ $(function() {
     
     // 게시글 삭제
     $('#boardDel').click(function() {
-        var check = $('#boardTable tbody input[type="checkbox"]:checked');
+        var check;
+        if(boardType == 'GENERAL') {
+            check = $('#boardTable tbody input[type="checkbox"]:checked');
+        }
+        else if(boardType == 'PHOTO') {
+            check = $('#boardPhoto ul input[type="checkbox"]:checked');
+        }
         if(check.length == 0) {
             alert("삭제 할 게시물을 선택해주세요.");
         }
@@ -30,7 +36,12 @@ $(function() {
 
                 var idx = [];
                 for(var i = 0; i < check.length; i++) {
-                    idx.push($(check).eq(i).closest('tr').data('val'));
+                    if(boardType == 'GENERAL') {
+                        idx.push($(check).eq(i).closest('tr').data('val'));
+                    }
+                    else if(boardType == 'PHOTO') {
+                        idx.push($(check).eq(i).closest('li').data('val'));
+                    }
                 }
 
                 var data = {
@@ -54,7 +65,12 @@ $(function() {
     
     //게시글 이동상세
     $('#boardMovePopup').click(function() {
-        var check = $('#boardTable tbody input[type="checkbox"]:checked');
+        if(boardType == 'GENERAL') {
+            var check = $('#boardTable tbody input[type="checkbox"]:checked');
+        }
+        else if(boardType == 'PHOTO') {
+            var check = $('#boardPhoto ul input[type="checkbox"]:checked');
+        }
         if(check.length == 0) {
             alert("이동 할 게시물을 선택해주세요.");
         }
@@ -68,7 +84,7 @@ $(function() {
             }
             res = $util.nullChkObj(res);
 
-            var boardType = {
+            var codeBoardType = {
                 GENERAL : '일반게시판',
                 PHOTO : '사진게시판'
             }
@@ -97,7 +113,7 @@ $(function() {
                 }
                 html +=
                     '<tr data-val="'+ res[i].idx +'">' +
-                    '<td class="text-center">'+ boardType[res[i].boardType] +'</td>' +
+                    '<td class="text-center">'+ codeBoardType[res[i].boardType] +'</td>' +
                     '<td>'+ res[i].boardNm +'</td>' +
                     '<td class="text-center"><input id="useYn" type="checkbox"'+ useYn +' disabled></td>' +
                     '</tr>';
@@ -113,7 +129,7 @@ $(function() {
         }
     });
 
-    // 게시글 이동
+    // 게시글 선택
     $(document).on("click", "#boardMasterTable tbody tr", function(e) {
         $('#boardMasterTable tbody tr').removeClass('sel');
         $(this).addClass('sel');
@@ -127,10 +143,19 @@ $(function() {
             alert("이동 할 게시판을 선택해주세요.");
         }
         else {
-            var check = $('#boardTable tbody input[type="checkbox"]:checked');
             var idx = [];
-            for(var i = 0; i < check.length; i++) {
-                idx.push($(check).eq(i).closest('tr').data('val'));
+
+            if(boardType == 'GENERAL') {
+                var check = $('#boardTable tbody input[type="checkbox"]:checked');
+                for(var i = 0; i < check.length; i++) {
+                    idx.push($(check).eq(i).closest('tr').data('val'));
+                }
+            }
+            else if(boardType == 'PHOTO') {
+                var check = $('#boardPhoto ul input[type="checkbox"]:checked');
+                for(var i = 0; i < check.length; i++) {
+                    idx.push($(check).eq(i).closest('li').data('val'));
+                }
             }
 
             var data = {
