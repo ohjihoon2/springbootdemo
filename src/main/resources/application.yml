@@ -130,8 +130,9 @@ custom:
 
 resources:
   location: D:/upload/@project.name@
-  uri_path: /upload
-  thumbnail: D:/upload/@project.name@/thumbnail
+  uri_path: /upload/@project.name@/**
+
+
 
 file:
   downloadPath: D:/upload/@project.name@/
@@ -144,3 +145,16 @@ site:
 pageCount:
   mobile: 5
   web: 10
+
+
+# 게시판 컨텐츠 개수
+contentCount:
+  # 일반 게시판
+  basic:
+    mobile: 10
+    web: 10
+  # 포토 게시판
+  photo:
+    mobile: 10
+    web: 12
+

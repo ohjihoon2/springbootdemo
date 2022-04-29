@@ -7,6 +7,7 @@ import com.example.demo.util.ResultStr;
 import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,22 +40,32 @@ public class BoardController {
      */
     @GetMapping("/{boardId}")
     public String boardList(@PathVariable("boardId") String boardId, @ModelAttribute Criteria criteria
-                            , HttpServletResponse response, HttpServletRequest request, Model model) {
+                            , HttpServletResponse response, HttpServletRequest request, Model model, Device device) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("boardId", boardId);
         criteria.setParamMap(paramMap);
+        Map<String,Object> boardMaster = boardService.findByBoardIdBoardMaster(boardId);
+        String boardType = String.valueOf(boardMaster.get("BOARD_TYPE"));
+        int webPageCount = DeviceCheck.getPageCount(device);
+        
+        int contentCount = DeviceCheck.getContentCount(boardType, device);
+        DeviceCheck dc = new DeviceCheck();
+        System.out.println("dc.toString() = " + dc.toString());
+
+        System.out.println("contentCount = " + contentCount);
+        criteria.setAmount(contentCount);
 
         List<Map<String,Object>> noticeList = new ArrayList<>();
         if(criteria.getPageNum() == 1 && criteria.getSearchKeyword() == null){
             noticeList = boardService.findNoticeByBoardIdBoard(criteria);
         }
 
-        Map<String,Object> boardMaster = boardService.findByBoardIdBoardMaster(boardId);
         List<Map<String,Object>> boardList = boardService.findAllByBoardIdBoard(criteria);
 
 
         int total = boardService.countByBoardIdBoard(criteria);
-        int webPageCount = DeviceCheck.getWebPageCount();
+
+
         Page pageMaker = new Page(total, webPageCount, criteria);
 
         model.addAttribute("pageMaker", pageMaker);
@@ -329,8 +340,6 @@ public class BoardController {
 
         return ResultStr.setMulti(result);
     }
-
-    // TODO 게시물 삭제시 썸네일 삭제 처리
 
     /**
      * 게시물 삭제 처리(유저)
