@@ -5,6 +5,8 @@ import com.example.demo.repository.FileMapper;
 import com.example.demo.vo.AttachFile;
 import com.example.demo.vo.AttachFileMaster;
 import lombok.RequiredArgsConstructor;
+import net.sf.jmimemagic.Magic;
+import net.sf.jmimemagic.MagicMatch;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.imgscalr.Scalr;
@@ -19,7 +21,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -203,6 +204,8 @@ public class FileUtil {
 
         /* uploadPath에 해당하는 디렉터리가 존재하지 않으면, 부모 디렉터리를 포함한 모든 디렉터리를 생성 */
         File dir = new File(resourcesThumbnail);
+        checkImageType(dir);
+
         if(dir.exists() == false){
             dir.mkdirs();
         }
@@ -215,8 +218,12 @@ public class FileUtil {
 
             /* 업로드 경로에 saveName과 동일한 이름을 가진 파일 생성 */
             File target = new File(resourcesThumbnail, saveName);
-            thumb.transferTo(target);
 
+            if(!checkImageType(target)){
+
+            }
+
+            thumb.transferTo(target);
             makeThumbnail(target.getAbsolutePath(), saveName, extension);
 
         } catch (IOException e) {
@@ -255,10 +262,12 @@ public class FileUtil {
     }
 
     public boolean checkImageType(File file){
+        Magic magic = new Magic();
+
         try {
-            String contentType = Files.probeContentType(file.toPath());
-            return contentType.startsWith("image");
-        } catch (IOException e) {
+            MagicMatch match = magic.getMagicMatch(file, false);
+            return match.getMimeType().contains("image");
+        } catch (Exception e){
             e.printStackTrace();
         }
         return false;
