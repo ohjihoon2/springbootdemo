@@ -6,7 +6,6 @@ import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Component;
 
 @Component
-@ToString
 public class DeviceCheck {
 
     private static Integer mobilePageCount;
