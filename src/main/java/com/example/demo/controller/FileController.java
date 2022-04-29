@@ -8,6 +8,7 @@ import com.example.demo.vo.SmarteditorVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +29,9 @@ public class FileController {
     private final FileService fileService;
     private final FileUtil fileUtil;
 
+    @Value("${resources.location}")
+    private String resourcesLocation;
+
     @RequestMapping(value="/singleImageUploader")
     public String simpleImageUploader(HttpServletRequest req, SmarteditorVO smarteditorVO) throws UnsupportedEncodingException{
         String callback = smarteditorVO.getCallback();
@@ -40,8 +44,7 @@ public class FileController {
                     StringUtils.isNotBlank(multiFile.getName())){
                 if(multiFile.getContentType().toLowerCase().startsWith("image/")){
                     String oriName = multiFile.getName();
-                    String uploadPath = req.getServletContext().getRealPath("/img");
-                    String path = uploadPath + "/smarteditor/";
+                    String path = resourcesLocation + "/smarteditor/";
                     File file = new File(path);
                     if(!file.exists()){
                         file.mkdirs();
@@ -49,7 +52,7 @@ public class FileController {
                     String fileName = UUID.randomUUID().toString();
                     smarteditorVO.getFiledata().transferTo(new File(path + fileName));
                     file_result += "&bNewLine=true&sFileName=" + oriName +
-                            "&sFileURL=/img/smarteditor/" + fileName;
+                            "&sFileURL=/images/smarteditor/" + fileName;
                 }else{
                     file_result += "&errstr=error";
                 }
