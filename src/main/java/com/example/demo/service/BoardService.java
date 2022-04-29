@@ -17,7 +17,7 @@ public interface BoardService {
 
     List<Map<String,Object>> findAllByBoardIdBoard(Criteria criteria);
 
-    Board findAllByIdx(Map<String, Object> paramMap);
+    Map<String,Object> findAllByIdx(Map<String, Object> paramMap);
 
     Map<String, Object> findByBoardIdBoardMaster(String boardId);
 
@@ -27,7 +27,7 @@ public interface BoardService {
 
     int deleteBoardUser(Map<String, Object> paramMap);
 
-    int deleteBoardAdmin(Map<String, Object> paramMap);
+    int deleteAllBoardAdmin(Map<String, Object> paramMap);
 
     BoardMaster findAllByIdxBoardMaster(Map<String, Object> paramMap);
 
@@ -48,4 +48,6 @@ public interface BoardService {
     int deleteBoardCommentAdmin(BoardComment comment);
 
     List<Map<String, Object>> findBoardMaster();
+
+    int deleteOneBoardAdmin(Map<String, Object> paramMap);
 }

@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.repository.BoardMapper;
+import com.example.demo.repository.FileMapper;
 import com.example.demo.service.BoardService;
 import com.example.demo.util.FileUtil;
 import com.example.demo.util.HitCookie;
@@ -24,6 +25,8 @@ public class BoardServiceImpl implements BoardService {
     private final FileUtil fileUtil;
 
     private final BoardMapper boardMapper;
+
+    private final FileMapper fileMapper;
 
     @Override
     @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
@@ -84,10 +87,55 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
-    public int deleteBoardAdmin(Map<String, Object> paramMap) {
+    public int deleteAllBoardAdmin(Map<String, Object> paramMap) {
         int result = 0;
-        if(boardMapper.deleteBoardAdmin(paramMap) != 0){
-            boardMapper.deleteBoardCommentWithBoard(paramMap);
+
+        Map<String, Object> boardDetail = boardMapper.findAllByIdx(paramMap);
+
+
+        if(boardDetail.get("thumbnailYn").equals("Y")){
+            //썸네일 삭제
+            fileUtil.deleteThumbnailFile(paramMap.get("idx").toString());
+        }
+
+        if(boardDetail.get("attachFileIdx") != null) {
+
+            int attachFileIdx = Integer.parseInt(boardDetail.get("attachFileIdx").toString());
+
+            deleteByIdxFile(attachFileIdx);
+
+        }
+
+        if(boardMapper.deleteAllBoardAdmin(paramMap) != 0){
+            result = 1;
+        }
+
+        return result;
+    }
+
+
+    @Override
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
+    public int deleteOneBoardAdmin(Map<String, Object> paramMap) {
+        int result = 0;
+
+        Map<String, Object> boardDetail = boardMapper.findAllByIdx(paramMap);
+
+
+        if(boardDetail.get("thumbnailYn").equals("Y")){
+            //썸네일 삭제
+            fileUtil.deleteThumbnailFile(paramMap.get("idx").toString());
+        }
+
+        if(boardDetail.get("attachFileIdx") != null) {
+
+            int attachFileIdx = Integer.parseInt(boardDetail.get("attachFileIdx").toString());
+
+            deleteByIdxFile(attachFileIdx);
+
+        }
+
+        if(boardMapper.deleteOneBoardAdmin(paramMap) != 0){
             result = 1;
         }
 
@@ -171,7 +219,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Board findAllByIdx(Map<String, Object> paramMap) {
+    public Map<String,Object> findAllByIdx(Map<String, Object> paramMap) {
         return boardMapper.findAllByIdx(paramMap);
     }
 
@@ -185,5 +233,21 @@ public class BoardServiceImpl implements BoardService {
         return boardMapper.countByBoardIdBoard(criteria);
     }
 
+    /**
+     * 실제파일, DB에 저장된 파일 삭제
+     * @param attachFileIdx
+     */
+    private void deleteByIdxFile(int attachFileIdx) {
+        List<Map<String,Object>> saveNameList = fileMapper.findSaveNameByAttachFileIdx(attachFileIdx);
+
+        // 실제 파일 삭제
+        for (Map<String, Object> map : saveNameList) {
+            fileUtil.deleteRealFile(map.get("saveName").toString());
+        }
+
+        // DB 파일 삭제
+        fileMapper.deleteByIdxAttachFile(attachFileIdx);
+        fileMapper.deleteAttachFileMaster(attachFileIdx);
+    }
 
 }

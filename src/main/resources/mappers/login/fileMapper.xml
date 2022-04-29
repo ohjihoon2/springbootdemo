@@ -80,12 +80,17 @@
 
     <delete id="deleteAttachFileMaster" parameterType="int">
         DELETE FROM attach_file_master
-         WHERE IDX =#{masterIdx}
+         WHERE IDX =#{attachFileIdx}
     </delete>
 
-    <delete id="deleteAttachFile" parameterType="string">
+    <delete id="deleteBySaveNameAttachFile" parameterType="string">
         DELETE FROM attach_file
-         WHERE SAVE_NAME =#{saveName}
+         WHERE SAVE_NAME = #{saveName}
+    </delete>
+
+    <delete id="deleteByIdxAttachFile" parameterType="int">
+        DELETE FROM attach_file
+        WHERE IDX = #{attachFileIdx}
     </delete>
 
     <select id="maxAttachIdx" parameterType="int" resultType="int">
@@ -98,5 +103,11 @@
         SELECT COUNT(*)
           FROM attach_file_master
          WHERE IDX = #{attachFileIdx}
+    </select>
+
+    <select id="findSaveNameByAttachFileIdx" resultType="CustomMap" parameterType="int">
+        SELECT SAVE_NAME
+          FROM attach_file
+         WHERE IDX = #{idx}
     </select>
 </mapper>

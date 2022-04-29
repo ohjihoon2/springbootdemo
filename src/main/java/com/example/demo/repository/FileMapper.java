@@ -23,11 +23,15 @@ public interface FileMapper {
 
     int deleteAttachFileMaster(int masterIdx);
 
-    int deleteAttachFile(String saveName);
+    int deleteBySaveNameAttachFile(String saveName);
+
+    int deleteByIdxAttachFile(int idx);
 
     int findMasterIdxBySaveName(String saveName);
 
     int maxAttachIdx(int attachFileIdx);
 
     int findAttachFileIdxByAttatchFileMaster(int attachFileIdx);
+
+    List<Map<String,Object>> findSaveNameByAttachFileIdx(int idx);
 }

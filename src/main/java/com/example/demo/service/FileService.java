@@ -9,5 +9,5 @@ public interface FileService {
 
     AttachFile findAllAttachFile(String saveName);
 
-    int deleteAttachFile(String saveName);
+    int deleteBySaveNameAttachFile(String saveName);
 }

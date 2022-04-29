@@ -27,6 +27,7 @@ import java.util.Map;
 @RequestMapping("board")
 public class BoardController {
     private final BoardService boardService;
+    private final FileUtil fileUtil;
 
 
     /**
@@ -59,9 +60,7 @@ public class BoardController {
 
         List<Map<String,Object>> boardList = boardService.findAllByBoardIdBoard(criteria);
 
-
         int total = boardService.countByBoardIdBoard(criteria);
-
 
         Page pageMaker = new Page(total, webPageCount, criteria);
 
@@ -84,7 +83,7 @@ public class BoardController {
     @DeleteMapping(value = "/{boardId}")
     @ResponseBody
     public Map<String,Object> deleteBoards(@PathVariable("boardId") String boardId, @RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
-        int result = boardService.deleteBoardAdmin(paramMap);
+        int result = boardService.deleteAllBoardAdmin(paramMap);
         return ResultStr.set(result);
     }
 
@@ -142,12 +141,12 @@ public class BoardController {
         paramMap.put("boardId",boardId);
 
         BoardMaster boardMaster = boardService.findAllByIdxBoardMaster(paramMap);
-        Board board = boardService.findAllByIdx(paramMap);
+        Map<String,Object> boardDetail = boardService.findAllByIdx(paramMap);
         List<Map<String,Object>> commentList = boardService.findAllByIdxBoardComment(paramMap);
 
 
         model.addAttribute("boardMaster", boardMaster);
-        model.addAttribute("board", board);
+        model.addAttribute("boardDetail", boardDetail);
         model.addAttribute("commentList", commentList);
 
         return "/board/boardDetail";
@@ -307,10 +306,10 @@ public class BoardController {
         paramMap.put("boardId",boardId);
 
         BoardMaster boardMaster = boardService.findAllByIdxBoardMaster(paramMap);
-        Board board = boardService.findAllByIdx(paramMap);
+        Map<String,Object> boardDetail = boardService.findAllByIdx(paramMap);
 
         model.addAttribute("boardMaster", boardMaster);
-        model.addAttribute("board", board);
+        model.addAttribute("boardDetail", boardDetail);
         return "/board/boardUpdate";
     }
 
@@ -340,6 +339,23 @@ public class BoardController {
         result = boardService.updateBoard(files,thumb,board);
 
         return ResultStr.setMulti(result);
+    }
+
+    /**
+     * 썸네일 삭제
+     * @param idx
+     * @return
+     */
+    @DeleteMapping(value = "/thumbnail/{idx}")
+    @ResponseBody
+    public Map<String,Object> deleteThumbnail(@PathVariable("idx") String idx) {
+        int result = 0;
+
+        if(fileUtil.deleteThumbnailFile(idx)){
+            result =1;
+        }
+
+        return ResultStr.set(result);
     }
 
     /**
@@ -374,15 +390,18 @@ public class BoardController {
      */
     @DeleteMapping(value = "/{boardId}/detail/{idx}/admin")
     @ResponseBody
-    public Map<String,Object> deleteBoardAdmin(@PathVariable("boardId") String boardId, @PathVariable int idx,HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> deleteOneBoardAdmin(@PathVariable("boardId") String boardId, @PathVariable int idx,HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        int userIdx = Integer.parseInt((String) session.getAttribute("idx"));
+//        int userIdx = Integer.parseInt((String) session.getAttribute("idx"));
         Map<String,Object> paramMap = new HashMap<>();
 
-        paramMap.put("idx",idx);
-        paramMap.put("userIdx", userIdx);
+        paramMap.put("boardId", boardId);
 
-        int result = boardService.deleteBoardAdmin(paramMap);
+        paramMap.put("idx",idx);
+//        paramMap.put("userIdx", userIdx);
+        paramMap.put("userIdx", 1);
+
+        int result = boardService.deleteOneBoardAdmin(paramMap);
 
         return ResultStr.set(result);
     }

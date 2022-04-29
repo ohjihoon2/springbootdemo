@@ -92,7 +92,7 @@ public class FileController {
     @ResponseBody
     public Map<String, Object> deleteFile(@PathVariable String saveName, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        int result = fileService.deleteAttachFile(saveName);
+        int result = fileService.deleteBySaveNameAttachFile(saveName);
 
         System.out.println("result = " + result);
 

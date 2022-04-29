@@ -25,7 +25,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
-    public int deleteAttachFile(String saveName) {
+    public int deleteBySaveNameAttachFile(String saveName) {
 
         int cnt = fileMapper.countFileIdx(saveName);
 
@@ -33,7 +33,7 @@ public class FileServiceImpl implements FileService {
         if(cnt == 1){
             fileMapper.deleteAttachFileMaster(masterIdx);
         }
-        fileMapper.deleteAttachFile(saveName);
+        fileMapper.deleteBySaveNameAttachFile(saveName);
 
         if(fileUtil.deleteRealFile(saveName)){
             return 1;
