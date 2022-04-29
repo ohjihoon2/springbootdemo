@@ -233,7 +233,7 @@ public class FileUtil {
         // 저장된 원본파일로부터 BufferedImage 객체를 생성합니다.
         BufferedImage srcImg = ImageIO.read(new File(filePath));
         // 썸네일의 너비와 높이 입니다.
-        int dw = 280, dh = 280;
+        int dw = 285, dh = 285;
         // 원본 이미지의 너비와 높이 입니다.
         int ow = srcImg.getWidth();
         int oh = srcImg.getHeight();

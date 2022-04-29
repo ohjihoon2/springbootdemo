@@ -22,30 +22,32 @@ $(function() {
     $('#boardDel').click(function() {
         var check = $('#boardTable tbody input[type="checkbox"]:checked');
         if(check.length == 0) {
-            alert("삭제 할 게시글을 선택해주세요.");
+            alert("삭제 할 게시물을 선택해주세요.");
         }
         else {
-            $('#admBtn').next('ul').hide();
+            if(confirm(check.length + " 개의 게시물을 삭제하시겠습니까?\n(해당 게시물의 댓글까지 모두 삭제됩니다.)")) {
+                $('#admBtn').next('ul').hide();
 
-            var idx = [];
-            for(var i = 0; i < check.length; i++) {
-                idx.push($(check).eq(i).closest('tr').data('val'));
-            }
+                var idx = [];
+                for(var i = 0; i < check.length; i++) {
+                    idx.push($(check).eq(i).closest('tr').data('val'));
+                }
 
-            var data = {
-                idx : idx,
-            };
+                var data = {
+                    idx : idx,
+                };
 
-            var res = $ajax.deleteAjax('/board/'+ boardId, data);
-            if(res == "error") {
-                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
-            }
-            else if(res.result == "success") {
-                alert("선택 된 게시물을 삭제하였습니다.")
-                window.location.reload();
-            }
-            else if(res.result == "fail"){
-                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                var res = $ajax.deleteAjax('/board/'+ boardId, data);
+                if(res == "error") {
+                    alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                }
+                else if(res.result == "success") {
+                    alert(check.length + " 개의 게시물을 삭제하였습니다.")
+                    window.location.reload();
+                }
+                else if(res.result == "fail"){
+                    alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                }
             }
         }
     });
@@ -54,7 +56,7 @@ $(function() {
     $('#boardMovePopup').click(function() {
         var check = $('#boardTable tbody input[type="checkbox"]:checked');
         if(check.length == 0) {
-            alert("이동 할 게시글을 선택해주세요.");
+            alert("이동 할 게시물을 선택해주세요.");
         }
         else {
             $('#admBtn').next('ul').hide();
@@ -119,15 +121,20 @@ $(function() {
 
     // 게시글 이동
     $(document).on("click", "#boardMove", function(e) {
-        var check = $('#boardMasterTable tbody .sel');
+        var masterIdx = $('#boardMasterTable tbody .sel');
 
-        if(check.length != 1) {
+        if(masterIdx.length != 1) {
             alert("이동 할 게시판을 선택해주세요.");
         }
         else {
+            var check = $('#boardTable tbody input[type="checkbox"]:checked');
             var idx = [];
+            for(var i = 0; i < check.length; i++) {
+                idx.push($(check).eq(i).closest('tr').data('val'));
+            }
+
             var data = {
-                masterIdx : $(check).data('val'),
+                masterIdx : $(masterIdx).data('val'),
                 idx : idx
             };
 
@@ -136,7 +143,7 @@ $(function() {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }
             else if(res.result == "success") {
-                alert("게시물을 이동하였습니다.");
+                alert(check.length + " 개의 게시물을 이동하였습니다.");
                 window.location.reload();
             }
             else if(res.result == "fail"){
