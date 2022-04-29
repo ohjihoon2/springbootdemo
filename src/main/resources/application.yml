@@ -123,15 +123,11 @@ spring.mail:
 #  # 범위를 넘어가는 pageNum가 들어올 때 가능할 값으로 변경
 #  reasonable: true
 
-# 파일 경로
-custom:
-  path:
-    upload-images: 'D:/dev/upload-images/'
-
 resources:
   location: D:/upload/@project.name@
-  uri_path: /upload/@project.name@/**
+  uri_path: /upload/**
 
+  thumbnail: /upload/@project.name@/thumbnail
 
 
 file:
