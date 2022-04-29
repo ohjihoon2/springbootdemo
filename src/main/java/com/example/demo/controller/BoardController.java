@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class BoardController {
         paramMap.put("boardId", boardId);
         criteria.setParamMap(paramMap);
 
-        List<Map<String,Object>> noticeList = null;
+        List<Map<String,Object>> noticeList = new ArrayList<>();
         if(criteria.getPageNum() == 1 && criteria.getSearchKeyword() == null){
             noticeList = boardService.findNoticeByBoardIdBoard(criteria);
         }
@@ -310,6 +311,8 @@ public class BoardController {
         int result = boardService.updateBoard(files,thumb,board);
         return ResultStr.setMulti(result);
     }
+
+    // TODO 게시물 삭제시 썸네일 삭제 처리
 
     /**
      * 게시물 삭제 처리(유저)
