@@ -59,6 +59,7 @@
                            A.BOARD_SUBJECT,
                            A.BOARD_CONTENT,
                            A.HIT,
+                           A.THUMBNAIL_YN,
                            IFNULL(C.USER_NICKNM,'탈퇴된 회원')AS CREATE_NICKNM,
                            A.CREATE_DATE,
                            A.UPDATE_IDX,
