@@ -46,13 +46,11 @@ public class BoardController {
         criteria.setParamMap(paramMap);
         Map<String,Object> boardMaster = boardService.findByBoardIdBoardMaster(boardId);
 
-//        String boardType = String.valueOf(boardMaster.get("BOARD_TYPE"));
         int webPageCount = DeviceCheck.getPageCount(device);
-        
-//        int contentCount = DeviceCheck.getContentCount(boardType, device);
+        String boardType = String.valueOf(boardMaster.get("boardType"));
+        int contentCount = DeviceCheck.getContentCount(boardType, device);
 
-//        System.out.println("contentCount = " + contentCount);
-//        criteria.setAmount(contentCount);
+        criteria.setAmount(contentCount);
 
         List<Map<String,Object>> noticeList = new ArrayList<>();
         if(criteria.getPageNum() == 1 && criteria.getSearchKeyword() == null){

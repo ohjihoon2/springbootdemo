@@ -124,7 +124,7 @@ spring.mail:
 #  reasonable: true
 
 resources:
-  location: D:/upload/@project.name@
+  location: D:/upload/@project.name@/
   uri_path: /upload/**
 
   thumbnail: /upload/@project.name@/thumbnail

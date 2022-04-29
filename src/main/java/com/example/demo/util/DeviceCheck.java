@@ -67,13 +67,13 @@ public class DeviceCheck {
 
     public static int getContentCount(String boardType, Device device) {
         Integer pageCount = 0;
-        if(boardType.equals("basic")){
+        if(boardType.equals("GENERAL")){
             if (device.isMobile()) {
                 pageCount = contentBasicMobileCount;
             } else {
                 pageCount = contentBasicWebCount;
             }
-        }else if(boardType.equals("photo")){
+        }else if(boardType.equals("PHOTO")){
             if (device.isMobile()) {
                 pageCount = contentPhotoMobileCount;
             } else {
