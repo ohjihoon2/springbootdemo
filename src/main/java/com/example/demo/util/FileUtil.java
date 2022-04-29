@@ -204,7 +204,6 @@ public class FileUtil {
 
         /* uploadPath에 해당하는 디렉터리가 존재하지 않으면, 부모 디렉터리를 포함한 모든 디렉터리를 생성 */
         File dir = new File(resourcesThumbnail);
-        checkImageType(dir);
 
         if(dir.exists() == false){
             dir.mkdirs();
@@ -214,15 +213,11 @@ public class FileUtil {
             /* 파일 확장자 */
             final String extension = FilenameUtils.getExtension(thumb.getOriginalFilename());
             /* 서버에 저장할 파일명 (게시판 idx + 확장자) */
-            final String saveName = boardIdx+"."+extension;
+            final String saveName = String.valueOf(boardIdx);
+//            final String saveName = boardIdx+"."+extension;
 
             /* 업로드 경로에 saveName과 동일한 이름을 가진 파일 생성 */
             File target = new File(resourcesThumbnail, saveName);
-
-            if(!checkImageType(target)){
-
-            }
-
             thumb.transferTo(target);
             makeThumbnail(target.getAbsolutePath(), saveName, extension);
 
