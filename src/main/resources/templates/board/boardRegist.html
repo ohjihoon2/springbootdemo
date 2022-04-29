@@ -1,0 +1,53 @@
+<!--/*
+    thymeleaf 주석처리
+*/-->
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/board/boardRegist.css')"></th:block>
+<body ondragstart="return false" onselectstart="return false">
+<th:block th:if="${boardMaster.useYn == 'N'}">
+    <script>
+        alert("사용이 불가능한 페이지입니다.");
+        window.history.back();
+    </script>
+</th:block>
+<th:block th:if="!${@compareAuth.getAuth(boardMaster.writeLevel)}">
+    <script>
+        alert("접근이 불가능한 페이지입니다.");
+        window.history.back();
+    </script>
+</th:block>
+<th:block th:replace="/fragments/header.html :: thHeader"></th:block>
+<section>
+    <div class="section-wrap">
+        [[${boardMaster}]]
+        <form id="boardListForm">
+            <div class="pt80"></div>
+            <div class="top-btn-box">
+                <div class="left">게시물 추가</div>
+                <input id="notice" type="checkbox"/><label for="notice">공지</label>
+            </div>
+            <div class="mb10"></div>
+
+            <div class="mb5"></div>
+            <div class="bot-btn-box">
+                <a th:if="${@compareAuth.getAuth('ADMIN')}">
+                    <i id="admBtn" class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                    <ul style="display: none;">
+                        <li><button id="boardDel" type="button" value="선택삭제"><i class="fa fa-trash-o" aria-hidden="true"></i> 선택삭제</button></li>
+                        <li><button id="boardMovePopup" type="button" value="선택이동"><i class="fa fa-arrows" aria-hidden="true"></i> 선택이동</button></li>
+                    </ul>
+                </a>
+<!--                <button id="boardAdd" type="button" th:if="${@compareAuth.getAuth(boardMaster.writeLevel)}">글쓰기</button>-->
+            </div>
+            <div class="mb50"></div>
+        </form>
+    </div>
+</section>
+<th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
+<script th:src="@{/js/board/boardRegist.js}"></script>
+</body>
+</html>

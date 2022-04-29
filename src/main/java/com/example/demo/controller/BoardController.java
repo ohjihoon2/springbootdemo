@@ -150,7 +150,7 @@ public class BoardController {
         model.addAttribute("board", board);
         model.addAttribute("commentList", commentList);
 
-        return "/board/boardList";
+        return "/board/boardDetail";
     }
 
     /**
@@ -239,7 +239,11 @@ public class BoardController {
      */
     @GetMapping("/{boardId}/detail")
     public String registerPage(@PathVariable("boardId") String boardId,HttpServletResponse response, HttpServletRequest request, Model model) {
-        return "/board/registBoard";
+        Map<String,Object> boardMaster = boardService.findByBoardIdBoardMaster(boardId);
+
+        model.addAttribute("boardMaster", boardMaster);
+
+        return "/board/boardRegist";
     }
 
     /**
@@ -307,7 +311,7 @@ public class BoardController {
 
         model.addAttribute("boardMaster", boardMaster);
         model.addAttribute("board", board);
-        return "/board/updateBoard";
+        return "/board/boardUpdate";
     }
 
     /**

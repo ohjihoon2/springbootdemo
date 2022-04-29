@@ -125,7 +125,7 @@ spring.mail:
 
 resources:
   location: D:/upload/@project.name@/
-  uri_path: /upload/**
+  uri_path: /images/**
 
   thumbnail: /upload/@project.name@/thumbnail
 

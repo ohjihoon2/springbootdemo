@@ -19,6 +19,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // URI 가 resourcesUriPath 이하로 요청이 될 경우 로컬의 resourcesLocation 경로에 있는 파일을 사용자에게 제공
         registry.addResourceHandler(resourcesUriPath)
-                .addResourceLocations("file://" + resourcesLocation);
+                .addResourceLocations("file:///" + resourcesLocation);
     }
 }

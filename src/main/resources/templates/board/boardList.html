@@ -90,7 +90,8 @@
                 <ul>
                     <th:block th:each="res, i : ${boardList}">
                         <li th:data-val="${res.idx}">
-                            <img th:src="@{/img/board/thumbnail_basic.jpg}">
+                            <img th:src="@{/img/board/thumbnail_basic.jpg}" th:if="${res.thumbnailYn == 'N'}">
+                            <img th:src="@{/images/thumbnail/160}" th:if="${res.thumbnailYn == 'Y'}">
                             <div>
                                 <th:block th:if="${@compareAuth.getAuth('ADMIN')}"><input type="checkbox"/></th:block>
                                 <span th:text="${res.boardSubject}"></span>

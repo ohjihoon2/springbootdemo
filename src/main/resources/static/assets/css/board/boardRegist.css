@@ -238,10 +238,8 @@
 
 .board-photo ul li img{
     width: 100%;
-    max-width: 285px;
     margin-bottom: 2px;
     cursor: pointer;
-    object-fit: cover;
 }
 
 .board-photo ul li div{
