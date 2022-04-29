@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.service.BoardService;
 import com.example.demo.util.DeviceCheck;
+import com.example.demo.util.FileUtil;
 import com.example.demo.util.ResultStr;
 import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
@@ -243,11 +244,20 @@ public class BoardController {
     @PostMapping(value = "/{boardId}/detail")
     @ResponseBody
     public Map<String, Object> insertBoard(@PathVariable("boardId") String boardId, MultipartFile[] files, MultipartFile thumb,@RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request) {
+        int result = 0;
         HttpSession session = request.getSession();
         int idx = Integer.parseInt((String) session.getAttribute("idx"));
         board.setCreateIdx(idx);
 
-        int result = boardService.insertBoard(files,thumb,board);
+        if(thumb != null){
+            if(!thumb.getContentType().contains("image")){
+                result = 0;
+                return ResultStr.setMulti(result);
+            }
+        }
+
+        result = boardService.insertBoard(files,thumb,board);
+
         return ResultStr.setMulti(result);
     }
 
@@ -303,12 +313,20 @@ public class BoardController {
     @PatchMapping(value = "/{boardId}/detail/{idx}")
     @ResponseBody
     public Map<String, Object> updateBoard(@PathVariable("boardId") String boardId, MultipartFile[] files, MultipartFile thumb,@RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request) {
-
+        int result = 0;
         HttpSession session = request.getSession();
         int idx = Integer.parseInt((String) session.getAttribute("idx"));
         board.setUpdateIdx(idx);
 
-        int result = boardService.updateBoard(files,thumb,board);
+        if(thumb != null){
+            if(!thumb.getContentType().contains("image")){
+                result = 0;
+                return ResultStr.setMulti(result);
+            }
+        }
+
+        result = boardService.updateBoard(files,thumb,board);
+
         return ResultStr.setMulti(result);
     }
 
