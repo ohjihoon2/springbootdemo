@@ -226,12 +226,12 @@ public class FileUtil {
         try {
             /* 파일 확장자 */
             final String extension = FilenameUtils.getExtension(thumb.getOriginalFilename());
+            System.out.println("extension = " + extension);
             /* 서버에 저장할 파일명 (게시판 idx + 확장자) */
             final String saveName = String.valueOf(boardIdx);
 //            final String saveName = boardIdx+"."+extension;
-
             /* 업로드 경로에 saveName과 동일한 이름을 가진 파일 생성 */
-            File target = new File(resourcesThumbnail, saveName);
+            File target = new File(fileThumbnailPath, saveName);
             thumb.transferTo(target);
             makeThumbnail(target.getAbsolutePath(), saveName, extension);
 
@@ -245,7 +245,6 @@ public class FileUtil {
     }
 
     private void makeThumbnail(String filePath, String fileName, String fileExt) throws Exception {
-
         // 저장된 원본파일로부터 BufferedImage 객체를 생성합니다.
         BufferedImage srcImg = ImageIO.read(new File(filePath));
         // 썸네일의 너비와 높이 입니다.

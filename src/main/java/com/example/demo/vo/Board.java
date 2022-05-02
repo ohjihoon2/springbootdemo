@@ -12,6 +12,7 @@ public class Board {
     private String boardContent;
     private int hit;
     private int attachFileIdx;
+    private String noticeYn;
     private String deleteYn;
     private String thumbnailYn;
     private int createIdx;
