@@ -51,4 +51,6 @@ public interface BoardMapper {
     List<Map<String, Object>> findBoardMaster();
 
     int deleteOneBoardAdmin(Map<String, Object> paramMap);
+
+    List<Map<String, Object>> findAllByIdxList(Map<String, Object> paramMap);
 }

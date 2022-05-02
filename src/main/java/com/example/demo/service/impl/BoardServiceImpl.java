@@ -90,26 +90,23 @@ public class BoardServiceImpl implements BoardService {
     public int deleteAllBoardAdmin(Map<String, Object> paramMap) {
         int result = 0;
 
-        Map<String, Object> boardDetail = boardMapper.findAllByIdx(paramMap);
+//        Map<String, Object> boardDetail = boardMapper.findAllByIdx(paramMap);
+        List<Map<String, Object>> boardDetailList = boardMapper.findAllByIdxList(paramMap);
 
-
-        if(boardDetail.get("thumbnailYn").equals("Y")){
-            //썸네일 삭제
-            fileUtil.deleteThumbnailFile(paramMap.get("idx").toString());
-        }
-
-        if(boardDetail.get("attachFileIdx") != null) {
-
-            int attachFileIdx = Integer.parseInt(boardDetail.get("attachFileIdx").toString());
-
-            deleteByIdxFile(attachFileIdx);
-
+        for (Map<String, Object> boardDetail : boardDetailList) {
+            if(boardDetail.get("thumbnailYn").equals("Y")){
+                //썸네일 삭제
+                fileUtil.deleteThumbnailFile(paramMap.get("idx").toString());
+            }
+            if(boardDetail.get("attachFileIdx") != null) {
+                int attachFileIdx = Integer.parseInt(boardDetail.get("attachFileIdx").toString());
+                deleteByIdxFile(attachFileIdx);
+            }
         }
 
         if(boardMapper.deleteAllBoardAdmin(paramMap) != 0){
             result = 1;
         }
-
         return result;
     }
 
