@@ -252,8 +252,6 @@ public class BoardController {
     public Map<String, Object> insertBoard(@PathVariable("boardId") String boardId, MultipartFile[] files, MultipartFile thumb,
                                            @RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request,
                                             Authentication authentication) {
-
-
         int result = 0;
         HttpSession session = request.getSession();
         int idx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
@@ -272,9 +270,6 @@ public class BoardController {
 
         // 작성 권한 확인 후 masterIdx 저장
         board.setMasterIdx(boardMaster.getIdx());
-
-
-
 
         if(thumb != null){
             if(!thumb.getContentType().contains("image")){
@@ -445,14 +440,13 @@ public class BoardController {
     @ResponseBody
     public Map<String,Object> deleteOneBoardAdmin(@PathVariable("boardId") String boardId, @PathVariable int idx,HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
-//        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
         Map<String,Object> paramMap = new HashMap<>();
 
         paramMap.put("boardId", boardId);
 
         paramMap.put("idx",idx);
-//        paramMap.put("userIdx", userIdx);
-        paramMap.put("userIdx", 1);
+        paramMap.put("userIdx", userIdx);
 
         int result = boardService.deleteOneBoardAdmin(paramMap);
 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.ContentMapper">
+
+    <select id="findAllByContentId" resultType="CustomMap" parameterType="map">
+        SELECT IDX,
+               CONTENT_ID,
+               CONTENT_NM,
+               CONTENT_HTML,
+               HIT,
+               USE_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+         WHERE CONTENT_ID = #{contentId}
+    </select>
+</mapper>
