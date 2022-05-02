@@ -17,8 +17,7 @@ $(function() {
         })
     }
 
-    //TODO 공지 noticeYn 여부 저장
-    //썸네일 저장안됨 에러코드
+    //게시물 추가
     $(document).on("submit", "#boardRegistForm", async function (e) {
         e.preventDefault();
 
@@ -37,6 +36,11 @@ $(function() {
         }
         if ($event.validationFocus("boardContent")) return;
 
+        var thumbnailYn = 'N';
+        if($('#thumb')[0].files.length > 0) {
+            thumbnailYn = 'Y';
+        }
+
         var noticeYn = 'N';
         if($('#noticeYn').is(':checked')) {
             noticeYn = 'Y';
@@ -45,6 +49,7 @@ $(function() {
         var data = {
             boardSubject: $('#boardSubject').val(),
             boardContent: $('#boardContent').val(),
+            thumbnailYn: thumbnailYn,
             noticeYn: noticeYn,
         };
 

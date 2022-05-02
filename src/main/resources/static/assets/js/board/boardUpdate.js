@@ -17,7 +17,7 @@ $(function() {
         })
     }
 
-    //TODO 글쓰기
+    //
     $(document).on("submit", "#boardRegistForm", async function (e) {
         e.preventDefault();
 
