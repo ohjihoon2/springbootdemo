@@ -228,7 +228,7 @@
                             alert("게시물 썸네일은 이미지 파일만 등록 가능합니다.");
                             return;
                         }
-                        
+
                         var fileSize = $('#' + thumb)[0].files[0].size;
                         if(fileSize > maxSize) {
                             alert("게시물 썸네일은 2MB까지 등록 가능합니다.");

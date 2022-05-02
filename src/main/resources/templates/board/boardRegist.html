@@ -30,7 +30,7 @@
                 <span th:if="${@compareAuth.getAuth('ADMIN')}"><input id="noticeYn" type="checkbox"/><label for="noticeYn">공지</label></span>
             </div>
             <div class="mb10"></div>
-            <ul th:id="boardUl" class="board-ul">
+            <ul id="boardUl" class="board-ul">
                 <li>
                     <label>제목</label>
                     <input id="boardSubject" type="text">

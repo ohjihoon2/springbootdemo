@@ -1,0 +1,66 @@
+<!--/*
+    thymeleaf 주석처리
+*/-->
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/board/boardDetail.css')"></th:block>
+<body ondragstart="return false" onselectstart="return false">
+<th:block th:if="${boardMaster.useYn == 'N'}">
+    <script>
+        alert("사용이 불가능한 페이지입니다.");
+        window.history.back();
+    </script>
+</th:block>
+<th:block th:if="!${@compareAuth.getAuth(boardMaster.readLevel)}">
+    <script>
+        alert("접근이 불가능한 페이지입니다.");
+        window.history.back();
+    </script>
+</th:block>
+<th:block th:replace="/fragments/header.html :: thHeader"></th:block>
+<section>
+    [[${boardDetail}]]
+    <div class="section-wrap">
+        <form id="boardRegistForm">
+            <div class="pt80"></div>
+            <div class="top-btn-box">
+<!--  TODO 작성자 확인이 필요한데 작성자 IDX가 없음  boardDetail에 작성자IDX값 -->
+                <div class="left" th:text="${boardDetail.boardSubject}"></div>
+                <a th:if="${@compareAuth.getAuth('ADMIN') || boardDetail.idx == session.idx}">
+                    <i id="controlBtn" class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                    <ul style="display: none;">
+                        <li><button id="boardUpdate" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 수정</button></li>
+                        <li><button id="boardDel" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button></li>
+                        <li th:if="${@compareAuth.getAuth('ADMIN')}"><button id="boardMovePopup" type="button"><i class="fa fa-arrows" aria-hidden="true"></i> 이동</button></li>
+                    </ul>
+                </a>
+            </div>
+            <div>
+                <ul>
+                    <li></li>
+                    <li th:text="${boardDetail.boardContent}"></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+            <div class="mb10"></div>
+            <div class="mb5"></div>
+            <div class="bot-btn-box">
+                <button type="button">목록으로</button>
+            </div>
+            <div class="mb100"></div>
+        </form>
+    </div>
+</section>
+<script>
+    var boardId = "[[${boardMaster.boardId}]]";
+    var boardType = "[[${boardMaster.boardType}]]";
+    var editorLevel = [[${@compareAuth.getAuth(boardMaster.writeLevel)}]];
+</script>
+<th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
+<script th:src="@{/js/board/boardDetail.js}"></script>
+</body>
+</html>
