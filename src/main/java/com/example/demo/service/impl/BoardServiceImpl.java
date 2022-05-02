@@ -117,7 +117,6 @@ public class BoardServiceImpl implements BoardService {
 
         Map<String, Object> boardDetail = boardMapper.findAllByIdx(paramMap);
 
-
         if(boardDetail.get("thumbnailYn").equals("Y")){
             //썸네일 삭제
             fileUtil.deleteThumbnailFile(paramMap.get("idx").toString());
@@ -131,13 +130,12 @@ public class BoardServiceImpl implements BoardService {
 
         }
 
-        // idx = 게시판idx
         if(boardMapper.deleteOneBoardAdmin(paramMap) != 0){
             result = 1;
         }
 
-        // todo - idx = 상위 댓글
-        boardMapper.deleteBoardCommentAdmin(paramMap);
+        // 게시글 댓글 전체 삭제
+        boardMapper.deleteBoardCommentAll(paramMap);
 
 
         return result;
