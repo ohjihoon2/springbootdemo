@@ -90,7 +90,6 @@ public class BoardServiceImpl implements BoardService {
     public int deleteAllBoardAdmin(Map<String, Object> paramMap) {
         int result = 0;
 
-//        Map<String, Object> boardDetail = boardMapper.findAllByIdx(paramMap);
         List<Map<String, Object>> boardDetailList = boardMapper.findAllByIdxList(paramMap);
 
         for (Map<String, Object> boardDetail : boardDetailList) {
