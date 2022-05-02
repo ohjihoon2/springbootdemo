@@ -310,7 +310,7 @@
                                    SELECT IDX
                                    FROM board_comment
                                    WHERE BOARD_IDX = #{idx}
-                                     AND PARENT_IDX = 0
+                                     AND PARENT_IDX IS NULL
                                    UNION ALL
                                    SELECT A.IDX
                                    FROM board_comment A
@@ -429,7 +429,7 @@
                       UPDATE_DATE
                  FROM board_comment
                 WHERE BOARD_IDX = #{idx}
-                  AND PARENT_IDX = 0
+                  AND PARENT_IDX IS NULL
                 UNION ALL
                SELECT A.IDX,
                       concat(CTE.CTE_PATH, '-', A.IDX) AS CTE_PATH,
