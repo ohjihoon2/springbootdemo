@@ -49,8 +49,6 @@ $(function(){
             res.resultList[i] = $util.nullChkObj(res.resultList[i]);
         }
 
-
-        console.log(res);
         var secretYn ='';
         if(res.config.secretYn == 'Y') {
             secretYn = 'checked';
@@ -229,7 +227,7 @@ $(function(){
             qaContent: $('#qaContent').val(),
         };
 
-        var res = $ajax.postFileAjax('/adm/qna', data, 'files', 'Q&A 답변을 완료하였습니다.', '파일 업로드 및 메일발송 중입니다.');
+        $ajax.postFileAjax('/adm/qna', data, 'files', '', 'Q&A 답변을 완료하였습니다.', '파일 업로드 및 메일발송 중입니다.');
     });
 
     // 컨텐츠삭제

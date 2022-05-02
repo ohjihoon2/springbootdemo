@@ -6,7 +6,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/board/boardRegist.css')"></th:block>
+<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/board/boardUpdate.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
 <th:block th:if="${boardMaster.useYn == 'N'}">
     <script>
@@ -27,7 +27,7 @@
             <div class="pt80"></div>
             <div class="top-btn-box">
                 <div class="left">게시물 추가</div>
-                <span th:if="${@compareAuth.getAuth('ADMIN')}"><input id="noticeYn" type="checkbox"/><label for="noticeYn">공지</label></span>
+                <span th:if="${@compareAuth.getAuth('ADMIN')}"><input id="notice" type="checkbox"/><label for="notice">공지</label></span>
             </div>
             <div class="mb10"></div>
             <ul th:id="boardUl" class="board-ul">
@@ -60,11 +60,12 @@
     </div>
 </section>
 <script>
-    var boardId = "[[${boardMaster.boardId}]]";
+    var masterIdx = "[[${boardMaster.idx}]]";
     var boardType = "[[${boardMaster.boardType}]]";
+    var boardId = "[[${boardMaster.boardId}]]";
     var editorLevel = [[${@compareAuth.getAuth(boardMaster.writeLevel)}]];
 </script>
 <th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
-<script th:src="@{/js/board/boardRegist.js}"></script>
+<script th:src="@{/js/board/boardUpdate.js}"></script>
 </body>
 </html>

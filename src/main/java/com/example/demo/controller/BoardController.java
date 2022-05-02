@@ -251,6 +251,8 @@ public class BoardController {
     public Map<String, Object> insertBoard(@PathVariable("boardId") String boardId, MultipartFile[] files, MultipartFile thumb,
                                            @RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request,
                                             Authentication authentication) {
+
+
         int result = 0;
         HttpSession session = request.getSession();
         int idx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
@@ -269,6 +271,9 @@ public class BoardController {
 
         // 작성 권한 확인 후 masterIdx 저장
         board.setMasterIdx(boardMaster.getIdx());
+
+
+
 
         if(thumb != null){
             if(!thumb.getContentType().contains("image")){

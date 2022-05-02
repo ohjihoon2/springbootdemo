@@ -17,8 +17,7 @@ $(function() {
         })
     }
 
-    //TODO 공지 noticeYn 여부 저장
-    //썸네일 저장안됨 에러코드
+    //TODO 글쓰기
     $(document).on("submit", "#boardRegistForm", async function (e) {
         e.preventDefault();
 
@@ -37,18 +36,13 @@ $(function() {
         }
         if ($event.validationFocus("boardContent")) return;
 
-        var noticeYn = 'N';
-        if($('#noticeYn').is(':checked')) {
-            noticeYn = 'Y';
-        }
-
         var data = {
+            masterIdx: masterIdx,
             boardSubject: $('#boardSubject').val(),
             boardContent: $('#boardContent').val(),
-            noticeYn: noticeYn,
         };
 
-        $ajax.postFileAjax('/board/'+ boardId +'/detail', data, 'files', 'thumb', '게시물을 등록하였습니다.', '파일 업로드 중입니다.', '/board/'+ boardId);
+        $ajax.postFileAjax('/board/'+ boardId +'/detail', data, 'files', '', '게시물을 등록하였습니다.', '파일 업로드 중입니다.');
     });
 
 });

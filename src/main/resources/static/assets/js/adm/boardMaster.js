@@ -101,12 +101,9 @@ $(function(){
 
         if($event.validationFocus("boardNm")) return;
 
-        var useYn;
+        var useYn = 'N';
         if($('#useYn').is(':checked')) {
             useYn = 'Y';
-        }
-        else {
-            useYn = 'N';
         }
 
         var data = {

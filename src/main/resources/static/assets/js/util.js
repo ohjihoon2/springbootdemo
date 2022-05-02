@@ -203,25 +203,30 @@
 
         // post 로딩에이작스 , 파일첨부
         // 로딩으로 인해 동기화를 기본으로 실행한다.
-        postFileAjax : function (url, param = {}, files='', success = '', loding = '') {
+        postFileAjax : function (url, param = {}, files='', thumb='', success = '', loding = '', page = '') {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
             var contentType = "application/json";
 
-            if(files != '') {
+            if(files != '' || thumb != '') {
                 contentType = false;
                 var data = new FormData();
                 data.append("param", new Blob([JSON.stringify(param)], {type: "application/json"}));
-                for(var i=0; i < $('#' + files)[0].files.length; i++) {
-                    data.append('files',$('#' + files)[0].files[i]);
+                if(files !='') {
+                    for (var i = 0; i < $('#' + files)[0].files.length; i++) {
+                        data.append('files', $('#' + files)[0].files[i]);
+                    }
+                }
+                if(thumb !='') {
+                    if($('#' + thumb)[0].files.length > 0) {
+                        data.append('thumb', $('#' + thumb)[0].files[0]);
+                    }
                 }
                 param = data;
             }
             else {
                 param = JSON.stringify(param);
             }
-
-            var res;
 
             $.ajax({
                 type: "POST",
@@ -243,7 +248,13 @@
                     }
                     else {
                         alert(success);
-                        window.location.reload();
+                        if(page == '') {
+                            window.location.reload();
+                        }
+                        else {
+                            location.href = page;
+                        }
+
                     }
                 },
                 error: function () {
@@ -255,13 +266,12 @@
                     }
                 }
             });
-            return res;
         },
     }
 
     $event = {
         // 인풋 빈값 벨리데이션
-        validationFocus: function (id) {
+        validationFocus: function (id , reMsg = '', file = false) {
             var msg = {
                 userId: '아이디',
                 userPwd: '비밀번호',
@@ -289,13 +299,34 @@
                 masterIdx: 'FAQ타입',
                 faqQuestion: 'FAQ명',
                 faqAnswer: 'FAQ답변',
+                boardSubject: '게시물 제목',
+                boardContent: '게시물 내용',
             }
-
-            if ($('#' + id).val() == '') {
-                alert(msg[id] + ' 을(를) 입력해주세요.');
-                $('#' + id).focus();
-                return true;
+            if(file) {
+                if ($('#'+ id)[0].files.length == 0) {
+                    if(reMsg == '') {
+                        alert(msg[id] + ' 을(를) 선택해주세요.');
+                    }
+                    else {
+                        alert(reMsg);
+                    }
+                    $('#' + id).focus();
+                    return true;
+                }
             }
+            else {
+                if ($('#' + id).val() == '') {
+                    if(reMsg == '') {
+                        alert(msg[id] + ' 을(를) 입력해주세요.');
+                    }
+                    else {
+                        alert(reMsg);
+                    }
+                    $('#' + id).focus();
+                    return true;
+                }
+            }
+            return false;
         },
         // 체크박스 빈값 벨리데이션
         validationChk: function (id) {
