@@ -301,6 +301,26 @@
                       )
     </delete>
 
+
+    <delete id="deleteBoardCommentAll" parameterType="map">
+        DELETE FROM board_comment
+        WHERE IDX IN (
+            WITH RECURSIVE CTE AS
+                               (
+                                   SELECT IDX
+                                   FROM board_comment
+                                   WHERE BOARD_IDX = #{idx}
+                                     AND PARENT_IDX IS NULL
+                                   UNION ALL
+                                   SELECT A.IDX
+                                   FROM board_comment A
+                                            INNER JOIN CTE ON A.PARENT_IDX = CTE.IDX
+                               )
+            SELECT IDX
+            FROM CTE
+        )
+    </delete>
+
     <delete id="deleteBoardCommentWithBoard" parameterType="map">
         DELETE FROM board_comment
          WHERE BOARD_IDX IN
@@ -409,7 +429,7 @@
                       UPDATE_DATE
                  FROM board_comment
                 WHERE BOARD_IDX = #{idx}
-                  AND PARENT_IDX = 0
+                  AND PARENT_IDX IS NULL
                 UNION ALL
                SELECT A.IDX,
                       concat(CTE.CTE_PATH, '-', A.IDX) AS CTE_PATH,
