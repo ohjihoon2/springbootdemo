@@ -219,6 +219,20 @@
                 }
                 if(thumb !='') {
                     if($('#' + thumb)[0].files.length > 0) {
+                        var fileForm = /(.*?)\.(jpg|jpeg|png|bmp)$/;
+                        var maxSize = 2 * 1024 * 1024;
+
+                        var imgFile = $('#' + thumb).val();
+                        if(!imgFile.match(fileForm)) {
+                            alert("게시물 썸네일은 이미지 파일만 등록 가능합니다.");
+                            return;
+                        }
+                        var fileSize = $('#' + thumb)[0].files[0].size;
+                        if(fileSize > maxSize) {
+                            alert("게시물 썸네일은 2MB까지 등록 가능합니다.");
+                            return;
+                        }
+
                         data.append('thumb', $('#' + thumb)[0].files[0]);
                     }
                 }
@@ -267,7 +281,7 @@
                 }
             });
         },
-    }
+    },
 
     $event = {
         // 인풋 빈값 벨리데이션

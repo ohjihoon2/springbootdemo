@@ -38,7 +38,7 @@
                 <li>
                     <label><i class="fa fa-image" aria-hidden="true"></i></label>
                     <div>
-                        <input id="thumb" type="file">
+                        <input id="thumb" type="file" accept="image/jpeg, image/png, image/jpg, image/bmp">
                     </div>
                 </li>
                 <li th:if="${@compareAuth.getAuth(boardMaster.uploadLevel)}">
