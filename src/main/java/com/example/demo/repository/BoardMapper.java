@@ -44,7 +44,7 @@ public interface BoardMapper {
 
     int deleteBoardCommentUser(BoardComment comment);
 
-    int deleteBoardCommentAdmin(BoardComment comment);
+    int deleteBoardCommentAdmin(Map<String, Object> paramMap);
 
     void deleteBoardCommentWithBoard(Map<String, Object> paramMap);
 

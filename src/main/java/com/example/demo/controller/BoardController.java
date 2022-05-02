@@ -8,6 +8,7 @@ import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mobile.device.Device;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -86,9 +84,6 @@ public class BoardController {
         int result = boardService.deleteAllBoardAdmin(paramMap);
         return ResultStr.set(result);
     }
-
-//     TODO
-//      썸네일 올리기 / 수정 / 삭제
 
     /**
      * 게시판 목록
@@ -163,9 +158,9 @@ public class BoardController {
     @ResponseBody
     public Map<String, Object> insertBoardComment(@RequestBody BoardComment comment, HttpServletResponse response, HttpServletRequest request) {
 
-        HttpSession session = request.getSession();
-        int idx = Integer.parseInt((String) session.getAttribute("idx"));
-        comment.setCreateIdx(idx);
+//        HttpSession session = request.getSession();
+//        int idx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
+        comment.setCreateIdx(1);
 
         int result = boardService.insertBoardComment(comment);
         return ResultStr.setMulti(result);
@@ -183,7 +178,7 @@ public class BoardController {
     public Map<String, Object> updateBoardComment(@RequestBody BoardComment comment, HttpServletResponse response, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
-        int idx = Integer.parseInt((String) session.getAttribute("idx"));
+        int idx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
         comment.setUpdateIdx(idx);
 
         int result = boardService.updateBoardComment(comment);
@@ -202,7 +197,7 @@ public class BoardController {
     public Map<String, Object> deleteBoardCommentUser(@RequestBody BoardComment comment, HttpServletResponse response, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
-        int idx = Integer.parseInt((String) session.getAttribute("idx"));
+        int idx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
         comment.setUpdateIdx(idx);
 
         int result = boardService.deleteBoardCommentUser(comment);
@@ -211,20 +206,19 @@ public class BoardController {
 
     /**
      * 게시물 댓글 삭제(관리자)
-     * @param comment
      * @param response
      * @param request
      * @return
      */
     @DeleteMapping(value = "/comment/admin")
     @ResponseBody
-    public Map<String, Object> deleteBoardCommentAdmin(@RequestBody BoardComment comment, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String, Object> deleteBoardCommentAdmin(@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
-        int idx = Integer.parseInt((String) session.getAttribute("idx"));
-        comment.setUpdateIdx(idx);
+        int idx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
+        paramMap.put("updateIdx", idx);
 
-        int result = boardService.deleteBoardCommentAdmin(comment);
+        int result = boardService.deleteBoardCommentAdmin(paramMap);
         return ResultStr.setMulti(result);
     }
 
@@ -254,11 +248,27 @@ public class BoardController {
      */
     @PostMapping(value = "/{boardId}/detail")
     @ResponseBody
-    public Map<String, Object> insertBoard(@PathVariable("boardId") String boardId, MultipartFile[] files, MultipartFile thumb,@RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String, Object> insertBoard(@PathVariable("boardId") String boardId, MultipartFile[] files, MultipartFile thumb,
+                                           @RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request,
+                                            Authentication authentication) {
         int result = 0;
         HttpSession session = request.getSession();
-        int idx = Integer.parseInt((String) session.getAttribute("idx"));
+        int idx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
         board.setCreateIdx(idx);
+
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("boardId", boardId);
+        BoardMaster boardMaster = boardService.findAllByIdxBoardMaster(paramMap);
+        String writeLevel = boardMaster.getWriteLevel();
+
+        // 게시글 작성 권한 비교
+        if(compareWriteLevel(authentication, writeLevel) == 0){
+            result = 0;
+            return ResultStr.setMulti(result);
+        }
+
+        // 작성 권한 확인 후 masterIdx 저장
+        board.setMasterIdx(boardMaster.getIdx());
 
         if(thumb != null){
             if(!thumb.getContentType().contains("image")){
@@ -273,6 +283,43 @@ public class BoardController {
     }
 
     /**
+     * 게시물 작성 권한 비교
+     * @param authentication
+     * @param writeLevel
+     * @return
+     */
+    private int compareWriteLevel(Authentication authentication, String writeLevel) {
+        // ALL - >
+        // writeLevel = user, ADMIN
+        // authentication.getAuthorities() = [ROLE_USER], [ROLE_ADMIN], [ROLE_MANAGER], [ROLE_SYSTEM]
+        // USER - >
+        // writeLevel = user, ADMIN
+        // authentication.getAuthorities() = [ROLE_USER], [ROLE_ADMIN], [ROLE_MANAGER], [ROLE_SYSTEM]
+        // ADMIN - >
+        // writeLevel = ADMIN
+        // authentication.getAuthorities() = [ROLE_ADMIN], [ROLE_MANAGER], [ROLE_SYSTEM]
+
+        int result = 0;
+
+        String[] userLevel = {"USER","ADMIN","MANAGER","SYSTEM"};
+        String[] adminLevel = {"ADMIN","MANAGER","SYSTEM"};
+
+        String authStr = String.valueOf(authentication.getAuthorities());
+        String auth = authStr.substring(authStr.lastIndexOf("_") + 1, authStr.length() - 1);
+
+        if(writeLevel.equals("ALL") || writeLevel.equals("USER")){
+            if(Arrays.stream(userLevel).anyMatch(auth::equals)) {
+                result =1;
+            }
+        }else {
+            if(Arrays.stream(adminLevel).anyMatch(auth::equals)){
+                result =1;
+            }
+        }
+        return result;
+    }
+
+    /**
      * 게시물 이동 처리(단일)
      * @param paramMap
      * @param response
@@ -284,7 +331,7 @@ public class BoardController {
     public Map<String, Object> boardMasterList(@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
-        int userIdx = Integer.parseInt((String) session.getAttribute("idx"));
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
         paramMap.put("userIdx", userIdx);
 
         int result = boardService.moveBoards(paramMap);
@@ -326,7 +373,7 @@ public class BoardController {
     public Map<String, Object> updateBoard(@PathVariable("boardId") String boardId, MultipartFile[] files, MultipartFile thumb,@RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request) {
         int result = 0;
         HttpSession session = request.getSession();
-        int idx = Integer.parseInt((String) session.getAttribute("idx"));
+        int idx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
         board.setUpdateIdx(idx);
 
         if(thumb != null){
@@ -369,7 +416,7 @@ public class BoardController {
     @ResponseBody
     public Map<String,Object> deleteBoardUser(@PathVariable("boardId") String boardId, @PathVariable int idx,HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        int userIdx = Integer.parseInt((String) session.getAttribute("idx"));
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
         Map<String,Object> paramMap = new HashMap<>();
 
         paramMap.put("idx",idx);
@@ -392,7 +439,7 @@ public class BoardController {
     @ResponseBody
     public Map<String,Object> deleteOneBoardAdmin(@PathVariable("boardId") String boardId, @PathVariable int idx,HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
-//        int userIdx = Integer.parseInt((String) session.getAttribute("idx"));
+//        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
         Map<String,Object> paramMap = new HashMap<>();
 
         paramMap.put("boardId", boardId);

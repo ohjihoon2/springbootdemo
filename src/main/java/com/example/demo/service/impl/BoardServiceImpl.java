@@ -135,9 +135,14 @@ public class BoardServiceImpl implements BoardService {
 
         }
 
+        // idx = 게시판idx
         if(boardMapper.deleteOneBoardAdmin(paramMap) != 0){
             result = 1;
         }
+
+        // todo - idx = 상위 댓글
+        boardMapper.deleteBoardCommentAdmin(paramMap);
+
 
         return result;
     }
@@ -204,8 +209,8 @@ public class BoardServiceImpl implements BoardService {
         return boardMapper.deleteBoardCommentUser(comment);
     }
     @Override
-    public int deleteBoardCommentAdmin(BoardComment comment) {
-       return boardMapper.deleteBoardCommentAdmin(comment);
+    public int deleteBoardCommentAdmin(Map<String, Object> paramMap) {
+       return boardMapper.deleteBoardCommentAdmin(paramMap);
     }
 
     @Override

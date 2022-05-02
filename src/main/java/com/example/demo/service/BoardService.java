@@ -45,7 +45,7 @@ public interface BoardService {
 
     int deleteBoardCommentUser(BoardComment comment);
 
-    int deleteBoardCommentAdmin(BoardComment comment);
+    int deleteBoardCommentAdmin(Map<String, Object> paramMap);
 
     List<Map<String, Object>> findBoardMaster();
 
