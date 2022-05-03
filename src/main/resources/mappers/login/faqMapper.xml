@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.FaqMapper">
+
+    <sql id="criteriaFaq">
+        <if test="searchType != null and searchKeyword != null">
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <foreach item="type" collection="typeArr">
+                    <trim prefix="OR">
+                        <choose>
+                            <when test="type=='T'.toString()">
+                                (FAQ_QUESTION LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                            <when test="type=='C'.toString()">
+                                (FAQ_ANSWER LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
+    <select id="findFaqNmFaqMaster" resultType="CustomMap">
+        SELECT IDX,
+               FAQ_NM,
+               FM_ORDER,
+               USE_YN,
+               UPDATE_IDX,
+               UPDATE_DATE,
+               CREATE_IDX,
+               CREATE_DATE
+          FROM faq_master
+    </select>
+
+    <select id="countByFaq" resultType="int" parameterType="Criteria">
+        SELECT COUNT(*)
+          FROM (
+                    SELECT IDX,
+                           MASTER_IDX,
+                           FAQ_QUESTION,
+                           FAQ_ANSWER,
+                           FAQ_ORDER,
+                           USE_YN,
+                           CREATE_IDX,
+                           CREATE_DATE,
+                           UPDATE_IDX,
+                           UPDATE_DATE
+                      FROM faq
+                     WHERE 1 = 1
+                    <include refid="criteriaFaq"/>
+                ) AS CNT_TB
+    </select>
+
+    <select id="findAllFaq" parameterType="Criteria" resultType="CustomMap">
+        SELECT ROWNUM_TB.*
+          FROM (
+                    SELECT @ROWNUM:=@ROWNUM+1 AS RN,
+                           IDX,
+                           MASTER_IDX,
+                           FAQ_QUESTION,
+                           FAQ_ANSWER,
+                           FAQ_ORDER,
+                           USE_YN,
+                           CREATE_IDX,
+                           CREATE_DATE,
+                           UPDATE_IDX,
+                           UPDATE_DATE
+                      FROM faq,
+                           (SELECT @ROWNUM:=0) temp
+                     WHERE 1 = 1
+                     <include refid="criteriaFaq"/>
+              ) AS ROWNUM_TB
+         ORDER BY IDX desc
+         LIMIT #{pageStart},#{amount}
+    </select>
+
+    <select id="countByIdxFaq" resultType="int" parameterType="Criteria">
+        SELECT COUNT(*)
+          FROM (
+                    SELECT A.IDX,
+                           A.MASTER_IDX,
+                           A.FAQ_QUESTION,
+                           A.FAQ_ANSWER,
+                           A.FAQ_ORDER,
+                           A.USE_YN,
+                           A.CREATE_IDX,
+                           A.CREATE_DATE,
+                           A.UPDATE_IDX,
+                           A.UPDATE_DATE
+                      FROM faq A
+                     INNER JOIN faq_master B ON A.MASTER_IDX = B.IDX
+                     WHERE B.IDX = #{paramMap.idx}
+                    <include refid="criteriaFaq"/>
+                ) AS CNT_TB
+    </select>
+
+    <select id="findAllByIdx" parameterType="Criteria" resultType="CustomMap">
+        SELECT ROWNUM_TB.*
+          FROM (
+                    SELECT @ROWNUM:=@ROWNUM+1 AS RN,
+                           A.IDX,
+                           A.MASTER_IDX,
+                           A.FAQ_QUESTION,
+                           A.FAQ_ANSWER,
+                           A.FAQ_ORDER,
+                           A.USE_YN,
+                           A.CREATE_IDX,
+                           A.CREATE_DATE,
+                           A.UPDATE_IDX,
+                           A.UPDATE_DATE
+                      FROM faq A
+                     INNER JOIN faq_master B ON A.MASTER_IDX = B.IDX,
+                           (SELECT @ROWNUM:=0) temp
+                     WHERE B.IDX = #{paramMap.idx}
+                     <include refid="criteriaFaq"/>
+                ) AS ROWNUM_TB
+        ORDER BY IDX desc
+        LIMIT #{pageStart},#{amount}
+    </select>
+
+</mapper>
