@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -36,13 +37,11 @@ public class FaqController {
      */
     @GetMapping("")
     public String faqAllList(Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model, Device device) {
-
-
         int pageCount = DeviceCheck.getPageCount(device);
         int total = faqService.countByFaq(criteria);
 
         Map<String,Object> faqMasterList = faqService.findFaqNmFaqMaster();
-        Map<String,Object> faqList = faqService.findAllFaq(criteria);
+        List<Map<String,Object>> faqList = faqService.findAllFaq(criteria);
         Page pageMaker = new Page(total, pageCount, criteria);
 
         model.addAttribute("pageMaker", pageMaker);
@@ -50,7 +49,7 @@ public class FaqController {
         model.addAttribute("faqList", faqList);
         model.addAttribute("faqMasterList", faqMasterList);
 
-        return "/content/contentDetail";
+        return "/";
     }
 
     /**
@@ -78,7 +77,7 @@ public class FaqController {
         model.addAttribute("faqMasterList", faqMasterList);
         model.addAttribute("faqList", faqList);
 
-        return "/content/contentDetail";
+        return "/";
     }
 
 }

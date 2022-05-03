@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.QnaMapper">
+
+    <sql id="criteriaQna">
+        <if test="searchType != null and searchKeyword != null">
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <foreach item="type" collection="typeArr">
+                    <trim prefix="OR">
+                        <choose>
+                            <when test="type=='T'.toString()">
+                                (QA_SUBJECT LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                            <when test="type=='C'.toString()">
+                                (QA_CONTENT LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                            <when test="type=='W'.toString()">
+                                (
+                                    A.CREATE_IDX IN
+                                    (
+                                        SELECT IDX
+                                          FROM users
+                                         WHERE USER_NICKNM LIKE CONCAT('%',#{searchKeyword},'%')
+                                    )
+                                )
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
+    <select id="countByQna" resultType="int" parameterType="Criteria">
+        SELECT COUNT(*)
+          FROM (
+                    SELECT B.QA_CATEGORY,
+                           B.QA_STATUS,
+                           B.SECRET_YN,
+                           A.IDX,
+                           A.PARENT_IDX,
+                           A.QA_SUBJECT,
+                           A.QA_CONTENT,
+                           A.ATTACH_FILE_IDX,
+                           A.USE_YN,
+                           A.CREATE_IDX,
+                           A.CREATE_DATE,
+                           A.UPDATE_IDX,
+                           A.UPDATE_DATE
+                      FROM qna A
+                     INNER JOIN qna_config B ON A.IDX = B.QNA_IDX
+                     WHERE A.PARENT_IDX IS NULL
+                    <include refid="criteriaQna"/>
+                ) AS CNT_TB
+    </select>
+
+    <select id="findAllQna" parameterType="Criteria" resultType="CustomMap">
+        SELECT ROWNUM_TB.*
+          FROM (
+                    SELECT @ROWNUM:=@ROWNUM+1 AS RN,
+                           B.QA_CATEGORY,
+                           B.QA_STATUS,
+                           B.SECRET_YN,
+                           A.IDX,
+                           A.PARENT_IDX,
+                           A.QA_SUBJECT,
+                           A.QA_CONTENT,
+                           A.ATTACH_FILE_IDX,
+                           A.USE_YN,
+                           A.CREATE_IDX,
+                           IFNULL(C.USER_NICKNM,'탈퇴된 회원')AS CREATE_NICKNM,
+                           A.CREATE_DATE
+                      FROM qna A
+                     INNER JOIN qna_config B ON A.IDX = B.QNA_IDX
+                      LEFT JOIN users C ON A.CREATE_IDX = C.IDX,
+                           (SELECT @ROWNUM:=0) temp
+                     WHERE A.PARENT_IDX IS NULL
+                     <include refid="criteriaQna"/>
+              ) AS ROWNUM_TB
+         ORDER BY IDX DESC
+         LIMIT #{pageStart},#{amount}
+    </select>
+
+    <select id="findByIdxQnaConfig" parameterType="int" resultType="CustomMap">
+        SELECT IDX,
+               QNA_IDX,
+               QA_EMAIL_RECV_YN,
+               QA_CATEGORY,
+               QA_STATUS,
+               SECRET_YN
+          FROM qna_config
+         WHERE IDX = {idx}
+    </select>
+
+    <select id="findByIdxQna" resultType="CustomMap" parameterType="int">
+        WITH RECURSIVE CTE AS
+                           (
+                               SELECT IDX,
+                                      convert(idx, char(100)) AS CTE_PATH,
+                                      1 LVL,
+                                      PARENT_IDX,
+                                      QA_SUBJECT,
+                                      QA_CONTENT,
+                                      ATTACH_FILE_IDX,
+                                      USE_YN,
+                                      CREATE_IDX,
+                                      CREATE_DATE,
+                                      UPDATE_IDX
+                                   UPDATE_DATE
+                               FROM board_comment
+                               WHERE IDX = #{idx}
+                               UNION ALL
+                               SELECT A.IDX,
+                                      concat(CTE.CTE_PATH, '-', A.IDX) AS CTE_PATH,
+                                      LVL + 1 LVL,
+                                      A.PARENT_IDX,
+                                      A.QA_SUBJECT,
+                                      A.QA_CONTENT,
+                                      A.ATTACH_FILE_IDX,
+                                      A.USE_YN,
+                                      A.CREATE_IDX,
+                                      A.CREATE_DATE,
+                                      A.UPDATE_IDX
+                               FROM board_comment A
+                                        INNER JOIN CTE ON A.PARENT_IDX = CTE.IDX
+                           )
+        SELECT IDX,
+               PARENT_IDX,
+               LVL,
+               CTE_PATH,
+               QA_SUBJECT,
+               QA_CONTENT,
+               ATTACH_FILE_IDX,
+               USE_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX
+        FROM CTE
+    </select>
+</mapper>

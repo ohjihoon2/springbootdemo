@@ -6,6 +6,7 @@ import com.example.demo.vo.Criteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -21,7 +22,7 @@ public class FaqServiceImpl implements FaqService {
     }
 
     @Override
-    public Map<String, Object> findAllFaq(Criteria criteria) {
+    public List<Map<String,Object>> findAllFaq(Criteria criteria) {
         return faqMapper.findAllFaq(criteria);
     }
 

@@ -4,6 +4,7 @@ import com.example.demo.vo.Criteria;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 @Mapper
@@ -12,7 +13,7 @@ public interface FaqMapper {
 
     Map<String, Object> findFaqNmFaqMaster();
 
-    Map<String, Object> findAllFaq(Criteria criteria);
+    List<Map<String,Object>> findAllFaq(Criteria criteria);
 
     Map<String, Object> findAllByIdx(Criteria criteria);
 
