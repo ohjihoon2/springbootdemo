@@ -55,4 +55,8 @@ public interface BoardMapper {
     List<Map<String, Object>> findAllByIdxList(Map<String, Object> paramMap);
 
     void deleteBoardCommentAll(Map<String, Object> paramMap);
+
+    List<AttachFile> findAllByAttachFileIdx(int attachFileIdx);
+
+    Board findAttachFileIdxByIdxBoard(int attachFileIdx);
 }

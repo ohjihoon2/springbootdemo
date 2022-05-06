@@ -276,7 +276,7 @@ $(function(){
 
     // 파일삭제
     $(document).on("click", ".file > p > span", function(e) {
-        if(confirm("해당 파일를 삭제하시겠습니까?\n(파일은 즉시 삭제되며, 복구 할수 없습니다.)")) {
+        if(confirm("해당 파일을 삭제하시겠습니까?\n(파일은 즉시 삭제되며, 복구 할수 없습니다.)")) {
             var saveName = $(this).data('val');
 
             var res = $ajax.deleteAjax('/file/delete/'+ saveName);

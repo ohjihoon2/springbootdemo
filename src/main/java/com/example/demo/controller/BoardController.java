@@ -356,8 +356,14 @@ public class BoardController {
         BoardMaster boardMaster = boardService.findAllByIdxBoardMaster(paramMap);
         Map<String,Object> boardDetail = boardService.findAllByIdx(paramMap);
 
+        int attachFileIdx = Integer.parseInt(boardDetail.get("attachFileIdx").toString());
+
+        List<AttachFile> fileList = boardService.findAllByAttachFileIdx(attachFileIdx);
+
         model.addAttribute("boardMaster", boardMaster);
         model.addAttribute("boardDetail", boardDetail);
+        model.addAttribute("fileList", fileList);
+
         return "/board/boardUpdate";
     }
 

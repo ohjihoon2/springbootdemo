@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -139,6 +140,16 @@ public class BoardServiceImpl implements BoardService {
 
 
         return result;
+    }
+
+    @Override
+    public List<AttachFile> findAllByAttachFileIdx(int attachFileIdx) {
+
+        // board에는 attachFileIdx가 초기화 되지 않기 때문에 파일이 존재하는지 확인
+        Board board = boardMapper.findAttachFileIdxByIdxBoard(attachFileIdx);
+
+        return boardMapper.findAllByAttachFileIdx(board.getAttachFileIdx());
+
     }
 
     @Override

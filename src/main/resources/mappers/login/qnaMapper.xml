@@ -87,9 +87,11 @@
                QA_EMAIL_RECV_YN,
                QA_CATEGORY,
                QA_STATUS,
-               SECRET_YN
+               SECRET_YN,
+               CREATE_IDX,
+               CREATE_DATE
           FROM qna_config
-         WHERE IDX = {idx}
+         WHERE IDX = #{idx}
     </select>
 
     <select id="findByIdxQna" resultType="CustomMap" parameterType="int">
@@ -105,9 +107,9 @@
                                       USE_YN,
                                       CREATE_IDX,
                                       CREATE_DATE,
-                                      UPDATE_IDX
-                                   UPDATE_DATE
-                               FROM board_comment
+                                      UPDATE_IDX,
+                                      UPDATE_DATE
+                                 FROM qna
                                WHERE IDX = #{idx}
                                UNION ALL
                                SELECT A.IDX,
@@ -120,21 +122,92 @@
                                       A.USE_YN,
                                       A.CREATE_IDX,
                                       A.CREATE_DATE,
-                                      A.UPDATE_IDX
-                               FROM board_comment A
-                                        INNER JOIN CTE ON A.PARENT_IDX = CTE.IDX
+                                      A.UPDATE_IDX,
+                                      A.UPDATE_DATE
+                                 FROM qna A
+                                INNER JOIN CTE ON A.PARENT_IDX = CTE.IDX
                            )
         SELECT IDX,
-               PARENT_IDX,
-               LVL,
                CTE_PATH,
+               LVL,
+               PARENT_IDX,
                QA_SUBJECT,
                QA_CONTENT,
                ATTACH_FILE_IDX,
                USE_YN,
                CREATE_IDX,
                CREATE_DATE,
-               UPDATE_IDX
+               UPDATE_IDX,
+               UPDATE_DATE
         FROM CTE
     </select>
+
+    <select id="findAllQaCategory" resultType="string">
+        SELECT QA_CATEGORY
+          FROM config
+    </select>
+
+    <insert id="insertQna" parameterType="QnaConfig" useGeneratedKeys="true" keyProperty="idx">
+        INSERT INTO qna
+            (
+                PARENT_IDX,
+                QA_SUBJECT,
+                QA_CONTENT,
+                ATTACH_FILE_IDX,
+                USE_YN,
+                CREATE_IDX,
+                CREATE_DATE
+            )
+        VALUES
+            (
+                #{parentIdx},
+                #{qaSubject},
+                #{qaContent},
+                #{attachFileIdx},
+                'Y',
+                #{createIdx},
+                SYSDATE()
+            )
+    </insert>
+
+    <insert id="insertQnaConfig" parameterType="QnaConfig">
+        INSERT INTO qna_config
+            (
+                QNA_IDX,
+                QA_EMAIL_RECV_YN,
+                QA_CATEGORY,
+                QA_STATUS,
+                SECRET_YN,
+                CREATE_IDX,
+                CREATE_DATE
+            )
+        VALUES
+            (
+                #{qnaIdx},
+                #{qaEmailRecvYn},
+                #{qaCategory},
+                #{qaStatus},
+                #{secretYn},
+                #{createIdx},
+                SYSDATE()
+            )
+    </insert>
+
+    <update id="updateQuestion" parameterType="map">
+        UPDATE qna
+           SET QA_SUBJECT = #{qaSubject},
+               QA_CONTENT = #{qaContent},
+               ATTACH_FILE_IDX = #{attachFileIdx},
+               UPDATE_IDX = #{userIdx},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX = #{qnaIdx}
+    </update>
+
+    <update id="updateQnaConfig" parameterType="QnaConfig">
+        UPDATE qna_config
+           SET QA_STATUS = #{qaStatus},
+               UPDATE_IDX = #{updateIdx},
+               UPDATE_DATE = SYSDATE()
+         WHERE QNA_IDX = #{qnaIdx}
+    </update>
 </mapper>

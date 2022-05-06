@@ -459,4 +459,28 @@
                UPDATE_DATE
           FROM CTE
     </select>
+
+    <select id="findAllByAttachFileIdx" parameterType="int" resultType="map">
+        SELECT IDX,
+               FILE_SN,
+               ORIGINAL_NAME,
+               SAVE_NAME,
+               `SIZE`,
+               EXTENSION,
+               CREATE_IDX,
+               CREATE_DATE,
+               DELETE_YN,
+               DELETE_DATE
+          FROM attach_file
+         WHERE IDX = #{attachfileIdx}
+    </select>
+
+    <select id="findAttachFileIdxByIdxBoard" resultType="Board" parameterType="int">
+        SELECT A.IDX AS IDX,
+               B.IDX AS ATTACH_FILE_IDX
+          FROM board A
+          LEFT JOIN ATTACH_FILE_MASTER B ON A.ATTACH_FILE_IDX = B.IDX
+         WHERE A.IDX = #{idx}
+         ORDER BY A.IDX
+    </select>
 </mapper>

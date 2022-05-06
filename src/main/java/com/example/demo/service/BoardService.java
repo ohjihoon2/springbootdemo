@@ -1,9 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.vo.Board;
-import com.example.demo.vo.BoardComment;
-import com.example.demo.vo.BoardMaster;
-import com.example.demo.vo.Criteria;
+import com.example.demo.vo.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,4 +47,6 @@ public interface BoardService {
     List<Map<String, Object>> findBoardMaster();
 
     int deleteOneBoardAdmin(Map<String, Object> paramMap);
+
+    List<AttachFile> findAllByAttachFileIdx(int attachFileIdx);
 }

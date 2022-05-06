@@ -1,6 +1,8 @@
 package com.example.demo.repository;
 
 import com.example.demo.vo.Criteria;
+import com.example.demo.vo.Qna;
+import com.example.demo.vo.QnaConfig;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +20,14 @@ public interface QnaMapper {
     Map<String, Object> findByIdxQnaConfig(int idx);
 
     List<Map<String, Object>> findByIdxQna(int idx);
+
+    String findAllQaCategory();
+
+    void insertQnaConfig(QnaConfig qnaConfig);
+
+    Qna insertQna(Qna qna);
+
+    int updateQuestion(Qna qna);
+
+    void updateQnaConfig(QnaConfig qnaConfig);
 }
