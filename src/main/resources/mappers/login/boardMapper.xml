@@ -474,7 +474,7 @@
           FROM CTE
     </select>
 
-    <select id="findAllByAttachFileIdx" parameterType="int" resultType="map">
+    <select id="findAllByAttachFileIdx" parameterType="int" resultType="CustomMap">
         SELECT IDX,
                FILE_SN,
                ORIGINAL_NAME,
