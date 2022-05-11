@@ -138,11 +138,12 @@ public class BoardController {
 
         BoardMaster boardMaster = boardService.findAllByIdxBoardMaster(paramMap);
         Map<String,Object> boardDetail = boardService.findAllByIdx(paramMap);
+        List<AttachFile> fileList = boardService.findAllByIdxAttachFile(idx);
         List<Map<String,Object>> commentList = boardService.findAllByIdxBoardComment(paramMap);
-
 
         model.addAttribute("boardMaster", boardMaster);
         model.addAttribute("boardDetail", boardDetail);
+        model.addAttribute("fileList", fileList);
         model.addAttribute("commentList", commentList);
 
         return "/board/boardDetail";
@@ -355,10 +356,7 @@ public class BoardController {
 
         BoardMaster boardMaster = boardService.findAllByIdxBoardMaster(paramMap);
         Map<String,Object> boardDetail = boardService.findAllByIdx(paramMap);
-
-        int attachFileIdx = Integer.parseInt(boardDetail.get("attachFileIdx").toString());
-
-        List<AttachFile> fileList = boardService.findAllByAttachFileIdx(attachFileIdx);
+        List<AttachFile> fileList = boardService.findAllByIdxAttachFile(idx);
 
         model.addAttribute("boardMaster", boardMaster);
         model.addAttribute("boardDetail", boardDetail);

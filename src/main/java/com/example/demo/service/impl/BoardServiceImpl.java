@@ -143,10 +143,10 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<AttachFile> findAllByAttachFileIdx(int attachFileIdx) {
+    public List<AttachFile> findAllByIdxAttachFile(int idx) {
 
         // board에는 attachFileIdx가 초기화 되지 않기 때문에 파일이 존재하는지 확인
-        Board board = boardMapper.findAttachFileIdxByIdxBoard(attachFileIdx);
+        Board board = boardMapper.findAttachFileIdxByIdxBoard(idx);
 
         return boardMapper.findAllByAttachFileIdx(board.getAttachFileIdx());
 

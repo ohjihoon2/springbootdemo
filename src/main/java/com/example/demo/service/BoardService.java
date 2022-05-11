@@ -48,5 +48,5 @@ public interface BoardService {
 
     int deleteOneBoardAdmin(Map<String, Object> paramMap);
 
-    List<AttachFile> findAllByAttachFileIdx(int attachFileIdx);
+    List<AttachFile> findAllByIdxAttachFile(int idx);
 }
