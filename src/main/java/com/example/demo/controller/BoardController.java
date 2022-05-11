@@ -328,7 +328,7 @@ public class BoardController {
      * @param request
      * @return
      */
-    @PostMapping(value = "/{boardId}/detail/{idx}/move")
+    @PatchMapping(value = "/{boardId}/detail/{idx}/move")
     @ResponseBody
     public Map<String, Object> boardMasterList(@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
 
