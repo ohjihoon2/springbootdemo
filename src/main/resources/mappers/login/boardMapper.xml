@@ -166,12 +166,16 @@
                IFNULL(C.USER_NICKNM,'탈퇴된 회원')AS CREATE_NICKNM,
                A.CREATE_DATE,
                IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(D.USER_NICKNM,'탈퇴된 회원')) AS UPDATE_NICKNM,
-               A.UPDATE_DATE
+               A.UPDATE_DATE,
+               F.COMMENT_CNT
           FROM board A
          INNER JOIN board_master B ON A.MASTER_IDX = B.IDX
           LEFT JOIN users C ON A.CREATE_IDX = C.IDX
           LEFT JOIN users D ON A.UPDATE_IDX = D.IDX
-          LEFT JOIN ATTACH_FILE_MASTER E ON A.ATTACH_FILE_IDX = E.IDX
+          LEFT JOIN ATTACH_FILE_MASTER E ON A.ATTACH_FILE_IDX = E.IDX,
+               (SELECT COUNT(*) AS COMMENT_CNT
+                  FROM BOARD_COMMENT
+                 WHERE BOARD_IDX = #{idx} ) AS F
          WHERE A.IDX = #{idx}
            AND B.BOARD_ID = #{boardId}
     </select>

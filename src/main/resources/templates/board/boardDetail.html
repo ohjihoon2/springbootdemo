@@ -51,8 +51,7 @@
                             <div>
                                 <p th:text="${boardDetail.createNicknm}" class="weight600"></p>
                                 <p>
-                                    <!-- TODO 댓글개수 필요 -->
-                                    <span><i class="fa fa-commenting-o" aria-hidden="true"></i> 0건</span>
+                                    <span><i class="fa fa-commenting-o" aria-hidden="true"></i> [[${boardDetail.commentCnt}]]건</span>
                                     <span><i class="fa fa-eye" aria-hidden="true"></i> [[${boardDetail.hit}]]회</span>
                                     <span><i class="fa fa-clock-o" aria-hidden="true"></i> 22-05-02 17:41</span>
                                 </p>
