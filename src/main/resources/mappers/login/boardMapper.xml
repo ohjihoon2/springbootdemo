@@ -162,6 +162,7 @@
                A.THUMBNAIL_YN,
                A.DELETE_YN,
                E.IDX AS ATTACH_FILE_IDX,
+               C.PROFILE_YN,
                A.CREATE_IDX,
                IFNULL(C.USER_NICKNM,'탈퇴된 회원')AS CREATE_NICKNM,
                A.CREATE_DATE,

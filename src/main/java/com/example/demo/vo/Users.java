@@ -21,6 +21,7 @@ public class Users {
     private String verificationCode;
     private String verificationYn;
     private String marketingYn;
+    private String profileYn;
     private Date createDate;
     private Date updateDate;
     private String deleteYn;
