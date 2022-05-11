@@ -58,6 +58,13 @@ public class HomeController {
         return mav;
     }
 
+    @GetMapping("/test")
+    public String home2(ModelAndView mav, HttpServletRequest request, Principal principal, Authentication auth) {
+
+        return "/test";
+    }
+
+
 //    @PostMapping(value = "/add")
 //    public String postHanlder(
 //                                @RequestBody MultiValueMap<String, String> data

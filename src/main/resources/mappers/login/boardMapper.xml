@@ -410,10 +410,10 @@
 
     <update id="moveOneBoard" parameterType="map">
         UPDATE board
-        SET MASTER_IDX  = #{masterIdx},
-        UPDATE_IDX = #{userIdx},
-        UPDATE_DATE = SYSDATE()
-        WHERE IDX = #{idx}
+           SET MASTER_IDX  = #{masterIdx},
+               UPDATE_IDX = #{userIdx},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX = #{idx}
     </update>
 
     <update id="incrementBoardHit" parameterType="int">

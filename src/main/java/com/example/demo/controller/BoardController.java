@@ -330,10 +330,12 @@ public class BoardController {
      */
     @PatchMapping(value = "/{boardId}/detail/{idx}/move")
     @ResponseBody
-    public Map<String, Object> boardMasterList(@RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String, Object> boardMasterList(@PathVariable("boardId") String boardId, @PathVariable("idx") int idx, @RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
+        paramMap.put("boardId", boardId);
+        paramMap.put("idx", idx);
         paramMap.put("userIdx", userIdx);
 
         int result = boardService.moveOneBoard(paramMap);
