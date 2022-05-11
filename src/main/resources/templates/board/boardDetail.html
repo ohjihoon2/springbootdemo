@@ -23,11 +23,15 @@
 <th:block th:replace="/fragments/header.html :: thHeader"></th:block>
 <section>
     [[${boardDetail}]]
+
+    <br /><br />
+    [[${boardMaster}]]
+    <br /><br />
+<!--    [[${commentList}]]-->
     <div class="section-wrap">
         <form id="boardRegistForm">
             <div class="pt80"></div>
-            <div class="top-btn-box">
-<!--  TODO 작성자 확인이 필요한데 작성자 IDX가 없음  boardDetail에 작성자IDX값 -->
+            <div class="top-btn-box mb10">
                 <div class="left" th:text="${boardDetail.boardSubject}"></div>
                 <a th:if="${@compareAuth.getAuth('ADMIN') || boardDetail.idx == session.idx}">
                     <i id="controlBtn" class="fa fa-ellipsis-v" aria-hidden="true"></i>
@@ -39,9 +43,26 @@
                 </a>
             </div>
             <div>
-                <ul>
-                    <li></li>
-                    <li th:text="${boardDetail.boardContent}"></li>
+                <ul class="board-ul">
+                    <li class="border-bot">
+                        <div class="board-info">
+                            <!-- TODO 차후 프로필 썸네일 팰요 -->
+                            <img th:src="@{/img/common/no_profile.gif}" >
+                            <div>
+                                <p th:text="${boardDetail.createNicknm}" class="weight600"></p>
+                                <p>
+                                    <!-- TODO 댓글개수 필요 -->
+                                    <span><i class="fa fa-commenting-o" aria-hidden="true"></i> 0건</span>
+                                    <span><i class="fa fa-eye" aria-hidden="true"></i> [[${boardDetail.hit}]]회</span>
+                                    <span><i class="fa fa-clock-o" aria-hidden="true"></i> 22-05-02 17:41</span>
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                    <li th:if="${boardDetail.attachFileIdx}">
+                        <!-- TODO 파일리스트 필요 -->
+                    </li>
+                    <li th:utext="${boardDetail.boardContent}" class="board-content"></li>
                     <li></li>
                     <li></li>
                 </ul>

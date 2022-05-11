@@ -3,6 +3,7 @@
 .top-btn-box {
     width: 100%;
     text-align: right;
+    min-height: 35px;
 }
 
 .top-btn-box .left {
@@ -91,58 +92,8 @@
 
 .board-ul li {
     width: 100%;
-    padding: 5px 0;
-    font-size: 14px;
-    color: #b2b2b2;
-    position: relative;
+    padding: 10px 0;
 }
-
-.board-ul li label {
-    position: absolute;
-    top: 50%;
-    left: 12px;
-    transform: translateY(-50%);
-}
-
-.board-ul li i {
-    margin-left: 6px;
-}
-
-.board-ul li input[type="text"], .board-ul li div {
-    width: 100%;
-    height: 42px;
-    border: 1px solid #d0d3db;
-    background: #fff;
-    color: #000;
-    vertical-align: middle;
-    border-radius: 3px;
-    box-shadow: inset 0 1px 1px rgb(0 0 0 / 1%);
-    -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 1%);
-    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .01);
-}
-
-.board-ul li input[type="text"], .board-ul li input[type="file"]{
-    padding: 8px 0 8px 50px;
-    font-size: 14px;
-}
-
-.board-ul li input[type="file"]{
-    width: 100%;
-    background: none;
-}
-
-.board-ul li input[type="text"]:focus, .board-ul li input[type="file"]:focus {
-    -webkit-box-shadow: 0 0 5px #1fb1c7;
-    -moz-box-shadow: 0 0 5px #1fb1c7;
-    box-shadow: 0 0 5px #1fb1c7;
-    border: 1px solid #1fb1c7 !important;
-}
-
-.board-ul li textarea {
-    width: 100%;
-    min-height: 420px;
-}
-
 .bot-btn-box {
     width: 100%;
     min-height: 36px;
@@ -156,4 +107,34 @@
     padding: 7px 25px;
     vertical-align: top;
     min-height: 36px;
+}
+
+.border-bot {
+    border-bottom: 1px solid #eee;
+}
+
+.board-info img {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.board-info div {
+    display: inline-block;
+    width: calc(100% - 64px);
+    padding: 8px 0;
+}
+
+.board-info div p{
+    font-size: 12px;
+}
+
+.board-info div p span{
+    margin-right: 5px;
+}
+
+.board-content {
+    min-height: 200px;
 }
