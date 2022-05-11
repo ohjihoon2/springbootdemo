@@ -153,6 +153,11 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public int moveOneBoard(Map<String, Object> paramMap) {
+        return boardMapper.moveOneBoard(paramMap);
+    }
+
+    @Override
     public BoardMaster findAllByIdxBoardMaster(Map<String, Object> paramMap) {
 
         return boardMapper.findAllByIdxBoardMaster(paramMap);

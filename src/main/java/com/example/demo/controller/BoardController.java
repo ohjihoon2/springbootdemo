@@ -336,7 +336,7 @@ public class BoardController {
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
         paramMap.put("userIdx", userIdx);
 
-        int result = boardService.moveBoards(paramMap);
+        int result = boardService.moveOneBoard(paramMap);
         return ResultStr.setMulti(result);
     }
 

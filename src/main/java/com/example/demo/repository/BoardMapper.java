@@ -59,4 +59,6 @@ public interface BoardMapper {
     List<AttachFile> findAllByAttachFileIdx(int attachFileIdx);
 
     Board findAttachFileIdxByIdxBoard(int attachFileIdx);
+
+    int moveOneBoard(Map<String, Object> paramMap);
 }
