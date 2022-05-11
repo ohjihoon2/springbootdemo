@@ -138,3 +138,44 @@
 .board-content {
     min-height: 200px;
 }
+
+.board-comment-btn {
+    width: 100%;
+    text-align: left;
+    font-weight: 600;
+}
+
+.board-comment-btn .board-more {
+    float: right;
+    display: inline-block;
+    width: 15px;
+    height: 10px;
+    margin-top: 2px;
+    background: url(../../img/common/btn_arrow.png) no-repeat right 2px;
+}
+
+.board-comment-btn.on .board-more {
+    background: url(../../img/common/btn_arrow.png) no-repeat right -8px;
+}
+
+.board-comment textarea {
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #000;
+    vertical-align: middle;
+    border-radius: 3px;
+    padding: 5px;
+    width: 100%;
+    height: 120px;
+    margin-top: 5px;
+    -webkit-box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%);
+    -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%);
+}
+
+/* 팝업관련 */
+.popup-js-content table tbody tr.sel, .popup-js-content table tbody tr:hover {
+    cursor: pointer;
+    background: rgba(31,177,199,0.05);
+    color: #1fb1c7;
+}

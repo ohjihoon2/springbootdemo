@@ -152,7 +152,7 @@
         },
 
         // delete 에이작스
-        deleteAjax : function (url, param, async=false) {
+        deleteAjax : function (url, param={}, async=false, msg ='', page='') {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -168,13 +168,27 @@
                     xhr.setRequestHeader(header, token);
                 },
                 success: function (response) {
-                    res = response;
+                    if(async) {
+                        alert(msg);
+                        location.href = page;
+                    }
+                    else {
+                        res = response;
+                    }
                 },
                 error: function (XMLHttpRequest, textStatus) {
-                    res = textStatus;
+                    if(async) {
+                        alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                    }
+                    else {
+                        res = textStatus;
+                    }
+
                 }
             });
-            return res;
+            if(!async) {
+                return res;
+            }
         },
 
         // post 에이작스

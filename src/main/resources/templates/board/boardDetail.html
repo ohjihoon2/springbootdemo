@@ -24,9 +24,9 @@
 <section>
     [[${boardDetail}]]
 
-    <br /><br />
-    [[${boardMaster}]]
-    <br /><br />
+<!--    <br /><br />-->
+<!--    [[${boardMaster}]]-->
+<!--    <br /><br />-->
 <!--    [[${commentList}]]-->
     <div class="section-wrap">
         <form id="boardRegistForm">
@@ -37,7 +37,8 @@
                     <i id="controlBtn" class="fa fa-ellipsis-v" aria-hidden="true"></i>
                     <ul style="display: none;">
                         <li><button id="boardUpdate" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 수정</button></li>
-                        <li><button id="boardDel" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button></li>
+                        <li th:if="${!@compareAuth.getAuth('ADMIN') && boardDetail.createIdx == session.idx}"><button id="boardDel" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button></li>
+                        <li th:if="${@compareAuth.getAuth('ADMIN')}"><button id="boardAdmDel" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button></li>
                         <li th:if="${@compareAuth.getAuth('ADMIN')}"><button id="boardMovePopup" type="button"><i class="fa fa-arrows" aria-hidden="true"></i> 이동</button></li>
                     </ul>
                 </a>
@@ -62,23 +63,26 @@
                         <!-- TODO 파일리스트 필요 -->
                     </li>
                     <li th:utext="${boardDetail.boardContent}" class="board-content"></li>
-                    <li></li>
-                    <li></li>
+                    <li>
+                        <button type="button" id="boardCommentBtn" class="board-comment-btn on">댓글 <span class="text-color-primary" th:text="${boardDetail.commentCnt}"></span><span class="board-more"></span></button>
+                    </li>
+                    <li id="boardComment" class="board-comment">
+                        <textarea id="wr_content" name="wr_content" maxlength="10000" required="" class="required" title="내용" placeholder="댓글내용을 입력해주세요"></textarea>
+                    </li>
                 </ul>
             </div>
-            <div class="mb10"></div>
-            <div class="mb5"></div>
+            <div class="mb40"></div>
             <div class="bot-btn-box">
-                <button type="button">목록으로</button>
+                <button id="listBtn" type="button">목록으로</button>
             </div>
             <div class="mb100"></div>
         </form>
     </div>
 </section>
 <script>
+    var idx = "[[${boardDetail.idx}]]";
     var boardId = "[[${boardMaster.boardId}]]";
     var boardType = "[[${boardMaster.boardType}]]";
-    var editorLevel = [[${@compareAuth.getAuth(boardMaster.writeLevel)}]];
 </script>
 <th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
 <script th:src="@{/js/board/boardDetail.js}"></script>
