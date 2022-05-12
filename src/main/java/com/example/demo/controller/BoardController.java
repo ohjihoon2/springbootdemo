@@ -150,6 +150,19 @@ public class BoardController {
     }
 
     /**
+     * 대댓글 보기
+     * @param idx
+     * @param response
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/comment/{idx}")
+    @ResponseBody
+    public List<Map<String, Object>> moreBoardComment(@PathVariable("idx") int idx, HttpServletResponse response, HttpServletRequest request) {
+        return boardService.moreBoardComment(idx);
+    }
+
+    /**
      * 게시물 댓글 작성
      * @param comment
      * @param response
@@ -160,9 +173,9 @@ public class BoardController {
     @ResponseBody
     public Map<String, Object> insertBoardComment(@RequestBody BoardComment comment, HttpServletResponse response, HttpServletRequest request) {
 
-//        HttpSession session = request.getSession();
-//        int idx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
-        comment.setCreateIdx(1);
+        HttpSession session = request.getSession();
+        int idx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
+        comment.setCreateIdx(idx);
 
         int result = boardService.insertBoardComment(comment);
         return ResultStr.setMulti(result);

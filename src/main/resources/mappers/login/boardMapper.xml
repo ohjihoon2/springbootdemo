@@ -429,54 +429,37 @@
     </select>
 
     <select id="findAllByIdxBoardComment" parameterType="map" resultType="CustomMap">
-        WITH RECURSIVE CTE AS
-           (
-               SELECT A.IDX,
-                      convert(A.idx, char(100)) AS CTE_PATH,
-                      1 LVL,
-                      A.BOARD_IDX,
-                      A.PARENT_IDX,
-                      A.COMMENT_CONTENT,
-                      A.DELETE_YN,
-                      A.CREATE_IDX,
-                      IF( A.CREATE_IDX IS NULL , NULL, IFNULL(B.USER_NICKNM,'탈퇴된 사용자')) AS CREATE_NICKNM,
-                      A.CREATE_DATE,
-                      A.UPDATE_IDX,
-                      A.UPDATE_DATE
-                 FROM board_comment A
-                 LEFT JOIN users B ON A.CREATE_IDX = B.IDX
-                WHERE A.BOARD_IDX = #{idx}
-                  AND A.PARENT_IDX IS NULL
-                UNION ALL
-               SELECT A.IDX,
-                      concat(CTE.CTE_PATH, '-', A.IDX) AS CTE_PATH,
-                      LVL + 1 LVL,
-                      A.BOARD_IDX,
-                      A.PARENT_IDX,
-                      A.COMMENT_CONTENT,
-                      A.DELETE_YN,
-                      A.CREATE_IDX,
-                      IF( A.CREATE_IDX IS NULL , NULL, IFNULL(B.USER_NICKNM,'탈퇴된 사용자')) AS CREATE_NICKNM,
-                      A.CREATE_DATE,
-                      A.UPDATE_IDX,
-                      A.UPDATE_DATE
-                 FROM board_comment A
-                 LEFT JOIN users B ON A.CREATE_IDX = B.IDX
-                INNER JOIN CTE ON A.PARENT_IDX = CTE.IDX
-           )
-        SELECT IDX,
-               BOARD_IDX,
-               PARENT_IDX,
-               LVL,
-               CTE_PATH,
-               COMMENT_CONTENT,
-               DELETE_YN,
-               CREATE_IDX,
-               CREATE_NICKNM,
-               CREATE_DATE,
-               UPDATE_IDX,
-               UPDATE_DATE
-          FROM CTE
+        SELECT A.IDX,
+               A.BOARD_IDX,
+               A.PARENT_IDX,
+               A.COMMENT_CONTENT,
+               IF((SELECT COUNT(*) FROM board_comment C WHERE C.PARENT_IDX = A.IDX > 0), (SELECT COUNT(*) FROM board_comment C WHERE C.PARENT_IDX = A.IDX) , 0) AS COMMENT_CNT,
+               A.DELETE_YN,
+               A.CREATE_IDX,
+               IF( A.CREATE_IDX IS NULL , NULL, IFNULL(B.USER_NICKNM,'탈퇴된 사용자')) AS CREATE_NICKNM,
+               A.CREATE_DATE,
+               A.UPDATE_IDX,
+               A.UPDATE_DATE
+         FROM board_comment A
+         LEFT JOIN users B ON A.CREATE_IDX = B.IDX
+        WHERE A.BOARD_IDX = #{idx}
+          AND PARENT_IDX IS NULL
+    </select>
+
+    <select id="moreBoardComment" parameterType="int" resultType="CustomMap">
+        SELECT A.IDX,
+               A.BOARD_IDX,
+               A.PARENT_IDX,
+               A.COMMENT_CONTENT,
+               A.DELETE_YN,
+               A.CREATE_IDX,
+               IF( A.CREATE_IDX IS NULL , NULL, IFNULL(B.USER_NICKNM,'탈퇴된 사용자')) AS CREATE_NICKNM,
+               A.CREATE_DATE,
+               A.UPDATE_IDX,
+               A.UPDATE_DATE
+          FROM board_comment A
+          LEFT JOIN users B ON A.CREATE_IDX = B.IDX
+         WHERE PARENT_IDX = #{idx}
     </select>
 
     <select id="findAllByAttachFileIdx" parameterType="int" resultType="CustomMap">

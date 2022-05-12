@@ -158,6 +158,11 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public List<Map<String, Object>> moreBoardComment(int idx) {
+        return boardMapper.moreBoardComment(idx);
+    }
+
+    @Override
     public BoardMaster findAllByIdxBoardMaster(Map<String, Object> paramMap) {
 
         return boardMapper.findAllByIdxBoardMaster(paramMap);

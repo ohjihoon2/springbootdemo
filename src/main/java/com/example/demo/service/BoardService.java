@@ -51,4 +51,6 @@ public interface BoardService {
     List<AttachFile> findAllByIdxAttachFile(int idx);
 
     int moveOneBoard(Map<String, Object> paramMap);
+
+    List<Map<String, Object>> moreBoardComment(int idx);
 }
