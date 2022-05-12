@@ -46,6 +46,7 @@
                       FROM board A
                      INNER JOIN board_master B ON A.MASTER_IDX = B.IDX
                      WHERE B.BOARD_ID = #{paramMap.boardId}
+                       AND A.DELETE_YN = 'N'
                     <include refid="criteriaBoard"/>
                 ) AS CNT_TB
     </select>
@@ -72,6 +73,7 @@
                       LEFT JOIN users C ON A.CREATE_IDX = C.IDX,
                            (SELECT @ROWNUM:=0) temp
                      WHERE B.BOARD_ID = #{paramMap.boardId}
+                       AND A.DELETE_YN = 'N'
                     <include refid="criteriaBoard"/>
                 ) AS ROWNUM_TB
          ORDER BY IDX desc
@@ -96,6 +98,7 @@
           LEFT JOIN users C ON A.CREATE_IDX = C.IDX
          WHERE B.BOARD_ID = #{paramMap.boardId}
            AND A.NOTICE_YN = 'Y'
+           AND A.DELETE_YN = 'N'
          ORDER BY IDX desc
     </select>
 
@@ -179,6 +182,7 @@
                  WHERE BOARD_IDX = #{idx} ) AS F
          WHERE A.IDX = #{idx}
            AND B.BOARD_ID = #{boardId}
+           AND A.DELETE_YN = 'N'
     </select>
 
 
