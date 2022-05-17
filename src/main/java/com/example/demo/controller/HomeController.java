@@ -1,10 +1,12 @@
 package com.example.demo.controller;
 
+import com.example.demo.service.AlertService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.Map;
 
@@ -24,20 +27,23 @@ import static java.lang.System.out;
 @Slf4j
 public class HomeController {
 
-    @GetMapping("/")
-    public ModelAndView home(ModelAndView mav, HttpServletRequest request, Principal principal, Authentication auth) {
+    private final AlertService alertService;
 
+    @GetMapping("/")
+    public String home(HttpServletRequest request, Principal principal, Authentication auth, Model model) {
 
         log.debug("auth : {}",auth);
+/*
+        int alertCnt = 0;
 
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        Object principal = auth.getPrincipal();
+        if(principal != null){
+            HttpSession session = request.getSession();
+            int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+            alertCnt = alertService.countReadYn(userIdx);
+        }
 
-//        String name = "";
-//        if(principal != null){
-//            name = ((MemberInfo)principal).getName();
-//        }
-
+        log.debug("alertCnt : {}", alertCnt);
+*/
         Cookie[] cookies = request.getCookies();
 
         // 2) 읽은 쿠기 정보 출력하기
@@ -51,17 +57,23 @@ public class HomeController {
             out.println("쿠키가 한 개도 없습니다.");
         }
 
-        mav.addObject("auth",auth);
-        mav.setViewName("index");
+        model.addAttribute("auth",auth);
+//        model.addAttribute("alertCnt",alertCnt);
 
-
-        return mav;
+        return "index";
     }
 
     @GetMapping("/test")
     public String home2(ModelAndView mav, HttpServletRequest request, Principal principal, Authentication auth) {
 
         return "/test";
+    }
+
+
+    @GetMapping("/test2")
+    public String home3(ModelAndView mav, HttpServletRequest request, Principal principal, Authentication auth) {
+
+        return "/test2";
     }
 
 

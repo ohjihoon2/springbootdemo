@@ -1,29 +1,42 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.SseService;
+import com.example.demo.service.AlertService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
-@RestController
 @RequiredArgsConstructor
-public class SseController {
+public class AlertController {
     private static final Map<String, SseEmitter> CLIENTS = new ConcurrentHashMap<>();
 
-    private final SseService sseService;
+    private final AlertService alertService;
 
+    @PostMapping("/alert")
+    public Map<String, Object> alertList(){
+        Map<String, Object> map = new HashMap<>();
+
+        return map;
+    }
+
+
+
+    /*
     @GetMapping("/api/subscribe")
+    @ResponseBody
     public SseEmitter subscribe(String id) {
         System.out.println("id = " + id);
         SseEmitter emitter = new SseEmitter();
@@ -35,6 +48,7 @@ public class SseController {
     }
 
     @GetMapping("/api/publish")
+    @ResponseBody
     public void publish(String message) {
         System.out.println("message = " + message);
         Set<String> deadIds = new HashSet<>();
@@ -49,11 +63,13 @@ public class SseController {
         });
 
         deadIds.forEach(CLIENTS::remove);
-    }
+    }*/
 
     @GetMapping(value = "/subscribe/{id}", produces = "text/event-stream")
     public SseEmitter subscribe(@PathVariable Long id,
                                 @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
-        return sseService.subscribe(id, lastEventId);
+        return alertService.subscribe(id, lastEventId);
     }
+
+
 }
