@@ -1,16 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.AlertService;
+import com.example.demo.service.AlarmService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -23,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AlertController {
     private static final Map<String, SseEmitter> CLIENTS = new ConcurrentHashMap<>();
 
-    private final AlertService alertService;
+    private final AlarmService alarmService;
 
     @PostMapping("/alert")
     public Map<String, Object> alertList(){
@@ -68,7 +60,7 @@ public class AlertController {
     @GetMapping(value = "/subscribe/{id}", produces = "text/event-stream")
     public SseEmitter subscribe(@PathVariable Long id,
                                 @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
-        return alertService.subscribe(id, lastEventId);
+        return alarmService.subscribe(id, lastEventId);
     }
 
 

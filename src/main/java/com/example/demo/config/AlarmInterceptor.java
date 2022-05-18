@@ -1,10 +1,8 @@
 package com.example.demo.config;
 
-import com.example.demo.service.AlertService;
-import lombok.RequiredArgsConstructor;
+import com.example.demo.service.AlarmService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Slf4j
-public class AlertInterceptor implements HandlerInterceptor {
+public class AlarmInterceptor implements HandlerInterceptor {
 
     @Autowired
-    AlertService alertService;
+    AlarmService alarmService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -31,9 +29,11 @@ public class AlertInterceptor implements HandlerInterceptor {
         int userIdx = 0;
         Integer alertCnt = null;
 
+        //TODO  05/17 - ALTER 테이블에 추가해서 테스트 하고 INTERCEPTOR CONTROLLER 추가해보기
+
         if(session.getAttribute("idx") != null){
             userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
-            alertCnt = alertService.countReadYn(userIdx);
+            alertCnt = alarmService.countReadYn(userIdx);
             log.debug("alertCnt : {}", alertCnt);
 
             modelAndView.addObject("alertCnt",alertCnt);

@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Map;
 
 @Mapper
-@Repository("AlertMapper")
-public interface AlertMapper {
+@Repository("AlarmMapper")
+public interface AlarmMapper {
 
     int countReadYn(int userIdx);
 }

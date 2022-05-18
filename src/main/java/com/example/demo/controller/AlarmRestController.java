@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.config.NotificationJobService;
-import com.example.demo.vo.Notification;
+import com.example.demo.vo.Alarm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +13,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @RestController
 @RequiredArgsConstructor
-public class NotificationRestController {
+public class AlarmRestController {
     private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
-    private final NotificationJobService service;
 
     @GetMapping("/new_notification")
     public SseEmitter getNewNotification() {
@@ -34,12 +32,12 @@ public class NotificationRestController {
 
 
     @EventListener
-    public void onNotification(Notification notification) {
+    public void onNotification(Alarm alarm) {
         System.out.println("NotificationRestController.onNotification");
         List<SseEmitter> deadEmitters = new ArrayList<>();
         this.emitters.forEach(emitter -> {
             try {
-                emitter.send(notification);
+                emitter.send(alarm);
             } catch (Exception e) {
                 deadEmitters.add(emitter);
             }

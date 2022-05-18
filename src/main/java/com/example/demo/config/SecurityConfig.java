@@ -91,7 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //csrf 활성화
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
                 //csrf 비활성화
-//                .disable()
+//                .disable();
 
 //                .and()                                       // 크로스 도메인 사용시
 //                .cors()

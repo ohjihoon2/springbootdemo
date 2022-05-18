@@ -7,6 +7,7 @@ import com.example.demo.util.FileUtil;
 import com.example.demo.util.HitCookie;
 import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,10 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +26,8 @@ public class BoardServiceImpl implements BoardService {
     private final BoardMapper boardMapper;
 
     private final FileMapper fileMapper;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
@@ -211,6 +211,21 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public int insertBoardComment(BoardComment comment) {
+        int boardCreateIdx = boardMapper.findCreateIdxByBoardIdx(comment.getBoardIdx());
+
+        if(boardCreateIdx != comment.getCreateIdx()){
+            // TODO - 수정중
+            Alarm alert = new Alarm(
+                    "COMMENT",
+                    "댓글이 달렸습니다.",
+                    "/",
+                    comment.getCreateIdx(),
+                    new Date()
+            );
+            this.eventPublisher.publishEvent(alert);
+
+        }
+
         return boardMapper.insertBoardComment(comment);
     }
 

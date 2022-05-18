@@ -258,6 +258,12 @@
         FROM CTE
     </select>
 
+    <select id="findCreateIdxByBoardIdx" parameterType="int" resultType="int">
+        SELECT CREATE_IDX
+          FROM board
+         WHERE IDX = #{idx}
+    </select>
+
     <insert id="insertBoardComment" parameterType="BoardComment">
         INSERT INTO board_comment
             (

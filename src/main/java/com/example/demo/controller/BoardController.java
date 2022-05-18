@@ -174,8 +174,9 @@ public class BoardController {
     public Map<String, Object> insertBoardComment(@RequestBody BoardComment comment, HttpServletResponse response, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
-        int idx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
-        comment.setCreateIdx(idx);
+//        int idx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
+//        comment.setCreateIdx(idx);
+        comment.setCreateIdx(1);
 
         int result = boardService.insertBoardComment(comment);
         return ResultStr.setMulti(result);

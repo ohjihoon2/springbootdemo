@@ -1,19 +1,15 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.repository.AlertMapper;
-import com.example.demo.service.AlertService;
+import com.example.demo.repository.AlarmMapper;
+import com.example.demo.service.AlarmService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.IOException;
-import java.util.Map;
-
 @Service
 @RequiredArgsConstructor
-public class AlertServiceImpl implements AlertService {
-    private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
-    private final AlertMapper alertMapper;
+public class AlarmServiceImpl implements AlarmService {
+    private final AlarmMapper alarmMapper;
 
     @Override
     public SseEmitter subscribe(Long userId, String lastEventId) {
@@ -59,6 +55,6 @@ public class AlertServiceImpl implements AlertService {
 
     @Override
     public int countReadYn(int userIdx) {
-        return alertMapper.countReadYn(userIdx);
+        return alarmMapper.countReadYn(userIdx);
     }
 }

@@ -63,4 +63,6 @@ public interface BoardMapper {
     int moveOneBoard(Map<String, Object> paramMap);
 
     List<Map<String, Object>> moreBoardComment(int idx);
+
+    int findCreateIdxByBoardIdx(int boardIdx);
 }

@@ -1,19 +1,14 @@
 package com.example.demo.config;
 
+import com.example.demo.vo.Alarm;
 import com.example.demo.vo.Notification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -21,6 +16,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 @RequiredArgsConstructor
 public class NotificationJobService {
+
+    // TODO service 시간당 처리 될 경우 사용 예시.. 추후 삭제 예정
 
     private final ApplicationEventPublisher eventPublisher;
 
@@ -68,16 +65,23 @@ public class NotificationJobService {
         System.out.println("NotificationJobService.publishJobNotifications");
 
         // 시간당 데이터 넣는건디
-
-
-        Integer jobId = Notification.getNextJobId();
-        Notification nStarted = new Notification("Job No. " + jobId + " started.", new Date());
-
-        this.eventPublisher.publishEvent(nStarted);
-
-        Thread.sleep(2000);
-        Notification nFinished = new Notification("Job No. " + jobId + " finished.", new Date());
-        this.eventPublisher.publishEvent(nFinished);
+        Alarm alarm = new Alarm("content",new Date());
+//        alert.setAlertType("TYPE");
+//        alert.setAlertContent("content");
+//        alert.setCreateDate(new Date());
+//        alert.setIdx(17);
+//        alert.setReadYn("N");
+//        alert.setUrl("/");
+        this.eventPublisher.publishEvent(alarm);
+//
+//        Integer jobId = Notification.getNextJobId();
+//        Notification nStarted = new Notification("Job No. " + jobId + " started.", new Date());
+//
+//        this.eventPublisher.publishEvent(nStarted);
+//
+//        Thread.sleep(2000);
+//        Notification nFinished = new Notification("Job No. " + jobId + " finished.", new Date());
+//        this.eventPublisher.publishEvent(nFinished);
     }
 
 }
