@@ -71,7 +71,7 @@
                         </td>
                         <td class="flex">
                             <span th:text="${res.boardSubject}"></span>
-                            <i class="text-color-red" th:text="'[' + ${res.cmmtCnt} + ']'" th:if="${res.cmmtCnt > 0}"></i>
+                            <i class="text-color-red" th:text="'[' + ${res.cmmtCnt} + ']'" th:if="${res.cmmtCnt > 0 && boardMaster.commentLevel != 'NONE'}"></i>
                         </td>
                         <td class="text-center" th:text="${res.createNicknm}"></td>
                         <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.')}"></td>
@@ -95,7 +95,7 @@
                             <div>
                                 <th:block th:if="${@compareAuth.getAuth('ADMIN')}"><input type="checkbox"/></th:block>
                                 <span th:text="${res.boardSubject}"></span>
-                                <i class="text-color-red" th:text="${'[' + res.cmmtCnt + ']'}" th:if="${res.cmmtCnt > 0}"></i>
+                                <i class="text-color-red" th:text="${'[' + res.cmmtCnt + ']'}" th:if="${res.cmmtCnt > 0 && boardMaster.commentLevel != 'NONE'}"></i>
                             </div>
                             <p th:text="${res.createNicknm}">작성자</p>
                             <p class="dd" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.') +' · 조회 ' + res.hit}">2022.04.24. · 조회364</p>

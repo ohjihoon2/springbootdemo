@@ -331,6 +331,7 @@
                 faqAnswer: 'FAQ답변',
                 boardSubject: '게시물 제목',
                 boardContent: '게시물 내용',
+                commentContent: '댓글 내용',
             }
             if(file) {
                 if ($('#'+ id)[0].files.length == 0) {
@@ -394,6 +395,18 @@
                 var t = str.replace(regExp, "");
                 str = t;
             }
+            return str;
+        },
+
+        //TEXTAREA 엔터 <br> 치환
+        transferTextarea (str) {
+            str = str.replace(/(\n|\r\n)/g, "<br>");
+            return str;
+        },
+
+        //TEXTAREA <br> 엔터 치환
+        retainTextarea (str) {
+            str = str.replace(/(<br>)/g, "\n");
             return str;
         },
 
@@ -476,24 +489,19 @@
             });
         },
 
-        // 머였지..
+        // textarea 자동크기 조절
         resize : function (obj) {
             obj.style.height = '0px';
             obj.style.height = (obj.scrollHeight - 3) + 'px';
         },
 
-        // 머였지..
-        limitLines : function(obj, cnt) {
-            var tempText = obj.value;
-            var lineSplit = tempText.split("\n");
+        // 줄수제한
+        limitLines : function(obj, e) {
+            var numberOfLines = (obj.value.match(/\n/g) || []).length + 1;
 
-            // 최대라인수 제어
-            if (tempText.length > 200) {
-                event.preventDefault ();
-            }
-            // 최대라인수 제어
-            else if (lineSplit.length > cnt && event.keyCode == 13) {
-                event.preventDefault ();
+            var maxRows = obj.rows;
+            if (e.which === 13 && numberOfLines >= maxRows) {
+                return false;
             }
         }
     }

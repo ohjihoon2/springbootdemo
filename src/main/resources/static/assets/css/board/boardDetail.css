@@ -11,21 +11,23 @@
     font-size: 24px;
 }
 
-.top-btn-box a {
+.control-box {
     position: relative;
     display: inline-block;
     cursor: pointer;
     font-size: 18px;
     line-height: 40px;
     font-weight: bold;
+    vertical-align: top;
+    float: right;
 }
 
-.top-btn-box a > i {
+.control-box > i {
     padding: 0 16px;
     color: #bababa;
 }
 
-.top-btn-box a > ul {
+.control-box > ul {
     position: absolute;
     top: 45px;
     right: -2px;
@@ -34,7 +36,7 @@
     z-index: 999;
 }
 
-.top-btn-box a > ul:before {
+.control-box > ul:before {
     content: "";
     position: absolute;
     top: -8px;
@@ -46,7 +48,7 @@
     border-color: transparent transparent #b8bfc4 transparent;
 }
 
-.top-btn-box a > ul:after {
+.control-box > ul:after {
     content: "";
     position: absolute;
     top: -6px;
@@ -58,7 +60,7 @@
     border-color: transparent transparent #fff transparent;
 }
 
-.top-btn-box a > ul li {
+.control-box > ul li {
     border-bottom: 1px solid #f1f1f1;
     padding: 10px;
     float: inherit;
@@ -69,7 +71,7 @@
     line-height: 15px;
 }
 
-.top-btn-box a > ul li button, .bot-btn-box a > ul li a {
+.control-box > ul li button {
     width: 100%;
     border: 0;
     background: #fff;
@@ -77,20 +79,12 @@
     text-align: left;
 }
 
-.top-btn-box a > ul li i {
+.control-box > ul li i {
     float: right;
     line-height: 20px;
 }
 
-.top-btn-box span input[type="checkbox"]{
-    margin-right: 5px;
-}
-
-.top-btn-box span label{
-    cursor: pointer;
-}
-
-.board-ul li {
+.board-ul > li {
     width: 100%;
     padding: 10px 0;
 }
@@ -124,11 +118,11 @@
 .board-info div {
     display: inline-block;
     width: calc(100% - 64px);
-    padding: 8px 0;
+    padding: 4px 0;
 }
 
 .board-info div p{
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .board-info div p span{
@@ -139,38 +133,44 @@
     min-height: 200px;
 }
 
-.board-comment-btn {
+.board-on-p p {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.board-on p a {
+    font-size: 14px;
+    line-height: 12px;
+    text-decoration: underline;
+}
+
+.board-on-btn {
+    font-size: 14px;
+    padding: 10px 0 0 0!important;
+}
+
+.board-on-btn button {
     width: 100%;
     text-align: left;
     font-weight: 600;
 }
 
-.board-comment-btn .board-more {
+.board-on-btn button .board-more {
     float: right;
     display: inline-block;
     width: 15px;
     height: 10px;
     margin-top: 2px;
-    background: url(../../img/common/btn_arrow.png) no-repeat right 2px;
-}
-
-.board-comment-btn.on .board-more {
+    margin-right: 13px;
     background: url(../../img/common/btn_arrow.png) no-repeat right -8px;
 }
 
-.board-comment textarea {
-    border: 1px solid #ccc;
-    background: #fff;
-    color: #000;
-    vertical-align: middle;
-    border-radius: 3px;
-    padding: 5px;
-    width: 100%;
-    height: 120px;
-    margin-top: 5px;
-    -webkit-box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%);
-    -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-    box-shadow: inset 0 1px 2px rgb(0 0 0 / 10%);
+.board-on-btn button.on .board-more {
+    background: url(../../img/common/btn_arrow.png) no-repeat right 2px;
+}
+
+.board-on {
+    padding:0!important;
 }
 
 /* 팝업관련 */
@@ -178,4 +178,110 @@
     cursor: pointer;
     background: rgba(31,177,199,0.05);
     color: #1fb1c7;
+}
+
+/* 댓글관련 */
+.board-comment .recomment-btn {
+    display: block;
+}
+
+
+.board-comment > ul > li {
+    width: 100%;
+    font-size: 14px;
+}
+
+.board-comment ul > li.none {
+    text-align: center;
+    padding: 50px 0;
+}
+
+
+.comment-list {
+    width: calc(100% - 40px);
+    display: inline-block;
+    padding: 15px 0 5px 0;
+}
+
+.comment-list img {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.comment-list > div {
+    display: inline-block;
+    width: calc(100% - 64px);
+}
+
+.comment-list > div p span{
+    margin-left: 5px;
+    font-weight: 400;
+}
+
+.comment-div, .recomment-div {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+    padding: 5px 10px;
+    font-size: 14px;
+    position: relative;
+}
+
+.comment-update-div {
+    width: calc(100% + 40px);
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    position: relative;
+}
+
+.comment-div .comment-btn-box, .recomment-div .recomment-btn-box , .comment-update-div .comment-update-btn-box{
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+}
+
+.comment-div button, .recomment-div button, .comment-update-div button {
+    color: #fff;
+    padding: 7px 25px;
+}
+
+.comment-div button[type="submit"] {
+    background: #1fb1c7;
+}
+
+.comment-div button[type="button"], .recomment-div button[type="button"], .comment-update-div button[type="button"] {
+    background: #b4b4b4;
+}
+
+.comment-div textarea, .recomment-div textarea {
+    overflow: hidden;
+    border: none;
+    background: #fff;
+    color: #000;
+    vertical-align: middle;
+    padding: 10px 0;
+    width: 100%;
+    height: 59px;
+    min-height: 62px;
+    font-size: 14px;
+    margin-bottom: 33px;
+}
+
+.comment-update-div textarea {
+    overflow: hidden;
+    border: none;
+    background: #fff;
+    color: #000;
+    vertical-align: middle;
+    width: 100%;
+    height: 33px;
+    min-height: 33px;
+    font-size: 14px;
+    padding: 6px 156px 6px 0;
 }

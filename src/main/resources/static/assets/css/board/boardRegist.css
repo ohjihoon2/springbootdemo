@@ -3,6 +3,7 @@
 .top-btn-box {
     width: 100%;
     text-align: right;
+    min-height: 40px;
 }
 
 .top-btn-box .left {

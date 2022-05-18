@@ -12,7 +12,15 @@ $(function() {
         }
     });
 
-    // 게시글 삭제
+    // 게시글 삭제(유저)
+    $('#boardDel').click(function() {
+        $('#controlBtn').next('ul').hide();
+        if(confirm("해당 게시물을 삭제하시겠습니까?")) {
+            $ajax.deleteAjax('/board/'+ boardId + '/detail/' + idx + '/user', {}, true, "해당 게시물을 삭제하였습니다.", '/board/'+ boardId);
+        }
+    });
+
+    // 게시글 삭제(관리자)
     $('#boardAdmDel').click(function() {
         $('#controlBtn').next('ul').hide();
         if(confirm("해당 게시물을 삭제하시겠습니까?\n(해당 게시물의 댓글까지 모두 삭제됩니다.)")) {
@@ -93,7 +101,6 @@ $(function() {
                 masterIdx : $(masterIdx).data('val'),
             }
 
-            // TODO moveBoards 쿼리 다중으로 되어 있어 에러뜸 - 단일
             var res = $ajax.patchAjax('/board/'+ boardId +'/detail/'+ idx +'/move', param);
 
             if(res == "error") {
@@ -109,6 +116,18 @@ $(function() {
         }
     });
 
+    // 첨부파일 숨김
+    $('#boardFileBtn').click(function() {
+        if($('#boardFile').css('display') == 'none') {
+            $('#boardFile').show();
+            $(this).addClass('on');
+        }
+        else {
+            $('#boardFile').hide();
+            $(this).removeClass('on');
+        }
+    });
+
     // 댓글영역 숨김
     $('#boardCommentBtn').click(function() {
         if($('#boardComment').css('display') == 'none') {
@@ -118,6 +137,253 @@ $(function() {
         else {
             $('#boardComment').hide();
             $(this).removeClass('on');
+            $('.control-btn').next('ul').hide();
+        }
+    });
+
+    // 댓글등록 초기화
+    $('#commentAddDel').click(function() {
+        $('#commentContent').val('');
+        $('#commentContent').css('height', '59px');
+    });
+
+    //댓글 추가
+    $(document).on("submit", "#boardDetailForm", function(e) {
+        e.preventDefault();
+
+        //빈값체크
+        if ($event.validationFocus("commentContent")) return;
+
+        var data = {
+            boardIdx: idx,
+            parentIdx: null,
+            commentContent: $util.transferTextarea($('#commentContent').val()),
+        };
+
+        var res = $ajax.postAjax('/board/comment', data);
+        if(res == "error") {
+            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+        }
+        else if(res.result == "success") {
+            alert("댓글을 등록하였습니다.")
+            window.location.reload();
+        }
+        else if(res.result == "fail"){
+            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+        }
+    });
+
+    // 댓글컨트롤버튼 컨트롤
+    $(document).on("click", ".control-btn", function(e) {
+        if($(this).next('ul').css('display') == 'none') {
+            $(this).next('ul').show();
+        }
+        else {
+            $(this).next('ul').hide();
+        }
+    });
+
+    // 댓글 수정 작성창 열기
+    $('.comment-update').click(function() {
+        $(this).closest('ul').hide();
+
+        var commentContent = $(this).closest('.comment-li').find('.comment-content').html();
+
+        var html =
+            '<div class="comment-update-div">' +
+            '<textarea class="comment-update-textarea" rows="5" maxlength="300" onkeydown="return $util.limitLines(this, event);" onkeyup="$util.resize(this);" placeholder="댓글 내용을 입력해주세요.">'+ $util.retainTextarea(commentContent) +'</textarea>' +
+            '<div class="comment-update-btn-box">' +
+            '<button class="comment-update-del" type="button">취소</button>\n' +
+            '<button class="color-primary-border-none comment-update" type="button">수정</button>' +
+            '</div>' +
+            '</div>';
+        $(this).closest('.comment-li').find('.comment-content').hide();
+        $(this).closest('.comment-li').find('.create-nicknm').after(html);
+
+        var textarea = $(this).closest('.comment-li').find('.comment-update-textarea').get(0);
+        $util.resize(textarea);
+    });
+
+    // 댓글 수정 작성취소
+    $(document).on("click", ".comment-update-del", function() {
+        $(this).closest('.comment-li').find('.comment-content').show();
+        $(this).closest('.comment-update-div').remove();
+    });
+
+    // 댓글 수정 작성취소
+    // $(document).on("click", ".comment-update-del", function() {
+    //     $(this).closest('.comment-li').find('.comment-content').show();
+    //     $(this).closest('.comment-update-div').remove();
+    // });
+
+    // 댓글 삭제(유저)
+    $('.comment-del').click(function() {
+        $(this).closest('ul').hide();
+        if(confirm("해당 댓글을 삭제하시겠습니까?")) {
+            var data = {
+                idx : $(this).closest('ul').data('val')
+            }
+            var res = $ajax.deleteAjax('/board/comment/user', data);
+            if(res == "error") {
+                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            }
+            else if(res.result == "success") {
+                alert("댓글을 삭제하였습니다.")
+                window.location.reload();
+            }
+            else if(res.result == "fail"){
+                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            }
+        }
+    });
+
+    // 댓글 삭제(관리자)
+    $(document).on("click", ".comment-adm-del", function(e) {
+        $(this).closest('ul').hide();
+        if(confirm("해당 댓글을 삭제하시겠습니까?")) {
+            var data = {
+                idx : $(this).closest('ul').data('val')
+            }
+
+            var res = $ajax.deleteAjax('/board/comment/admin', data);
+            if(res == "error") {
+                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            }
+            else if(res.result == "success") {
+                alert("댓글을 삭제하였습니다.")
+                window.location.reload();
+            }
+            else if(res.result == "fail"){
+                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            }
+        }
+    });
+
+    // 대댓글작성
+    $(document).on("click", ".recomment-btn", function(e) {
+        if($(this).next('div').css('display') == "none") {
+            $(this).next('div').show();
+        }
+        else {
+            $(this).next('div').hide();
+            $(this).next('div').find('textarea').val('');
+        }
+    });
+
+    // 대댓글작성취소
+    $(document).on("click", ".recomment-add-del", function(e) {
+        $(this).closest('.recomment-div').hide();
+        $(this).closest('.recomment-div').find('textarea').val('');
+    });
+
+    // 대댓글 등록
+    $(document).on("click", ".recomment-add", function(e) {
+        var commentContent = $(this).closest('.recomment-div').find('textarea').val();
+
+        //빈값체크
+        if (commentContent == "") {
+            alert("답글 내용을 입력해주세요.")
+            return;
+        }
+
+        var parentIdx = $(this).closest('li').data('val');
+
+        var data = {
+            boardIdx: idx,
+            parentIdx: parentIdx,
+            referenceIdx: null,
+            commentContent: $util.transferTextarea(commentContent),
+        };
+
+        var referenceIdx = $(this).closest('li').data('referenceidx');
+        if(referenceIdx != "") {
+            data.referenceIdx = referenceIdx;
+        }
+
+        var res = $ajax.postAjax('/board/comment', data);
+        if(res == "error") {
+            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+        }
+        else if(res.result == "success") {
+            alert("답글을 등록하였습니다.")
+            window.location.reload();
+        }
+        else if(res.result == "fail"){
+            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+        }
+    });
+
+    // 답글 더보기
+    $('.recomment-view').click(function() {
+        var parentIdx = $(this).closest('li').data('val');
+        var res = $ajax.postAjax('/board/comment/' + parentIdx);
+        if(res == "error") {
+            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            return;
+        }
+
+        for (var i = 0; i < res.length; i++){
+            res[i] = $util.nullChkObj(res[i]);
+        }
+
+        for (var i = 0; i < res.length; i++){
+            if(res[i].deleteYn == 'Y') {
+                res[i].commentContent = '삭제된 댓글입니다.';
+            }
+
+            var html =
+                '<li>' +
+                '<div class="comment-list">' +
+                '<img src="/img/common/no_profile.gif" >' +
+                '<div>' +
+                '<p class="weight600">'+ res[i].createNicknm +'<span><i class="fa fa-clock-o" aria-hidden="true"></i> '+ res[i].createDate +'</span></p>' +
+                '<p>';
+            if(res[i].referenceNicknm != '') {
+                html +=
+                    '<i class="weight600 text-color-primary">@'+ res[i].referenceNicknm +' </i>'
+            }
+            html+=
+                res[i].commentContent +'</p>' +
+                '</div>' +
+                '</div>';
+            if(admin || res[i].createIdx == sessionIdx) {
+                html +=
+                    '<a class="control-box">' +
+                    '<i class="fa fa-ellipsis-v control-btn" aria-hidden="true"></i>' +
+                    '<ul style="display: none;" data-val="'+ res[i].idx +'">' +
+                    '<li><button class="comment-update" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 수정</button></li>';
+                if(!admin && res[i].createIdx == sessionIdx) {
+                    html +=
+                        '<li><button class="comment-del" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button></li>';
+                }
+                else if(admin) {
+                    html +=
+                        '<li><button class="comment-adm-del" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button></li>';
+                }
+                html +=
+                    '</ul>' +
+                    '</a>';
+            }
+            html +=
+                '<ul class="ml65">' +
+                '<li data-val="'+ res[i].parentIdx +'" data-referenceidx="'+ res[i].createIdx +'">';
+            if(commentLevel && res[i].deleteYn == 'N') {
+                html +=
+                    '<button class="text-color-gray weight600 recomment-btn" type="button">답글</button>' +
+                    '<div class="recomment-div" style="display: none;">' +
+                    '<p class="weight600">'+ sessionUserNicknm +'</p>' +
+                    '<textarea rows="5" maxlength="300" onkeydown="return $util.limitLines(this, event);" onkeyup="$util.resize(this);" placeholder="댓글 내용을 입력해주세요."></textarea>' +
+                    '<div class="recomment-btn-box">' +
+                    '<button class="recomment-add-del" type="button">취소</button>\n' +
+                    '<button class="color-primary-border-none recomment-add" type="button">등록</button>' +
+                    '</div>' +
+                    '</div>';
+            }
+            html +=
+                '</li>' +
+                '</li>';
+            $(this).next('ul').append(html);
+            $(this).hide();
         }
     });
 

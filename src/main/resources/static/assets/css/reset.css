@@ -72,6 +72,7 @@ input:read-only, input[readonly=true], textarea:read-only, textarea[readonly=tru
 .ml10{margin-left:10px !important;}
 .ml20{margin-left:20px !important;}
 .ml30{margin-left:30px !important;}
+.ml65{margin-left:65px !important}
 
 .mr5{margin-right:5px !important;}
 .mr10{margin-right:10px !important;}
@@ -79,6 +80,7 @@ input:read-only, input[readonly=true], textarea:read-only, textarea[readonly=tru
 .mt0{margin-top:0px !important}
 .mt5{margin-top:5px !important}
 .mt10{margin-top:10px !important}
+.mt15{margin-top:15px !important}
 .mt20{margin-top:20px !important}
 .mt25{margin-top:25px !important}
 .mt30{margin-top:30px !important}
@@ -122,7 +124,9 @@ input:read-only, input[readonly=true], textarea:read-only, textarea[readonly=tru
 
 .text-color-primary {color: #1fb1c7;}
 .text-color-red {color: #F52D05;}
+.text-color-gray {color: #a7a7a7;}
 
 /* color */
 .color-primary {background: #1fb1c7!important; border-color: #00a6bc!important;}
+.color-primary-border-none {background: #1fb1c7!important;}
 
