@@ -3,8 +3,9 @@ $(function() {
     boardHitUp();
 
     // 컨트롤버튼 컨트롤
-    $('#controlBtn').click(function() {
+    $(document).on("click", ".control-btn", function() {
         if($(this).next('ul').css('display') == 'none') {
+            $('.control-btn').next('ul').hide();
             $(this).next('ul').show();
         }
         else {
@@ -14,7 +15,7 @@ $(function() {
 
     // 게시글 삭제(유저)
     $('#boardDel').click(function() {
-        $('#controlBtn').next('ul').hide();
+        $(this).closest('ul').hide();
         if(confirm("해당 게시물을 삭제하시겠습니까?")) {
             $ajax.deleteAjax('/board/'+ boardId + '/detail/' + idx + '/user', {}, true, "해당 게시물을 삭제하였습니다.", '/board/'+ boardId);
         }
@@ -22,7 +23,7 @@ $(function() {
 
     // 게시글 삭제(관리자)
     $('#boardAdmDel').click(function() {
-        $('#controlBtn').next('ul').hide();
+        $(this).closest('ul').hide();
         if(confirm("해당 게시물을 삭제하시겠습니까?\n(해당 게시물의 댓글까지 모두 삭제됩니다.)")) {
             $ajax.deleteAjax('/board/'+ boardId + '/detail/' + idx + '/admin', {}, true, "해당 게시물을 삭제하였습니다.", '/board/'+ boardId);
         }
@@ -30,7 +31,7 @@ $(function() {
 
     //게시글 이동상세
     $('#boardMovePopup').click(function() {
-        $('#controlBtn').next('ul').hide();
+        $(this).closest('ul').hide();
 
         var res = $ajax.postAjax('/board/boardMaster');
         if(res == "error") {
@@ -173,24 +174,15 @@ $(function() {
         }
     });
 
-    // 댓글컨트롤버튼 컨트롤
-    $(document).on("click", ".control-btn", function(e) {
-        if($(this).next('ul').css('display') == 'none') {
-            $(this).next('ul').show();
-        }
-        else {
-            $(this).next('ul').hide();
-        }
-    });
-
     // 댓글 수정 작성창 열기
-    $('.comment-update').click(function() {
+    $(document).on("click", ".comment-update", function() {
         $(this).closest('ul').hide();
 
+        var commentIdx = $(this).closest('ul').data('val');
         var commentContent = $(this).closest('.comment-li').find('.comment-content').html();
 
         var html =
-            '<div class="comment-update-div">' +
+            '<div class="comment-update-div" data-val="'+ commentIdx +'">' +
             '<textarea class="comment-update-textarea" rows="5" maxlength="300" onkeydown="return $util.limitLines(this, event);" onkeyup="$util.resize(this);" placeholder="댓글 내용을 입력해주세요.">'+ $util.retainTextarea(commentContent) +'</textarea>' +
             '<div class="comment-update-btn-box">' +
             '<button class="comment-update-del" type="button">취소</button>\n' +
@@ -198,7 +190,7 @@ $(function() {
             '</div>' +
             '</div>';
         $(this).closest('.comment-li').find('.comment-content').hide();
-        $(this).closest('.comment-li').find('.create-nicknm').after(html);
+        $(this).closest('.comment-li').find('.reference').after(html);
 
         var textarea = $(this).closest('.comment-li').find('.comment-update-textarea').get(0);
         $util.resize(textarea);
@@ -210,11 +202,39 @@ $(function() {
         $(this).closest('.comment-update-div').remove();
     });
 
-    // 댓글 수정 작성취소
-    // $(document).on("click", ".comment-update-del", function() {
-    //     $(this).closest('.comment-li').find('.comment-content').show();
-    //     $(this).closest('.comment-update-div').remove();
-    // });
+    // 댓글 수정
+    $(document).on("click", ".comment-update", function() {
+        var commentContent = $(this).closest('.comment-update-div').find('textarea').val();
+        var commentIdx = $(this).closest('.comment-update-div').data('val');
+
+        //빈값체크
+        if (commentContent == "") {
+            alert("수정 내용을 입력해주세요.")
+            return;
+        }
+
+        var data = {
+            idx : commentIdx,
+            commentContent: $util.transferTextarea(commentContent),
+        };
+
+        var referenceIdx = $(this).closest('li').data('referenceidx');
+        if(referenceIdx != "") {
+            data.referenceIdx = referenceIdx;
+        }
+
+        var res = $ajax.patchAjax('/board/comment', data);
+        if(res == "error") {
+            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+        }
+        else if(res.result == "success") {
+            alert("답글을 수정하였습니다.")
+            window.location.reload();
+        }
+        else if(res.result == "fail"){
+            alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+        }
+    });
 
     // 댓글 삭제(유저)
     $('.comment-del').click(function() {
@@ -332,26 +352,33 @@ $(function() {
             }
 
             var html =
-                '<li>' +
+                '<li class="comment-li">' +
                 '<div class="comment-list">' +
                 '<img src="/img/common/no_profile.gif" >' +
                 '<div>' +
-                '<p class="weight600">'+ res[i].createNicknm +'<span><i class="fa fa-clock-o" aria-hidden="true"></i> '+ res[i].createDate +'</span></p>' +
+                '<p class="weight600">'+ res[i].createNicknm +'<span class="weight400 ml5"><i class="fa fa-clock-o" aria-hidden="true"></i> '+ res[i].createDate +'</span></p>' +
                 '<p>';
-            if(res[i].referenceNicknm != '') {
+            if(res[i].referenceNicknm == '') {
                 html +=
-                    '<i class="weight600 text-color-primary">@'+ res[i].referenceNicknm +' </i>'
+                    '<i class="reference"></i>'
+            }
+            else {
+                html +=
+                    '<i class="weight600 text-color-primary reference">@'+ res[i].referenceNicknm +' </i>'
             }
             html+=
-                res[i].commentContent +'</p>' +
+                '<span class="comment-content">'+ res[i].commentContent +'</span></p>' +
                 '</div>' +
                 '</div>';
-            if(admin || res[i].createIdx == sessionIdx) {
+            if(admin || (res[i].createIdx == sessionIdx && res[i].deleteYn == "N")) {
                 html +=
                     '<a class="control-box">' +
                     '<i class="fa fa-ellipsis-v control-btn" aria-hidden="true"></i>' +
-                    '<ul style="display: none;" data-val="'+ res[i].idx +'">' +
-                    '<li><button class="comment-update" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 수정</button></li>';
+                    '<ul style="display: none;" data-val="'+ res[i].idx +'">';
+                if(res[i].deleteYn == "N") {
+                    html +=
+                        '<li><button class="comment-update" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 수정</button></li>';
+                }
                 if(!admin && res[i].createIdx == sessionIdx) {
                     html +=
                         '<li><button class="comment-del" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button></li>';
@@ -365,8 +392,8 @@ $(function() {
                     '</a>';
             }
             html +=
-                '<ul class="ml65">' +
-                '<li data-val="'+ res[i].parentIdx +'" data-referenceidx="'+ res[i].createIdx +'">';
+                '<ul class="ml62">' +
+                '<li data-val="'+ res[i].parentIdx +'" data-referenceidx="'+ res[i].createIdx +'">\n';
             if(commentLevel && res[i].deleteYn == 'N') {
                 html +=
                     '<button class="text-color-gray weight600 recomment-btn" type="button">답글</button>' +
