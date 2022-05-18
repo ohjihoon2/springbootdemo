@@ -263,6 +263,7 @@
             (
                  BOARD_IDX,
                  PARENT_IDX,
+                 REFERENCE_IDX,
                  COMMENT_CONTENT,
                  CREATE_IDX,
                  CREATE_DATE
@@ -271,6 +272,7 @@
             (
                  #{boardIdx},
                  #{parentIdx},
+                 #{referenceIdx},
                  #{commentContent},
                  #{createIdx},
                  SYSDATE()
@@ -454,16 +456,20 @@
         SELECT A.IDX,
                A.BOARD_IDX,
                A.PARENT_IDX,
+               IF(A.REFERENCE_IDX IS NULL, NULL, (SELECT IFNULL(C.USER_NICKNM, '탈퇴된 사용자')
+                                                  FROM users C
+                                                  where IDX = A.REFERENCE_IDX)) as REFERENCE_NICKNM,
                A.COMMENT_CONTENT,
                A.DELETE_YN,
                A.CREATE_IDX,
                IF( A.CREATE_IDX IS NULL , NULL, IFNULL(B.USER_NICKNM,'탈퇴된 사용자')) AS CREATE_NICKNM,
-               A.CREATE_DATE,
+               DATE_FORMAT(A.CREATE_DATE, '%y.%m.%d. %H:%i') AS CREATE_DATE,
                A.UPDATE_IDX,
                A.UPDATE_DATE
-          FROM board_comment A
-          LEFT JOIN users B ON A.CREATE_IDX = B.IDX
-         WHERE PARENT_IDX = #{idx}
+        FROM board_comment A
+        LEFT JOIN users B ON A.CREATE_IDX = B.IDX
+       WHERE PARENT_IDX = #{idx}
+       ORDER BY IDX;
     </select>
 
     <select id="findAllByAttachFileIdx" parameterType="int" resultType="CustomMap">
