@@ -7,24 +7,24 @@ import java.util.Date;
 @Data
 public class Alarm {
 
-    public Alarm(String alertType, String alertContent, String url, int receiveIdx, Date createDate) {
+    public Alarm(String alarmType, String alarmContent, String url, int receiveIdx, Date createDate) {
         super();
-        this.alertType = alertType;
-        this.alertContent = alertContent;
+        this.alarmType = alarmType;
+        this.alarmContent = alarmContent;
         this.url = url;
         this.receiveIdx = receiveIdx;
         this.createDate = createDate;
     }
 
-    public Alarm(String alertContent, Date createDate) {
+    public Alarm(String alarmContent, Date createDate) {
         super();
-        this.alertContent = alertContent;
+        this.alarmContent = alarmContent;
         this.createDate = createDate;
     }
 
     private int idx;
-    private String alertType;
-    private String alertContent;
+    private String alarmType;
+    private String alarmContent;
     private String url;
     private String readYn;
     private int receiveIdx;

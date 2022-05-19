@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.service.AlarmService;
 import com.example.demo.vo.Alarm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -14,11 +15,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @RestController
 @RequiredArgsConstructor
 public class AlarmRestController {
+    private final AlarmService alarmService;
+    private Long DEFAULT_TIMEOUT = 60L * 1000L * 60L;
     private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
-    @GetMapping("/new_notification")
+    @GetMapping( value = "/new_alarm",  produces = "text/event-stream")
     public SseEmitter getNewNotification() {
-        SseEmitter emitter = new SseEmitter();
+        System.out.println("AlarmRestController.getNewNotification");
+        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
         this.emitters.add(emitter);
 
         emitter.onCompletion(() -> this.emitters.remove(emitter));
@@ -30,10 +34,9 @@ public class AlarmRestController {
         return emitter;
     }
 
-
     @EventListener
     public void onNotification(Alarm alarm) {
-        System.out.println("NotificationRestController.onNotification");
+        System.out.println("AlarmRestController.onNotification");
         List<SseEmitter> deadEmitters = new ArrayList<>();
         this.emitters.forEach(emitter -> {
             try {
@@ -44,7 +47,4 @@ public class AlarmRestController {
         });
         this.emitters.remove(deadEmitters);
     }
-
-
-
 }

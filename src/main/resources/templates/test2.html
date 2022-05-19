@@ -4,22 +4,28 @@
   <title>Job Notifications</title>
   <script>
     var subscribe = function() {
-      var eventSource = new EventSource('new_notification');
-
-      eventSource.onmessage = function(e) {
-        var alram = JSON.parse(e.data);
-        document.getElementById("notificationDiv").innerHTML += " type : " + alram.alertContent + "<br/>"
-                                                              + " content : " + new Date(alram.createDate) + "<br/>"
-                                                              + " url : " + alram.url + "<br/>"
-                                                              + " RECEIVE_IDX : " + alram.receiveIdx + "<br/>"
-      };
+      var eventSource = new EventSource('new_alarm');
+      eventSource.onmessage = function (e) {
+        var alarm = JSON.parse(e.data);
+        console.log(alarm);
+        var sessionIdx = "[[${session.idx}]]";
+        console.log(alarm.receiveIdx);
+        console.log(sessionIdx);
+        if (alarm.receiveIdx == sessionIdx) {
+          document.getElementById("notificationDiv").innerHTML += " alertType : " + alarm.alarmType + "<br/>"
+                                                                + " content : " + alarm.alarmContent + "<br/>"
+                                                                + " url : " + alarm.url + "<br/>"
+                                                                + " RECEIVE_IDX : " + alarm.receiveIdx + "<br/>"
+                                                                + " createDate : " + new Date() + "<br/>";
+        };
+      }
     }
 
     window.onload = subscribe;
-
     window.onbeforeunload = function() {
       eventSource.close();
     }
+
   </script>
 </head>
 <body>

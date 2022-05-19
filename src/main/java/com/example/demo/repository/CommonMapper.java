@@ -18,4 +18,5 @@ public interface CommonMapper {
 
     int deleteWithdrawUser();
 
+    int countAlarmByUserIdx(int userIdx);
 }

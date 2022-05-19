@@ -26,4 +26,9 @@ public class CommonServiceImpl implements CommonService {
         return commonMapper.findLinkNameLvl2ByUseYn(lvl);
     }
 
+    @Override
+    public int countAlarmByUserIdx(int userIdx) {
+        return commonMapper.countAlarmByUserIdx(userIdx);
+    }
+
 }

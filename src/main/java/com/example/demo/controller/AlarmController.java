@@ -12,19 +12,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @RequiredArgsConstructor
-public class AlertController {
+public class AlarmController {
     private static final Map<String, SseEmitter> CLIENTS = new ConcurrentHashMap<>();
 
     private final AlarmService alarmService;
-
-    @PostMapping("/alert")
-    public Map<String, Object> alertList(){
-        Map<String, Object> map = new HashMap<>();
-
-        return map;
-    }
-
-
 
     /*
     @GetMapping("/api/subscribe")
@@ -56,12 +47,12 @@ public class AlertController {
 
         deadIds.forEach(CLIENTS::remove);
     }*/
-
+/*
     @GetMapping(value = "/subscribe/{id}", produces = "text/event-stream")
-    public SseEmitter subscribe(@PathVariable Long id,
+    public SseEmitter subscribe(@PathVariable int id,
                                 @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
         return alarmService.subscribe(id, lastEventId);
-    }
+    }*/
 
 
 }

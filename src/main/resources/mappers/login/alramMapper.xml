@@ -7,4 +7,24 @@
          WHERE RECEIVE_IDX = #{userIdx}
            AND READ_YN = 'N'
     </select>
+
+    <insert id="insertAlarm" parameterType="Alarm">
+
+        INSERT INTO alarm
+            (
+                 ALARM_TYPE,
+                 ALARM_CONTENT,
+                 URL,
+                 RECEIVE_IDX,
+                 CREATE_DATE
+             )
+        VALUES
+            (
+                 #{alarmType},
+                 #{alarmContent},
+                 #{url},
+                 #{receiveIdx},
+                 SYSDATE()
+            )
+    </insert>
 </mapper>

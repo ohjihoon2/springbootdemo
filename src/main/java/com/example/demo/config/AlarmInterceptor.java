@@ -17,19 +17,11 @@ public class AlarmInterceptor implements HandlerInterceptor {
     AlarmService alarmService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("AlertInterceptor.preHandle");
-        return HandlerInterceptor.super.preHandle(request, response, handler);
-    }
-
-    @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         System.out.println("AlertInterceptor.postHandle");
         HttpSession session = request.getSession();
         int userIdx = 0;
         Integer alertCnt = null;
-
-        //TODO  05/17 - ALTER 테이블에 추가해서 테스트 하고 INTERCEPTOR CONTROLLER 추가해보기
 
         if(session.getAttribute("idx") != null){
             userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
@@ -39,11 +31,5 @@ public class AlarmInterceptor implements HandlerInterceptor {
             modelAndView.addObject("alertCnt",alertCnt);
         }
         HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
-    }
-
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        System.out.println("AlertInterceptor.afterCompletion");
-        HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
     }
 }

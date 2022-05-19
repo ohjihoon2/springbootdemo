@@ -1,7 +1,9 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.repository.AlarmMapper;
 import com.example.demo.repository.BoardMapper;
 import com.example.demo.repository.FileMapper;
+import com.example.demo.service.AlarmService;
 import com.example.demo.service.BoardService;
 import com.example.demo.util.FileUtil;
 import com.example.demo.util.HitCookie;
@@ -26,6 +28,7 @@ public class BoardServiceImpl implements BoardService {
     private final BoardMapper boardMapper;
 
     private final FileMapper fileMapper;
+    private final AlarmMapper alarmMapper;
 
     private final ApplicationEventPublisher eventPublisher;
 
@@ -210,20 +213,21 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
     public int insertBoardComment(BoardComment comment) {
         int boardCreateIdx = boardMapper.findCreateIdxByBoardIdx(comment.getBoardIdx());
 
         if(boardCreateIdx != comment.getCreateIdx()){
-            // TODO - 수정중
-            Alarm alert = new Alarm(
+            Alarm alarm = new Alarm(
                     "COMMENT",
                     "댓글이 달렸습니다.",
                     "/",
                     comment.getCreateIdx(),
                     new Date()
             );
-            this.eventPublisher.publishEvent(alert);
 
+            alarmMapper.insertAlarm(alarm);
+            this.eventPublisher.publishEvent(alarm);
         }
 
         return boardMapper.insertBoardComment(comment);

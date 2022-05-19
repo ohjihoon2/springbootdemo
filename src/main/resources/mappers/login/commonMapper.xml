@@ -30,4 +30,10 @@
           AND UPDATE_DATE <= date_add(now(), interval -1 month)
         ]]>
     </delete>
+
+    <select id="countAlarmByUserIdx" resultType="int" parameterType="int">
+        SELECT COUNT(*)
+          FROM alarm
+         WHERE RECEIVE_IDX = #{userIdx}
+    </select>
 </mapper>

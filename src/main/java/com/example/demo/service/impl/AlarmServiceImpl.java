@@ -6,55 +6,78 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class AlarmServiceImpl implements AlarmService {
     private final AlarmMapper alarmMapper;
 
+    private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
+    private final Map<String, Object> eventCache = new ConcurrentHashMap<>();
+
     @Override
-    public SseEmitter subscribe(Long userId, String lastEventId) {
-       /*String id = userId + "_" + System.currentTimeMillis();
-
-        // 2
-        SseEmitter emitter = emitterRepository.save(id, new SseEmitter(DEFAULT_TIMEOUT));
-
-        emitter.onCompletion(() -> emitterRepository.deleteById(id));
-        emitter.onTimeout(() -> emitterRepository.deleteById(id));
-
-        // 3
-        // 503 에러를 방지하기 위한 더미 이벤트 전송
-        sendToClient(emitter, id, "EventStream Created. [userId=" + userId + "]");
-
-        // 4
-        // 클라이언트가 미수신한 Event 목록이 존재할 경우 전송하여 Event 유실을 예방
-        if (!lastEventId.isEmpty()) {
-            Map<String, Object> events = emitterRepository.findAllEventCacheStartWithId(String.valueOf(userId));
-            events.entrySet().stream()
-                    .filter(entry -> lastEventId.compareTo(entry.getKey()) < 0)
-                    .forEach(entry -> sendToClient(emitter, entry.getKey(), entry.getValue()));
-        }
-
-        return emitter;*/
+    public SseEmitter subscribe(int id, String lastEventId) {
         return null;
-//        return alertMapper.subscribe();
     }
-/*
-
-    private void sendToClient(SseEmitter emitter, String id, Object data) {
-        try {
-            emitter.send(SseEmitter.event()
-                    .id(id)
-                    .name("sse")
-                    .data(data));
-        } catch (IOException exception) {
-            emitterRepository.deleteById(id);
-            throw new RuntimeException("연결 오류!");
-        }
-    }
-*/
 
     @Override
     public int countReadYn(int userIdx) {
         return alarmMapper.countReadYn(userIdx);
     }
+
+/*
+    @Override
+    public SseEmitter save(String emitterId, SseEmitter sseEmitter) {
+        emitters.put(emitterId, sseEmitter);
+        return sseEmitter;
+    }
+
+    @Override
+    public void saveEventCache(String eventCacheId, Object event) {
+        eventCache.put(eventCacheId, event);
+    }
+
+    @Override
+    public Map<String, SseEmitter> findAllEmitterStartWithByMemberId(String memberId) {
+        return emitters.entrySet().stream()
+                .filter(entry -> entry.getKey().startsWith(memberId))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    @Override
+    public Map<String, Object> findAllEventCacheStartWithByMemberId(String memberId) {
+        return eventCache.entrySet().stream()
+                .filter(entry -> entry.getKey().startsWith(memberId))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    @Override
+    public void deleteById(String id) {
+        emitters.remove(id);
+    }
+
+    @Override
+    public void deleteAllEmitterStartWithId(String memberId) {
+        emitters.forEach(
+                (key, emitter) -> {
+                    if (key.startsWith(memberId)) {
+                        emitters.remove(key);
+                    }
+                }
+        );
+    }
+
+    @Override
+    public void deleteAllEventCacheStartWithId(String memberId) {
+        eventCache.forEach(
+                (key, emitter) -> {
+                    if (key.startsWith(memberId)) {
+                        eventCache.remove(key);
+                    }
+                }
+        );
+    }*/
 }
