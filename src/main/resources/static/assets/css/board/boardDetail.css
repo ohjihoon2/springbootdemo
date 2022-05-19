@@ -125,10 +125,6 @@
     font-size: 14px;
 }
 
-.board-info div p span{
-    margin-right: 5px;
-}
-
 .board-content {
     min-height: 200px;
 }
@@ -214,11 +210,6 @@
 .comment-list > div {
     display: inline-block;
     width: calc(100% - 64px);
-}
-
-.comment-list > div p span{
-    margin-left: 5px;
-    font-weight: 400;
 }
 
 .comment-div, .recomment-div {

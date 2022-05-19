@@ -72,6 +72,7 @@ input:read-only, input[readonly=true], textarea:read-only, textarea[readonly=tru
 .ml10{margin-left:10px !important;}
 .ml20{margin-left:20px !important;}
 .ml30{margin-left:30px !important;}
+.ml62{margin-left:62px !important}
 .ml65{margin-left:65px !important}
 
 .mr5{margin-right:5px !important;}
@@ -120,6 +121,7 @@ input:read-only, input[readonly=true], textarea:read-only, textarea[readonly=tru
 .text-left {text-align: left;}
 .text-right {text-align: right;}
 
+.weight400 {font-weight: 400;}
 .weight600 {font-weight: 600;}
 
 .text-color-primary {color: #1fb1c7;}
