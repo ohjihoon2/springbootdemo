@@ -14,7 +14,7 @@ public class Board {
     private int attachFileIdx;
     private String noticeYn;
     private String deleteYn;
-    private String thumbnailYn;
+    private String thumbnailNm;
     private int createIdx;
     private Date createDate;
     private int updateIdx;

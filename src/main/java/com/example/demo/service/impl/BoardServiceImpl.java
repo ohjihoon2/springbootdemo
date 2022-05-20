@@ -48,6 +48,11 @@ public class BoardServiceImpl implements BoardService {
             board.setAttachFileIdx(idx);
         }
 
+        if(thumb != null){
+
+            thumb.getOriginalFilename();
+        }
+
         if(boardMapper.insertBoard(board) != 0){
             // 썸네일 파일 저장
             if(thumb != null){
@@ -97,7 +102,7 @@ public class BoardServiceImpl implements BoardService {
         List<Map<String, Object>> boardDetailList = boardMapper.findAllByIdxList(paramMap);
 
         for (Map<String, Object> boardDetail : boardDetailList) {
-            if(boardDetail.get("thumbnailYn").equals("Y")){
+            if(boardDetail.get("thumbnailNm") != null){
                 //썸네일 삭제
                 fileUtil.deleteThumbnailFile(paramMap.get("idx").toString());
             }
@@ -121,7 +126,7 @@ public class BoardServiceImpl implements BoardService {
 
         Map<String, Object> boardDetail = boardMapper.findAllByIdx(paramMap);
 
-        if(boardDetail.get("thumbnailYn").equals("Y")){
+        if(boardDetail.get("thumbnailNm") != null){
             //썸네일 삭제
             fileUtil.deleteThumbnailFile(paramMap.get("idx").toString());
         }
