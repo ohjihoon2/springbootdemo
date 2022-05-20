@@ -49,8 +49,7 @@ public class BoardServiceImpl implements BoardService {
         }
 
         if(thumb != null){
-
-            thumb.getOriginalFilename();
+            board.setThumbnailNm(thumb.getOriginalFilename());
         }
 
         if(boardMapper.insertBoard(board) != 0){
