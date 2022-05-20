@@ -14,6 +14,12 @@ $(function() {
     });
 
     // 게시글 삭제(유저)
+    $('#boardUpdate').click(function() {
+        $(this).closest('ul').hide();
+        $page.goPage('/board/'+ boardId +'/detail/'+ idx);
+    });
+
+    // 게시글 삭제(유저)
     $('#boardDel').click(function() {
         $(this).closest('ul').hide();
         if(confirm("해당 게시물을 삭제하시겠습니까?")) {

@@ -8,32 +8,41 @@
 
 <th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/board/boardUpdate.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
-<th:block th:if="${boardMaster.useYn == 'N'}">
-    <script>
+<script>
+    if("[[${boardMaster.useYn}]]" == "N") {
         alert("사용이 불가능한 페이지입니다.");
         window.history.back();
-    </script>
-</th:block>
-<th:block th:if="!${@compareAuth.getAuth(boardMaster.writeLevel)}">
-    <script>
+    }
+    else if (![[${@compareAuth.getAuth(boardMaster.writeLevel)}]]) {
         alert("접근이 불가능한 페이지입니다.");
         window.history.back();
-    </script>
-</th:block>
+    }
+    else if("[[${boardDetail.deleteYn}]]" == "Y") {
+        alert("삭제 된 게시글입니다.");
+        window.history.back();
+    }
+    else if (!([[${@compareAuth.getAuth('ADMIN')}]] || [[${session.idx}]] == [[${boardDetail.createIdx}]])) {
+        alert("수정 권한이 없는 페이지입니다.");
+        window.history.back();
+    }
+</script>
 <th:block th:replace="/fragments/header.html :: thHeader"></th:block>
 <section>
     <div class="section-wrap">
         <form id="boardRegistForm">
             <div class="pt80"></div>
+            [[${boardMaster}]]
+            [[${boardDetail}]]
+            [[${fileList}]]
             <div class="top-btn-box">
-                <div class="left">게시물 추가</div>
+                <div class="left">게시물 수정</div>
                 <span th:if="${@compareAuth.getAuth('ADMIN')}"><input id="notice" type="checkbox"/><label for="notice">공지</label></span>
             </div>
             <div class="mb10"></div>
             <ul th:id="boardUl" class="board-ul">
                 <li>
                     <label>제목</label>
-                    <input id="boardSubject" type="text">
+                    <input id="boardSubject" type="text" th:value="${boardDetail.boardSubject}">
                 </li>
                 <li>
                     <label><i class="fa fa-image" aria-hidden="true"></i></label>

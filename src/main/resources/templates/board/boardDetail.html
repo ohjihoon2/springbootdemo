@@ -8,24 +8,20 @@
 
 <th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/board/boardDetail.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
-<th:block th:if="${boardDetail.deleteYn == 'Y'}">
-    <script>
-        alert("삭제 된 게시글입니다.");
-        window.history.back();
-    </script>
-</th:block>
-<th:block th:if="${boardMaster.useYn == 'N'}">
-    <script>
+<script>
+    if("[[${boardMaster.useYn}]]" == "N") {
         alert("사용이 불가능한 페이지입니다.");
         window.history.back();
-    </script>
-</th:block>
-<th:block th:if="!${@compareAuth.getAuth(boardMaster.readLevel)}">
-    <script>
+    }
+    else if (![[${@compareAuth.getAuth(boardMaster.readLevel)}]]) {
         alert("접근이 불가능한 페이지입니다.");
         window.history.back();
-    </script>
-</th:block>
+    }
+    else if("[[${boardDetail.deleteYn}]]" == "Y") {
+        alert("삭제 된 게시글입니다.");
+        window.history.back();
+    }
+</script>
 <th:block th:replace="/fragments/header.html :: thHeader"></th:block>
 <section>
     <div class="section-wrap">
