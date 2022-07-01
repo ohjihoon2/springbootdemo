@@ -53,4 +53,6 @@ public interface BoardService {
     int moveOneBoard(Map<String, Object> paramMap);
 
     List<Map<String, Object>> moreBoardComment(int idx);
+
+    int updateThumbnailNmByIdx(String idx);
 }

@@ -170,6 +170,11 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public int updateThumbnailNmByIdx(String idx) {
+        return boardMapper.updateThumbnailNmByIdx(idx);
+    }
+
+    @Override
     public BoardMaster findAllByIdxBoardMaster(Map<String, Object> paramMap) {
 
         return boardMapper.findAllByIdxBoardMaster(paramMap);

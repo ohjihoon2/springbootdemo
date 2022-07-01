@@ -501,4 +501,9 @@
          WHERE A.IDX = #{idx}
          ORDER BY A.IDX
     </select>
+    <update id="updateThumbnailNmByIdx" parameterType="String">
+        UPDATE board
+           SET THUMBNAIL_NM = NULL
+         WHERE IDX = {idx}
+    </update>
 </mapper>

@@ -419,9 +419,8 @@ public class BoardController {
     public Map<String,Object> deleteThumbnail(@PathVariable("idx") String idx) {
         int result = 0;
 
-        if(fileUtil.deleteThumbnailFile(idx)){
-            result =1;
-        }
+        result = boardService.updateThumbnailNmByIdx(idx);
+        fileUtil.deleteThumbnailFile(idx);
 
         return ResultStr.set(result);
     }

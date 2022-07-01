@@ -279,7 +279,7 @@ $(function(){
         if(confirm("해당 파일을 삭제하시겠습니까?\n(파일은 즉시 삭제되며, 복구 할수 없습니다.)")) {
             var saveName = $(this).data('val');
 
-            var res = $ajax.deleteAjax('/file/delete/'+ saveName);
+            var res = $ajax.deleteAjax('/file/'+ saveName);
             if(res == "error") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }

@@ -142,7 +142,7 @@ public class FileUtil {
 
     }
 
-    public boolean deleteThumbnailFile(String saveFileName){
+    public void deleteThumbnailFile(String saveFileName){
         //현재 게시판에 존재하는 파일객체를 만듬
         File file = new File(fileThumbnailPath + saveFileName);
 
@@ -150,9 +150,6 @@ public class FileUtil {
             // 파일 삭제
             file.delete();
         }
-
-        return true;
-
     }
 
     /**

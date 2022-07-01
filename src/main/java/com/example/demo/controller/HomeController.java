@@ -26,6 +26,7 @@ public class HomeController {
     public String home(HttpServletRequest request, Principal principal, Authentication auth, Model model) {
 
         log.debug("auth : {}",auth);
+        log.debug("principal : {}",principal);
 /*
         int alertCnt = 0;
 

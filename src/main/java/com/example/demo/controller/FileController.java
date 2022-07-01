@@ -88,7 +88,7 @@ public class FileController {
      * @return
      * @throws IOException
      */
-    @DeleteMapping(value="/delete/{saveName}")
+    @DeleteMapping(value="/{saveName}")
     @ResponseBody
     public Map<String, Object> deleteFile(@PathVariable String saveName, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
