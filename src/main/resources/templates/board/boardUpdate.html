@@ -47,7 +47,8 @@
                 <li>
                     <label><i class="fa fa-image" aria-hidden="true"></i></label>
                     <div>
-                        <input id="thumb" type="file">
+                        <input id="thumb" type="file" th:style="${boardDetail.thumbnailNm == null ? 'display:block;' : 'display:none;'}">
+                        <a href="/file/download/">img.gif</a><span th:data-val="${boardDetail.idx}">×</span>
                     </div>
                 </li>
                 <li th:if="${@compareAuth.getAuth(boardMaster.uploadLevel)}">

@@ -6,27 +6,16 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/board/boardList.css')"></th:block>
+<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/board/qnaList.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
-<th:block th:if="${boardMaster.useYn == 'N'}">
-    <script>
-        alert("사용이 불가능한 페이지입니다.");
-        window.history.back();
-    </script>
-</th:block>
-<th:block th:if="!${@compareAuth.getAuth(boardMaster.listLevel)}">
-    <script>
-        alert("접근이 불가능한 페이지입니다.");
-        window.history.back();
-    </script>
-</th:block>
+
 <th:block th:replace="/fragments/header.html :: thHeader"></th:block>
 <section>
     <div class="section-wrap">
         <form id="boardListForm">
             <div class="pt80"></div>
             <div class="top-btn-box">
-                <div class="left" th:text="${boardMaster.boardNm}">게시판</div>
+                <div class="left">Q&A</div>
                 <select id="searchType">
                     <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'T'}">제목</option>
                     <option value="C" th:selected="${#httpServletRequest.getParameter('searchType') == 'C'}">내용</option>
@@ -63,7 +52,7 @@
                         <td class="text-center" th:text="${res.hit}"></td>
                     </tr>
                 </th:block>
-                <th:block th:each="res, i : ${boardList}" th:if="${boardMaster.boardType == 'GENERAL'}" >
+                <th:block th:each="res, i : ${boardList}">
                     <tr th:data-val="${res.idx}" th:classappend="${i.even} ? 'even'">
                         <td class="text-center"
                             th:utext="${@compareAuth.getAuth('ADMIN') ? '<input type=''checkbox'' />' : #numbers.formatInteger(res.rn, 0)}"
@@ -85,25 +74,6 @@
                 </th:block>
                 </tbody>
             </table>
-            <div class="mb40" th:if="${boardMaster.boardType == 'PHOTO' or noticeList.size() != 0}"></div>
-            <div id="boardPhoto" class="board-photo" th:if="${boardMaster.boardType == 'PHOTO'}">
-                <div class="off" th:if="${boardList.size() == 0}">등록된 게시물이 없습니다.</div>
-                <ul>
-                    <th:block th:each="res, i : ${boardList}">
-                        <li th:data-val="${res.idx}">
-                            <img th:src="@{/img/board/thumbnail_basic.jpg}" th:if="${res.thumbnailNm == null}">
-                            <img th:src="@{/images/thumbnail/} + ${res.idx}" th:if="${res.thumbnailNm != null}">
-                            <div>
-                                <th:block th:if="${@compareAuth.getAuth('ADMIN')}"><input type="checkbox"/></th:block>
-                                <span th:text="${res.boardSubject}"></span>
-                                <i class="text-color-red" th:text="${'[' + res.cmmtCnt + ']'}" th:if="${res.cmmtCnt > 0 && boardMaster.commentLevel != 'NONE'}"></i>
-                            </div>
-                            <p th:text="${res.createNicknm}">작성자</p>
-                            <p class="dd" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.') +' · 조회 ' + res.hit}">2022.04.24. · 조회364</p>
-                        </li>
-                    </th:block>
-                </ul>
-            </div>
             <div class="mb5"></div>
             <div class="bot-btn-box">
                 <div class="left">Total [[${#numbers.formatInteger(pageMaker.getTotal(), 0, 'COMMA')}]] Page [[${pageMaker.criteria.getPageNum()}]] / [[${pageMaker.getRealEnd() == 0 ? '1' : pageMaker.getRealEnd()}]]</div>
