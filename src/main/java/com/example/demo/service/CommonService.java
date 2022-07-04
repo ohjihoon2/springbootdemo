@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface CommonService {
 
-    List<MenuTree> findLinkNameLvl1ByUseYn();
-
-    List<MenuTree> findLinkNameLvl2ByUseYn(int lvl);
-
     int countAlarmByUserIdx(int userIdx);
+
+    void generateSingletonData();
+
+    void refreshSingletonMenuInfo();
 }

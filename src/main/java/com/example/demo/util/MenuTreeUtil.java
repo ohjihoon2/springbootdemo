@@ -1,7 +1,7 @@
 package com.example.demo.util;
 
-import com.example.demo.service.CommonService;
 import com.example.demo.vo.MenuTree;
+import com.example.demo.vo.SingletonData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,13 +11,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MenuTreeUtil {
 
-    private final CommonService commonService;
-
     public List<MenuTree> getMenuTree(){
-        return commonService.findLinkNameLvl1ByUseYn();
+        List<MenuTree> menuList = SingletonData.getInstance().getMenuOneList();
+        return menuList;
     }
 
-    public List<MenuTree> getMenuTreeDetail(int lvl){
-        return commonService.findLinkNameLvl2ByUseYn(lvl);
+    public List<MenuTree> getMenuTreeDetail(String lvl){
+        List<MenuTree> menuTwoMap = SingletonData.getInstance().getMenuTwoMap(lvl);
+        return menuTwoMap;
     }
 }

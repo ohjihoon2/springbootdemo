@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.CommonMapper">
-    <select id="findLinkNameLvl1ByUseYn" resultType="CustomMap">
+    <select id="findLinkNameLvl1ByUseYn" resultType="MenuTree">
         SELECT IDX,
                NAME,
                LINK,
@@ -12,15 +12,15 @@
          ORDER BY IDX
     </select>
 
-    <select id="findLinkNameLvl2ByUseYn" parameterType="int" resultType="CustomMap">
+    <select id="findLinkNameLvl2ByUseYn" parameterType="String" resultType="MenuTree">
         SELECT NAME,
                LINK,
                LVL
-        FROM menu_tree
-        WHERE USE_YN = 'Y'
-          AND LVL = 2
-          AND PARENT_IDX = #{lvl}
-        ORDER BY IDX
+          FROM menu_tree
+         WHERE USE_YN = 'Y'
+           AND LVL = 2
+           AND PARENT_IDX = #{idx}
+         ORDER BY IDX
     </select>
 
     <delete id="deleteWithdrawUser">

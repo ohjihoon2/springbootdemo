@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.AdminBasicService;
+import com.example.demo.service.CommonService;
 import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import java.util.Map;
 public class AdminBasicController {
 
     private final AdminBasicService adminService;
+    private final CommonService commonService;
 
     @GetMapping(value = "/admIndex")
     public String adminPage(Principal principal, Users users, HttpServletResponse response, HttpServletRequest request, Model model) {
@@ -79,6 +81,10 @@ public class AdminBasicController {
 
         Map<String,Object> resultMap = new HashMap<>();
         int result = adminService.addMenuTree(paramMapList);
+
+        //동적 메뉴정보 갱신
+        commonService.refreshSingletonMenuInfo();
+
         if(result > 0) {
             resultMap.put("result", "success");
         }else{

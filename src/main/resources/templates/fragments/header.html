@@ -9,9 +9,9 @@
     <header th:fragment="thHeader">
         <div class="header-wrap">
             <p class="header-phrases">[[${session.userNicknm != null ? session.userNicknm + ' 님 환영합니다.' : '&nbsp'}]]
-              <!--  [<th:block sec:authorize="isAuthenticated()">
+              [<th:block sec:authorize="isAuthenticated()">
                     <span th:text="${@alarmUtil.getAlarmCnt(session.idx)}"></span>
-                </th:block>]-->
+                </th:block>]
             </p>
             <div class="logo-wrap mb30">
                 <a href="/"><img th:src="@{/img/common/logo_b.png}" width="100%;"></a>
