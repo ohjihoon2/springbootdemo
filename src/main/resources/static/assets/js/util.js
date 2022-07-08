@@ -40,7 +40,6 @@
         postGoPage :function (url, data) {
             var form = document.createElement('form');
             form.id = 'postForm';
-            console.log(data);
 
             for (var key in data) {
                 var input = document.createElement('input');
@@ -213,7 +212,13 @@
                     res = response;
                 },
                 error: function (XMLHttpRequest, textStatus) {
-                    res = textStatus;
+                    if(async) {
+                        alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                    }
+                    else {
+                        res = textStatus;
+                    }
+
                 }
             });
             return res;
