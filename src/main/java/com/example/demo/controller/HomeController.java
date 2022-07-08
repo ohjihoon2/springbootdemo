@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.AlarmService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -19,8 +18,6 @@ import static java.lang.System.out;
 @RequiredArgsConstructor
 @Slf4j
 public class HomeController {
-
-    private final AlarmService alarmService;
 
     @GetMapping("/")
     public String home(HttpServletRequest request, Principal principal, Authentication auth, Model model) {
@@ -56,27 +53,4 @@ public class HomeController {
 
         return "index";
     }
-
-    @GetMapping("/test")
-    public String home2(ModelAndView mav, HttpServletRequest request, Principal principal, Authentication auth) {
-
-        return "/test";
-    }
-
-
-    @GetMapping("/test2")
-    public String home3(ModelAndView mav, HttpServletRequest request, Principal principal, Authentication auth) {
-
-        return "/test2";
-    }
-
-
-//    @PostMapping(value = "/add")
-//    public String postHanlder(
-//                                @RequestBody MultiValueMap<String, String> data
-////                                @RequestBody Map<String, String> data
-//    ) {
-//        log.info("data :: {}", data);
-//        return data.toString();
-//    }
 }

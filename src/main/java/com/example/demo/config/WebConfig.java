@@ -19,6 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public AlarmInterceptor alertInterceptor(){
+        System.out.println("WebConfig.alertInterceptor");
         return new AlarmInterceptor();
     }
 
@@ -31,11 +32,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(alertInterceptor())
-//                .order(1) // 해당 인터셉터가 적용되는 순서, 1 이면 첫번째로 실행
-//                .addPathPatterns("/") // 현재 모든 주소에 대해 인터섹터 적용
-//                .addPathPatterns("/board/basic"); // 현재 모든 주소에 대해 인터섹터 적용
+        registry.addInterceptor(alertInterceptor())
+                .order(1) // 해당 인터셉터가 적용되는 순서, 1 이면 첫번째로 실행
+                .addPathPatterns("/") // 현재 모든 주소에 대해 인터섹터 적용
+                .addPathPatterns("/board/basic"); // 현재 모든 주소에 대해 인터섹터 적용
 //                .excludePathPatterns(""); // 그중에 이 주소는 제외
-
     }
 }

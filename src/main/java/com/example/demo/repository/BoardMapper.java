@@ -64,7 +64,5 @@ public interface BoardMapper {
 
     List<Map<String, Object>> moreBoardComment(int idx);
 
-    int findCreateIdxByBoardIdx(int boardIdx);
-
     int updateThumbnailNmByIdx(String idx);
 }
