@@ -47,12 +47,12 @@
         <div class="header-bot">
             <div id="headerList" class="header-list" th:with="page=${url[1] != null} ? ${url[1]} : ''">
                 <ul>
-                    <li th:classappend="${page == 'config' or page == 'menuTree'} ? 'on' : 'off'">
+                    <li th:classappend="${page == 'config' or page == 'menuTree' or page == 'css'} ? 'on' : 'off'">
                         <span>환경설정</span>
                         <ul>
                             <li class="list-li" th:classappend="${page == 'config'} ? 'on'" data-val="/adm/config">기본환경설정</li>
                             <li class="list-li" th:classappend="${page == 'menuTree'} ? 'on'" data-val="/adm/menuTree">메뉴설정</li>
-                            <li class="list-li" data-val="">CSS관리</li>
+                            <li class="list-li" th:classappend="${page == 'css'} ? 'on'" data-val="/adm/css">CSS관리</li>
                             <li class="list-li" data-val="">배너관리</li>
                             <li class="list-li" data-val="">팝업관리</li>
                         </ul>

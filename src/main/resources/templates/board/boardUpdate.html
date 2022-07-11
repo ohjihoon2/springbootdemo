@@ -40,6 +40,7 @@
             <div class="mb10"></div>
             <ul th:id="boardUl" class="board-ul">
                 <li>
+                    [[${boardDetail}]]
                     <label>제목</label>
                     <input id="boardSubject" type="text" th:value="${boardDetail.boardSubject}">
                 </li>
@@ -57,6 +58,7 @@
                     <label><i class="fa fa-folder-open" aria-hidden="true"></i></label>
                     <div>
                         <input id="files" type="file" multiple>
+                        <input id="attachFileIdx" type="hidden" th:value="${boardDetail.attachFileIdx}">
                         <div class="file-list" th:each="res : ${fileList}">
                             [[${res.originalName}]]
                             <button type="button">삭제</button>
