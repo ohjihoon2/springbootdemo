@@ -93,4 +93,19 @@ public class AdminBasicController {
         return resultMap;
     }
 
+    /**
+     * css 설정 페이지
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/css")
+    public String cssDetails(HttpServletResponse response, HttpServletRequest request,Model model) {
+//        List<Css> resultList = adminService.findAllCss();
+//
+//        model.addAttribute("resultList", resultList);
+        return "/adm/css";
+    }
+
 }

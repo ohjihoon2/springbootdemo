@@ -26,6 +26,9 @@ public class CommonServiceImpl implements CommonService {
     public void generateSingletonData() {
         //동적메뉴 설정
         this.refreshSingletonMenuInfo();
+        //css
+        this.refreshSingletonCssInfo();
+
     }
 
     @Override
@@ -45,5 +48,10 @@ public class CommonServiceImpl implements CommonService {
 
         singleton.setMenuOneList(menuTreeLvlOne);
         singleton.setMenuTwoMap(menuTreeLvlTwo);
+    }
+
+    @Override
+    public void refreshSingletonCssInfo() {
+
     }
 }
