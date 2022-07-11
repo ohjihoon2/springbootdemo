@@ -17,4 +17,13 @@ public interface AdminBasicMapper {
 
     int deleteMenuTree();
 
+    List<Css> findAllCssContent(Criteria criteria);
+
+    Css findByIdxCssContent(int idx);
+
+    int insertCssContent(Map<String, Object> paramMap);
+
+    int updateCssContent(Map<String, Object> paramMap);
+
+    int deleteCssContent(Map<String, Object> paramMap);
 }

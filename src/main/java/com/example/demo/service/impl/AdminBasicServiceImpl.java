@@ -36,4 +36,29 @@ public class AdminBasicServiceImpl implements AdminBasicService {
         return adminMapper.findAllMenuTree();
     }
 
+    @Override
+    public List<Css> findAllCssContent(Criteria criteria) {
+        return adminMapper.findAllCssContent(criteria);
+    }
+
+    @Override
+    public Css findByIdxCssContent(int idx) {
+        return adminMapper.findByIdxCssContent(idx);
+    }
+
+    @Override
+    public int insertCssContent(Map<String, Object> paramMap) {
+        return adminMapper.insertCssContent(paramMap);
+    }
+
+    @Override
+    public int updateCssContent(Map<String, Object> paramMap) {
+        return adminMapper.updateCssContent(paramMap);
+    }
+
+    @Override
+    public int deleteCssContent(Map<String, Object> paramMap) {
+        return adminMapper.deleteCssContent(paramMap);
+    }
+
 }

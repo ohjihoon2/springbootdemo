@@ -2,6 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.AdminBasicMapper">
 
+    <sql id="criteriaCss">
+        <if test="searchType != null and searchKeyword != null">
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <foreach item="type" collection="typeArr">
+                    <trim prefix="OR">
+                        <choose>
+                            <when test="type=='T'.toString()">
+                                (CSS_NM LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
     <insert id="insertMenuTree" parameterType="MenuTree">
         INSERT INTO menu_tree
             (
@@ -54,5 +70,75 @@
                   )
     </delete>
 
+    <select id="findAllCssContent" resultType="Css" parameterType="Criteria">
+        SELECT IDX,
+               CSS_FIRST_ID,
+               CSS_SECOND_ID,
+               CSS_NM,
+               USE_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM css
+         WHERE 1 = 1
+        <include refid="criteriaCss"/>
+
+    </select>
+
+    <select id="findByIdxCssContent" parameterType="int" resultType="Css">
+        SELECT IDX,
+               CSS_FIRST_ID,
+               CSS_SECOND_ID,
+               CSS_NM,
+               CONTENT_CSS,
+               USE_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM css
+         WHERE IDX = #{idx}
+    </select>
+
+    <insert id="insertCssContent" parameterType="map">
+        INSERT INTO css
+            (
+                CSS_FIRST_ID,
+                CSS_SECOND_ID,
+                CSS_NM,
+                CONTENT_CSS,
+                USE_YN,
+                CREATE_IDX,
+                CREATE_DATE
+            )
+        VALUES
+            (
+                #{cssFirstId},
+                #{cssSecondId},
+                #{cssNm},
+                #{contentCss},
+                #{useYn},
+                #{userIdx},
+                SYSDATE
+            )
+    </insert>
+
+    <update id="updateCssContent" parameterType="map">
+        UPDATE css
+           SET CSS_FIRST_ID = #{cssFirstId},
+               CSS_SECOND_ID = #{cssSecondId},
+               CSS_NM = #{cssNm},
+               CONTENT_CSS = #{contentCss},
+               USE_YN = #{useYn},
+               UPDATE_IDX = #{userIdx},
+               UPDATE_DATE = SYSDATE
+         WHERE IDX =#{idx}
+    </update>
+
+    <delete id="deleteCssContent" parameterType="map">
+        DELETE FROM css
+         WHERE IDX=#{idx}
+    </delete>
 
 </mapper>
