@@ -17,8 +17,27 @@ $(function() {
         })
     }
 
-    //
-    $(document).on("submit", "#boardRegistForm", async function (e) {
+    // 썸네일 삭제
+    $(document).on("click", "#thumbnailDel", function(e) {
+        if(confirm("해당 FAQ를 삭제하시겠습니까?")) {
+            var res = $ajax.deleteAjax('/board/thumbnail/'+ idx);
+            if(res == "error") {
+                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            }
+            else if(res.result == "success") {
+                alert("해당 FAQ를 삭제하였습니다.");
+                $(this).closest('.file-list').remove();
+                $('#thumb').show();
+
+            }
+            else if(res.result == "fail"){
+                alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+            }
+        }
+    });
+
+    // 게시판 수정
+    $(document).on("submit", "#boardUpdateForm", async function (e) {
         e.preventDefault();
 
         //에디터 내용 가져오기
@@ -26,10 +45,6 @@ $(function() {
 
         //빈값체크
         if ($event.validationFocus("boardSubject")) return;
-
-        if (boardType == "PHOTO") {
-            if ($event.validationFocus("thumb", "게시물 썸네일 을 선택해주세요.\n(포토게시판은 썸네일이 필수입니다.)", true)) return;
-        };
 
         if ($('#boardContent').val() == "<p>&nbsp;</p>") {
             $('#boardContent').val('');
@@ -42,7 +57,7 @@ $(function() {
             boardContent: $('#boardContent').val(),
         };
 
-        $ajax.postFileAjax('/board/'+ boardId +'/detail', data, 'files', '', '게시물을 등록하였습니다.', '파일 업로드 중입니다.');
+        $ajax.patchFileAjax('/board/'+ boardId +'/detail/' + idx, data, 'files', 'thumb', '게시물을 수정하였습니다.', '파일 업로드 중입니다.');
     });
 
 });

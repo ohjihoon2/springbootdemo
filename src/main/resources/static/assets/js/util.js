@@ -95,17 +95,36 @@
 
         // patch 로딩에이작스 , 파일첨부
         // 로딩으로 인해 동기화를 기본으로 실행한다.
-        patchFileAjax : function (url, param = {}, files='', success = '', loding = '') {
+        patchFileAjax : function (url, param = {}, files='', thumb='', success = '', loding = '', page = '') {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
             var contentType = "application/json";
 
-            if(files != '') {
+            if(files != '' || thumb != '') {
                 contentType = false;
                 var data = new FormData();
                 data.append("param", new Blob([JSON.stringify(param)], {type: "application/json"}));
-                for(var i=0; i < $('#' + files)[0].files.length; i++) {
-                    data.append('files',$('#' + files)[0].files[i]);
+                if(files !='') {
+                    for (var i = 0; i < $('#' + files)[0].files.length; i++) {
+                        data.append('files', $('#' + files)[0].files[i]);
+                    }
+                }
+                if(thumb !='') {
+                    if($('#' + thumb)[0].files.length > 0) {
+                        var imgFile = $('#' + thumb)[0].files[0].name;
+                        if(!imgFile.match(fileForm)) {
+                            alert("게시물 썸네일은 이미지 파일만 등록 가능합니다.");
+                            return;
+                        }
+
+                        var fileSize = $('#' + thumb)[0].files[0].size;
+                        if(fileSize > maxSize) {
+                            alert("게시물 썸네일은 2MB까지 등록 가능합니다.");
+                            return;
+                        }
+
+                        data.append('thumb', $('#' + thumb)[0].files[0]);
+                    }
                 }
                 param = data;
             }
@@ -113,13 +132,10 @@
                 param = JSON.stringify(param);
             }
 
-            var res;
-
             $.ajax({
                 type: "PATCH",
                 url: url,
                 data: param,
-                async: true,
                 processData: false,
                 contentType: contentType,
                 cache: false,
@@ -135,7 +151,13 @@
                     }
                     else {
                         alert(success);
-                        window.location.reload();
+                        if(page == '') {
+                            window.location.reload();
+                        }
+                        else {
+                            location.href = page;
+                        }
+
                     }
                 },
                 error: function () {
@@ -147,7 +169,6 @@
                     }
                 }
             });
-            return res;
         },
 
         // delete 에이작스

@@ -391,12 +391,12 @@ public class BoardController {
      */
     @PatchMapping(value = "/{boardId}/detail/{idx}")
     @ResponseBody
-    public Map<String, Object> updateBoard(@PathVariable("boardId") String boardId, MultipartFile[] files, MultipartFile thumb,@RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String, Object> updateBoard(@PathVariable("idx") String idx, MultipartFile[] files, MultipartFile thumb,@RequestPart("param") Board board, HttpServletResponse response, HttpServletRequest request) {
         int result = 0;
         HttpSession session = request.getSession();
-        int idx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
-        board.setUpdateIdx(idx);
-
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx").toString()));
+        board.setUpdateIdx(userIdx);
+        board.setIdx(Integer.parseInt(idx));
         if(thumb != null){
             if(!thumb.getContentType().contains("image")){
                 result = 0;

@@ -151,7 +151,7 @@ public class BoardServiceImpl implements BoardService {
 
         // board에는 attachFileIdx가 초기화 되지 않기 때문에 파일이 존재하는지 확인
         Board board = boardMapper.findAttachFileIdxByIdxBoard(idx);
-
+        System.out.println("board = " + board);
         return boardMapper.findAllByAttachFileIdx(board.getAttachFileIdx());
 
     }

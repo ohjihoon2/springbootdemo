@@ -21,19 +21,18 @@
         alert("삭제 된 게시글입니다.");
         window.history.back();
     }
-    else if (!([[${@compareAuth.getAuth('ADMIN')}]] || [[${session.idx}]] == [[${boardDetail.createIdx}]])) {
-        alert("수정 권한이 없는 페이지입니다.");
-        window.history.back();
+    else if ("[[${session.idx}]]" != [[${boardDetail.createIdx}]]) {
+        if(![[${@compareAuth.getAuth('ADMIN')}]]) {
+            alert("수정 권한이 없는 페이지입니다.");
+            window.history.back();
+        }
     }
 </script>
 <th:block th:replace="/fragments/header.html :: thHeader"></th:block>
 <section>
     <div class="section-wrap">
-        <form id="boardRegistForm">
+        <form id="boardUpdateForm">
             <div class="pt80"></div>
-            [[${boardMaster}]]
-            [[${boardDetail}]]
-            [[${fileList}]]
             <div class="top-btn-box">
                 <div class="left">게시물 수정</div>
                 <span th:if="${@compareAuth.getAuth('ADMIN')}"><input id="notice" type="checkbox"/><label for="notice">공지</label></span>
@@ -48,22 +47,29 @@
                     <label><i class="fa fa-image" aria-hidden="true"></i></label>
                     <div>
                         <input id="thumb" type="file" th:style="${boardDetail.thumbnailNm == null ? 'display:block;' : 'display:none;'}">
-                        <a href="/file/download/">img.gif</a><span th:data-val="${boardDetail.idx}">×</span>
+                        <div class="file-list" th:if="${boardDetail.thumbnailNm != null}">
+                            [[${boardDetail.thumbnailNm}]]
+                            <button type="button" id="thumbnailDel">삭제</button>
+                        </div>
                     </div>
                 </li>
                 <li th:if="${@compareAuth.getAuth(boardMaster.uploadLevel)}">
                     <label><i class="fa fa-folder-open" aria-hidden="true"></i></label>
                     <div>
                         <input id="files" type="file" multiple>
+                        <div class="file-list" th:each="res : ${fileList}">
+                            [[${res.originalName}]]
+                            <button type="button">삭제</button>
+                        </div>
                     </div>
                 </li>
                 <li>
-                    <textarea id="boardContent"></textarea>
+                    <textarea id="boardContent">[[${boardDetail.boardContent}]]</textarea>
                 </li>
             </ul>
             <div class="mb5"></div>
             <div class="bot-btn-box">
-                <button type="submit">글쓰기</button>
+                <button type="submit">글수정</button>
             </div>
             <div class="mb100"></div>
         </form>
@@ -71,6 +77,7 @@
 </section>
 <script>
     var masterIdx = "[[${boardMaster.idx}]]";
+    var idx = "[[${boardDetail.idx}]]";
     var boardType = "[[${boardMaster.boardType}]]";
     var boardId = "[[${boardMaster.boardId}]]";
     var editorLevel = [[${@compareAuth.getAuth(boardMaster.writeLevel)}]];

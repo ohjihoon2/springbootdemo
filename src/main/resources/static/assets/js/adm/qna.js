@@ -271,7 +271,7 @@ $(function(){
         };
 
         var idx = $('#idx').val();
-        var res = $ajax.patchFileAjax('/adm/qna/' + idx, data, 'files', 'Q&A 답변을 완료하였습니다.', '파일 업로드 및 메일발송 중입니다.');
+        $ajax.patchFileAjax('/adm/qna/' + idx, data, 'files', '', 'Q&A 답변을 완료하였습니다.', '파일 업로드 및 메일발송 중입니다.');
     });
 
     // 파일삭제

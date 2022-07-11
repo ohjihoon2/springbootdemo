@@ -348,7 +348,6 @@
                ATTACH_FILE_IDX= #{attachFileIdx},
                NOTICE_YN= #{noticeYn},
                THUMBNAIL_NM= #{thumbnailNm},
-               DELETE_YN= #{deleteYn},
                UPDATE_IDX= #{updateIdx},
                UPDATE_DATE= SYSDATE()
          WHERE IDX= #{idx}
@@ -498,6 +497,6 @@
     <update id="updateThumbnailNmByIdx" parameterType="String">
         UPDATE board
            SET THUMBNAIL_NM = NULL
-         WHERE IDX = {idx}
+         WHERE IDX = #{idx}
     </update>
 </mapper>

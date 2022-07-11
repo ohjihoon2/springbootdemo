@@ -27,10 +27,6 @@ $(function() {
         //빈값체크
         if ($event.validationFocus("boardSubject")) return;
 
-        if (boardType == "PHOTO") {
-            if ($event.validationFocus("thumb", "게시물 썸네일 을 선택해주세요.\n(포토게시판은 썸네일이 필수입니다.)", true)) return;
-        };
-
         if ($('#boardContent').val() == "<p>&nbsp;</p>") {
             $('#boardContent').val('');
         }
