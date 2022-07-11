@@ -358,6 +358,7 @@
                 boardSubject: '게시물 제목',
                 boardContent: '게시물 내용',
                 commentContent: '댓글 내용',
+                cssNm: 'CSS명',
             }
             if(file) {
                 if ($('#'+ id)[0].files.length == 0) {

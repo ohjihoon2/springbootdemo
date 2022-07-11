@@ -89,8 +89,19 @@
 .bot-btn-box > button {
     border: 0;
     color: #fff;
-    background: #1fb1c7;
     padding: 7px 25px;
     vertical-align: top;
     min-height: 36px;
+}
+
+.bot-btn-box > button:not(:last-child) {
+    margin-right: 5px;
+}
+
+.bot-btn-box > button[type='submit'] {
+    background: #1fb1c7;
+}
+
+.bot-btn-box > button[type='button'] {
+    background: #d3d3d3;
 }

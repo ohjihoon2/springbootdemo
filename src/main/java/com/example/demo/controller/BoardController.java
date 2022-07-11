@@ -52,8 +52,10 @@ public class BoardController {
         criteria.setAmount(contentCount);
 
         List<Map<String,Object>> noticeList = new ArrayList<>();
-        if(criteria.getPageNum() == 1 && criteria.getSearchKeyword() == null){
-            noticeList = boardService.findNoticeByBoardIdBoard(criteria);
+        if(criteria.getPageNum() == 1){
+            if(criteria.getSearchKeyword() == null || criteria.getSearchKeyword() == "") {
+                noticeList = boardService.findNoticeByBoardIdBoard(criteria);
+            }
         }
 
         List<Map<String,Object>> boardList = boardService.findAllByBoardIdBoard(criteria);

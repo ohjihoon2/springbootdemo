@@ -11,9 +11,6 @@
                             <when test="type=='T'.toString()">
                                 (QA_SUBJECT LIKE CONCAT('%',#{searchKeyword},'%'))
                             </when>
-                            <when test="type=='C'.toString()">
-                                (QA_CONTENT LIKE CONCAT('%',#{searchKeyword},'%'))
-                            </when>
                             <when test="type=='W'.toString()">
                                 (
                                     A.CREATE_IDX IN

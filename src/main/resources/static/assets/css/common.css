@@ -274,7 +274,7 @@ footer{
     border-bottom: 1px solid #d6d6d6;
 }
 
-.popup-js-content table th, table td {
+.popup-js-content table th, .popup-js-content table table td {
     padding: 12px 5px;
     font-size: 14px;
     overflow: hidden;

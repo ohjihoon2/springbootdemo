@@ -421,7 +421,7 @@ $(function() {
     });
 
     // 목록으로
-    $('#listBtn').click(function() {
+    $('#goList').click(function() {
         $page.goPage('/board/'+ boardId);
     });
 
@@ -429,7 +429,7 @@ $(function() {
     $('#boardAdmDel').click(function() {
         $('#controlBtn').next('ul').hide();
         if(confirm("해당 게시물을 삭제하시겠습니까?\n(해당 게시물의 댓글까지 모두 삭제됩니다.)")) {
-            $ajax.deleteAjax('/board/'+ boardId + '/detail/' + idx + '/admin', {}, true, "해당 게시물을 삭제하였습니다.", page = '/board/'+ boardId);
+            $ajax.deleteAjax('/board/'+ boardId + '/detail/' + idx + '/admin', {}, true, "해당 게시물을 삭제하였습니다.", '/board/'+ boardId);
         }
     });
 

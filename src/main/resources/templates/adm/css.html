@@ -9,6 +9,7 @@
 <th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='/css/adm/css.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
 <th:block th:replace="/fragments/header.html :: thAdmHeader"></th:block>
+
 <section>
     <div class="section-wrap">
         <h2>CSS 관리</h2>
@@ -16,16 +17,15 @@
         <div class="top-btn-box">
             <div class="left">
                 <select id="searchType">
-                    <option value="TW" th:selected="${#httpServletRequest.getParameter('searchType') == 'TW'}">컨텐츠명 + 작성자</option>
-                    <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'T'}">게시판명</option>
+                    <option value="TW" th:selected="${#httpServletRequest.getParameter('searchType') == 'TW'}">CSS명 + 작성자</option>
+                    <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'T'}">CSS명</option>
                     <option value="W" th:selected="${#httpServletRequest.getParameter('searchType') == 'W'}">작성자</option>
                 </select>
                 <input id="searchKeyword" type="text" th:value="${#httpServletRequest.getParameter('searchKeyword')}" />
                 <button type="button" id="searchBtn" class="color-primary">검색</button>
             </div>
-            <button type="button" id="addBtn" class="color-primary">컨텐츠추가</button>
+            <button type="button" id="addBtn" class="color-primary">CSS추가</button>
         </div>
-        <!--/*
         <table>
             <colgroup>
                 <col width="30%">
@@ -62,6 +62,10 @@
                 <tbody>
                 <th:block th:each="res : ${resultList}">
                     <tr>
+                        [[${res}]]
+                    </tr>
+                    <!--/*
+                    <tr>
                         <td th:text="${res.contentNm}"></td>
                         <td class="text-center" th:text="${res.createNicknm}"></td>
                         <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.')}"></td>
@@ -76,15 +80,15 @@
                             <button type="button" name="updateBtn" th:data-val="${res.idx}">수정</button>
                         </td>
                     </tr>
+                */-->
                 </th:block>
                 <th:block th:if="${resultList.size() == 0}">
                     <tr>
-                        <td colspan="8" class="text-center">등록된 컨텐츠가 없습니다.</td>
+                        <td colspan="8" class="text-center">등록된 CSS가 없습니다.</td>
                     </tr>
                 </th:block>
                 </tbody>
             </table>
-            */-->
         </div>
     </div>
 </section>

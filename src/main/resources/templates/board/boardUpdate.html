@@ -40,7 +40,6 @@
             <div class="mb10"></div>
             <ul th:id="boardUl" class="board-ul">
                 <li>
-                    [[${boardDetail}]]
                     <label>제목</label>
                     <input id="boardSubject" type="text" th:value="${boardDetail.boardSubject}">
                 </li>
@@ -71,7 +70,8 @@
             </ul>
             <div class="mb5"></div>
             <div class="bot-btn-box">
-                <button type="submit">글수정</button>
+                <button type="button" id="goList">목록</button>
+                <button type="submit">작성</button>
             </div>
             <div class="mb100"></div>
         </form>

@@ -52,4 +52,10 @@ $(function() {
         $ajax.postFileAjax('/board/'+ boardId +'/detail', data, 'files', 'thumb', '게시물을 등록하였습니다.', '파일 업로드 중입니다.', '/board/'+ boardId);
     });
 
+    //목록으로
+    $('#goList').click(function () {
+        $page.goPage('/board/'+ boardId)
+    });
+
+
 });

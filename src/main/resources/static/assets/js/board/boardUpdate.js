@@ -58,7 +58,12 @@ $(function() {
             attachFileIdx: $('#attachFileIdx').val()
         };
 
-        $ajax.patchFileAjax('/board/'+ boardId +'/detail/' + idx, data, 'files', 'thumb', '게시물을 수정하였습니다.', '파일 업로드 중입니다.');
+        $ajax.patchFileAjax('/board/'+ boardId +'/detail/' + idx, data, 'files', 'thumb', '게시물을 수정하였습니다.', '파일 업로드 중입니다.' , '/board/'+ boardId + '/' + idx);
+    });
+
+    //목록으로
+    $('#goList').click(function () {
+        $page.goPage('/board/'+ boardId)
     });
 
 });

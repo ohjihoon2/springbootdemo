@@ -6,7 +6,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/board/qnaList.css')"></th:block>
+<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/qna/qnaList.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
 
 <th:block th:replace="/fragments/header.html :: thHeader"></th:block>
@@ -16,87 +16,85 @@
             <div class="pt80"></div>
             <div class="top-btn-box">
                 <div class="left">Q&A</div>
-                <select id="searchType">
-                    <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'T'}">제목</option>
-                    <option value="C" th:selected="${#httpServletRequest.getParameter('searchType') == 'C'}">내용</option>
-                    <option value="W" th:selected="${#httpServletRequest.getParameter('searchType') == 'W'}">작성자</option>
-                </select>
-                <input id="searchKeyword" type="text" placeholder="검색어를 입력해주세요." th:value="${#httpServletRequest.getParameter('searchKeyword')}">
-                <button id="searchBtn" type="submit">검색</button>
-            </div>
-            <div class="mb10"></div>
-            <table id="boardTable" class="board-table" th:if="${boardMaster.boardType == 'GENERAL' or noticeList.size() != 0}">
-                <colgroup>
-                    <col width="5%">
-                    <col width="60%">
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="10%">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th th:utext="${@compareAuth.getAuth('ADMIN') ? '<input id=''checkAll'' type=''checkbox'' />' : '번호'}"></th>
-                        <th>제목</th>
-                        <th>작성자</th>
-                        <th>작성일</th>
-                        <th>조회</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <th:block th:each="res : ${noticeList}">
-                    <tr class="notice" th:data-val="${res.idx}">
-                        <td class="text-center"><i class="fa fa-bullhorn"></i></td>
-                        <td th:text="${res.boardSubject}"></td>
-                        <td class="text-center" th:text="${res.createNicknm}"></td>
-                        <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.')}"></td>
-                        <td class="text-center" th:text="${res.hit}"></td>
-                    </tr>
-                </th:block>
-                <th:block th:each="res, i : ${boardList}">
-                    <tr th:data-val="${res.idx}" th:classappend="${i.even} ? 'even'">
-                        <td class="text-center"
-                            th:utext="${@compareAuth.getAuth('ADMIN') ? '<input type=''checkbox'' />' : #numbers.formatInteger(res.rn, 0)}"
-                            th:classappend="${@compareAuth.getAuth('ADMIN')} ? 'off'">
-                        </td>
-                        <td class="flex">
-                            <span th:text="${res.boardSubject}"></span>
-                            <i class="text-color-red" th:text="'[' + ${res.cmmtCnt} + ']'" th:if="${res.cmmtCnt > 0 && boardMaster.commentLevel != 'NONE'}"></i>
-                        </td>
-                        <td class="text-center" th:text="${res.createNicknm}"></td>
-                        <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.')}"></td>
-                        <td class="text-center" th:text="${res.hit}"></td>
-                    </tr>
-                </th:block>
-                <th:block th:if="${boardList.size() == 0}">
-                    <tr>
-                        <td colspan="100%" class="text-center off">등록된 게시물이 없습니다.</td>
-                    </tr>
-                </th:block>
-                </tbody>
-            </table>
-            <div class="mb5"></div>
-            <div class="bot-btn-box">
-                <div class="left">Total [[${#numbers.formatInteger(pageMaker.getTotal(), 0, 'COMMA')}]] Page [[${pageMaker.criteria.getPageNum()}]] / [[${pageMaker.getRealEnd() == 0 ? '1' : pageMaker.getRealEnd()}]]</div>
-                <a th:if="${@compareAuth.getAuth('ADMIN')}">
-                    <i id="admBtn" class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                    <ul style="display: none;">
-                        <li><button id="boardDel" type="button" value="선택삭제"><i class="fa fa-trash-o" aria-hidden="true"></i> 선택삭제</button></li>
-                        <li><button id="boardMovePopup" type="button" value="선택이동"><i class="fa fa-arrows" aria-hidden="true"></i> 선택이동</button></li>
-                    </ul>
-                </a>
-                <button id="boardAdd" type="button" th:if="${@compareAuth.getAuth(boardMaster.writeLevel)}">글쓰기</button>
-            </div>
-            <div class="mb50"></div>
-            <th:block th:replace="/fragments/pagination :: pagination"></th:block>
+               <select id="searchType">
+                   <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'T'}">제목</option>
+                   <option value="W" th:selected="${#httpServletRequest.getParameter('searchType') == 'W'}">작성자</option>
+               </select>
+               <input id="searchKeyword" type="text" placeholder="검색어를 입력해주세요." th:value="${#httpServletRequest.getParameter('searchKeyword')}">
+               <button id="searchBtn" type="submit">검색</button>
+           </div>
+           <div class="mb10"></div>
+            [[${qnaList}]]
+           <table id="qnaTable" class="board-table">
+               <colgroup>
+                   <col width="5%">
+                   <col width="15%">
+                   <col width="45%">
+                   <col width="15%">
+                   <col width="10%">
+                   <col width="10%">
+               </colgroup>
+               <thead>
+                   <tr>
+                       <th th:utext="${@compareAuth.getAuth('ADMIN') ? '<input id=''checkAll'' type=''checkbox'' />' : '번호'}"></th>
+                       <th></th>
+                       <th>제목</th>
+                       <th>작성자</th>
+                       <th>작성일</th>
+                       <th>답변</th>
+                   </tr>
+               </thead>
+               <tbody>
+               <th:block th:each="res, i : ${qnaList}">
+                   <tr th:data-val="${res.idx}" th:classappend="${i.even} ? 'even'">
+                       <td class="text-center"
+                           th:utext="${@compareAuth.getAuth('ADMIN') ? '<input type=''checkbox'' />' : #numbers.formatInteger(res.rn, 0)}"
+                           th:classappend="${@compareAuth.getAuth('ADMIN')} ? 'off'">
+                       </td>
+                       <td class="text-center" th:text="${res.qaCategory}">
+                       </td>
+                       <td class="flex">
+                           <span th:text="${res.qaSubject}"></span>
+                           <i class="fa fa-lock" th:if="${res.secretYn == 'Y'}"></i>
+                       </td>
+                       <td class="text-center" th:text="${res.createNicknm}"></td>
+                       <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.')}"></td>
+                       <td class="text-center" th:text="${res.qaStatus}"></td>
+                   </tr>
+               </th:block>
+               <th:block th:if="${qnaList.size() == 0}">
+                   <tr>
+                       <td colspan="100%" class="text-center off">등록된 게시물이 없습니다.</td>
+                   </tr>
+               </th:block>
+               </tbody>
+           </table>
+
+               <!--/*
+
+           <div class="mb5"></div>
+           <div class="bot-btn-box">
+               <div class="left">Total [[${#numbers.formatInteger(pageMaker.getTotal(), 0, 'COMMA')}]] Page [[${pageMaker.criteria.getPageNum()}]] / [[${pageMaker.getRealEnd() == 0 ? '1' : pageMaker.getRealEnd()}]]</div>
+               <a th:if="${@compareAuth.getAuth('ADMIN')}">
+                   <i id="admBtn" class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                   <ul style="display: none;">
+                       <li><button id="boardDel" type="button" value="선택삭제"><i class="fa fa-trash-o" aria-hidden="true"></i> 선택삭제</button></li>
+                       <li><button id="boardMovePopup" type="button" value="선택이동"><i class="fa fa-arrows" aria-hidden="true"></i> 선택이동</button></li>
+                   </ul>
+               </a>
+               <button id="boardAdd" type="button" th:if="${@compareAuth.getAuth(boardMaster.writeLevel)}">글쓰기</button>
+           </div>
+           <div class="mb50"></div>
+           <th:block th:replace="/fragments/pagination :: pagination"></th:block>
+           */-->
+
         </form>
     </div>
 </section>
 <th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
 <script>
-    var boardId = "[[${boardMaster.boardId}]]";
-    var boardType = "[[${boardMaster.boardType}]]";
+
 </script>
-<script th:src="@{/js/board/boardList.js}"></script>
-<script th:src="@{/js/board/boardList_ADMIN.js}" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_SYSTEM','ROLE_MANAGER')"></script>
+<script th:src="@{/js/qna/qnaList.js}"></script>
 </body>
 </html>

@@ -120,7 +120,7 @@
                 #{cssCode},
                 #{useYn},
                 #{userIdx},
-                SYSDATE
+                SYSDATE()
             )
     </insert>
 

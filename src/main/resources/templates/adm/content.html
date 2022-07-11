@@ -17,7 +17,7 @@
             <div class="left">
                 <select id="searchType">
                     <option value="TW" th:selected="${#httpServletRequest.getParameter('searchType') == 'TW'}">컨텐츠명 + 작성자</option>
-                    <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'T'}">게시판명</option>
+                    <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'T'}">컨텐츠명</option>
                     <option value="W" th:selected="${#httpServletRequest.getParameter('searchType') == 'W'}">작성자</option>
                 </select>
                 <input id="searchKeyword" type="text" th:value="${#httpServletRequest.getParameter('searchKeyword')}" />

@@ -103,7 +103,7 @@ public class AdminBasicController {
     @GetMapping(value = "/css")
     public String cssContentList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request,Model model) {
         List<Css> resultList = adminService.findAllCssContent(criteria);
-//
+
         model.addAttribute("resultList", resultList);
         return "/adm/css";
     }
@@ -130,6 +130,7 @@ public class AdminBasicController {
      * @return
      */
     @PostMapping(value = "/css")
+    @ResponseBody
     public Map<String,Object> saveCssContent(@RequestBody Map<String,Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));

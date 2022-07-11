@@ -99,6 +99,8 @@
 
 .board-table td.flex i {
     right: -10px;
+    margin-top: 5px;
+    margin-left: 5px;
 }
 
 .board-table tbody tr td:not(.off) {

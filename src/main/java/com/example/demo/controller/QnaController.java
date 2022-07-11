@@ -50,8 +50,6 @@ public class QnaController {
         model.addAttribute("pageMaker", pageMaker);
         model.addAttribute("qnaList", qnaList);
 
-
-        System.out.println("pageMaker = " + pageMaker);
         return "/qna/qnaList";
     }
 
