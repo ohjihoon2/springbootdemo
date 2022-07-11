@@ -31,7 +31,5 @@ public interface FileMapper {
 
     int maxAttachIdx(int attachFileIdx);
 
-    int findAttachFileIdxByAttatchFileMaster(int attachFileIdx);
-
     List<Map<String,Object>> findSaveNameByAttachFileIdx(int idx);
 }

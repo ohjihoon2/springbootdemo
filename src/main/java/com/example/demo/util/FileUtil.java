@@ -185,18 +185,17 @@ public class FileUtil {
      * @return
      */
     public int updateFile(List<AttachFile> fileList, int attachFileIdx) {
+
         int idx = 0;
 
         if (CollectionUtils.isEmpty(fileList) == false) {
 
-            if(fileMapper.findAttachFileIdxByAttatchFileMaster(attachFileIdx) == 0){
-
+            if(attachFileIdx != 0){
+                idx = attachFileIdx;
+            } else {
                 AttachFileMaster attachFileMaster = new AttachFileMaster();
                 fileMapper.insertAttachFileMaster(attachFileMaster);
                 idx = attachFileMaster.getIdx();
-
-            }else {
-                idx = attachFileIdx;
             }
         }
 
@@ -223,7 +222,6 @@ public class FileUtil {
         try {
             /* 파일 확장자 */
             final String extension = FilenameUtils.getExtension(thumb.getOriginalFilename());
-            System.out.println("extension = " + extension);
             /* 서버에 저장할 파일명 (게시판 idx + 확장자) */
             final String saveName = String.valueOf(boardIdx);
 //            final String saveName = boardIdx+"."+extension;

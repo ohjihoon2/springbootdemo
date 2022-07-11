@@ -99,12 +99,6 @@
          WHERE IDX = #{attachFileIdx}
     </select>
 
-    <select id="findAttachFileIdxByAttatchFileMaster" resultType="int" parameterType="int">
-        SELECT COUNT(*)
-          FROM attach_file_master
-         WHERE IDX = #{attachFileIdx}
-    </select>
-
     <select id="findSaveNameByAttachFileIdx" resultType="CustomMap" parameterType="int">
         SELECT SAVE_NAME
           FROM attach_file

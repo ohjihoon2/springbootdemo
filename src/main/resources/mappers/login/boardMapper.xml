@@ -347,7 +347,9 @@
                BOARD_CONTENT=#{boardContent},
                ATTACH_FILE_IDX= #{attachFileIdx},
                NOTICE_YN= #{noticeYn},
+          <if test="thumbnailNm != null and thumbnailNm != null">
                THUMBNAIL_NM= #{thumbnailNm},
+          </if>
                UPDATE_IDX= #{updateIdx},
                UPDATE_DATE= SYSDATE()
          WHERE IDX= #{idx}
