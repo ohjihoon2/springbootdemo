@@ -47,8 +47,6 @@ public class AdminBasicController {
         return "/adm/config";
     }
 
-
-
     /**
      * menuTree 설정 페이지
      * @param response

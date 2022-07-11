@@ -91,7 +91,7 @@
                CSS_FIRST_ID,
                CSS_SECOND_ID,
                CSS_NM,
-               CONTENT_CSS,
+               CSS_CODE,
                USE_YN,
                CREATE_IDX,
                CREATE_DATE,
@@ -107,7 +107,7 @@
                 CSS_FIRST_ID,
                 CSS_SECOND_ID,
                 CSS_NM,
-                CONTENT_CSS,
+                CSS_CODE,
                 USE_YN,
                 CREATE_IDX,
                 CREATE_DATE
@@ -117,7 +117,7 @@
                 #{cssFirstId},
                 #{cssSecondId},
                 #{cssNm},
-                #{contentCss},
+                #{cssCode},
                 #{useYn},
                 #{userIdx},
                 SYSDATE
@@ -129,7 +129,7 @@
            SET CSS_FIRST_ID = #{cssFirstId},
                CSS_SECOND_ID = #{cssSecondId},
                CSS_NM = #{cssNm},
-               CONTENT_CSS = #{contentCss},
+               CSS_CODE = #{cssCode},
                USE_YN = #{useYn},
                UPDATE_IDX = #{userIdx},
                UPDATE_DATE = SYSDATE

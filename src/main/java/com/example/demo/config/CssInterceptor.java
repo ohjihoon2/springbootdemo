@@ -22,6 +22,7 @@ public class CssInterceptor implements HandlerInterceptor {
         requestURI = requestURI.replaceFirst("/","");
 
         String[] split = requestURI.split("/");
+        String cssStyle = null;
 
         if(split[0].equals("")){
             System.out.println("main 이다");
@@ -33,21 +34,14 @@ public class CssInterceptor implements HandlerInterceptor {
                 System.out.println("2번째 있다 "+ split[1]);
             }
         }
-
-
-
-
-        HttpSession session = request.getSession();
-        int userIdx = 0;
-        Integer alertCnt = null;
 //
 //        if(session.getAttribute("idx") != null){
 //            userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
 ////            alertCnt = alarmService.countReadYn(userIdx);
 //            log.debug("alertCnt : {}", alertCnt);
 //
-//            modelAndView.addObject("alertCnt",alertCnt);
 //        }
+        modelAndView.addObject("cssStyle",cssStyle);
         HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
     }
 }

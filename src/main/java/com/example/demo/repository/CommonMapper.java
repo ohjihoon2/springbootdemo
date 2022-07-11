@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.vo.AttachFile;
 import com.example.demo.vo.AttachFileMaster;
+import com.example.demo.vo.Css;
 import com.example.demo.vo.MenuTree;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,6 @@ public interface CommonMapper {
     int deleteWithdrawUser();
 
     int countAlarmByUserIdx(int userIdx);
+
+    List<Css> findCssContent();
 }

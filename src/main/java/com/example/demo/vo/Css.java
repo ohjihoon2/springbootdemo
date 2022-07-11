@@ -10,7 +10,7 @@ public class Css {
     private String cssFirstId;
     private String cssSecondId;
     private String cssNm;
-    private String contentCss;
+    private String cssCode;
     private String useYn;
     private int createIdx;
     private Date createDate;

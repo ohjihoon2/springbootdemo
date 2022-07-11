@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.repository.CommonMapper;
 import com.example.demo.service.CommonService;
+import com.example.demo.vo.Css;
 import com.example.demo.vo.MenuTree;
 import com.example.demo.vo.SingletonData;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +53,9 @@ public class CommonServiceImpl implements CommonService {
 
     @Override
     public void refreshSingletonCssInfo() {
+        SingletonData singleton = SingletonData.getInstance();
+        List<Css> cssList = commonMapper.findCssContent();
+        singleton.setCssList(cssList);
 
     }
 }

@@ -25,6 +25,7 @@ public class SingletonData {
 
     private List<MenuTree> menuOneList = new ArrayList<>();
     private Map<String, List<MenuTree>> menuTwoMap = new HashMap<>();
+    private List<Css> cssList 	= new ArrayList<Css>();
 
     public List<MenuTree>  getMenuTwoMap(String lvl){
         return menuTwoMap.get(lvl);

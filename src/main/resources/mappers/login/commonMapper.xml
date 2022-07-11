@@ -36,4 +36,18 @@
           FROM alarm
          WHERE RECEIVE_IDX = #{userIdx}
     </select>
+
+    <select id="findCssContent" resultType="Css">
+        SELECT IDX,
+               CSS_FIRST_ID,
+               CSS_SECOND_ID,
+               CSS_NM,
+               USE_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM css
+         WHERE USE_YN = 'Y'
+    </select>
 </mapper>
