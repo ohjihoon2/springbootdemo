@@ -482,8 +482,8 @@ public class BoardController {
      */
     @PostMapping(value = "/hit/{idx}")
     @ResponseBody
-    public void addHit(@PathVariable("idx") int idx, HttpServletResponse response, HttpServletRequest request){
-        boardService.addHit(request, response,idx);
+    public void boardAddHit(@PathVariable("idx") int idx, HttpServletResponse response, HttpServletRequest request){
+        boardService.boardAddHit(request, response,idx);
     }
 
 }

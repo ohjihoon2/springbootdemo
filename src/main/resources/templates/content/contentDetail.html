@@ -1,0 +1,34 @@
+<!--/*
+    thymeleaf 주석처리
+*/-->
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/content/contentDetail.css')"></th:block>
+<body ondragstart="return false" onselectstart="return false">
+</th:block>
+<th:block th:if="!${@compareAuth.getAuth(contentDetail.readLevel)}">
+    <script>
+        alert("접근이 불가능한 페이지입니다.");
+        window.history.back();
+    </script>
+</th:block>
+<th:block th:replace="/fragments/header.html :: thHeader"></th:block>
+<section>
+    <div class="section-wrap">
+        <div class="pt80"></div>
+        <div class="top-box" th:text="${contentDetail.contentNm}"></div>
+        <div class="mb10"></div>
+        <article th:utext="${contentDetail.contentHtml}"></article>
+        <div class="mb100"></div>
+    </div>
+</section>
+<th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
+<script>
+    var idx = "[[${contentDetail.idx}]]";
+</script>
+<script th:src="@{/js/content/contentDetail.js}"></script>
+</body>
+</html>

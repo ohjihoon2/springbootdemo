@@ -8,6 +8,7 @@ import java.util.Map;
 @Mapper
 @Repository("ContentMapper")
 public interface ContentMapper {
+    Map<String, Object> findAllByContentId(String contentId);
 
-    Map<String, Object> findAllByContentId(Map<String, Object> paramMap);
+    void incrementContentHit(int idx);
 }

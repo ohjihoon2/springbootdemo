@@ -2,17 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.ContentMapper">
 
-    <select id="findAllByContentId" resultType="CustomMap" parameterType="map">
+    <select id="findAllByContentId" resultType="CustomMap" parameterType="String">
         SELECT IDX,
                CONTENT_ID,
                CONTENT_NM,
                CONTENT_HTML,
                HIT,
-               USE_YN,
+               READ_LEVEL,
                CREATE_IDX,
                CREATE_DATE,
                UPDATE_IDX,
                UPDATE_DATE
+          FROM content
          WHERE CONTENT_ID = #{contentId}
     </select>
+
+    <update id="incrementContentHit" parameterType="int">
+        UPDATE content
+        SET HIT = HIT +1
+        WHERE IDX = #{idx}
+    </update>
 </mapper>

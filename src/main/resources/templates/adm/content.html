@@ -70,7 +70,7 @@
                             </th:block>
                         </td>
                         <td class="text-center" th:text="${res.hit}"></td>
-                        <td class="text-center"><input type="checkbox" th:checked="${res.useYn == 'Y'}" disabled></td>
+                        <td class="text-center" th:text="${res.readLevel}"></td>
                         <td class="text-center update-btn">
                             <button type="button" name="updateBtn" th:data-val="${res.idx}">수정</button>
                         </td>

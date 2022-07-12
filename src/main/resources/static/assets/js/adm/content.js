@@ -28,8 +28,9 @@ $(function(){
             '<tr>' +
             '<th>Id</th>' +
             '<td><input id="contentId" type="text" maxlength="15"></td>' +
-            '<th>Use</th>' +
-            '<td class="text-center"><input id="useYn" type="checkbox" checked></td>' +
+            '<th>Read</th>' +
+            '<td class="text-center">' +
+            '<select id="readLevel">' + creatSelect() + '</select>' +
             '</tr>' +
             '<tr>' +
             '<th>Name</th>' +
@@ -87,19 +88,14 @@ $(function(){
 
         if($event.validationFocus("contentNm")) return;
 
-        var useYn;
-        if($('#useYn').is(':checked')) {
-            useYn = 'Y';
-        }
-        else {
-            useYn = 'N';
-        }
-
         oEditors.getById["contentHtml"].exec("UPDATE_CONTENTS_FIELD", []);
+        if($('#contentHtml').val() == "<p>&nbsp;</p>") {
+            $('#contentHtml').val('');
+        }
 
         var data = {
             contentId : $('#contentId').val(),
-            useYn : useYn,
+            leadLevel : $('#leadLevel').val(),
             contentNm : $('#contentNm').val(),
             contentHtml : $('#contentHtml').val(),
         };
@@ -128,11 +124,6 @@ $(function(){
         }
         res = $util.nullChkObj(res);
 
-        var useYn ='';
-        if(res.useYn == 'Y') {
-            useYn = 'checked';
-        }
-
         var html =
             '<h4>컨텐츠 수정</h4>' +
             '<div class="mb20"></div>' +
@@ -149,8 +140,9 @@ $(function(){
             '<tr>' +
             '<th>Id</th>' +
             '<td><input id="contentId" type="text" value="'+ res.contentId +'" maxlength="15"><input id="contentIdOrigin" type="hidden" value="'+ res.contentId +'"></td>' +
-            '<th>Use</th>' +
-            '<td class="text-center"><input id="useYn" type="checkbox"'+ useYn +'></td>' +
+            '<th>Read</th>' +
+            '<td>' +
+            '<select id="readLevel">' + creatSelect(res.readLevel) + '</select>' +
             '</tr>' +
             '<tr>' +
             '<th>Name</th>' +
@@ -230,19 +222,11 @@ $(function(){
 
         if($event.validationFocus("contentNm")) return;
 
-        var useYn;
-        if($('#useYn').is(':checked')) {
-            useYn = 'Y';
-        }
-        else {
-            useYn = 'N';
-        }
-
         oEditors.getById["contentHtml"].exec("UPDATE_CONTENTS_FIELD", []);
 
         var data = {
             contentId : $('#contentId').val(),
-            useYn : useYn,
+            readLevel : $('#readLevel').val(),
             contentNm : $('#contentNm').val(),
             contentHtml : $('#contentHtml').val(),
         };
@@ -259,4 +243,31 @@ $(function(){
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
         }
     });
+
+    //셀렉트박스를 만든다
+    function creatSelect(au='') {
+        if(au == '') {
+            var html =
+                '<option value="ALL">전체사용</option>' +
+                '<option value="USER">회원</option>' +
+                '<option value="ADMIN">관리자</option>' +
+                '<option value="NONE">사용안함</option>';
+        }
+        else {
+            var auth = {
+                ALL : '',
+                ADMIN : '',
+                USER : '',
+                NONE : '',
+            }
+            auth[au] = 'selected';
+
+            var html =
+                '<option value="ALL"' + auth['ALL'] + '>전체사용</option>' +
+                '<option value="USER"' + auth['USER'] + '>회원</option>' +
+                '<option value="ADMIN"' + auth['ADMIN'] + '>관리자</option>' +
+                '<option value="NONE"' + auth['NONE'] + '>사용안함</option>';
+        }
+        return html;
+    }
 });
