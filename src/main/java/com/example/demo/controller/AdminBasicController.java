@@ -137,6 +137,8 @@ public class AdminBasicController {
         paramMap.put("userIdx",userIdx);
 
         int result = adminService.insertCssContent(paramMap);
+        //동적 css 정보 갱신
+        commonService.refreshSingletonCssInfo();
 
         return ResultStr.set(result);
     }
@@ -159,6 +161,8 @@ public class AdminBasicController {
         paramMap.put("userIdx",userIdx);
 
         int result = adminService.updateCssContent(paramMap);
+        //동적 css 정보 갱신
+        commonService.refreshSingletonCssInfo();
 
         return ResultStr.set(result);
     }
@@ -177,6 +181,8 @@ public class AdminBasicController {
         paramMap.put("idx",idx);
 
         int result = adminService.deleteCssContent(paramMap);
+        //동적 css 정보 갱신
+        commonService.refreshSingletonCssInfo();
 
         return ResultStr.set(result);
     }
