@@ -132,7 +132,12 @@ $(function(){
             '<td>' +
             '<select id="cssFirstId">' + creatSelect(res.cssFirstId) + '</select>' +
             '<th>Detail ID</th>' +
-            '<td><input id="cssSecondId" type="text" value="'+ res.cssSecondId +'" maxlength="15" readonly placeholder="없음"></td>' +
+            '<td><input id="cssSecondId" type="text" value="'+ res.cssSecondId +'" maxlength="15"';
+            if(!(res.cssFirstId == 'content' || res.cssFirstId == 'board')) {
+                html += 'readonly ';
+            }
+            html +=
+            'placeholder="없음"></td>' +
             '</tr>' +
             '<tr>' +
             '<th colspan="4">CSS</th>' +
