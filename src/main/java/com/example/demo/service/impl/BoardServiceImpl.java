@@ -181,7 +181,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void addHit(HttpServletRequest request, HttpServletResponse response, int idx) {
+    public void boardAddHit(HttpServletRequest request, HttpServletResponse response, int idx) {
         String formatIdx = String.format("%09d", idx);
 
         Cookie accumulateIdxCookie = Arrays

@@ -6,9 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,13 +34,24 @@ public class ContentController {
     public String contentDetail(@PathVariable("contentId") String contentId, HttpServletResponse response, HttpServletRequest request, Model model) {
 
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("contentId",contentId);
 
-        Map<String,Object> contentDetail = contentService.findAllByContentId(paramMap);
+        Map<String,Object> contentDetail = contentService.findAllByContentId(contentId);
 
         model.addAttribute("contentDetail", contentDetail);
 
         return "/content/contentDetail";
+    }
+
+    /**
+     * 조회수 up
+     * @param idx
+     * @param response
+     * @param request
+     */
+    @PostMapping(value = "/hit/{idx}")
+    @ResponseBody
+    public void contentAddHit(@PathVariable("idx") int idx, HttpServletResponse response, HttpServletRequest request){
+        contentService.contentAddHit(request, response,idx);
     }
 
 }

@@ -55,7 +55,7 @@
                        </td>
                        <td class="flex">
                            <span th:text="${res.qaSubject}"></span>
-                           <i class="fa fa-lock" th:if="${res.secretYn == 'Y'}"></i>
+                           <i class="fa fa-lock text-color-primary" th:if="${res.secretYn == 'Y'}"></i>
                        </td>
                        <td class="text-center" th:text="${res.createNicknm}"></td>
                        <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.')}"></td>

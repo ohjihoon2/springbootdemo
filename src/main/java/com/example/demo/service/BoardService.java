@@ -30,7 +30,7 @@ public interface BoardService {
 
     int moveBoards(Map<String, Object> paramMap);
 
-    void addHit(HttpServletRequest request, HttpServletResponse response, int idx);
+    void boardAddHit(HttpServletRequest request, HttpServletResponse response, int idx);
 
     List<Map<String, Object>> findNoticeByBoardIdBoard(Criteria criteria);
 
