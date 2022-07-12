@@ -11,7 +11,7 @@ public class Content {
     private String contentNm;
     private String contentHtml;
     private int hit;
-    private String useYn;
+    private String readLevel;
     private int createIdx;
     private Date createDate;
     private int updateIdx;

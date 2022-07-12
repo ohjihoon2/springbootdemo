@@ -286,7 +286,7 @@
                A.CONTENT_NM,
                A.CONTENT_HTML,
                A.HIT,
-               A.USE_YN,
+               A.READ_LEVEL,
                A.CREATE_IDX,
                A.CREATE_DATE,
                A.UPDATE_IDX,
@@ -306,7 +306,7 @@
                CONTENT_NM,
                CONTENT_HTML,
                HIT,
-               USE_YN,
+               READ_LEVEL,
                CREATE_IDX,
                CREATE_DATE,
                UPDATE_IDX,
@@ -321,7 +321,7 @@
                  CONTENT_ID,
                  CONTENT_NM,
                  CONTENT_HTML,
-                 USE_YN,
+                 READ_LEVEL,
                  CREATE_IDX,
                  CREATE_DATE
              )
@@ -330,7 +330,7 @@
                 #{contentId},
                 #{contentNm},
                 #{contentHtml},
-                'Y',
+                #{readLevel},
                 #{userIdx},
                 SYSDATE()
             )
@@ -348,8 +348,8 @@
            SET CONTENT_ID = #{contentId},
                CONTENT_NM = #{contentNm},
                CONTENT_HTML = #{contentHtml},
+               READ_LEVEL = #{readLevel},
                HIT = #{hit},
-               USE_YN = #{useYn},
                UPDATE_IDX= #{userIdx},
                UPDATE_DATE= SYSDATE()
          WHERE IDX= #{idx}
