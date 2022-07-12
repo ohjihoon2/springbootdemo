@@ -42,6 +42,7 @@
                CSS_FIRST_ID,
                CSS_SECOND_ID,
                CSS_NM,
+               CSS_CODE,
                USE_YN,
                CREATE_IDX,
                CREATE_DATE,
@@ -49,5 +50,6 @@
                UPDATE_DATE
           FROM css
          WHERE USE_YN = 'Y'
+         ORDER BY FIELD(CSS_FIRST_ID,'common') DESC, CSS_SECOND_ID, CREATE_DATE
     </select>
 </mapper>
