@@ -132,7 +132,7 @@
                CSS_CODE = #{cssCode},
                USE_YN = #{useYn},
                UPDATE_IDX = #{userIdx},
-               UPDATE_DATE = SYSDATE
+               UPDATE_DATE = SYSDATE()
          WHERE IDX =#{idx}
     </update>
 
