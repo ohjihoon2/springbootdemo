@@ -70,17 +70,21 @@
                   )
     </delete>
 
-    <select id="findAllCssContent" resultType="Css" parameterType="Criteria">
-        SELECT IDX,
-               CSS_FIRST_ID,
-               CSS_SECOND_ID,
-               CSS_NM,
-               USE_YN,
-               CREATE_IDX,
-               CREATE_DATE,
-               UPDATE_IDX,
-               UPDATE_DATE
-          FROM css
+    <select id="findAllCssContent" resultType="CustomMap" parameterType="Criteria">
+        SELECT A.IDX,
+               A.CSS_FIRST_ID,
+               A.CSS_SECOND_ID,
+               A.CSS_NM,
+               A.USE_YN,
+               IFNULL(B.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
+               A.CREATE_IDX,
+               A.CREATE_DATE,
+               IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(C.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM,
+               A.UPDATE_IDX,
+               A.UPDATE_DATE
+          FROM css A
+          LEFT JOIN users B ON A.CREATE_IDX = B.IDX
+          LEFT JOIN users C ON A.UPDATE_IDX = C.IDX
          WHERE 1 = 1
         <include refid="criteriaCss"/>
 

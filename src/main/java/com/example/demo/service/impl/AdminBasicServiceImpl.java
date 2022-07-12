@@ -37,7 +37,7 @@ public class AdminBasicServiceImpl implements AdminBasicService {
     }
 
     @Override
-    public List<Css> findAllCssContent(Criteria criteria) {
+    public List<Map<String,Object>> findAllCssContent(Criteria criteria) {
         return adminMapper.findAllCssContent(criteria);
     }
 

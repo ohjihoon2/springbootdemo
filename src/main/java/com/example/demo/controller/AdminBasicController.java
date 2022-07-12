@@ -102,7 +102,7 @@ public class AdminBasicController {
      */
     @GetMapping(value = "/css")
     public String cssContentList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request,Model model) {
-        List<Css> resultList = adminService.findAllCssContent(criteria);
+        List<Map<String,Object>> resultList = adminService.findAllCssContent(criteria);
 
         model.addAttribute("resultList", resultList);
         return "/adm/css";

@@ -11,7 +11,7 @@ public interface AdminBasicService {
 
     List<MenuTree> findAllMenuTree();
 
-    List<Css> findAllCssContent(Criteria criteria);
+    List<Map<String,Object>> findAllCssContent(Criteria criteria);
 
     Css findByIdxCssContent(int idx);
 
