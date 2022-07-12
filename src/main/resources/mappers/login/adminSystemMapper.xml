@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.AdminSystemMapper">
+
+    <select id="findAllCodeGroup" resultType="CodeGroup">
+        SELECT CODE_GROUP_ID,
+               CODE_GROUP_NM,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM code_group
+         ORDER BY CODE_GROUP_NM
+    </select>
+
+    <select id="findByCodeGroupIdCodeGroup" resultType="CodeGroup" parameterType="String">
+        SELECT CODE_GROUP_ID,
+               CODE_GROUP_NM,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM code_group
+         WHERE CODE_GROUP_ID = #{codeGroupId}
+    </select>
+
+    <select id="findAllByCodeGroupIdCode" parameterType="String" resultType="Code">
+        SELECT CODE_GROUP_ID,
+               CODE,
+               CODE_NM,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM code
+         WHERE CODE_GROUP_ID = #{codeGroupId}
+    </select>
+
+    <insert id="insertCodeGroup" parameterType="map">
+        INSERT INTO code_group
+            (
+                CODE_GROUP_ID,
+                CODE_GROUP_NM,
+                CREATE_IDX,
+                CREATE_DATE
+            )
+        VALUES
+            (
+                #{codeGroupId},
+                #{codeGroupNm},
+                #{userIdx},
+                SYSDATE()
+            )
+    </insert>
+
+    <insert id="insertCode" parameterType="map">
+        INSERT INTO code
+            (
+                CODE_GROUP_ID,
+                CODE,
+                CODE_NM,
+                CREATE_IDX,
+                CREATE_DATE
+            )
+        VALUES
+            <foreach item="item" index="index" collection="codeList" separator=",">
+            (
+                #{item.codeGroupId},
+                #{item.code},
+                #{item.codeNm},
+                #{userIdx},
+                SYSDATE()
+            )
+            </foreach>
+    </insert>
+
+    <update id="updateCodeGroup" parameterType="map">
+        UPDATE code_group
+           SET CODE_GROUP_NM = #{codeGroupNm},
+               UPDATE_IDX = #{userIdx},
+               UPDATE_DATE = SYSDATE()
+         WHERE CODE_GROUP_ID = #{codeGroupId}
+    </update>
+
+    <update id="updateCode" parameterType="map">
+        <foreach item="item" index="index" collection="codeList" separator=",">
+        UPDATE code
+           SET CODE_NM = #{item.codeNm},
+               UPDATE_IDX = #{userIdx},
+               UPDATE_DATE = SYSDATE()
+         WHERE CODE_GROUP_ID = #{item.codeGroupId}
+           AND CODE = #{item.code}
+        </foreach>
+    </update>
+</mapper>
