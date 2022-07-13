@@ -7,9 +7,6 @@ import java.util.Date;
 @Data
 public class CodeGroup {
 
-    /* IDX */
-    private int idx;
-
     /* 코드그룹 ID */
     private String codeGroupId;
 

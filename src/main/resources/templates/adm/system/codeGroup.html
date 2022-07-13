@@ -1,0 +1,92 @@
+<!--/*
+    thymeleaf 주석처리
+*/-->
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
+
+<th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='/css/adm/system/codeGroup.css')"></th:block>
+<body ondragstart="return false" onselectstart="return false">
+<th:block th:replace="/fragments/header.html :: thAdmHeader"></th:block>
+
+<section>
+    <div class="section-wrap">
+        <h2>코드 관리</h2>
+        <div class="mt40"></div>
+        <div class="top-btn-box">
+            <div class="left">
+                <select id="searchType">
+                    <option value="ITW" th:selected="${#httpServletRequest.getParameter('searchType') == 'ITW'}">코드ID + 코드명 + 작성자</option>
+                    <option value="I" th:selected="${#httpServletRequest.getParameter('searchType') == 'I'}">코드ID</option>
+                    <option value="T" th:selected="${#httpServletRequest.getParameter('searchType') == 'T'}">CSS명</option>
+                    <option value="W" th:selected="${#httpServletRequest.getParameter('searchType') == 'W'}">작성자</option>
+                </select>
+                <input id="searchKeyword" type="text" th:value="${#httpServletRequest.getParameter('searchKeyword')}" />
+                <button type="button" id="searchBtn" class="color-primary">검색</button>
+            </div>
+            <button type="button" id="addBtn" class="color-primary" sec:authorize="hasAnyRole('ROLE_SYSTEM')">코드그룹추가</button>
+        </div>
+        <table>
+            <colgroup>
+                <col width="20%">
+                <col width="25%">
+                <col width="15%">
+                <col width="10%">
+                <col width="25%">
+                <col width="10%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Creater</th>
+                <th>Date</th>
+                <th>Remarks</th>
+                <th>Update</th>
+            </tr>
+            </thead>
+        </table>
+        <div class="section-scroll">
+            <table>
+                <colgroup>
+                    <col width="20%">
+                    <col width="25%">
+                    <col width="15%">
+                    <col width="10%">
+                    <col width="25%">
+                    <col width="10%">
+                </colgroup>
+                <tbody>
+                <th:block th:each="res : ${resultList}">
+                    <tr>
+                        <td th:text="${res.codeGroupId}"></td>
+                        <td th:text="${res.codeGroupNm}"></td>
+                        <td class="text-center" th:text="${res.createNicknm}"></td>
+                        <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.')}"></td>
+                        <td class="remarks text-color-primary">
+                            <th:block th:if="${res.updateDate != null && res.updateNicknm != null}">
+                                ※ [[${#dates.format(res.updateDate, 'yyyy. MM. dd.')}]] [[${res.updateNicknm}]] 님이 수정함.
+                            </th:block>
+                        </td>
+                        <td class="text-center update-btn">
+                            <button type="button" name="updateBtn" class="color-primary" th:data-val="${res.codeGroupId}">수정</button>
+                        </td>
+                    </tr>
+                </th:block>
+
+                <th:block th:if="${resultList.size() == 0}">
+                    <tr>
+                        <td colspan="8" class="text-center">등록된 코드가 없습니다.</td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<th:block th:replace="/fragments/footer.html :: thAdmFooter"></th:block>
+<script th:src="@{/js/adm/system/codeGroup_SYSTEM.js}" sec:authorize="hasAnyRole('ROLE_SYSTEM')"></script>
+<script th:src="@{/js/adm/system/codeGroup.js}" sec:authorize="!hasAnyRole('ROLE_SYSTEM')"></script>
+</body>
+</html>

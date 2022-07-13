@@ -130,5 +130,8 @@ input:read-only, input[readonly=true], textarea:read-only, textarea[readonly=tru
 
 /* color */
 .color-primary {background: #1fb1c7!important; border-color: #00a6bc!important;}
+.color-gray {background: #b4b4b4!important; border-color: #a7a7a7!important;}
 .color-primary-border-none {background: #1fb1c7!important;}
 
+/* height */
+.min-height350 {min-height: 350px}

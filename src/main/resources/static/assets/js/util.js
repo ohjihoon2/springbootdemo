@@ -359,6 +359,8 @@
                 boardContent: '게시물 내용',
                 commentContent: '댓글 내용',
                 cssNm: 'CSS명',
+                codeGroupId: '코드그룹ID',
+                codeGroupNm: '코드그룹명',
             }
             if(file) {
                 if ($('#'+ id)[0].files.length == 0) {
@@ -476,6 +478,12 @@
             return regExp.test(asValue);
         },
 
+        //영문숫자_만 가능
+        isEnNuUnder(asValue) {
+            var regExp = /[a-zA-Z0-9_]/;
+            return regExp.test(asValue);
+        },
+
         // null값 확인
         nullChk : function (str) {
             if(str == 'null' || str == null || typeof str == undefined || str == 'undefined') {
@@ -485,6 +493,7 @@
                 return str;
             }
         },
+
         // 배열 null치환
         nullChkObj : function (obj) {
             for (var key in obj){

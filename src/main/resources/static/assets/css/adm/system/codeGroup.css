@@ -1,0 +1,12 @@
+@charset "utf-8";
+
+table .update-btn button {
+    padding: 7px 0;
+    width: 50px;
+    color: #fff;
+    border-radius: 5px;
+}
+
+table .remarks {
+    font-size: 13px;
+}

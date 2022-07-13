@@ -4,6 +4,7 @@ import com.example.demo.repository.AdminSystemMapper;
 import com.example.demo.service.AdminSystemService;
 import com.example.demo.vo.Code;
 import com.example.demo.vo.CodeGroup;
+import com.example.demo.vo.Criteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +20,8 @@ public class AdminSystemServiceImpl implements AdminSystemService {
     private final AdminSystemMapper adminMapper;
 
     @Override
-    public List<CodeGroup> findAllCodeGroup() {
-        return adminMapper.findAllCodeGroup();
+    public List<Map<String,Object>> findAllCodeGroup(Criteria criteria) {
+        return adminMapper.findAllCodeGroup(criteria);
     }
 
     @Override
@@ -54,5 +55,10 @@ public class AdminSystemServiceImpl implements AdminSystemService {
         }
 
         return result;
+    }
+
+    @Override
+    public int existsCodeGroupId(Map<String,Object> paramMap) {
+        return adminMapper.existsCodeGroupId(paramMap);
     }
 }

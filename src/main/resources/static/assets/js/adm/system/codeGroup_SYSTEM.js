@@ -5,16 +5,18 @@ $(function(){
             searchType : $('#searchType').val(),
             searchKeyword : $util.transferText($('#searchKeyword').val()),
         }
-        $page.getGoPage('/adm/css', param)
+        $page.getGoPage('/adm/codeGroup', param);
     });
+
+
     
 
     //컨텐츠추가 팝업
     $('#addBtn').click(function(){
         var html = 
-            '<h4>CSS 추가</h4>' +
+            '<h4>코드그룹추가</h4>' +
             '<div class="mb20"></div>' +
-            '<form id="cssAddForm">' +
+            '<form id="codeGroupAddForm">' +
             '<table class="table-top">' +
             '<colgroup>' +
             '<col width="15%">' +
@@ -24,27 +26,38 @@ $(function(){
             '</colgroup>' +
             '<tbody>' +
             '<tr>' +
+            '<th>ID</th>' +
+            '<td><input id="codeGroupId" type="text" maxlength="15"></td>' +
             '<th>Name</th>' +
-            '<td><input id="cssNm" type="text" maxlength="15"></td>' +
-            '<th>Use</th>' +
-            '<td class="text-center"><input id="useYn" type="checkbox" checked></td>' +
-            '</tr>' +
+            '<td><input id="codeGroupNm" type="text" maxlength="15"></td>' +
+            '</tbody>' +
+            '</table>' +
+            '<div class="mt20"></div>' +
+            '<h4>코드추가</h4>' +
+            '<div class="mb20"></div>' +
+            '<div class="min-height350">' +
+            '<table class="table-top">' +
+            '<colgroup>' +
+            '<col width="45%">' +
+            '<col width="45%">' +
+            '<col width="10%">' +
+            '</colgroup>' +
+            '<thead>' +
             '<tr>' +
             '<th>ID</th>' +
-            '<td>' +
-            '<select id="cssFirstId">' + creatSelect() + '</select>' +
-            '</td>' +
-            '<th>Detail ID</th>' +
-            '<td><input id="cssSecondId" type="text" maxlength="15" readonly placeholder="없음"></td>' +
+            '<th>Name</th>' +
+            '<th class="update-btn"><button type="button" id="codeRowAdd" class="color-primary">추가</button></th>' +
             '</tr>' +
+            '</thead>' +
+            '<tbody id="codeRow">' +
             '<tr>' +
-            '<th colspan="4">CSS</th>' +
-            '</tr>' +
-            '<tr>' +
-            '<td colspan="4"><textarea id="cssCode"></textarea></td>' +
+            '<td><input type="text" maxlength="15"></td>' +
+            '<td><input type="text" maxlength="15"></td>' +
+            '<td class="text-center">-</td>' +
             '</tr>' +
             '</tbody>' +
             '</table>' +
+            '</div>' +
             '<div class="mt50"></div>' +
             '<div class="bot-btn-box">' +
             '<button type="button" onclick="$popup.popupJsClose()">닫기</button>\n' +
@@ -55,36 +68,82 @@ $(function(){
         $popup.admPopupJs(html);
     });
 
-    // 컨텐츠추가
-    $(document).on("submit", "#cssAddForm", function(e) {
+    // 코드 로우추가
+    $(document).on("click", "#codeRowAdd", function(e) {
+        var html =
+            '<tr>' +
+            '<td><input type="text" maxlength="15"></td>' +
+            '<td><input type="text" maxlength="15"></td>' +
+            '<td class="update-btn text-center">' +
+            '<button type="button" class="color-gray codeRemove">삭제</button></th>' +
+            '</td>' +
+            '</tr>';
+        $('#codeRow').append(html);
+    });
+
+    // 코드 로우삭제
+    $(document).on("click", ".codeRemove", function(e) {
+        var html =
+        $(this).closest('tr').remove();
+    });
+
+    // 코드그룹추가
+    $(document).on("submit", "#codeGroupAddForm", function(e) {
         e.preventDefault();
 
-        if($event.validationFocus("cssNm")) return;
-        if($event.validationFocus("cssCode")) return;
+        if($event.validationFocus("codeGroupId")) return;
 
-        var useYn;
-        if($('#useYn').is(':checked')) {
-            useYn = 'Y';
+        if(!$util.isEnNuUnder($('#codeGroupId').val())) {
+            alert("코드 ID는 영문, 숫자, _만 입력가능합니다.");
+            $('#codeGroupId').focus();
+            return;
         }
-        else {
-            useYn = 'N';
+
+        var param = {
+            codeGroupId : $('#codeGroupId').val()
+        }
+
+        var result = $ajax.postAjax('/adm/codeGroupId', param);
+
+        if(result.result == 'success') {
+            alert("이미 사용중인 코드 ID입니다.\n코드 ID는 중복 될 수 없습니다.");
+            return;
+        }
+
+        if($event.validationFocus("codeGroupNm")) return;
+
+        var tr = $('#codeRow').find('tr');
+        var codeList = new Array();
+        for(i = 0; i < tr.length; i++) {
+            var obj = new Object();
+            obj.code = tr.eq(i).find('td').eq(0).children('input[type="text"]').val();
+            if(obj.code == '') {
+                alert("코드ID는 필수항목입니다.");
+                tr.eq(i).find('td').eq(0).children('input[type="text"]').focus();
+                return;
+            }
+            obj.codeNm = tr.eq(i).find('td').eq(1).children('input[type="text"]').val();
+            if(obj.codeNm == '') {
+                alert("코드명은 필수항목입니다.");
+                tr.eq(i).find('td').eq(1).children('input[type="text"]').focus();
+                return;
+            }
+            codeList.push(obj);
         }
 
         var data = {
-            cssNm : $('#cssNm').val(),
-            useYn : useYn,
-            cssFirstId : $('#cssFirstId').val(),
-            cssSecondId : $('#cssSecondId').val(),
-            cssCode : $('#cssCode').val(),
+            codeGroupId : param.codeGroupId,
+            codeGroupNm : $('#codeGroupNm').val(),
+            codeList : codeList,
         };
 
-        var res = $ajax.postAjax('/adm/css', data);
+        var res = $ajax.postAjax('/adm/codeGroup', data);
 
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
         }
         else if(res.result == "success") {
-            alert("CSS를 추가하였습니다.")
+            alert("크드그룹을 추가하였습니다.")
             window.location.reload();
         }
         else if(res.result == "fail"){

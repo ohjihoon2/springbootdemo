@@ -2,15 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.AdminSystemMapper">
 
-    <select id="findAllCodeGroup" resultType="CodeGroup">
-        SELECT CODE_GROUP_ID,
-               CODE_GROUP_NM,
-               CREATE_IDX,
-               CREATE_DATE,
-               UPDATE_IDX,
-               UPDATE_DATE
-          FROM code_group
-         ORDER BY CODE_GROUP_NM
+    <sql id="criteriaCodeGroup">
+        <if test="searchType != null and searchKeyword != null">
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <foreach item="type" collection="typeArr">
+                    <trim prefix="OR">
+                        <choose>
+                            <when test="type=='T'.toString()">
+                                (CODE_GROUP_NM LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                            <when test="type=='I'.toString()">
+                                (CODE_GROUP_ID LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
+    <select id="findAllCodeGroup" resultType="CustomMap" parameterType="Criteria">
+        SELECT A.CODE_GROUP_ID,
+               A.CODE_GROUP_NM,
+               IFNULL(B.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
+               A.CREATE_IDX,
+               A.CREATE_DATE,
+               IF(A.UPDATE_IDX IS NULL , NULL, IFNULL(C.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM,
+               A.UPDATE_IDX,
+               A.UPDATE_DATE
+          FROM code_group A
+          LEFT JOIN users B ON A.CREATE_IDX = B.IDX
+          LEFT JOIN users C ON A.UPDATE_IDX = C.IDX
+         WHERE 1 = 1
+        <include refid="criteriaCodeGroup"/>
+         ORDER BY A.CODE_GROUP_ID
     </select>
 
     <select id="findByCodeGroupIdCodeGroup" resultType="CodeGroup" parameterType="String">
@@ -65,7 +90,7 @@
         VALUES
             <foreach item="item" index="index" collection="codeList" separator=",">
             (
-                #{item.codeGroupId},
+                #{codeGroupId},
                 #{item.code},
                 #{item.codeNm},
                 #{userIdx},
@@ -92,4 +117,12 @@
            AND CODE = #{item.code}
         </foreach>
     </update>
+
+    <select id="existsCodeGroupId" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM code_group
+        WHERE CODE_GROUP_ID = #{codeGroupId}
+    </select>
+
+
 </mapper>

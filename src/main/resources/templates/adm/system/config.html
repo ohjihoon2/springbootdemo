@@ -6,7 +6,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns="http://www.w3.org/1999/html">
 
-<th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='/css/adm/user.css')"></th:block>
+<th:block th:replace="/fragments/head.html :: thAdmHead(pageCss='/css/adm/system/config.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
 <th:block th:replace="/fragments/header.html :: thAdmHeader"></th:block>
 <section>
@@ -60,6 +60,6 @@
     </div>
 </section>
 <th:block th:replace="/fragments/footer.html :: thAdmFooter"></th:block>
-<script th:src="@{/js/adm/user.js}"></script>
+<script th:src="@{/js/adm/system/config.js}"></script>
 </body>
 </html>

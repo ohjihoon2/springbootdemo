@@ -65,8 +65,9 @@ public class Criteria {
                 .queryParam("amount",amount);
         return builder.toUriString();
     }
-
-    //검색 조건이 (T,W,C)로 구성되어 검색 조건을 배열로 만듬 Mybatis 동적 태그 활용
+    
+//    검색 조건이 (I,T,W,C)로 구성되어 검색 조건을 배열로 만듬 Mybatis 동적 태그 활용
+//    검색 조건이 'I'면 : 아이디 키워드인 항목을 검색
 //    검색 조건이 'T'면 : 제목이 키워드인 항목을 검색
 //    검색 조건이 'C'면 : 내용이 키워드인 항목을 검색
 //    검색 조건이 'W'면 : 작성자가 키워드인 항목을 검색

@@ -5,6 +5,7 @@ import com.example.demo.service.CommonService;
 import com.example.demo.util.ResultStr;
 import com.example.demo.vo.Code;
 import com.example.demo.vo.CodeGroup;
+import com.example.demo.vo.Criteria;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -40,7 +41,7 @@ public class AdminSystemController {
 //        List<MenuTree> resultList = adminService.findAllMenuTree();
 
 //        model.addAttribute("resultList", resultList);
-        return "/adm/config";
+        return "/adm/system/config";
     }
 
     /**
@@ -51,11 +52,11 @@ public class AdminSystemController {
      * @return
      */
     @GetMapping(value = "/codeGroup")
-    public String systemList(HttpServletResponse response, HttpServletRequest request,Model model) {
-        List<CodeGroup> resultList = adminService.findAllCodeGroup();
+    public String systemList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request, Model model) {
+        List<Map<String,Object>> resultList = adminService.findAllCodeGroup(criteria);
 
         model.addAttribute("resultList", resultList);
-        return "/adm/system";
+        return "/adm/system/codeGroup";
     }
 
     /**
@@ -86,8 +87,8 @@ public class AdminSystemController {
     @ResponseBody
     public Map<String,Object> saveCodeGroup(@RequestBody Map<String,Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
-//        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
-        paramMap.put("userIdx",1);
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        paramMap.put("userIdx", userIdx);
 
         int result = adminService.insertCodeGroup(paramMap);
         //code 정보 갱신
@@ -120,4 +121,20 @@ public class AdminSystemController {
         return ResultStr.set(result);
     }
 
+    /**
+     * codeGroupId 중복 체크
+     * @param paramMap
+     * @param response
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/codeGroupId")
+    @ResponseBody
+    public Map<String,Object> existsCodeGroupId(@RequestBody Map<String,Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
+
+        int result = adminService.existsCodeGroupId(paramMap);
+
+        return ResultStr.set(result);
+    }
 }
+

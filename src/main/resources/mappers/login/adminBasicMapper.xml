@@ -79,7 +79,7 @@
                IFNULL(B.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
                A.CREATE_IDX,
                A.CREATE_DATE,
-               IF( A.UPDATE_IDX IS NULL , NULL, IFNULL(C.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM,
+               IF(A.UPDATE_IDX IS NULL , NULL, IFNULL(C.USER_NICKNM,'탈퇴된 관리자')) AS UPDATE_NICKNM,
                A.UPDATE_IDX,
                A.UPDATE_DATE
           FROM css A

@@ -61,6 +61,7 @@
 <script>
     var boardId = "[[${boardMaster.boardId}]]";
     var editorLevel = [[${@compareAuth.getAuth(boardMaster.editorLevel)}]];
+
 </script>
 <th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
 <script th:src="@{/js/board/boardRegist.js}"></script>

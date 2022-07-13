@@ -5,14 +5,14 @@ $(function(){
             searchType : $('#searchType').val(),
             searchKeyword : $util.transferText($('#searchKeyword').val()),
         }
-        $page.getGoPage('/adm/css', param)
+        $page.getGoPage('/adm/codeGroup', param)
     });
-    
+
 
     //컨텐츠추가 팝업
     $('#addBtn').click(function(){
         var html = 
-            '<h4>CSS 추가</h4>' +
+            '<h4>코드그룹추가</h4>' +
             '<div class="mb20"></div>' +
             '<form id="cssAddForm">' +
             '<table class="table-top">' +
@@ -24,27 +24,38 @@ $(function(){
             '</colgroup>' +
             '<tbody>' +
             '<tr>' +
+            '<th>ID</th>' +
+            '<td><input id="codeGroupId" type="text" maxlength="15"></td>' +
             '<th>Name</th>' +
-            '<td><input id="cssNm" type="text" maxlength="15"></td>' +
-            '<th>Use</th>' +
-            '<td class="text-center"><input id="useYn" type="checkbox" checked></td>' +
-            '</tr>' +
+            '<td><input id="codeGroupNm" type="text" maxlength="15"></td>' +
+            '</tbody>' +
+            '</table>' +
+            '<div class="mt20"></div>' +
+            '<h4>코드추가</h4>' +
+            '<div class="mb20"></div>' +
+            '<div class="min-height350">' +
+            '<table class="table-top">' +
+            '<colgroup>' +
+            '<col width="45%">' +
+            '<col width="45%">' +
+            '<col width="10%">' +
+            '</colgroup>' +
+            '<thead>' +
             '<tr>' +
             '<th>ID</th>' +
-            '<td>' +
-            '<select id="cssFirstId">' + creatSelect() + '</select>' +
-            '</td>' +
-            '<th>Detail ID</th>' +
-            '<td><input id="cssSecondId" type="text" maxlength="15" readonly placeholder="없음"></td>' +
+            '<th>Name</th>' +
+            '<th class="update-btn"><button type="button" id="codeRowAdd" class="color-primary">추가</button></th>' +
             '</tr>' +
+            '</thead>' +
+            '<tbody id="codeRow">' +
             '<tr>' +
-            '<th colspan="4">CSS</th>' +
-            '</tr>' +
-            '<tr>' +
-            '<td colspan="4"><textarea id="cssCode"></textarea></td>' +
+            '<td><input type="text" maxlength="15"></td>' +
+            '<td><input type="text" maxlength="15"></td>' +
+            '<td class="text-center">-</td>' +
             '</tr>' +
             '</tbody>' +
             '</table>' +
+            '</div>' +
             '<div class="mt50"></div>' +
             '<div class="bot-btn-box">' +
             '<button type="button" onclick="$popup.popupJsClose()">닫기</button>\n' +
@@ -53,6 +64,25 @@ $(function(){
             '</form>';
 
         $popup.admPopupJs(html);
+    });
+
+    // 코드 로우추가
+    $(document).on("click", "#codeRowAdd", function(e) {
+        var html =
+            '<tr>' +
+            '<td><input type="text" maxlength="15"></td>' +
+            '<td><input type="text" maxlength="15"></td>' +
+            '<td class="update-btn text-center">' +
+            '<button type="button" class="color-gray codeRemove">삭제</button></th>' +
+            '</td>' +
+            '</tr>';
+        $('#codeRow').append(html);
+    });
+
+    // 코드 로우삭제
+    $(document).on("click", ".codeRemove", function(e) {
+        var html =
+        $(this).closest('tr').remove();
     });
 
     // 컨텐츠추가

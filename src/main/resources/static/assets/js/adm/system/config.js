@@ -5,7 +5,7 @@ $(function(){
             searchType : $('#searchType').val(),
             searchKeyword : $util.transferText($('#searchKeyword').val()),
         }
-        $page.getGoPage('/adm/css', param)
+        $page.getGoPage('/adm/content', param)
     });
     
 
