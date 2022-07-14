@@ -61,4 +61,14 @@ public class AdminSystemServiceImpl implements AdminSystemService {
     public int existsCodeGroupId(Map<String,Object> paramMap) {
         return adminMapper.existsCodeGroupId(paramMap);
     }
+
+    @Override
+    public Map<String, Object> findSystemConfig() {
+        return adminMapper.findSystemConfig();
+    }
+
+    @Override
+    public int updateSystemConfig(Map<String, Object> paramMap) {
+        return adminMapper.updateSystemConfig(paramMap);
+    }
 }

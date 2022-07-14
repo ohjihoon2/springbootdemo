@@ -20,4 +20,8 @@ public interface AdminSystemService {
     int updateCodeGroup(Map<String, Object> paramMap);
 
     int existsCodeGroupId(Map<String,Object> paramMap);
+
+    Map<String, Object> findSystemConfig();
+
+    int updateSystemConfig(Map<String, Object> paramMap);
 }

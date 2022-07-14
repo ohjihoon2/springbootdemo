@@ -26,12 +26,14 @@ public class CommonServiceImpl implements CommonService {
 
     @Override
     public void generateSingletonData() {
-        //동적메뉴 설정
+        // 동적메뉴
         this.refreshSingletonMenuInfo();
-        //css
+        // css
         this.refreshSingletonCssInfo();
-
+        // 공통코드
         this.refreshSingletonCodeInfo();
+        // 사이트 설정
+        this.refreshSingletonSystemConfigInfo();
 
     }
 
@@ -68,5 +70,12 @@ public class CommonServiceImpl implements CommonService {
 //        List<Code> codeList = commonMapper.findCommonCode();
 //        List<Code> codeGroupList = commonMapper.findCommonCodeGroup();
 //        singleton.setCssList(cssList);
+    }
+
+    @Override
+    public void refreshSingletonSystemConfigInfo() {
+        SingletonData singleton = SingletonData.getInstance();
+        singleton.setConfigData(commonMapper.findSystemConfig());
+
     }
 }

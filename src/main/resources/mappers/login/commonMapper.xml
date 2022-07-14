@@ -52,4 +52,12 @@
          WHERE USE_YN = 'Y'
          ORDER BY FIELD(CSS_FIRST_ID,'common') DESC, CSS_SECOND_ID, CREATE_DATE
     </select>
+
+    <select id="findSystemConfig" resultType="CustomMap">
+        SELECT QA_CATEGORY,
+               RESET_PASSWORD,
+               HOMEPAGE_NAME,
+               MAIN_SKIN_TYPE
+          FROM config
+    </select>
 </mapper>

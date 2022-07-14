@@ -105,21 +105,8 @@
     </insert>
 
     <update id="updateCodeGroup" parameterType="map">
-        INSERT INTO code_group
-            (
-                CODE_GROUP_ID,
-                CODE_GROUP_NM,
-                CREATE_IDX,
-                CREATE_DATE
-            )
-        VALUES
-            (
-                #{codeGroupId},
-                #{codeGroupNm},
-                #{userIdx},
-                SYSDATE()
-            )
-            ON DUPLICATE KEY UPDATE
+        UPDATE code_group
+           SET
         <if test="codeGroupId != null and !codeGroupId.equals('')">
                CODE_GROUP_ID = #{codeGroupId},
         </if>
@@ -130,20 +117,24 @@
     </update>
 
     <update id="updateCode" parameterType="map">
+        INSERT INTO code
+            (
+                CODE_GROUP_ID,
+                CODE,
+                CODE_NM,
+                SORT_ORDR,
+                CREATE_IDX,
+                CREATE_DATE
+            )
         <foreach item="item" index="index" collection="codeList" separator=",">
-            INSERT INTO code_group
-                (
-                     CODE_GROUP_ID,
-                     CODE_GROUP_NM,
-                     CREATE_IDX,
-                     CREATE_DATE
-                )
             VALUES
                 (
-                     #{codeGroupId},
-                     #{codeGroupNm},
-                     #{userIdx},
-                     SYSDATE()
+                    #{codeGroupId},
+                    #{item.code},
+                    #{item.codeNm},
+                    #{item.sortOrdr},
+                    #{userIdx},
+                    SYSDATE()
                 )
             ON DUPLICATE KEY UPDATE
             <if test="codeGroupId != null and !codeGroupId.equals('')">
@@ -162,9 +153,24 @@
 
     <select id="existsCodeGroupId" parameterType="map" resultType="int">
         SELECT COUNT(*)
-        FROM code_group
-        WHERE CODE_GROUP_ID = #{codeGroupId}
+          FROM code_group
+         WHERE CODE_GROUP_ID = #{codeGroupId}
     </select>
 
+    <select id="findSystemConfig" resultType="CustomMap">
+        SELECT QA_CATEGORY,
+               RESET_PASSWORD,
+               HOMEPAGE_NAME,
+               MAIN_SKIN_TYPE
+          FROM config
+    </select>
+
+    <update id="updateSystemConfig" parameterType="map">
+        UPDATE config
+           SET QA_CATEGORY  = #{qaCategory},
+               RESET_PASSWORD = #{resetPassword},
+               HOMEPAGE_NAME = #{homepageName},
+               MAIN_SKIN_TYPE = #{mainSkinType}
+    </update>
 
 </mapper>

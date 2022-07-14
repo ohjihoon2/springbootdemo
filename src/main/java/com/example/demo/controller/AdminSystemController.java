@@ -30,7 +30,7 @@ public class AdminSystemController {
     private final CommonService commonService;
 
     /**
-     * admConfig 설정 페이지
+     * SystemConfig 설정 페이지
      * @param response
      * @param request
      * @param model
@@ -38,10 +38,23 @@ public class AdminSystemController {
      */
     @GetMapping(value = "/config")
     public String configDetails(HttpServletResponse response, HttpServletRequest request,Model model) {
-//        List<MenuTree> resultList = adminService.findAllMenuTree();
-
-//        model.addAttribute("resultList", resultList);
+        Map<String, Object> resultMap = adminService.findSystemConfig();
+        model.addAttribute("resultMap", resultMap);
         return "/adm/system/config";
+    }
+
+    /**
+     * SystemConfig 수정
+     * @param paramMap
+     * @param request
+     * @return
+     */
+    @PatchMapping(value = "/config")
+    @ResponseBody
+    public Map<String,Object> updateConfig(@RequestBody Map<String, Object> paramMap, HttpServletRequest request) {
+        int result = adminService.updateSystemConfig(paramMap);
+
+        return ResultStr.set(result);
     }
 
     /**

@@ -28,4 +28,8 @@ public interface AdminSystemMapper {
     int updateCode(ArrayList codeList);
 
     int existsCodeGroupId(Map<String,Object> paramMap);
+
+    Map<String, Object> findSystemConfig();
+
+    int updateSystemConfig(Map<String, Object> paramMap);
 }
