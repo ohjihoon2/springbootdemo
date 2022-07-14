@@ -51,7 +51,7 @@
          WHERE IDX = #{idx}
     </select>
 
-    <select id="findAllByIdxCode" parameterType="int" resultType="Code">
+    <select id="findAllByIdxCode" parameterType="String" resultType="Code">
         SELECT IDX,
                CODE_GROUP_ID,
                CODE,
@@ -62,7 +62,7 @@
                UPDATE_IDX,
                UPDATE_DATE
           FROM code
-         WHERE IDX = #{idx}
+         WHERE CODE_GROUP_ID = #{codeGroupId}
     </select>
 
     <insert id="insertCodeGroup" parameterType="map">

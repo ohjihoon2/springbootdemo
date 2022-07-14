@@ -13,7 +13,7 @@ public interface AdminSystemService {
 
     CodeGroup findByIdxCodeGroup(int idx);
 
-    List<Code> findAllByIdxCode(int idx);
+    List<Code> findAllByIdxCode(String codeGroupId);
 
     int insertCodeGroup(Map<String, Object> paramMap);
 

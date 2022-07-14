@@ -82,7 +82,7 @@ public class AdminSystemController {
     public Map<String, Object> systemDetails(@PathVariable int idx) {
         Map<String, Object> paramMap = new HashMap<>();
         CodeGroup codeGroup = adminService.findByIdxCodeGroup(idx);
-        List<Code> codeList = adminService.findAllByIdxCode(idx);
+        List<Code> codeList = adminService.findAllByIdxCode(codeGroup.getCodeGroupId());
         paramMap.put("codeGroup", codeGroup);
         paramMap.put("codeList", codeList);
 

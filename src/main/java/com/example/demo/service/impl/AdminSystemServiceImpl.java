@@ -30,8 +30,8 @@ public class AdminSystemServiceImpl implements AdminSystemService {
     }
 
     @Override
-    public List<Code> findAllByIdxCode(int idx) {
-        return adminMapper.findAllByIdxCode(idx);
+    public List<Code> findAllByIdxCode(String codeGroupId) {
+        return adminMapper.findAllByIdxCode(codeGroupId);
     }
 
     @Override
