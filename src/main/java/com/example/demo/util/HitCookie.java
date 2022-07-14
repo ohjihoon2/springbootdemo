@@ -18,8 +18,8 @@ public class HitCookie {
      * @param cookieValue
      * @return
      */
-    public static Cookie createAccIdxCookie(String cookieValue) {
-        Cookie cookie = new Cookie("alreadyViewIdx", cookieValue);
+    public static Cookie createAccIdxCookie(String cookieName, String cookieValue) {
+        Cookie cookie = new Cookie(cookieName, cookieValue);
         cookie.setComment("조회수 중복 증가 방지 쿠키");    // 쿠키 용도 설명 기재
         cookie.setMaxAge(getRemainSecondForTommorow());             // 하루를 준다.
         cookie.setHttpOnly(true);                // 클라이언트 단에서 javascript로 조작 불가

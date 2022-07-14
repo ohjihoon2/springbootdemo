@@ -143,7 +143,7 @@ $(function(){
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
         }
         else if(res.result == "success") {
-            alert("크드그룹을 추가하였습니다.")
+            alert("코드그룹을 추가하였습니다.")
             window.location.reload();
         }
         else if(res.result == "fail"){

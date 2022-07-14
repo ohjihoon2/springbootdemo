@@ -186,12 +186,11 @@ public class BoardServiceImpl implements BoardService {
 
         Cookie accumulateIdxCookie = Arrays
                 .stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals("alreadyViewIdx"))
+                .filter(cookie -> cookie.getName().equals("boardCookie"))
                 .findFirst()
                 .orElseGet(() -> {
-                    Cookie cookie = HitCookie.createAccIdxCookie(formatIdx);    // 조회수 중복 방지용 쿠키 생성
-                    response.addCookie(cookie);                        // 생성한 쿠키를 response에 담는다.
-                    boardMapper.incrementBoardHit(idx);            // 조회수 증가 쿼리 수행
+                    Cookie cookie = HitCookie.createAccIdxCookie("boardCookie", formatIdx);   // 조회수 중복 방지용 쿠키 생성
+                    boardMapper.incrementBoardHit(idx); // 조회수 증가 쿼리 수행
                     return cookie;
                 });
 
@@ -200,10 +199,9 @@ public class BoardServiceImpl implements BoardService {
 
         if(cookieValue.contains(formatIdx) == false) {
             String newCookieValue = cookieValue + "/" + formatIdx;
-            response.addCookie(HitCookie.createAccIdxCookie(newCookieValue));    // 기존에 같은 이름의 쿠키가 있다면 덮어쓴다.
+            response.addCookie(HitCookie.createAccIdxCookie("boardCookie", newCookieValue));    // 기존에 같은 이름의 쿠키가 있다면 덮어쓴다.
             boardMapper.incrementBoardHit(idx);                        // 조회수 증가 쿼리 수행
         }
-
     }
 
     @Override

@@ -30,12 +30,11 @@ public class ContentServiceImpl implements ContentService {
 
         Cookie accumulateIdxCookie = Arrays
                 .stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals("alreadyViewIdx"))
+                .filter(cookie -> cookie.getName().equals("contentCookie"))
                 .findFirst()
                 .orElseGet(() -> {
-                    Cookie cookie = HitCookie.createAccIdxCookie(formatIdx);    // 조회수 중복 방지용 쿠키 생성
-                    response.addCookie(cookie);                        // 생성한 쿠키를 response에 담는다.
-                    contentMapper.incrementContentHit(idx);            // 조회수 증가 쿼리 수행
+                    Cookie cookie = HitCookie.createAccIdxCookie("contentCookie", formatIdx);    // 조회수 중복 방지용 쿠키 생성
+                    contentMapper.incrementContentHit(idx);                        // 조회수 증가 쿼리 수행
                     return cookie;
                 });
 
@@ -44,9 +43,8 @@ public class ContentServiceImpl implements ContentService {
 
         if(cookieValue.contains(formatIdx) == false) {
             String newCookieValue = cookieValue + "/" + formatIdx;
-            response.addCookie(HitCookie.createAccIdxCookie(newCookieValue));    // 기존에 같은 이름의 쿠키가 있다면 덮어쓴다.
+            response.addCookie(HitCookie.createAccIdxCookie("contentCookie", newCookieValue));    // 기존에 같은 이름의 쿠키가 있다면 덮어쓴다.
             contentMapper.incrementContentHit(idx);                        // 조회수 증가 쿼리 수행
         }
-
     }
 }
