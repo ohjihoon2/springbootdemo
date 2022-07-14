@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.ContentService;
-import com.example.demo.vo.BoardMaster;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -10,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -32,8 +29,6 @@ public class ContentController {
      */
     @GetMapping("/{contentId}")
     public String contentDetail(@PathVariable("contentId") String contentId, HttpServletResponse response, HttpServletRequest request, Model model) {
-
-        Map<String, Object> paramMap = new HashMap<>();
 
         Map<String,Object> contentDetail = contentService.findAllByContentId(contentId);
 

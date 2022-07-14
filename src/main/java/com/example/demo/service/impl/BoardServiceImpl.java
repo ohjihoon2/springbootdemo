@@ -190,13 +190,13 @@ public class BoardServiceImpl implements BoardService {
                 .findFirst()
                 .orElseGet(() -> {
                     Cookie cookie = HitCookie.createAccIdxCookie("boardCookie", formatIdx);   // 조회수 중복 방지용 쿠키 생성
+                    response.addCookie(cookie);
                     boardMapper.incrementBoardHit(idx); // 조회수 증가 쿼리 수행
                     return cookie;
                 });
 
         // 서로 다른 idx에 대해서는 "/" 로 구분한다.
         String cookieValue = accumulateIdxCookie.getValue();
-        System.out.println("cookieValue = " + cookieValue);
 
         if(cookieValue.contains(formatIdx) == false) {
             String newCookieValue = cookieValue + "/" + formatIdx;

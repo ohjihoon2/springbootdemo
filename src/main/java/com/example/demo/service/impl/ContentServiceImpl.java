@@ -34,6 +34,7 @@ public class ContentServiceImpl implements ContentService {
                 .findFirst()
                 .orElseGet(() -> {
                     Cookie cookie = HitCookie.createAccIdxCookie("contentCookie", formatIdx);    // 조회수 중복 방지용 쿠키 생성
+                    response.addCookie(cookie);
                     contentMapper.incrementContentHit(idx);                        // 조회수 증가 쿼리 수행
                     return cookie;
                 });
