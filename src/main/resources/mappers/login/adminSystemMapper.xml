@@ -118,8 +118,10 @@
     </update>
 
     <update id="updateCode" parameterType="map">
+        <foreach item="item" index="index" collection="codeList" separator=",">
         INSERT INTO code
             (
+                IDX,
                 CODE_GROUP_ID,
                 CODE,
                 CODE_NM,
@@ -127,9 +129,9 @@
                 CREATE_IDX,
                 CREATE_DATE
             )
-        <foreach item="item" index="index" collection="codeList" separator=",">
             VALUES
                 (
+                    #{item.idx},
                     #{codeGroupId},
                     #{item.code},
                     #{item.codeNm},
