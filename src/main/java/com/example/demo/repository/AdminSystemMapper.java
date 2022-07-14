@@ -25,7 +25,7 @@ public interface AdminSystemMapper {
 
     int updateCodeGroup(Map<String, Object> paramMap);
 
-    int updateCode(ArrayList codeList);
+    int updateCode(Map<String, Object> paramMap);
 
     int existsCodeGroupId(Map<String,Object> paramMap);
 

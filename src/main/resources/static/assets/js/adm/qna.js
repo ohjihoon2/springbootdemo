@@ -61,7 +61,7 @@ $(function(){
 
         var html =
             '<h4>Q&A 상세</h4>' +
-            '<div class="mb20"></div>' +
+            '<div class="mb10"></div>' +
             '<form id="qnaDetailForm">' +
             '<input id="qnaIdx" type="hidden" value="'+ res.config.qnaIdx +'">' +
             '<table class="table-top">' +

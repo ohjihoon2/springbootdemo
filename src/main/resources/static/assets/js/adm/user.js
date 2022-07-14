@@ -50,7 +50,7 @@ $(function(){
 
         var html =
             '<h4>회원 수정</h4>' +
-            '<div class="mb20"></div>' +
+            '<div class="mb10"></div>' +
             '<form id="userUpdateForm">' +
             '<input id="idx" type="hidden" value="'+ res.idx +'">' +
             '<table class="table-top">' +

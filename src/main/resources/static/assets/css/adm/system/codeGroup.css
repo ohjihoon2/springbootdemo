@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-table .update-btn button {
+.update-btn button {
     padding: 7px 0;
     width: 50px;
     color: #fff;
@@ -9,4 +9,12 @@ table .update-btn button {
 
 table .remarks {
     font-size: 13px;
+}
+
+table .command-btn button {
+    background: #c0c0c0;
+    border: 1px solid #b4b4b4;
+    padding: 6px 0;
+    width: 35px;
+    color: #fff;
 }

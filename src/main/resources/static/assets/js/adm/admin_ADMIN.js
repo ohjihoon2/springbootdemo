@@ -14,7 +14,7 @@ $(function(){
 
         var html =
             '<h4>내정보 수정</h4>' +
-            '<div class="mb20"></div>' +
+            '<div class="mb10"></div>' +
             '<form id="myUpdateForm">' +
             '<table class="table-top">' +
             '<colgroup>' +
@@ -72,7 +72,7 @@ $(function(){
     $('#addBtn').click(function(){
         var html =
             '<h4>관리자 추가</h4>' +
-            '<div class="mb20"></div>' +
+            '<div class="mb10"></div>' +
             '<form id="adminAddForm">' +
             '<table class="table-top">' +
             '<colgroup>' +
@@ -276,7 +276,7 @@ $(function(){
 
         var html =
             '<h4>관리자 수정</h4>' +
-            '<div class="mb20"></div>' +
+            '<div class="mb10"></div>' +
             '<form id="adminUpdateForm">' +
             '<input id="idx" type="hidden" value="'+ res.idx +'">' +
             '<table class="table-top">' +

@@ -148,7 +148,6 @@
                SORT_ORDR = #{item.sortOrdr},
                UPDATE_IDX = #{userIdx},
                UPDATE_DATE = SYSDATE()
-             WHERE IDX = #{item.idx}
         </foreach>
     </update>
 

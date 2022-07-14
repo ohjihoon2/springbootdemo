@@ -13,7 +13,7 @@ $(function(){
     $('#addBtn').click(function(){
         var html = 
             '<h4>CSS 추가</h4>' +
-            '<div class="mb20"></div>' +
+            '<div class="mb10"></div>' +
             '<form id="cssAddForm">' +
             '<table class="table-top">' +
             '<colgroup>' +
@@ -110,7 +110,7 @@ $(function(){
 
         var html =
             '<h4>CSS 수정</h4>' +
-            '<div class="mb20"></div>' +
+            '<div class="mb10"></div>' +
             '<form id="cssUpdateForm">' +
             '<input id="idx" type="hidden" value="'+ res.idx +'">' +
             '<table class="table-top">' +

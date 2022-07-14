@@ -50,8 +50,7 @@ public class AdminSystemServiceImpl implements AdminSystemService {
     public int updateCodeGroup(Map<String, Object> paramMap) {
         int result = 0;
         if(adminMapper.updateCodeGroup(paramMap) == 1){
-            ArrayList codeList = (ArrayList) paramMap.get("codeList");
-            result = adminMapper.updateCode(codeList);
+            result = adminMapper.updateCode(paramMap);
         }
 
         return result;

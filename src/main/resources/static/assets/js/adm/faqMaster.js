@@ -15,7 +15,7 @@ $(function(){
     $('#addBtn').click(function(){
         var html = 
             '<h4>FAQ타입 추가</h4>' +
-            '<div class="mb20"></div>' +
+            '<div class="mb10"></div>' +
             '<form id="faqAddForm">' +
             '<table class="table-top">' +
             '<colgroup>' +
@@ -103,7 +103,7 @@ $(function(){
 
         var html =
             '<h4>FAQ 타입 수정</h4>' +
-            '<div class="mb20"></div>' +
+            '<div class="mb10"></div>' +
             '<form id="faqUpdateForm">' +
             '<input type="hidden" id="idx" value="'+ res.idx +'">' +
             '<table class="table-top">' +

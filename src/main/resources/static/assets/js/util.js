@@ -555,7 +555,7 @@
                 "<div class=popup-js-content>" +
                 html +
                 "</div>" +
-                "<div class='mb20'></div>" +
+                "<div class='mb10'></div>" +
                 "<div class='popup-js-bot-btn-box'>" +
                 bot +
                 "</div>" +

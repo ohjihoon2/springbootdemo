@@ -15,7 +15,7 @@ $(function(){
     $('#addBtn').click(function(){
         var html = 
             '<h4>컨텐츠 추가</h4>' +
-            '<div class="mb20"></div>' +
+            '<div class="mb10"></div>' +
             '<form id="contentAddForm">' +
             '<table class="table-top">' +
             '<colgroup>' +
@@ -126,7 +126,7 @@ $(function(){
 
         var html =
             '<h4>컨텐츠 수정</h4>' +
-            '<div class="mb20"></div>' +
+            '<div class="mb10"></div>' +
             '<form id="contentUpdateForm">' +
             '<input id="idx" type="hidden" value="'+ res.idx +'">' +
             '<table class="table-top">' +

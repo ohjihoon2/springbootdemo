@@ -9,11 +9,11 @@ $(function(){
     });
 
 
-    //컨텐츠추가 팝업
+    //코드그룹추가 팝업
     $('#addBtn').click(function(){
         var html = 
             '<h4>코드그룹추가</h4>' +
-            '<div class="mb20"></div>' +
+            '<div class="mb10"></div>' +
             '<form id="cssAddForm">' +
             '<table class="table-top">' +
             '<colgroup>' +
@@ -32,7 +32,7 @@ $(function(){
             '</table>' +
             '<div class="mt20"></div>' +
             '<h4>코드추가</h4>' +
-            '<div class="mb20"></div>' +
+            '<div class="mb10"></div>' +
             '<div class="min-height350">' +
             '<table class="table-top">' +
             '<colgroup>' +
@@ -140,7 +140,7 @@ $(function(){
 
         var html =
             '<h4>CSS 수정</h4>' +
-            '<div class="mb20"></div>' +
+            '<div class="mb10"></div>' +
             '<form id="cssUpdateForm">' +
             '<input id="idx" type="hidden" value="'+ res.idx +'">' +
             '<table class="table-top">' +

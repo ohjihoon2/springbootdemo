@@ -15,7 +15,7 @@ $(function(){
     $('#addBtn').click(function(){
         var html = 
             '<h4>게시판 추가</h4>' +
-            '<div class="mb20"></div>' +
+            '<div class="mb10"></div>' +
             '<form id="boardAddForm">' +
             '<table class="table-top">' +
             '<colgroup>' +
@@ -166,7 +166,7 @@ $(function(){
 
         var html =
             '<h4>게시판 수정</h4>' +
-            '<div class="mb20"></div>' +
+            '<div class="mb10"></div>' +
             '<form id="boardUpdateForm">' +
             '<input id="idx" type="hidden" value="'+ res.idx +'">' +
             '<table class="table-top">' +
