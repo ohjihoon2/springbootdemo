@@ -31,7 +31,7 @@ public class ContentController {
     public String contentDetail(@PathVariable("contentId") String contentId, HttpServletResponse response, HttpServletRequest request, Model model) {
 
         Map<String,Object> contentDetail = contentService.findAllByContentId(contentId);
-
+        System.out.println("contentDetail = " + contentDetail);
         model.addAttribute("contentDetail", contentDetail);
 
         return "/content/contentDetail";

@@ -349,7 +349,6 @@
                CONTENT_NM = #{contentNm},
                CONTENT_HTML = #{contentHtml},
                READ_LEVEL = #{readLevel},
-               HIT = #{hit},
                UPDATE_IDX= #{userIdx},
                UPDATE_DATE= SYSDATE()
          WHERE IDX= #{idx}
