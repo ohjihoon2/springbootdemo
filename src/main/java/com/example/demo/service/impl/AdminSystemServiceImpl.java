@@ -25,13 +25,13 @@ public class AdminSystemServiceImpl implements AdminSystemService {
     }
 
     @Override
-    public CodeGroup findByCodeGroupIdCodeGroup(String CodeGroupId) {
-        return adminMapper.findByCodeGroupIdCodeGroup(CodeGroupId);
+    public CodeGroup findByIdxCodeGroup(int idx) {
+        return adminMapper.findByIdxCodeGroup(idx);
     }
 
     @Override
-    public List<Code> findAllByCodeGroupIdCode(String codeGroupId) {
-        return adminMapper.findAllByCodeGroupIdCode(codeGroupId);
+    public List<Code> findAllByIdxCode(int idx) {
+        return adminMapper.findAllByIdxCode(idx);
     }
 
     @Override

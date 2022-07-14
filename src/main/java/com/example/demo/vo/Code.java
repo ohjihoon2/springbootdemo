@@ -6,6 +6,8 @@ import java.util.Date;
 
 @Data
 public class Code {
+    /* IDX */
+    private int idx;
 
     /* 코드그룹 ID */
     private String codeGroupId;
@@ -15,6 +17,9 @@ public class Code {
 
     /* 코드명 */
     private String codeNm;
+
+    /* 정렬 순서 */
+    private int sortOrdr;
 
     /* 등록 IDX */
     private int createIdx;

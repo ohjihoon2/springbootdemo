@@ -196,6 +196,7 @@ public class BoardServiceImpl implements BoardService {
 
         // 서로 다른 idx에 대해서는 "/" 로 구분한다.
         String cookieValue = accumulateIdxCookie.getValue();
+        System.out.println("cookieValue = " + cookieValue);
 
         if(cookieValue.contains(formatIdx) == false) {
             String newCookieValue = cookieValue + "/" + formatIdx;

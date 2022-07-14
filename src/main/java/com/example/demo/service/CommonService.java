@@ -13,4 +13,6 @@ public interface CommonService {
     void refreshSingletonMenuInfo();
 
     void refreshSingletonCssInfo();
+
+    void refreshSingletonCodeInfo();
 }

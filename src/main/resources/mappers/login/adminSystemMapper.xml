@@ -38,27 +38,30 @@
          ORDER BY A.CODE_GROUP_ID
     </select>
 
-    <select id="findByCodeGroupIdCodeGroup" resultType="CodeGroup" parameterType="String">
-        SELECT CODE_GROUP_ID,
+    <select id="findByIdxCodeGroup" resultType="CodeGroup" parameterType="int">
+        SELECT IDX,
+               CODE_GROUP_ID,
                CODE_GROUP_NM,
                CREATE_IDX,
                CREATE_DATE,
                UPDATE_IDX,
                UPDATE_DATE
           FROM code_group
-         WHERE CODE_GROUP_ID = #{codeGroupId}
+         WHERE IDX = #{idx}
     </select>
 
-    <select id="findAllByCodeGroupIdCode" parameterType="String" resultType="Code">
-        SELECT CODE_GROUP_ID,
+    <select id="findAllByIdxCode" parameterType="int" resultType="Code">
+        SELECT IDX,
+               CODE_GROUP_ID,
                CODE,
                CODE_NM,
+               SORT_ORDR,
                CREATE_IDX,
                CREATE_DATE,
                UPDATE_IDX,
                UPDATE_DATE
           FROM code
-         WHERE CODE_GROUP_ID = #{codeGroupId}
+         WHERE IDX = #{idx}
     </select>
 
     <insert id="insertCodeGroup" parameterType="map">
@@ -84,6 +87,7 @@
                 CODE_GROUP_ID,
                 CODE,
                 CODE_NM,
+                SORT_ORDR,
                 CREATE_IDX,
                 CREATE_DATE
             )
@@ -93,6 +97,7 @@
                 #{codeGroupId},
                 #{item.code},
                 #{item.codeNm},
+                #{item.sortOrdr},
                 #{userIdx},
                 SYSDATE()
             )
@@ -100,21 +105,58 @@
     </insert>
 
     <update id="updateCodeGroup" parameterType="map">
-        UPDATE code_group
-           SET CODE_GROUP_NM = #{codeGroupNm},
+        INSERT INTO code_group
+            (
+                CODE_GROUP_ID,
+                CODE_GROUP_NM,
+                CREATE_IDX,
+                CREATE_DATE
+            )
+        VALUES
+            (
+                #{codeGroupId},
+                #{codeGroupNm},
+                #{userIdx},
+                SYSDATE()
+            )
+            ON DUPLICATE KEY UPDATE
+        <if test="codeGroupId != null and !codeGroupId.equals('')">
+               CODE_GROUP_ID = #{codeGroupId},
+        </if>
+               CODE_GROUP_NM = #{codeGroupNm},
                UPDATE_IDX = #{userIdx},
                UPDATE_DATE = SYSDATE()
-         WHERE CODE_GROUP_ID = #{codeGroupId}
+         WHERE IDX = #{idx}
     </update>
 
     <update id="updateCode" parameterType="map">
         <foreach item="item" index="index" collection="codeList" separator=",">
-        UPDATE code
-           SET CODE_NM = #{item.codeNm},
+            INSERT INTO code_group
+                (
+                     CODE_GROUP_ID,
+                     CODE_GROUP_NM,
+                     CREATE_IDX,
+                     CREATE_DATE
+                )
+            VALUES
+                (
+                     #{codeGroupId},
+                     #{codeGroupNm},
+                     #{userIdx},
+                     SYSDATE()
+                )
+            ON DUPLICATE KEY UPDATE
+            <if test="codeGroupId != null and !codeGroupId.equals('')">
+               CODE_GROUP_ID = #{codeGroupId},
+            </if>
+            <if test="code != null and !code.equals('')">
+               CODE = #{item.code},
+            </if>
+               CODE_NM = #{item.codeNm},
+               SORT_ORDR = #{item.sortOrdr},
                UPDATE_IDX = #{userIdx},
                UPDATE_DATE = SYSDATE()
-         WHERE CODE_GROUP_ID = #{item.codeGroupId}
-           AND CODE = #{item.code}
+             WHERE IDX = #{item.idx}
         </foreach>
     </update>
 

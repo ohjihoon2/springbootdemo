@@ -15,9 +15,9 @@ import java.util.Map;
 public interface AdminSystemMapper {
     List<Map<String,Object>> findAllCodeGroup(Criteria criteria);
 
-    CodeGroup findByCodeGroupIdCodeGroup(String CodeGroupId);
+    CodeGroup findByIdxCodeGroup(int idx);
 
-    List<Code> findAllByCodeGroupIdCode(String codeGroupId);
+    List<Code> findAllByIdxCode(int idx);
 
     int insertCodeGroup(Map<String, Object> paramMap);
 

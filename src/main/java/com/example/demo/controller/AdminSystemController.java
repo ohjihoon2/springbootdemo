@@ -61,15 +61,15 @@ public class AdminSystemController {
 
     /**
      * code group 상세 팝업
-     * @param CodeGroupId
+     * @param idx
      * @return
      */
-    @PostMapping(value = "/codeGroup/{CodeGroupId}")
+    @PostMapping(value = "/codeGroup/{idx}")
     @ResponseBody
-    public Map<String, Object> systemDetails(@PathVariable String CodeGroupId) {
+    public Map<String, Object> systemDetails(@PathVariable int idx) {
         Map<String, Object> paramMap = new HashMap<>();
-        CodeGroup codeGroup = adminService.findByCodeGroupIdCodeGroup(CodeGroupId);
-        List<Code> codeList = adminService.findAllByCodeGroupIdCode(CodeGroupId);
+        CodeGroup codeGroup = adminService.findByIdxCodeGroup(idx);
+        List<Code> codeList = adminService.findAllByIdxCode(idx);
         paramMap.put("codeGroup", codeGroup);
         paramMap.put("codeList", codeList);
 
@@ -92,26 +92,26 @@ public class AdminSystemController {
 
         int result = adminService.insertCodeGroup(paramMap);
         //code 정보 갱신
-//        commonService.refreshSingletonCodeInfo();
+        commonService.refreshSingletonCodeInfo();
 
         return ResultStr.setMulti(result);
     }
 
     /**
      * code group 수정
-     * @param CodeGroupId
+     * @param idx
      * @param paramMap
      * @param principal
      * @param response
      * @param request
      * @return
      */
-    @PatchMapping(value = "/codeGroup/{CodeGroupId}")
+    @PatchMapping(value = "/codeGroup/{idx}")
     @ResponseBody
-    public Map<String,Object> updateCssContent(@PathVariable String CodeGroupId, @RequestBody Map<String, Object> paramMap, Principal principal, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> updateCssContent(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal, HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
-        paramMap.put("CodeGroupId",CodeGroupId);
+        paramMap.put("idx",idx);
         paramMap.put("userIdx",userIdx);
 
         int result = adminService.updateCodeGroup(paramMap);
