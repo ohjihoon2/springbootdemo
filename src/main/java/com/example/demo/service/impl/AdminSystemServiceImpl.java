@@ -30,8 +30,8 @@ public class AdminSystemServiceImpl implements AdminSystemService {
     }
 
     @Override
-    public List<Code> findAllByIdxCode(String codeGroupId) {
-        return adminMapper.findAllByIdxCode(codeGroupId);
+    public List<Code> findAllByCodeGroupIdCode(String codeGroupId) {
+        return adminMapper.findAllByCodeGroupIdCode(codeGroupId);
     }
 
     @Override
@@ -70,5 +70,21 @@ public class AdminSystemServiceImpl implements AdminSystemService {
     @Override
     public int updateSystemConfig(Map<String, Object> paramMap) {
         return adminMapper.updateSystemConfig(paramMap);
+    }
+
+    @Override
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
+    public int deleteCodeGroup(String codeGroupId) {
+        int result = 0;
+        if(adminMapper.deleteCodeGroup(codeGroupId) == 1){
+            result = adminMapper.deleteCodeByCodeGroupId(codeGroupId);
+        }
+
+        return result;
+    }
+
+    @Override
+    public int deleteCode(int idx) {
+        return adminMapper.deleteCode(idx);
     }
 }

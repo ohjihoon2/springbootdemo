@@ -17,7 +17,7 @@ public interface AdminSystemMapper {
 
     CodeGroup findByIdxCodeGroup(int idx);
 
-    List<Code> findAllByIdxCode(String codeGroupId);
+    List<Code> findAllByCodeGroupIdCode(String codeGroupId);
 
     int insertCodeGroup(Map<String, Object> paramMap);
 
@@ -32,4 +32,10 @@ public interface AdminSystemMapper {
     Map<String, Object> findSystemConfig();
 
     int updateSystemConfig(Map<String, Object> paramMap);
+
+    int deleteCodeGroup(String codeGroupId);
+
+    int deleteCodeByCodeGroupId(String codeGroupId);
+
+    int deleteCode(int idx);
 }

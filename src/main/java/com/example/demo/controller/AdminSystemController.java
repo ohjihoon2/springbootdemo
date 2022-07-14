@@ -82,7 +82,7 @@ public class AdminSystemController {
     public Map<String, Object> systemDetails(@PathVariable int idx) {
         Map<String, Object> paramMap = new HashMap<>();
         CodeGroup codeGroup = adminService.findByIdxCodeGroup(idx);
-        List<Code> codeList = adminService.findAllByIdxCode(codeGroup.getCodeGroupId());
+        List<Code> codeList = adminService.findAllByCodeGroupIdCode(codeGroup.getCodeGroupId());
         paramMap.put("codeGroup", codeGroup);
         paramMap.put("codeList", codeList);
 
@@ -126,6 +126,38 @@ public class AdminSystemController {
         paramMap.put("userIdx",userIdx);
 
         int result = adminService.updateCodeGroup(paramMap);
+
+        return ResultStr.set(result);
+    }
+
+    /**
+     * code group 삭제
+     * @param codeGroupId
+     * @param response
+     * @param request
+     * @return
+     */
+    @DeleteMapping(value = "/codeGroup/{codeGroupId}")
+    @ResponseBody
+    public Map<String,Object> deleteCodeGroup(@PathVariable String codeGroupId,HttpServletResponse response, HttpServletRequest request) {
+
+        int result = adminService.deleteCodeGroup(codeGroupId);
+
+        return ResultStr.set(result);
+    }
+
+    /**
+     * code 삭제
+     * @param idx
+     * @param response
+     * @param request
+     * @return
+     */
+    @DeleteMapping(value = "/code/{idx}")
+    @ResponseBody
+    public Map<String,Object> deleteCode(@PathVariable int idx,HttpServletResponse response, HttpServletRequest request) {
+
+        int result = adminService.deleteCode(idx);
 
         return ResultStr.set(result);
     }

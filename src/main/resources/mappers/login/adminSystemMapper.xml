@@ -51,7 +51,7 @@
          WHERE IDX = #{idx}
     </select>
 
-    <select id="findAllByIdxCode" parameterType="String" resultType="Code">
+    <select id="findAllByCodeGroupIdCode" parameterType="String" resultType="Code">
         SELECT IDX,
                CODE_GROUP_ID,
                CODE,
@@ -151,6 +151,21 @@
              WHERE IDX = #{item.idx}
         </foreach>
     </update>
+
+    <delete id="deleteCodeGroup" parameterType="String">
+        DELETE FROM code_group
+         WHERE CODE_GROUP_ID =#{codeGroupId}
+    </delete>
+
+    <delete id="deleteCodeByCodeGroupId" parameterType="String">
+        DELETE FROM code
+         WHERE CODE_GROUP_ID =#{codeGroupId}
+    </delete>
+
+    <delete id="deleteCode" parameterType="int">
+        DELETE FROM code
+         WHERE IDX =#{idx}
+    </delete>
 
     <select id="existsCodeGroupId" parameterType="map" resultType="int">
         SELECT COUNT(*)
