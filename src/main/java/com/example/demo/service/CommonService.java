@@ -14,7 +14,5 @@ public interface CommonService {
 
     void refreshSingletonCssInfo();
 
-    void refreshSingletonCodeInfo();
-
     void refreshSingletonSystemConfigInfo();
 }

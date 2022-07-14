@@ -30,8 +30,6 @@ public class CommonServiceImpl implements CommonService {
         this.refreshSingletonMenuInfo();
         // css
         this.refreshSingletonCssInfo();
-        // 공통코드
-        this.refreshSingletonCodeInfo();
         // 사이트 설정
         this.refreshSingletonSystemConfigInfo();
 
@@ -62,14 +60,6 @@ public class CommonServiceImpl implements CommonService {
         List<Css> cssList = commonMapper.findCssContent();
         singleton.setCssList(cssList);
 
-    }
-
-    @Override
-    public void refreshSingletonCodeInfo() {
-        SingletonData singleton = SingletonData.getInstance();
-//        List<Code> codeList = commonMapper.findCommonCode();
-//        List<Code> codeGroupList = commonMapper.findCommonCodeGroup();
-//        singleton.setCssList(cssList);
     }
 
     @Override

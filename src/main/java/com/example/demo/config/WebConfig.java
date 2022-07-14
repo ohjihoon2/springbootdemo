@@ -35,6 +35,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(1) // 해당 인터셉터가 적용되는 순서, 1 이면 첫번째로 실행
 //                .addPathPatterns("/**"); // 현재 모든 주소에 대해 인터섹터 적용
                 .addPathPatterns("/","/board/**","/content/**","/qna/**","/faq/**") // 현재 모든 주소에 대해 인터섹터 적용
-                .excludePathPatterns("/board/hit/**", "/content/hit/**"); // 그중에 이 주소는 제외
+                .excludePathPatterns("/board/hit/**", "/content/hit/**","/board/boardMaster/**"); // 그중에 이 주소는 제외
     }
 }

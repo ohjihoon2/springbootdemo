@@ -104,8 +104,6 @@ public class AdminSystemController {
         paramMap.put("userIdx", userIdx);
 
         int result = adminService.insertCodeGroup(paramMap);
-        //code 정보 갱신
-        commonService.refreshSingletonCodeInfo();
 
         return ResultStr.setMulti(result);
     }
@@ -128,8 +126,6 @@ public class AdminSystemController {
         paramMap.put("userIdx",userIdx);
 
         int result = adminService.updateCodeGroup(paramMap);
-        //code정보 갱신
-//        commonService.refreshSingletonCodeInfo();
 
         return ResultStr.set(result);
     }
