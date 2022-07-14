@@ -22,7 +22,8 @@
     </sql>
 
     <select id="findAllCodeGroup" resultType="CustomMap" parameterType="Criteria">
-        SELECT A.CODE_GROUP_ID,
+        SELECT A.IDX,
+               A.CODE_GROUP_ID,
                A.CODE_GROUP_NM,
                IFNULL(B.USER_NICKNM,'탈퇴된 관리자')AS CREATE_NICKNM,
                A.CREATE_IDX,
