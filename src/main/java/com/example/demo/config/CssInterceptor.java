@@ -45,7 +45,12 @@ public class CssInterceptor implements HandlerInterceptor {
         }else {
             if(urlSplit[0].equals("board")) {
                 for (Css css : cssList) {
-                    if(css.getCssFirstId().equals("common") || (css.getCssFirstId().equals("board"))){
+                    if(css.getCssFirstId().equals("common") || ((css.getCssFirstId().equals("board")) && css.getCssSecondId() == null)){
+                        cssStyle.append("\n/* ------------------------------");
+                        cssStyle.append(css.getCssNm());
+                        cssStyle.append("------------------------------ */\n");
+                        cssStyle.append(css.getCssCode()+"\n");
+                    }else if(css.getCssSecondId().equals(urlSplit[1])){
                         cssStyle.append("\n/* ------------------------------");
                         cssStyle.append(css.getCssNm());
                         cssStyle.append("------------------------------ */\n");
@@ -54,12 +59,18 @@ public class CssInterceptor implements HandlerInterceptor {
                 }
             }else if(urlSplit[0].equals("content")){
                 for (Css css : cssList) {
-                    if(css.getCssFirstId().equals("common") || css.getCssFirstId().equals("content")){
+                    if(css.getCssFirstId().equals("common") || (css.getCssFirstId().equals("content") && css.getCssSecondId() == null)){
+                        cssStyle.append("\n/* ------------------------------");
+                        cssStyle.append(css.getCssNm());
+                        cssStyle.append("------------------------------ */\n");
+                        cssStyle.append(css.getCssCode()+"\n");
+                    }else if(css.getCssSecondId().equals(urlSplit[1])){
                         cssStyle.append("\n/* ------------------------------");
                         cssStyle.append(css.getCssNm());
                         cssStyle.append("------------------------------ */\n");
                         cssStyle.append(css.getCssCode()+"\n");
                     }
+
                 }
             }else {
                 for (Css css : cssList) {
