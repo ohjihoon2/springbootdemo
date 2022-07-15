@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ConfigUtil {
 
-    public String getHomepageName(){
-        return SingletonData.getInstance().getConfigData().get("homepageName").toString();
+    public String getValue(String key){
+        return SingletonData.getInstance().getConfigData().get(key).toString();
     }
 }

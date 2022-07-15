@@ -54,10 +54,7 @@
     </select>
 
     <select id="findSystemConfig" resultType="CustomMap">
-        SELECT QA_CATEGORY,
-               RESET_PASSWORD,
-               HOMEPAGE_NAME,
-               MAIN_SKIN_TYPE
+        SELECT *
           FROM config
     </select>
 </mapper>

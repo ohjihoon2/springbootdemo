@@ -23,6 +23,10 @@ public class CssInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();//프로젝트경로부터 파일까지의 경로값을 얻어옴 (/test/index.jsp)
         requestURI = requestURI.replaceFirst("/","");
 
+        String method = request.getMethod();
+        if(!method.equals("GET")){
+            return;
+        }
         String[] urlSplit = requestURI.split("/");
 
         List<Css> cssList = SingletonData.getInstance().getCssList();
