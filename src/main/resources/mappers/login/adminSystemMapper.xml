@@ -118,7 +118,7 @@
     </update>
 
     <update id="updateCode" parameterType="map">
-        <foreach item="item" index="index" collection="codeList" separator=",">
+        <foreach item="item" index="index" collection="codeList" separator=";">
         INSERT INTO code
             (
                 IDX,

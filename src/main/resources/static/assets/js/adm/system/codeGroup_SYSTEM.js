@@ -38,9 +38,9 @@ $(function(){
             '<div class="min-height350">' +
             '<table class="table-top">' +
             '<colgroup>' +
-            '<col width="40%">' +
-            '<col width="40%">' +
-            '<col width="20%">' +
+            '<col width="42%">' +
+            '<col width="42%">' +
+            '<col width="16%">' +
             '</colgroup>' +
             '<thead>' +
             '<tr>' +
@@ -248,9 +248,9 @@ $(function(){
             '<div class="min-height350">' +
             '<table class="table-top">' +
             '<colgroup>' +
-            '<col width="40%">' +
-            '<col width="40%">' +
-            '<col width="20%">' +
+            '<col width="42%">' +
+            '<col width="42%">' +
+            '<col width="16%">' +
             '</colgroup>' +
             '<thead>' +
             '<tr>' +
@@ -294,7 +294,7 @@ $(function(){
             '<button type="button" id="codeGroupDel">삭제</button>' +
             '</div>' +
             '<button type="button" onclick="$popup.popupJsClose()">닫기</button>\n' +
-            '<button type="submit">추가</button>' +
+            '<button type="submit">수정</button>' +
             '</div>' +
             '</form>';
 
@@ -320,7 +320,7 @@ $(function(){
         }
     });
 
-    // 컨텐츠수정
+    // 코드그룹 수정
     $(document).on("submit", "#codeGroupUpdateForm", function(e) {
         e.preventDefault();
 
@@ -351,7 +351,7 @@ $(function(){
         var codeList = new Array();
         for(i = 0; i < tr.length; i++) {
             var obj = new Object();
-            obj.idx = tr.eq(i).data('val');
+            obj.idx = tr.eq(i).data('val') == "" ? null : tr.eq(i).data('val');
             obj.code = tr.eq(i).find('td').eq(0).children('input[type="text"]').val();
             if(obj.code == '') {
                 alert("코드ID는 필수항목입니다.");
@@ -404,48 +404,4 @@ $(function(){
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
         }
     });
-
-    // 디테일 ID 오픈
-    $(document).on("change", "#cssFirstId", function(e) {
-        if($(this).val() == 'content' || $(this).val() == 'board') {
-            $('#cssSecondId').attr('readonly', false);
-        }
-        else {
-            $('#cssSecondId').val('')
-            $('#cssSecondId').attr('readonly', true);
-        }
-    });
-
-    //셀렉트박스를 만든다
-    function creatSelect(cho='') {
-        if(cho == '') {
-            var html =
-                '<option value="common">공통</option>' +
-                '<option value="main">메인</option>' +
-                '<option value="board">게시판</option>' +
-                '<option value="content">컨텐츠</option>' +
-                '<option value="qna">Q&A</option>' +
-                '<option value="faq">FAQ</option>';
-        }
-        else {
-            var res = {
-                COMMON : '',
-                MAIN : '',
-                BOARD : '',
-                CONTENT : '',
-                QNA : '',
-                FAQ : '',
-            }
-            res[cho] = 'selected';
-
-            var html =
-                '<option value="common"'+ res['common']+'>공통</option>' +
-                '<option value="main"'+ res['main']+'>메인</option>' +
-                '<option value="board"'+ res['board']+'>게시판</option>' +
-                '<option value="content"'+ res['content']+'>컨텐츠</option>' +
-                '<option value="qna"'+ res['qna']+'>Q&A</option>' +
-                '<option value="faq"'+ res['faq']+'>FAQ</option>';
-        }
-        return html;
-    }
 });

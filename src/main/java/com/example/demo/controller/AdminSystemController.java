@@ -127,7 +127,9 @@ public class AdminSystemController {
 
         int result = adminService.updateCodeGroup(paramMap);
 
-        return ResultStr.set(result);
+
+        System.out.println("result = " + result);
+        return ResultStr.setMulti(result);
     }
 
     /**
