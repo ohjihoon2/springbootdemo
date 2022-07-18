@@ -151,7 +151,7 @@
     </update>
 
     <update id="updateCodeNm" parameterType="map">
-        <foreach collection="codeList" item="item" index="index">
+        <foreach collection="codeList" item="item" index="index" open="" close="" separator=";">
             UPDATE code
                SET CODE_NM = #{item.codeNm},
                    SORT_ORDR = #{item.sortOrdr},
