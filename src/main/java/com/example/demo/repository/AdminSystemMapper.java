@@ -38,4 +38,6 @@ public interface AdminSystemMapper {
     int deleteCodeByCodeGroupId(String codeGroupId);
 
     int deleteCode(int idx);
+
+    int updateCodeNm(Map<String, Object> paramMap);
 }

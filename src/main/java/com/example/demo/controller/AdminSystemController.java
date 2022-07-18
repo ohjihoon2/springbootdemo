@@ -119,7 +119,7 @@ public class AdminSystemController {
      */
     @PatchMapping(value = "/codeGroup/{idx}")
     @ResponseBody
-    public Map<String,Object> updateCssContent(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> updateCodeGroup(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, Principal principal, HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
         paramMap.put("idx",idx);
@@ -127,8 +127,24 @@ public class AdminSystemController {
 
         int result = adminService.updateCodeGroup(paramMap);
 
+        return ResultStr.setMulti(result);
+    }
 
-        System.out.println("result = " + result);
+    /**
+     * code 이름 변경
+     * @param paramMap
+     * @param request
+     * @return
+     */
+    @PatchMapping(value = "/code")
+    @ResponseBody
+    public Map<String,Object> updateCodeNm(@RequestBody Map<String, Object> paramMap, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        paramMap.put("userIdx",userIdx);
+
+        int result = adminService.updateCodeNm(paramMap);
+
         return ResultStr.setMulti(result);
     }
 

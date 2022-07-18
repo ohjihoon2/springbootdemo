@@ -28,4 +28,6 @@ public interface AdminSystemService {
     int deleteCodeGroup(String codeGroupId);
 
     int deleteCode(int idx);
+
+    int updateCodeNm(Map<String, Object> paramMap);
 }

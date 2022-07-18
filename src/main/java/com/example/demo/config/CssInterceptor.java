@@ -14,9 +14,6 @@ import java.util.List;
 @Slf4j
 public class CssInterceptor implements HandlerInterceptor {
 
-//    @Autowired
-//    AlarmService alarmService;
-
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 

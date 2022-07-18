@@ -108,9 +108,7 @@
     <update id="updateCodeGroup" parameterType="map">
         UPDATE code_group
            SET
-        <if test="codeGroupId != null and !codeGroupId.equals('')">
                CODE_GROUP_ID = #{codeGroupId},
-        </if>
                CODE_GROUP_NM = #{codeGroupNm},
                UPDATE_IDX = #{userIdx},
                UPDATE_DATE = SYSDATE()
@@ -151,6 +149,16 @@
                SORT_ORDR = VALUES(SORT_ORDR),
                UPDATE_IDX = VALUES(UPDATE_IDX),
                UPDATE_DATE = SYSDATE()
+    </update>
+
+    <update id="updateCodeNm" parameterType="map">
+        <foreach collection="list" item="item" index="index">
+            UPDATE code
+               SET CODE_NM = #{item.codeNm},
+                   UPDATE_IDX = #{userIdx},
+                   UPDATE_DATE = SYSDATE()
+             WHERE idx = #{item.idx}
+        </foreach>
     </update>
 
     <delete id="deleteCodeGroup" parameterType="String">

@@ -86,4 +86,9 @@ public class AdminSystemServiceImpl implements AdminSystemService {
     public int deleteCode(int idx) {
         return adminMapper.deleteCode(idx);
     }
+
+    @Override
+    public int updateCodeNm(Map<String, Object> paramMap) {
+        return adminMapper.updateCodeNm(paramMap);
+    }
 }
