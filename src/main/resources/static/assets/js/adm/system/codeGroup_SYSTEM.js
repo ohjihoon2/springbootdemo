@@ -89,13 +89,25 @@ $(function(){
 
     // 코드 로우삭제
     $(document).on("click", "button[name='removeBtn']", function(e) {
-        if(confirm("코드를 삭제하시겠습니까?")) {
+        if(confirm("코드를 삭제하시겠습니까?\n(저장된 데이터는 복구할수 없습니다.)")) {
             var tr = $('#codeRow').find('tr');
-            console.log(tr.length);
             if(tr.length <= 1) {
                 alert("하나의 코드는 필수입니다.");
             }
             else {
+                var idx = $(this).closest('tr').data('val');
+                if(idx != '') {
+                    var res = $ajax.deleteAjax('/adm/code/'+ idx);
+                    if(res == "error") {
+                        alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                    }
+                    else if(res.result == "success") {
+                        alert("해당 코드를 삭제하였습니다.")
+                    }
+                    else if(res.result == "fail"){
+                        alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
+                    }
+                }
                 $(this).closest('tr').remove();
             }
         }
@@ -304,14 +316,14 @@ $(function(){
     // 코드삭제
     $(document).on("click", "#codeGroupDel", function(e) {
         if(confirm("해당 코드그룹을 삭제하시겠습니까?")) {
-            var idx = $('#groupIdx').val();
+            var codeGroupId = $('#codeGroupIdOrigin').val();
 
-            var res = $ajax.deleteAjax('/adm/css/'+ idx);
+            var res = $ajax.deleteAjax('/adm/codeGroup/'+ codeGroupId);
             if(res == "error") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }
             else if(res.result == "success") {
-                alert("해당 CSS를 삭제하였습니다.")
+                alert("해당 코드그룹을 삭제하였습니다.")
                 window.location.reload();
             }
             else if(res.result == "fail"){

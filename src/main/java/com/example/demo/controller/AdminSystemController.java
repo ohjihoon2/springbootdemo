@@ -161,7 +161,7 @@ public class AdminSystemController {
 
         int result = adminService.deleteCodeGroup(codeGroupId);
 
-        return ResultStr.set(result);
+        return ResultStr.setMulti(result);
     }
 
     /**
