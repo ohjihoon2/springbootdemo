@@ -154,6 +154,7 @@
         <foreach collection="codeList" item="item" index="index">
             UPDATE code
                SET CODE_NM = #{item.codeNm},
+                   SORT_ORDR = #{item.sortOrdr},
                    UPDATE_IDX = #{userIdx},
                    UPDATE_DATE = SYSDATE()
              WHERE idx = #{item.idx}
