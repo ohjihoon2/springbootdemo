@@ -11,7 +11,7 @@ spring:
 # 데이터베이스 설정
   datasource:
     driverClassName : net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:mariadb://218.48.191.246:23306/demo
+    url: jdbc:log4jdbc:mariadb://218.48.191.246:23306/demo?allowMultiQueries=true
     username: demo
     password: demo
   messages:
@@ -50,6 +50,7 @@ mybatis:
     multiple-result-sets-enabled: true
     # 쿼리 결과 필드가 null인 경우, 누락이 되서 나오는데 누락이 안되게 하는 설정
     call-setters-on-nulls: true
+
 
 # Thymeleaf 설정
 spring:

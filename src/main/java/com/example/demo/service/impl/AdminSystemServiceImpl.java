@@ -88,6 +88,7 @@ public class AdminSystemServiceImpl implements AdminSystemService {
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
     public int updateCodeNm(Map<String, Object> paramMap) {
         return adminMapper.updateCodeNm(paramMap);
     }
