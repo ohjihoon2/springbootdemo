@@ -6,12 +6,11 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/board/boardDetail.css')"></th:block>
+<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/qna/qnaDetail.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
 <!--/*
-
 <script>
-    if("[[${boardMaster.useYn}]]" == "N") {
+    if("[[${qnaConfig.secretYn}]]" == "N") {
         alert("사용이 불가능한 페이지입니다.");
         window.history.back();
     }
@@ -24,8 +23,12 @@
         window.history.back();
     }
 </script>
+*/-->
 <th:block th:replace="/fragments/header.html :: thHeader"></th:block>
 <section>
+    [[${qnaConfig}]]
+    [[${qnaDetail}]]
+    <!--/*
     <div class="section-wrap">
         <form id="boardDetailForm">
             <div class="pt80"></div>
@@ -136,7 +139,9 @@
             <div class="mb100"></div>
         </form>
     </div>
+    */-->
 </section>
+<!--/*
 <script>
     var idx = "[[${boardDetail.idx}]]";
     var boardId = "[[${boardMaster.boardId}]]";
@@ -154,6 +159,6 @@
 </th:block>
 */-->
 <th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
-<script th:src="@{/js/board/boardDetail.js}"></script>
+<script th:src="@{/js/qna/qnaDetail.js}"></script>
 </body>
 </html>
