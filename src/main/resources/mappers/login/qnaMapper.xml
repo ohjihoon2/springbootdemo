@@ -59,7 +59,7 @@
                            B.QA_STATUS,
                            D.CODE_NM AS QA_STATUS_CODE_NM,
                            B.SECRET_YN,
-                           A.IDX,
+                           B.IDX,
                            A.PARENT_IDX,
                            A.QA_SUBJECT,
                            A.QA_CONTENT,
@@ -73,7 +73,7 @@
                       LEFT JOIN users C ON A.CREATE_IDX = C.IDX
                       LEFT JOIN code D ON B.QA_STATUS = D.CODE AND D.CODE_GROUP_ID = 'QA_STATUS_CODE',
                            (SELECT @ROWNUM:=0) temp
-                     WHERE A.PARENT_IDX IS NULL
+                     WHERE 1=1
                      <include refid="criteriaQna"/>
               ) AS ROWNUM_TB
          ORDER BY IDX DESC
@@ -94,51 +94,20 @@
     </select>
 
     <select id="findByIdxQna" resultType="CustomMap" parameterType="int">
-        WITH RECURSIVE CTE AS
-                           (
-                               SELECT IDX,
-                                      convert(idx, char(100)) AS CTE_PATH,
-                                      1 LVL,
-                                      PARENT_IDX,
-                                      QA_SUBJECT,
-                                      QA_CONTENT,
-                                      ATTACH_FILE_IDX,
-                                      USE_YN,
-                                      CREATE_IDX,
-                                      CREATE_DATE,
-                                      UPDATE_IDX,
-                                      UPDATE_DATE
-                                 FROM qna
-                               WHERE IDX = #{idx}
-                               UNION ALL
-                               SELECT A.IDX,
-                                      concat(CTE.CTE_PATH, '-', A.IDX) AS CTE_PATH,
-                                      LVL + 1 LVL,
-                                      A.PARENT_IDX,
-                                      A.QA_SUBJECT,
-                                      A.QA_CONTENT,
-                                      A.ATTACH_FILE_IDX,
-                                      A.USE_YN,
-                                      A.CREATE_IDX,
-                                      A.CREATE_DATE,
-                                      A.UPDATE_IDX,
-                                      A.UPDATE_DATE
-                                 FROM qna A
-                                INNER JOIN CTE ON A.PARENT_IDX = CTE.IDX
-                           )
-        SELECT IDX,
-               CTE_PATH,
-               LVL,
-               PARENT_IDX,
+        SELECT A.IDX,
                QA_SUBJECT,
                QA_CONTENT,
                ATTACH_FILE_IDX,
-               USE_YN,
-               CREATE_IDX,
-               CREATE_DATE,
-               UPDATE_IDX,
-               UPDATE_DATE
-        FROM CTE
+               IF( A.CREATE_IDX IS NULL , NULL, IFNULL(B.USER_NICKNM,'탈퇴된 사용자')) AS CREATE_NICKNM,
+               A.CREATE_DATE,
+               C.USER_NICKNM AS UPDATE_NICKNM,
+               B.UPDATE_DATE
+          FROM qna A
+          LEFT OUTER JOIN users B on A.CREATE_IDX = B.IDX
+          LEFT OUTER JOIN users C on B.UPDATE_IDX = C.IDX
+         WHERE A.IDX = #{idx}
+            OR A.PARENT_IDX = #{idx}
+         ORDER BY A.IDX
     </select>
 
     <select id="findAllQaCategory" resultType="string">

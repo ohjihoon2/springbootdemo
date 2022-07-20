@@ -65,21 +65,20 @@ public class QnaController {
     @GetMapping("/detail/{idx}")
     public String qnaDetail(@PathVariable("idx") int idx, HttpServletResponse response, HttpServletRequest request, Model model, Authentication authentication) {
         Map<String, Object> qnaConfig = qnaService.findByIdxQnaConfig(idx);
-        HttpSession session = request.getSession();
-        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+       /* HttpSession session = request.getSession();
 
-
-        System.out.println("qnaConfig = " + qnaConfig);
-        System.out.println("userIdx = " + userIdx);
         //secret y 일 경우 글쓴이와 관리자 만 들어올 수 있음
         if(qnaConfig.get("secretYn").toString().equals("Y")){
-
+            if(authentication.getPrincipal()==null){
+                return "/error/denied";
+            }
             String[] adminLevel = {"ADMIN","MANAGER","SYSTEM"};
             String authStr = String.valueOf(authentication.getAuthorities());
             String auth = authStr.substring(authStr.lastIndexOf("_") + 1, authStr.length() - 1);
             boolean isAdmin = Arrays.stream(adminLevel).anyMatch(auth::equals);
 
             boolean isWriter = false;
+            int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
             if(Integer.parseInt(qnaConfig.get("createIdx").toString()) == userIdx){
                 isWriter = true;
             }
@@ -87,7 +86,7 @@ public class QnaController {
             if(isWriter == false && isAdmin == false){
                 return "/error/denied";
             }
-        }
+        }*/
 
         List<Map<String,Object>> qnaDetail = qnaService.findByIdxQna(idx);
 
