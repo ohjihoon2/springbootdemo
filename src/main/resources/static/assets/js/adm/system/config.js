@@ -43,7 +43,7 @@ $(function(){
             mainSkinType : $('input[name="mainSkinType"]:checked').val(),
             resetPassword : $('#resetPassword').val(),
             qaCategoryList : qaCategoryList,
-
+            qaEditorLevel : $('#qaEditorLevel').val(),
         };
 
         var res = $ajax.patchAjax('/adm/config' , data);

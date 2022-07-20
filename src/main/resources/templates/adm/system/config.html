@@ -59,7 +59,7 @@
                 </table>
                 <div class="mb40"></div>
                 <table class="table-top">
-                    <caption>게시판</caption>
+                    <caption>QNA</caption>
                     <colgroup>
                         <col width="15%">
                         <col width="35%">
@@ -82,7 +82,7 @@
                     <tr>
                         <th>Q&A 에디터</th>
                         <td>
-                            <select>
+                            <select id="qaEditorLevel">
                                 <option value="USER" th:selected="${resultMap.qaEditorLevel == 'USER'}">회원</option>
                                 <option value="NONE" th:selected="${resultMap.qaEditorLevel == 'NONE'}">사용안함</option>
                             </select>

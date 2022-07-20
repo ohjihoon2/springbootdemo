@@ -287,6 +287,7 @@
                A.CONTENT_HTML,
                A.HIT,
                A.READ_LEVEL,
+               D.CODE_NM AS READ_LEVEL_CODE_NM,
                A.CREATE_IDX,
                A.CREATE_DATE,
                A.UPDATE_IDX,
@@ -296,6 +297,7 @@
           FROM content A
           LEFT JOIN users B ON A.CREATE_IDX = B.IDX
           LEFT JOIN users C ON A.UPDATE_IDX = C.IDX
+          LEFT JOIN code D ON A.READ_LEVEL = D.CODE AND D.CODE_GROUP_ID = 'LEVEL_CODE'
          WHERE 1=1
         <include refid="criteriaContent"/>
     </select>

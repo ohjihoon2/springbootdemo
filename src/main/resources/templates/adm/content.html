@@ -27,12 +27,12 @@
         </div>
         <table>
             <colgroup>
-                <col width="30%">
+                <col width="25%">
                 <col width="15%">
                 <col width="10%">
                 <col width="25%">
                 <col width="5%">
-                <col width="5%">
+                <col width="10%">
                 <col width="10%">
             </colgroup>
             <thead>
@@ -42,7 +42,7 @@
                 <th>Date</th>
                 <th>Remarks</th>
                 <th>Hit</th>
-                <th>Use</th>
+                <th>Read</th>
                 <th>Update</th>
             </tr>
             </thead>
@@ -50,12 +50,12 @@
         <div class="section-scroll">
             <table>
                 <colgroup>
-                    <col width="30%">
+                    <col width="25%">
                     <col width="15%">
                     <col width="10%">
                     <col width="25%">
                     <col width="5%">
-                    <col width="5%">
+                    <col width="10%">
                     <col width="10%">
                 </colgroup>
                 <tbody>
@@ -70,7 +70,7 @@
                             </th:block>
                         </td>
                         <td class="text-center" th:text="${res.hit}"></td>
-                        <td class="text-center" th:text="${res.readLevel}"></td>
+                        <td class="text-center" th:text="${res.readLevelCodeNm}"></td>
                         <td class="text-center update-btn">
                             <button type="button" name="updateBtn" th:data-val="${res.idx}">수정</button>
                         </td>

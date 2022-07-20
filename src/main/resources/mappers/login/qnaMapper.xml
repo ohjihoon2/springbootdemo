@@ -71,7 +71,7 @@
                       FROM qna A
                      INNER JOIN qna_config B ON A.IDX = B.QNA_IDX
                       LEFT JOIN users C ON A.CREATE_IDX = C.IDX
-                      LEFT JOIN code D ON B.QA_STATUS = D.CODE AND D.CODE_GROUP_ID = 'QA_STATUS_CODE',
+                      LEFT JOIN code D ON B.QA_STATUS = D.CODE AND D.CODE_GROUP_ID = 'QA_STATUS_CODE'
                            (SELECT @ROWNUM:=0) temp
                      WHERE 1=1
                      <include refid="criteriaQna"/>
