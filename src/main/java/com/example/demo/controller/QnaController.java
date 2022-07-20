@@ -68,7 +68,10 @@ public class QnaController {
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
 
-        //secret y 일 경우 글쓴이와 답변한 사람 만 들어올 수 있음
+
+        System.out.println("qnaConfig = " + qnaConfig);
+        System.out.println("userIdx = " + userIdx);
+        //secret y 일 경우 글쓴이와 관리자 만 들어올 수 있음
         if(qnaConfig.get("secretYn").toString().equals("Y")){
 
             String[] adminLevel = {"ADMIN","MANAGER","SYSTEM"};
@@ -91,7 +94,7 @@ public class QnaController {
         model.addAttribute("qnaConfig", qnaConfig);
         model.addAttribute("qnaDetail", qnaDetail);
 
-        return "/";
+        return "/qna/qnaDetail";
     }
 
     /**
@@ -109,7 +112,7 @@ public class QnaController {
         String date[] = qaCategory.split(";");
         model.addAttribute(date);
 
-        return "/";
+        return "/qna/qnaRegist";
     }
 
     /**

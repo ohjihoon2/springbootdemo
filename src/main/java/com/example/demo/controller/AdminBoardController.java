@@ -257,7 +257,6 @@ public class AdminBoardController {
 
         criteria.setParamMap(mMap);
 
-
         List<Map<String,Object>> resultList = adminService.findAllQna(criteria);
 
         int total = adminService.countQna(criteria);

@@ -1,0 +1,69 @@
+<!--/*
+    thymeleaf 주석처리
+*/-->
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/board/boardRegist.css')"></th:block>
+<body ondragstart="return false" onselectstart="return false">
+<script>
+    if("[[${boardMaster.useYn}]]" == "N") {
+        alert("사용이 불가능한 페이지입니다.");
+        window.history.back();
+    }
+    else if (![[${@compareAuth.getAuth(boardMaster.writeLevel)}]]) {
+        alert("접근이 불가능한 페이지입니다.");
+        window.history.back();
+    }
+</script>
+<th:block th:replace="/fragments/header.html :: thHeader"></th:block>
+<section>
+    <div class="section-wrap">
+        <form id="boardRegistForm">
+            <div class="pt80"></div>
+            <div class="top-btn-box">
+                <div class="left">게시물 추가</div>
+                <span th:if="${@compareAuth.getAuth('ADMIN')}"><input id="noticeYn" type="checkbox"/><label for="noticeYn">공지</label></span>
+            </div>
+            <div class="mb10"></div>
+            <ul id="boardUl" class="board-ul">
+                <li>
+                    <label>제목</label>
+                    <input id="boardSubject" type="text">
+                </li>
+                <li>
+                    <label><i class="fa fa-image" aria-hidden="true"></i></label>
+                    <div>
+                        <input id="thumb" type="file" accept="image/jpeg, image/png, image/jpg, image/bmp">
+                    </div>
+                </li>
+                <li th:if="${@compareAuth.getAuth(boardMaster.uploadLevel)}">
+                    <label><i class="fa fa-folder-open" aria-hidden="true"></i></label>
+                    <div>
+                        <input id="files" type="file" multiple>
+                    </div>
+                </li>
+                <li>
+                    <textarea id="boardContent"></textarea>
+                </li>
+            </ul>
+            <div class="mb5"></div>
+            <div class="bot-btn-box">
+                <button type="button" id="goList">목록</button>
+                <button type="submit">작성</button>
+            </div>
+            <div class="mb100"></div>
+        </form>
+    </div>
+</section>
+<script>
+    var boardId = "[[${boardMaster.boardId}]]";
+    var editorLevel = [[${@compareAuth.getAuth(boardMaster.editorLevel)}]];
+
+</script>
+<th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
+<script th:src="@{/js/board/boardRegist.js}"></script>
+</body>
+</html>

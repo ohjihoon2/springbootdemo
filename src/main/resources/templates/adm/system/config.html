@@ -21,6 +21,28 @@
             <div class="section-scroll">
                 <div class="mb5"></div>
                 <table class="table-top">
+                    <caption>사이트</caption>
+                    <colgroup>
+                        <col width="15%">
+                        <col width="35%">
+                        <col width="15%">
+                        <col width="35%">
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>사이트 명</th>
+                        <td><input type="text" id="homepageName" maxlength="15" placeholder="상단 사이트명입니다." th:value="${resultMap.homepageName}"></td>
+                        <th>메뉴 스킨</th>
+                        <td>
+                            <input type="radio" name="mainSkinType" id="vertical" class="mr5" value="vertical"  th:checked="${resultMap.mainSkinType == 'vertical'}"><label for="vertical" class="mr10">세로</label>
+                            <input type="radio" name="mainSkinType" id="horizontal" class="mr5" value="horizontal" th:checked="${resultMap.mainSkinType == 'horizontal'}"><label for="horizontal">가로</label>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="mb40"></div>
+                <table class="table-top">
                     <caption>회원</caption>
                     <colgroup>
                         <col width="15%">
@@ -30,10 +52,8 @@
                     </colgroup>
                     <tbody>
                     <tr>
-                        <th>비밀번호 초기화</th>
-                        <td><input type="text" placeholder="초기화 될 유저 비밀번호입니다."></td>
-                        <th></th>
-                        <td></td>
+                        <th>비밀번호 초기화값</th>
+                        <td colspan="3"><input type="text" id="resetPassword" maxlength="15" placeholder="초기화 될 유저 비밀번호입니다." th:value="${resultMap.resetPassword}"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -44,14 +64,20 @@
                         <col width="15%">
                         <col width="35%">
                         <col width="15%">
-                        <col width="35%">
+                        <col width="30%">
+                        <col width="5%">
                     </colgroup>
                     <tbody>
                     <tr>
                         <th>Q&A 타입</th>
-                        <td><input type="text" placeholder="; 으로 구분해 주세요."></td>
-                        <th></th>
-                        <td></td>
+                        <td class="qa-category">
+                            <th:block th:each="res : ${#strings.listSplit(resultMap.qaCategoryList,';')}">
+                                <i>[[${res}]]<span th:data-val="${res}">×</span></i>
+                            </th:block>
+                        </td>
+                        <th>Q&A 타입 추가</th>
+                        <td><input id="qaCategory" type="text"></td>
+                        <td class="update-btn"><button id="qaCategoryAdd" type="button">추가</button></td>
                     </tr>
                     </tbody>
                 </table>

@@ -1,13 +1,13 @@
 $(function() {
     //검색
-    $('#boardListForm').submit(function(e) {
+    $('#qnaListForm').submit(function(e) {
         e.preventDefault();
 
         var param = {
             searchType : $('#searchType').val(),
             searchKeyword : $util.transferText($('#searchKeyword').val()),
         }
-        $page.getGoPage('/board/' + boardId, param)
+        $page.getGoPage('/qna', param)
     });
 
     //페이징
@@ -17,23 +17,17 @@ $(function() {
             searchKeyword : $('#hiddenSearchKeyword').val(),
             pageNum : $(this).data('val'),
         }
-        $page.getGoPage('/board/' + boardId, param);
+        $page.getGoPage('/qna', param);
     });
     
     //상세 이동(일반)
-    $('#boardTable tbody tr td').not('.off').click(function() {
+    $('#qnaTable tbody tr td').not('.off').click(function() {
         var idx = $(this).closest('tr').data('val');
-        $page.goPage('/board/' + boardId + '/' + idx)
-    });
-
-    //상세 이동(포토)
-    $('#boardPhoto ul li img, #boardPhoto ul li div span').click(function() {
-        var idx = $(this).closest('li').data('val');
-        $page.goPage('/board/' + boardId + '/' + idx)
+        $page.goPage('/qna/detail/' + idx)
     });
 
     //글쓰기
     $('#boardAdd').click(function() {
-        $page.goPage('/board/' + boardId + '/detail')
+        $page.goPage('/qna/question');
     });
 });

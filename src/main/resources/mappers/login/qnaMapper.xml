@@ -57,6 +57,7 @@
                     SELECT @ROWNUM:=@ROWNUM+1 AS RN,
                            B.QA_CATEGORY,
                            B.QA_STATUS,
+                           D.CODE_NM AS QA_STATUS_CODE_NM,
                            B.SECRET_YN,
                            A.IDX,
                            A.PARENT_IDX,
@@ -69,7 +70,8 @@
                            A.CREATE_DATE
                       FROM qna A
                      INNER JOIN qna_config B ON A.IDX = B.QNA_IDX
-                      LEFT JOIN users C ON A.CREATE_IDX = C.IDX,
+                      LEFT JOIN users C ON A.CREATE_IDX = C.IDX
+                      LEFT JOIN code D ON B.QA_STATUS = D.CODE AND D.CODE_GROUP_ID = 'QA_STATUS_CODE',
                            (SELECT @ROWNUM:=0) temp
                      WHERE A.PARENT_IDX IS NULL
                      <include refid="criteriaQna"/>

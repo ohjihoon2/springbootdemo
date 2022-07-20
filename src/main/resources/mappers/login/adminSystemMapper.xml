@@ -189,7 +189,7 @@
 
     <update id="updateSystemConfig" parameterType="map">
         UPDATE config
-           SET QA_CATEGORY  = #{qaCategory},
+           SET QA_CATEGORY_LIST  = #{qaCategoryList},
                RESET_PASSWORD = #{resetPassword},
                HOMEPAGE_NAME = #{homepageName},
                MAIN_SKIN_TYPE = #{mainSkinType}

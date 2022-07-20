@@ -12,3 +12,24 @@ table .update-btn button {
 table .remarks {
     font-size: 13px;
 }
+
+table td.qa-category {
+    white-space: nowrap;
+    line-height: normal!important;
+    overflow-x: auto;
+    text-overflow: unset!important;
+}
+
+table td.qa-category span {
+    display: inline-block;
+    background-color: #ededeb;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 3px;
+    margin-right: 10px;
+    cursor: pointer;
+}
