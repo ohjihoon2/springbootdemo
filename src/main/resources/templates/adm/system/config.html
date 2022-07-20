@@ -79,6 +79,17 @@
                         <td><input id="qaCategory" type="text"></td>
                         <td class="update-btn"><button id="qaCategoryAdd" type="button">추가</button></td>
                     </tr>
+                    <tr>
+                        <th>Q&A 에디터</th>
+                        <td>
+                            <select>
+                                <option value="USER" th:selected="${resultMap.qaEditorLevel == 'USER'}">회원</option>
+                                <option value="NONE" th:selected="${resultMap.qaEditorLevel == 'NONE'}">사용안함</option>
+                            </select>
+                        </td>
+                        <th></th>
+                        <td colspan="2"></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

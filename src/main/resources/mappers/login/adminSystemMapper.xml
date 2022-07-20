@@ -192,7 +192,8 @@
            SET QA_CATEGORY_LIST  = #{qaCategoryList},
                RESET_PASSWORD = #{resetPassword},
                HOMEPAGE_NAME = #{homepageName},
-               MAIN_SKIN_TYPE = #{mainSkinType}
+               MAIN_SKIN_TYPE = #{mainSkinType},
+               QA_EDITOR_LEVEL = #{qaEditorLevel}
     </update>
 
 </mapper>
