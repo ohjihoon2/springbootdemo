@@ -121,7 +121,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         /**
          * 자동로그인 설정
          */
-        http.rememberMe().rememberMeParameter("rememberMe");
+        http.rememberMe().rememberMeParameter("rememberMe")
+                .tokenRepository(tokenRepository());
 
         /**
          * 로그아웃 설정을 진행
@@ -149,13 +150,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return jdbcTokenRepository;
     }
 
+//    @Bean
+//    public PersistentTokenRepository tokenRepository(){
+//        return customTokenRepository;
+//    }
+
     @Bean
     public PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices() {
         String key = "bitsol";
         PersistentTokenBasedRememberMeServices persistenceTokenBasedservice = new PersistentTokenBasedRememberMeServices(key, loginServiceImpl, tokenRepository());
-        persistenceTokenBasedservice.setAlwaysRemember(true);
+
+        persistenceTokenBasedservice.setAlwaysRemember(false);
         persistenceTokenBasedservice.setParameter("remember-me");
         persistenceTokenBasedservice.setTokenValiditySeconds(60 * 60 * 24 * 7);		// 토큰 유효시간 1주일 설정
+
         return persistenceTokenBasedservice;
     }
 

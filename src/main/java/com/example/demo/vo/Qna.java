@@ -11,7 +11,6 @@ public class Qna {
     private String qaSubject;
     private String qaContent;
     private int attachFileIdx;
-    private String useYn;
     private int createIdx;
     private Date createDate;
     private int updateIdx;

@@ -12,6 +12,7 @@ public class QnaConfig {
     private String qaCategory;
     private String qaStatus;
     private String secretYn;
+    private String deleteYn;
     private int createIdx;
     private Date createDate;
     private int updateIdx;

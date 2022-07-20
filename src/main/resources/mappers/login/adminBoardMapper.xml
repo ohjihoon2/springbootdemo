@@ -377,7 +377,7 @@
           LEFT OUTER JOIN users C ON A.CREATE_IDX = C.IDX
           LEFT OUTER JOIN users D ON B.UPDATE_IDX = D.IDX,
                (SELECT @ROWNUM:=0) temp
-         WHERE PARENT_IDX IS NULL
+         WHERE B.DELETE_YN = 'N'
         <if test="paramMap.status != 'ALL'">
             AND B.QA_STATUS IN('Q' , 'RQ')
         </if>
@@ -402,7 +402,7 @@
                      INNER JOIN qna_config B ON A.IDX = B.QNA_IDX
                       LEFT OUTER JOIN users C ON A.CREATE_IDX = C.IDX
                       LEFT OUTER JOIN users D ON B.UPDATE_IDX = D.IDX
-                    WHERE PARENT_IDX IS NULL
+                    WHERE B.DELETE_YN = 'N'
                     <if test="paramMap.status != 'ALL'">
                         AND B.QA_STATUS IN('Q' , 'RQ')
                     </if>
@@ -467,7 +467,6 @@
                  QA_SUBJECT,
                  QA_CONTENT,
                  ATTACH_FILE_IDX,
-                 USE_YN,
                  CREATE_IDX,
                  CREATE_DATE
              )
@@ -477,7 +476,6 @@
                 #{qaSubject},
                 #{qaContent},
                 #{attachFileIdx},
-                'Y',
                 #{createIdx},
                 SYSDATE()
              )
@@ -496,12 +494,13 @@
 
     <delete id="deleteQnaConfig" parameterType="map">
         DELETE FROM qna_config
-         WHERE QNA_IDX = #{idx}
+         WHERE IDX = #{idx}
     </delete>
 
     <delete id="deleteQna" parameterType="map">
         DELETE FROM qna
          WHERE IDX=#{idx}
+            OR PARENT_IDX =#{idx}
     </delete>
 
     <select id="findUserEmailByIdx" parameterType="int" resultType="string">
