@@ -222,4 +222,9 @@ public class LoginServiceImpl implements LoginService {
     public int checkUserByUserEmail(String userEmail) {
         return loginMapper.existByUserEmail(userEmail);
     }
+
+    @Override
+    public void updateLastLoginDate(String userId) {
+        loginMapper.updateLastLoginDate(userId);
+    }
 }

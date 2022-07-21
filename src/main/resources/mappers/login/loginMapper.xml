@@ -214,4 +214,9 @@
                    )
     </select>
 
+    <update id="updateLastLoginDate" parameterType="String">
+        UPDATE users
+           SET LAST_LOGIN_DATE = SYSDATE()
+         WHERE USER_ID = #{userId}
+    </update>
 </mapper>
