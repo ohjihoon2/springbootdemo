@@ -3,10 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.service.QnaService;
 import com.example.demo.util.DeviceCheck;
 import com.example.demo.util.ResultStr;
-import com.example.demo.vo.Criteria;
-import com.example.demo.vo.Page;
-import com.example.demo.vo.Qna;
-import com.example.demo.vo.QnaConfig;
+import com.example.demo.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mobile.device.Device;
@@ -106,10 +103,10 @@ public class QnaController {
     @GetMapping("/detail")
     public String registerPage(HttpServletResponse response, HttpServletRequest request, Model model) {
 
-        String qaCategory = qnaService.findAllQaCategory();
-
-        String date[] = qaCategory.split(";");
-        model.addAttribute(date);
+        Map<String, Object> configData = SingletonData.getInstance().getConfigData();
+        model.addAttribute("qaCategoryList",configData.get("qaCategoryList"));
+        model.addAttribute("qaFileLevel",configData.get("qaFileLevel"));
+        model.addAttribute("qaEditorLevel",configData.get("qaEditorLevel"));
 
         return "/qna/qnaRegist";
     }

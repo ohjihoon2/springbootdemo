@@ -1,9 +1,6 @@
 package com.example.demo.repository;
 
-import com.example.demo.vo.AttachFile;
-import com.example.demo.vo.AttachFileMaster;
-import com.example.demo.vo.Css;
-import com.example.demo.vo.MenuTree;
+import com.example.demo.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -25,4 +22,6 @@ public interface CommonMapper {
     List<Css> findCssContent();
 
     Map<String, Object> findSystemConfig();
+
+    int insertVisitor(Visitor visitor);
 }

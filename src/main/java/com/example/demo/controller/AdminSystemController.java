@@ -53,6 +53,7 @@ public class AdminSystemController {
     @ResponseBody
     public Map<String,Object> updateConfig(@RequestBody Map<String, Object> paramMap, HttpServletRequest request) {
         int result = adminService.updateSystemConfig(paramMap);
+        commonService.refreshSingletonSystemConfigInfo();
 
         return ResultStr.set(result);
     }

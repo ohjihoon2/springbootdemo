@@ -111,12 +111,6 @@ spring.mail:
     mail.smtp.auth: true
     mail.smtp.starttls.enable: true
 
-# session 설정
-  server:
-    servlet:
-      session:
-        timeout: 60m
-
 # paging 설정
 #pagehelper:
 #  # 사용할 DB 설정
@@ -155,3 +149,8 @@ contentCount:
     mobile: 10
     web: 12
 
+# session 설정
+server:
+  servlet:
+    session:
+      timeout: 1800

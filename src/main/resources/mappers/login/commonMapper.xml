@@ -57,4 +57,25 @@
         SELECT *
           FROM config
     </select>
+
+    <insert id="insertVisitor" parameterType="Visitor">
+        INSERT INTO visitor
+            (
+                VISIT_IP,
+                VISIT_TIME,
+                <if test="visitRefer != null and visitRefer !=''">
+                    VISIT_REFER,
+                </if>
+                VISIT_AGENT
+            )
+        VALUES
+            (
+                #{visitIp},
+                SYSDATE(),
+                <if test="visitRefer != null and visitRefer !=''">
+                    #{visitRefer},
+                </if>
+                #{visitAgent}
+            )
+    </insert>
 </mapper>
