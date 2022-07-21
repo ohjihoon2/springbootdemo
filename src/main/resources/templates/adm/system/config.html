@@ -69,13 +69,13 @@
                     </colgroup>
                     <tbody>
                     <tr>
-                        <th>Q&A 타입</th>
+                        <th>Q&A 분류</th>
                         <td class="qa-category">
                             <th:block th:each="res : ${#strings.listSplit(resultMap.qaCategoryList,';')}">
                                 <i>[[${res}]]<span th:data-val="${res}">×</span></i>
                             </th:block>
                         </td>
-                        <th>Q&A 타입 추가</th>
+                        <th>Q&A 분류 추가</th>
                         <td><input id="qaCategory" type="text"></td>
                         <td class="update-btn"><button id="qaCategoryAdd" type="button">추가</button></td>
                     </tr>

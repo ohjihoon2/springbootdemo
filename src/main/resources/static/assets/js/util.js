@@ -361,7 +361,7 @@
                 cssNm: 'CSS명',
                 codeGroupId: '코드그룹ID',
                 codeGroupNm: '코드그룹명',
-                qaCategory: 'Q&A타입명',
+                qaCategory: 'Q&A분류명',
                 homepageName: '사이트명',
                 resetPassword: '비밀번호 초기화값',
             }

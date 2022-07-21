@@ -11,7 +11,7 @@ $(function(){
         var returnYn = false;
         $('.qa-category').find('i').each(function(index, item){
             if(qaCategory == $(this).find('span').data('val')) {
-                alert("Q&A타입은 중복될수 없습니다.");
+                alert("Q&A분류은 중복될수 없습니다.");
                 $('#qaCategory').focus();
                 return returnYn = true;
             }

@@ -21,7 +21,6 @@
             <div class="pt80"></div>
             <div class="top-btn-box">
                 <div class="left">게시물 추가</div>
-                <span th:if="${@compareAuth.getAuth('ADMIN')}"><input id="noticeYn" type="checkbox"/><label for="noticeYn">공지</label></span>
             </div>
             <div class="mb10"></div>
             <ul id="boardUl" class="board-ul">
@@ -35,7 +34,8 @@
                         <input id="thumb" type="file" accept="image/jpeg, image/png, image/jpg, image/bmp">
                     </div>
                 </li>
-                <li th:if="${@compareAuth.getAuth(boardMaster.uploadLevel)}">
+<!--                여기-->
+                <li>
                     <label><i class="fa fa-folder-open" aria-hidden="true"></i></label>
                     <div>
                         <input id="files" type="file" multiple>
@@ -54,11 +54,13 @@
         </form>
     </div>
 </section>
+<!--/*
 <script>
-    var boardId = "[[${boardMaster.boardId}]]";
-    var editorLevel = [[${@compareAuth.getAuth(boardMaster.editorLevel)}]];
 
+
+    var editorLevel = [[${@compareAuth.getAuth(boardMaster.editorLevel)}]];
 </script>
+*/-->
 <th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
 <script th:src="@{/js/board/boardRegist.js}"></script>
 </body>
