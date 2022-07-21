@@ -85,6 +85,7 @@
                QA_CATEGORY,
                QA_STATUS,
                SECRET_YN,
+               DELETE_YN,
                CREATE_IDX,
                CREATE_DATE
           FROM qna_config
@@ -109,7 +110,7 @@
     </select>
 
     <select id="findAllQaCategory" resultType="string">
-        SELECT QA_CATEGORY
+        SELECT QA_CATEGORY_LIST
           FROM config
     </select>
 

@@ -32,7 +32,7 @@
     min-height: 36px;
 }
 
-.board-table {
+.qa-table {
     border-bottom: 1px solid #ededed;
     width: 100%;
     border-collapse: collapse;
@@ -40,16 +40,16 @@
     border-spacing: 0;
 }
 
-.board-table tr.notice {
+.qa-table tr.notice {
     background: rgba(31,177,199,0.05);
     color: #1fb1c7;
 }
 
-.board-table tr.even {
+.qa-table tr.even {
     background: #fbfbfb;
 }
 
-.board-table thead th {
+.qa-table thead th {
     padding: 10px 0;
     border-top: 2px solid #000;
     border-bottom: 1px solid #d3d3d3;
@@ -61,7 +61,7 @@
     line-height: 1.5em;
 }
 
-.board-table thead th {
+.qa-table thead th {
     padding: 12px 0;
     border-top: 2px solid #000;
     border-bottom: 1px solid #d3d3d3;
@@ -73,7 +73,7 @@
     line-height: 21px;
 }
 
-.board-table td {
+.qa-table td {
     padding: 12px 5px;
     border-top: 1px solid #f3f3f3;
     line-height: 22px;
@@ -84,11 +84,11 @@
     white-space: nowrap;
 }
 
-.board-table td.flex {
+.qa-table td.flex {
    display: flex;
 }
 
-.board-table td.flex span {
+.qa-table td.flex span {
     display: inline-block;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -97,13 +97,13 @@
 
 }
 
-.board-table td.flex i {
+.qa-table td.flex i {
     right: -10px;
     margin-top: 5px;
     margin-left: 5px;
 }
 
-.board-table tbody tr td:not(.off) {
+.qa-table tbody tr td:not(.off) {
     cursor: pointer;
 }
 
@@ -117,4 +117,13 @@
     float: left;
     font-size: 12px;
     color: #999999;
+}
+
+.bot-btn-box > button {
+    border: 0;
+    color: #fff;
+    background: #1fb1c7;
+    padding: 7px 25px;
+    vertical-align: top;
+    min-height: 36px;
 }

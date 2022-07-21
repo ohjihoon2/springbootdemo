@@ -27,7 +27,7 @@ $(function() {
     });
 
     //글쓰기
-    $('#boardAdd').click(function() {
-        $page.goPage('/qna/question');
+    $('#qnaAdd').click(function() {
+        $page.goPage('/qna/detail');
     });
 });

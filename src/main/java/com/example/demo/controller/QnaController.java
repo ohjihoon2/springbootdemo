@@ -103,7 +103,7 @@ public class QnaController {
      * @param model
      * @return
      */
-    @GetMapping("/question")
+    @GetMapping("/detail")
     public String registerPage(HttpServletResponse response, HttpServletRequest request, Model model) {
 
         String qaCategory = qnaService.findAllQaCategory();

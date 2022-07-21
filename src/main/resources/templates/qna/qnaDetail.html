@@ -8,138 +8,71 @@
 
 <th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/qna/qnaDetail.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
-<!--/*
+
 <script>
-    if("[[${qnaConfig.secretYn}]]" == "N") {
-        alert("사용이 불가능한 페이지입니다.");
+    if("[[${qnaConfig.deleteYn}]]" == "Y") {
+        alert("삭제 된 Q%A입니다.");
         window.history.back();
     }
-    else if (![[${@compareAuth.getAuth(boardMaster.readLevel)}]]) {
-        alert("접근이 불가능한 페이지입니다.");
-        window.history.back();
+    else if("[[${qnaConfig.secretYn}]]" == "Y") {
+        if("[[${session.idx}]]" != [[${qnaConfig.createIdx}]]) {
+            if(![[${@compareAuth.getAuth('ADMIN')}]]) {
+                alert("비밀글로 작성된 Q&A입니다.");
+                window.history.back();
+            }
+        }
     }
-    else if("[[${boardDetail.deleteYn}]]" == "Y") {
-        alert("삭제 된 게시글입니다.");
-        window.history.back();
-    }
+
 </script>
-*/-->
 <th:block th:replace="/fragments/header.html :: thHeader"></th:block>
 <section>
-    [[${qnaConfig}]]
-    [[${qnaDetail}]]
-    <!--/*
+    [[${qnaDetail[0]}]]
     <div class="section-wrap">
-        <form id="boardDetailForm">
+        <form id="qnaDetailForm">
             <div class="pt80"></div>
             <div class="top-btn-box mb10">
-                <div class="left" th:text="${boardDetail.boardSubject}"></div>
-                <a class="control-box" th:if="${@compareAuth.getAuth('ADMIN') || boardDetail.createIdx == session.idx}">
-                    <i class="fa fa-ellipsis-v control-btn" aria-hidden="true"></i>
-                    <ul style="display: none;">
-                        <li><button id="boardUpdate" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 수정</button></li>
-                        <li th:if="${!@compareAuth.getAuth('ADMIN') && boardDetail.createIdx == session.idx}"><button id="boardDel" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button></li>
-                        <li th:if="${@compareAuth.getAuth('ADMIN')}"><button id="boardAdmDel" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button></li>
-                        <li th:if="${@compareAuth.getAuth('ADMIN')}"><button id="boardMovePopup" type="button"><i class="fa fa-arrows" aria-hidden="true"></i> 이동</button></li>
-                    </ul>
-                </a>
+                <span class="qa-category text-color-primary" th:text="${qnaConfig.qaCategory}"></span>
+                [[${qnaDetail[0].qaSubject}]]
             </div>
             <div>
-                <ul class="board-ul">
+                <ul class="qa-ul">
                     <li class="border-bot">
+
                         <div class="board-info">
                             <img th:src="@{/img/common/no_profile.gif}" >
                             <div>
-                                <p th:text="${boardDetail.createNicknm}" class="weight600"></p>
+
+                                <p th:text="${qnaDetail[0].createNicknm}" class="weight600"></p>
                                 <p>
-                                    <span><i class="fa fa-commenting-o" aria-hidden="true"></i> [[${boardDetail.commentCnt}]]건</span>
-                                    <span><i class="fa fa-eye" aria-hidden="true"></i> [[${boardDetail.hit}]]회</span>
-                                    <span><i class="fa fa-clock-o" aria-hidden="true"></i> [[${#dates.format(boardDetail.createDate, 'yyyy. MM. dd. HH:mm')}]]</span>
+                                    <span><i class="fa fa-clock-o" aria-hidden="true"></i> [[${#dates.format(qnaDetail[0].createDate, 'yyyy. MM. dd. HH:mm')}]]</span>
                                 </p>
                             </div>
                         </div>
                     </li>
-                    <th:block th:if="${fileList.size() > 0}">
-                        <li class="board-on-btn">
-                            <button type="button" id="boardFileBtn" class="on">첨부파일 <span class="text-color-primary" th:text="${fileList.size() }"></span><span class="board-more"></span></button>
-                        </li>
-                        <li id="boardFile" class="board-on">
-                            <th:block th:each="res : ${fileList}">
-                                <p><a th:href="'/file/download/'+ ${res.saveName}" th:text="${res.originalName}"></a></p>
-                            </th:block>
-                        </li>
-                    </th:block>
-                    <li th:utext="${boardDetail.boardContent}" class="board-content"></li>
-                    <th:block th:if="${boardMaster.commentLevel != 'NONE'}">
-                        <li class="board-on-btn">
-                            <button type="button" id="boardCommentBtn" class="on">댓글 <span class="text-color-primary" th:text="${boardDetail.commentCnt}"></span><span class="board-more"></span></button>
-                        </li>
-                        <li id="boardComment" class="board-on board-comment">
-                            <ul class="mt10 pb10 border-bot">
-                                <th:block th:each="res : ${commentList}">
-                                    <li class="comment-li">
-                                        <div class="comment-list">
-                                            <img th:src="@{/img/common/no_profile.gif}" >
-                                            <div>
-                                                <p class="weight600">[[${res.createNicknm}]]<span class="weight400 ml5"><i class="fa fa-clock-o" aria-hidden="true"></i> [[${#dates.format(res.createDate, 'yyyy. MM. dd. HH:mm')}]]</span></p>
-                                                <p><i class="reference"></i><span class="comment-content" th:utext="${res.deleteYn} == 'N' ? ${res.commentContent} : '삭제된 댓글입니다.'"></span></p>
-                                            </div>
-                                        </div>
-                                        <a class="control-box" th:if="${@compareAuth.getAuth('ADMIN') || (res.createIdx == session.idx && res.deleteYn == 'N')}">
-                                            <i class="fa fa-ellipsis-v control-btn" aria-hidden="true"></i>
-                                            <ul style="display: none;" th:data-val="${res.idx}">
-                                                <li th:if="${res.deleteYn == 'N'}"><button class="comment-update" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 수정</button></li>
-                                                <li th:if="${!@compareAuth.getAuth('ADMIN') && res.createIdx == session.idx && res.deleteYn == 'N'}"><button class="comment-del" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button></li>
-                                                <li th:if="${@compareAuth.getAuth('ADMIN')}"><button class="comment-adm-del" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button></li>
-                                            </ul>
-                                        </a>
-                                        <ul class="ml65">
-                                            <li th:data-val="${res.idx}" data-referenceidx="">
-                                                <th:block th:if="${@compareAuth.getAuth(boardMaster.commentLevel) && res.deleteYn == 'N'}">
-                                                    <button class="text-color-gray weight600 recomment-btn" type="button">답글</button>
-                                                    <div class="recomment-div" style="display: none;">
-                                                        <p class="weight600" th:text="${session.userNicknm}"></p>
-                                                        <textarea rows="5" maxlength="300" onkeydown="return $util.limitLines(this, event);" onkeyup="$util.resize(this);" placeholder="댓글 내용을 입력해주세요."></textarea>
-                                                        <div class="recomment-btn-box">
-                                                            <button class="recomment-add-del" type="button">취소</button>
-                                                            <button class="color-primary-border-none recomment-add" type="button">등록</button>
-                                                        </div>
-                                                    </div>
-                                                </th:block>
-                                                <th:block th:if="${res.commentCnt > 0}">
-                                                    <button type="button" class="mt5 weight600 text-color-primary recomment-view">▼ 답글 더보기</button>
-                                                    <ul>
-
-                                                    </ul>
+                    <!--/*
+                                        <th:block th:if="${fileList.size() > 0}">
+                                            <li class="board-on-btn">
+                                                <button type="button" id="boardFileBtn" class="on">첨부파일 <span class="text-color-primary" th:text="${fileList.size() }"></span><span class="board-more"></span></button>
+                                            </li>
+                                            <li id="boardFile" class="board-on">
+                                                <th:block th:each="res : ${fileList}">
+                                                    <p><a th:href="'/file/download/'+ ${res.saveName}" th:text="${res.originalName}"></a></p>
                                                 </th:block>
                                             </li>
-                                        </ul>
-                                    </li>
-                                </th:block>
-                                <th:block th:if="${commentList.size() == 0}">
-                                    <li class="none">등록된 댓글이 없습니다.</li>
-                                </th:block>
-                            </ul>
-                            <div class="comment-div" th:if="${@compareAuth.getAuth(boardMaster.commentLevel)}">
-                                <p class="weight600" th:text="${session.userNicknm}"></p>
-                                <textarea id="commentContent" rows="5" maxlength="300" onkeydown="return $util.limitLines(this, event);" onkeyup="$util.resize(this);" placeholder="댓글 내용을 입력해주세요."></textarea>
-                                <div class="comment-btn-box">
-                                    <button id="commentAddDel" type="button">취소</button>
-                                    <button type="submit">등록</button>
-                                </div>
-                            </div>
-                        </li>
-                    </th:block>
+                                        </th:block>
+                                        <li th:utext="${boardDetail.boardContent}" class="board-content"></li>
+                                        */-->
                 </ul>
             </div>
+            <!--/*
             <div class="mb40"></div>
             <div class="bot-btn-box">
                 <button id="goList" type="button">목록</button>
             </div>
+            */-->
             <div class="mb100"></div>
         </form>
     </div>
-    */-->
 </section>
 <!--/*
 <script>

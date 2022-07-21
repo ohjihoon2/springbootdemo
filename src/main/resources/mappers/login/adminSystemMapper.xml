@@ -193,6 +193,7 @@
                RESET_PASSWORD = #{resetPassword},
                HOMEPAGE_NAME = #{homepageName},
                MAIN_SKIN_TYPE = #{mainSkinType},
+               QA_FILE_LEVEL = #{qaFileLevel},
                QA_EDITOR_LEVEL = #{qaEditorLevel}
     </update>
 

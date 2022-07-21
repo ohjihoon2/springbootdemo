@@ -24,7 +24,7 @@
                <button id="searchBtn" type="submit">검색</button>
            </div>
            <div class="mb10"></div>
-           <table id="qnaTable" class="board-table">
+           <table id="qnaTable" class="qa-table">
                <colgroup>
                    <col width="5%">
                    <col width="15%">
@@ -69,7 +69,7 @@
            <div class="mb5"></div>
            <div class="bot-btn-box">
                <div class="left">Total [[${#numbers.formatInteger(pageMaker.getTotal(), 0, 'COMMA')}]] Page [[${pageMaker.criteria.getPageNum()}]] / [[${pageMaker.getRealEnd() == 0 ? '1' : pageMaker.getRealEnd()}]]</div>
-               <button id="boardAdd" type="button" th:if="${@compareAuth.getAuth('USER')}">글쓰기</button>
+               <button id="qnaAdd" type="button" th:if="${@compareAuth.getAuth('USER')}">글쓰기</button>
            </div>
            <div class="mb50"></div>
            <th:block th:replace="/fragments/pagination :: pagination"></th:block>

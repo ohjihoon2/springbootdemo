@@ -43,6 +43,7 @@ $(function(){
             mainSkinType : $('input[name="mainSkinType"]:checked').val(),
             resetPassword : $('#resetPassword').val(),
             qaCategoryList : qaCategoryList,
+            qaFileLevel : $('#qaFileLevel').val(),
             qaEditorLevel : $('#qaEditorLevel').val(),
         };
 
