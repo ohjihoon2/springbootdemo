@@ -36,4 +36,20 @@ public interface AdminUserMapper {
     String getResetPassword();
 
     String findPasswordByIdx(Map<String, Object> paramMap);
+
+    List<Map<String, Object>> findAllVisitor(Criteria criteria);
+
+    int countVisitor(Criteria criteria);
+
+    List<Map<String, Object>> findByStandardGraphDay();
+
+    List<Map<String, Object>> findByStandardGraphMonth();
+
+    List<Map<String, Object>> findByStandardGraphYear();
+
+    List<Map<String, Object>> findByStandardPieDay();
+
+    List<Map<String, Object>> findByStandardPieMonth();
+
+    List<Map<String, Object>> findByStandardPieYear();
 }

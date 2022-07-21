@@ -11,4 +11,6 @@ public class Visitor {
     Date visitTime;
     String visitRefer;
     String visitAgent;
+    String visitOs;
+    String visitBrowser;
 }

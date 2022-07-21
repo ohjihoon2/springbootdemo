@@ -24,6 +24,22 @@
         </if>
     </sql>
 
+    <sql id="criteriaVisitor">
+        <if test="searchType != null and searchKeyword != null">
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <foreach item="type" collection="typeArr">
+                    <trim prefix="OR">
+                        <choose>
+                            <when test="type=='V'.toString">
+                                (VISIT_IP LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
     <select id="findAllUser" parameterType="Criteria" resultType="CustomMap">
         SELECT ROWNUM_TB.*
           FROM (
@@ -239,6 +255,120 @@
     <select id="getResetPassword" resultType="string">
         SELECT RESET_PASSWORD
           FROM config
+    </select>
+
+    <select id="findAllVisitor" parameterType="Criteria" resultType="CustomMap">
+        SELECT ROWNUM_TB.*
+          FROM (
+                    SELECT @ROWNUM:=@ROWNUM+1 as RN,
+                           VISIT_ID,
+                           VISIT_IP,
+                           VISIT_TIME,
+                           VISIT_REFER,
+                           VISIT_AGENT
+                      FROM visitor A,
+                           (SELECT @ROWNUM:=0) temp
+                     WHERE 1=1
+                    <include refid="criteriaVisitor"/>
+               ) AS ROWNUM_TB
+         ORDER BY VISIT_ID DESC
+         LIMIT #{pageStart},#{amount}
+    </select>
+
+    <select id="countVisitor" parameterType="Criteria" resultType="int">
+        SELECT COUNT(*)
+          FROM (
+                    SELECT VISIT_ID,
+                           VISIT_IP,
+                           VISIT_TIME,
+                           VISIT_REFER,
+                           VISIT_AGENT
+                      FROM visitor AS A
+                     WHERE 1=1
+                    <include refid="criteriaVisitor"/>
+                ) AS CNT_TB
+    </select>
+
+    <select id="findByStandardGraphDay" resultType="CustomMap">
+        SELECT a.re,
+			   CONCAT(a.re ,' (' ,SUBSTR(_UTF8'일월화수목금토', DAYOFWEEK(a.re), 1), ')') AS dt,
+			   (SELECT COUNT(*) dt_total FROM visitor WHERE date_format(VISIT_TIME,'%Y-%m-%d') = a.re) AS total,
+			   (SELECT COUNT(*) dt_total FROM visitor WHERE date_format(VISIT_TIME,'%Y-%m-%d') = a.re AND VISIT_OS in('Windows', 'MAC', 'Etc')) AS pc,
+			   (SELECT COUNT(*) dt_total FROM visitor WHERE date_format(VISIT_TIME,'%Y-%m-%d') = a.re AND VISIT_OS not in('Windows', 'MAC', 'Etc')) AS mobile
+          FROM (
+                    SELECT DATE(NOW()) re
+                    UNION ALL SELECT DATE_ADD(DATE(NOW()), INTERVAL -1 DAY)
+                    UNION ALL SELECT DATE_ADD(DATE(NOW()), INTERVAL -2 DAY)
+                    UNION ALL SELECT DATE_ADD(DATE(NOW()), INTERVAL -3 DAY)
+                    UNION ALL SELECT DATE_ADD(DATE(NOW()), INTERVAL -4 DAY)
+                    UNION ALL SELECT DATE_ADD(DATE(NOW()), INTERVAL -5 DAY)
+                    UNION ALL SELECT DATE_ADD(DATE(NOW()), INTERVAL -6 DAY)
+               ) a
+         ORDER BY a.re ASC
+    </select>
+
+    <select id="findByStandardGraphMonth" resultType="CustomMap">
+        SELECT a.dt ,
+			   (SELECT COUNT(*) dt_total FROM visitor WHERE date_format(VISIT_TIME,'%Y-%m') = a.dt) AS total,
+			   (SELECT COUNT(*) dt_total FROM visitor WHERE date_format(VISIT_TIME,'%Y-%m') = a.dt AND VISIT_OS in('Windows', 'MAC', 'Etc')) AS pc,
+			   (SELECT COUNT(*) dt_total FROM visitor WHERE date_format(VISIT_TIME,'%Y-%m') = a.dt AND VISIT_OS not in('Windows', 'MAC', 'Etc')) AS mobile
+          FROM (
+                    SELECT date_format(DATE(NOW()),'%Y-%m') as dt
+                    UNION ALL SELECT date_format(DATE_ADD(DATE(NOW()), INTERVAL -1 MONTH ),'%Y-%m')
+                    UNION ALL SELECT date_format(DATE_ADD(DATE(NOW()), INTERVAL -2 MONTH ),'%Y-%m')
+                    UNION ALL SELECT date_format(DATE_ADD(DATE(NOW()), INTERVAL -3 MONTH ),'%Y-%m')
+                    UNION ALL SELECT date_format(DATE_ADD(DATE(NOW()), INTERVAL -4 MONTH ),'%Y-%m')
+                    UNION ALL SELECT date_format(DATE_ADD(DATE(NOW()), INTERVAL -5 MONTH ),'%Y-%m')
+                    UNION ALL SELECT date_format(DATE_ADD(DATE(NOW()), INTERVAL -6 MONTH ),'%Y-%m')
+                    UNION ALL SELECT date_format(DATE_ADD(DATE(NOW()), INTERVAL -7 MONTH ),'%Y-%m')
+                    UNION ALL SELECT date_format(DATE_ADD(DATE(NOW()), INTERVAL -8 MONTH ),'%Y-%m')
+                    UNION ALL SELECT date_format(DATE_ADD(DATE(NOW()), INTERVAL -9 MONTH ),'%Y-%m')
+                    UNION ALL SELECT date_format(DATE_ADD(DATE(NOW()), INTERVAL -10 MONTH ),'%Y-%m')
+                    UNION ALL SELECT date_format(DATE_ADD(DATE(NOW()), INTERVAL -11 MONTH ),'%Y-%m')
+                ) a
+         ORDER BY a.dt ASC
+    </select>
+
+    <select id="findByStandardGraphYear" resultType="CustomMap">
+        SELECT a.dt ,
+			   (SELECT COUNT(*) dt_total FROM visitor WHERE date_format(VISIT_TIME,'%Y') = a.dt) AS total,
+			   (SELECT COUNT(*) dt_total FROM visitor WHERE date_format(VISIT_TIME,'%Y') = a.dt AND VISIT_OS in('Windows', 'MAC', 'Etc')) AS pc,
+			   (SELECT COUNT(*) dt_total FROM visitor WHERE date_format(VISIT_TIME,'%Y') = a.dt AND VISIT_OS not in('Windows', 'MAC', 'Etc')) AS mobile
+          FROM (
+			        SELECT date_format(DATE(NOW()),'%Y') as dt
+			        UNION ALL SELECT date_format(DATE_ADD(DATE(NOW()), INTERVAL -1 YEAR ),'%Y')
+			        UNION ALL SELECT date_format(DATE_ADD(DATE(NOW()), INTERVAL -2 YEAR ),'%Y')
+			        UNION ALL SELECT date_format(DATE_ADD(DATE(NOW()), INTERVAL -3 YEAR ),'%Y')
+			        UNION ALL SELECT date_format(DATE_ADD(DATE(NOW()), INTERVAL -4 YEAR ),'%Y')
+			   ) a
+         ORDER BY a.dt ASC
+    </select>
+
+    <select id="findByStandardPieDay" resultType="CustomMap">
+        SELECT a.ds,
+			   (SELECT COUNT(*) FROM visitor WHERE VISIT_BROWSER = a.ds AND date_format(VISIT_TIME,'%Y-%m-%d') = DATE(NOW())) AS dn
+          FROM (
+                    SELECT VISIT_BROWSER AS ds FROM visitor WHERE date_format(VISIT_TIME,'%Y-%m-%d') = DATE(NOW()) GROUP BY VISIT_BROWSER
+               ) a
+         ORDER BY FIELD(a.ds,'Etc'),a.ds ASC
+    </select>
+
+    <select id="findByStandardPieMonth" resultType="CustomMap">
+        SELECT a.ds ,
+			   (SELECT COUNT(*) FROM visitor WHERE VISIT_BROWSER = a.ds AND date_format(VISIT_TIME,'%Y-%m') = date_format(NOW(),'%Y-%m')) AS dn
+          FROM (
+                    SELECT VISIT_BROWSER AS ds FROM visitor WHERE date_format(VISIT_TIME,'%Y-%m') = date_format(NOW(),'%Y-%m') GROUP BY VISIT_BROWSER
+               ) a
+         ORDER BY FIELD(a.ds,'Etc'),a.ds ASC
+    </select>
+
+    <select id="findByStandardPieYear" resultType="CustomMap">
+        SELECT a.ds,
+			   (SELECT COUNT(*) FROM visitor WHERE VISIT_BROWSER = a.ds AND date_format(VISIT_TIME,'%Y') = date_format(NOW(),'%Y')) AS dn
+          FROM (
+			   	SELECT VISIT_BROWSER AS ds FROM visitor WHERE date_format(VISIT_TIME,'%Y') = date_format(NOW(),'%Y') GROUP BY VISIT_BROWSER
+			   ) a
+         ORDER BY FIELD(a.ds,'Etc'),a.ds ASC
     </select>
 
 </mapper>
