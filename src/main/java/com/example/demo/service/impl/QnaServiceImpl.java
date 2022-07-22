@@ -66,7 +66,7 @@ public class QnaServiceImpl implements QnaService {
         }
 
         qnaMapper.insertQna(qna);
-        qnaConfig.setQnaIdx(qna.getIdx());
+        qnaConfig.setQaIdx(qna.getIdx());
         qnaMapper.insertQnaConfig(qnaConfig);
 
         return result;
@@ -109,7 +109,7 @@ public class QnaServiceImpl implements QnaService {
         }
 
         qnaMapper.insertQna(qna);
-        qnaConfig.setQnaIdx(qna.getIdx());
+        qnaConfig.setQaIdx(qna.getIdx());
         qnaMapper.updateQnaConfig(qnaConfig);
 
         return result;

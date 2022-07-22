@@ -127,7 +127,7 @@ public class AdminBoardServiceImpl implements AdminBoardService {
 
         paramMap.put("qaStatus", qaStatus);
         paramMap.put("userIdx", qna.getCreateIdx());
-        paramMap.put("qnaIdx", qna.getParentIdx());
+        paramMap.put("qaIdx", qna.getParentIdx());
 
         if(files != null){
             // 실제 파일 업로드

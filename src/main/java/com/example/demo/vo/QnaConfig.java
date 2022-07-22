@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class QnaConfig {
     private int idx;
-    private int qnaIdx;
+    private int qaIdx;
     private String qaEmailRecvYn;
     private String qaCategory;
     private String qaStatus;

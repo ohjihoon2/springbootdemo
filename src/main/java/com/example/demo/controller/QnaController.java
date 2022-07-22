@@ -64,7 +64,7 @@ public class QnaController {
         Map<String, Object> qnaConfig = qnaService.findByIdxQnaConfig(idx);
         List<List<AttachFile>> fileList = qnaService.findAttachFileIdxByIdxQna(idx);
 
-        List<Map<String,Object>> qnaDetail = qnaService.findByIdxQna(Integer.parseInt(qnaConfig.get("qnaIdx").toString()));
+        List<Map<String,Object>> qnaDetail = qnaService.findByIdxQna(Integer.parseInt(qnaConfig.get("qaIdx").toString()));
 
         model.addAttribute("qnaConfig", qnaConfig);
         model.addAttribute("fileList", fileList);
@@ -155,7 +155,7 @@ public class QnaController {
     public Map<String, Object> qnaUpdate(@PathVariable("idx") int idx,MultipartFile[] files, @RequestPart("param") Qna qna, HttpServletResponse response, HttpServletRequest request, Model model, Authentication authentication) {
         int result = 0;
 
-        //qnaIdx도 추가적으로 받아야함 - 변경할 qna의 idx
+        //qaIdx도 추가적으로 받아야함 - 변경할 qna의 idx
         HttpSession session = request.getSession();
         int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
         qna.setUpdateIdx(userIdx);

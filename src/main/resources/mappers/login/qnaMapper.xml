@@ -44,7 +44,7 @@
                            A.UPDATE_IDX,
                            A.UPDATE_DATE
                       FROM qna A
-                     INNER JOIN qna_config B ON A.IDX = B.QNA_IDX
+                     INNER JOIN qna_config B ON A.IDX = B.QA_IDX
                      WHERE B.DELETE_YN = 'N'
                     <include refid="criteriaQna"/>
                 ) AS CNT_TB
@@ -67,7 +67,7 @@
                            IFNULL(C.USER_NICKNM,'탈퇴된 회원')AS CREATE_NICKNM,
                            A.CREATE_DATE
                       FROM qna A
-                     INNER JOIN qna_config B ON A.IDX = B.QNA_IDX
+                     INNER JOIN qna_config B ON A.IDX = B.QA_IDX
                       LEFT JOIN users C ON A.CREATE_IDX = C.IDX
                       LEFT JOIN code D ON B.QA_STATUS = D.CODE AND D.CODE_GROUP_ID = 'QA_STATUS_CODE',
                            (SELECT @ROWNUM:=0) temp
@@ -80,7 +80,7 @@
 
     <select id="findByIdxQnaConfig" parameterType="int" resultType="CustomMap">
         SELECT IDX,
-               QNA_IDX,
+               QA_IDX,
                QA_EMAIL_RECV_YN,
                QA_CATEGORY,
                QA_STATUS,
@@ -138,7 +138,7 @@
     <insert id="insertQnaConfig" parameterType="QnaConfig">
         INSERT INTO qna_config
             (
-                QNA_IDX,
+                QA_IDX,
                 QA_EMAIL_RECV_YN,
                 QA_CATEGORY,
                 QA_STATUS,
@@ -148,7 +148,7 @@
             )
         VALUES
             (
-                #{qnaIdx},
+                #{qaIdx},
                 #{qaEmailRecvYn},
                 #{qaCategory},
                 #{qaStatus},
@@ -165,7 +165,7 @@
                ATTACH_FILE_IDX = #{attachFileIdx},
                UPDATE_IDX = #{userIdx},
                UPDATE_DATE = SYSDATE()
-         WHERE IDX = #{qnaIdx}
+         WHERE IDX = #{qaIdx}
     </update>
 
     <update id="updateQnaConfig" parameterType="QnaConfig">
@@ -173,7 +173,7 @@
            SET QA_STATUS = #{qaStatus},
                UPDATE_IDX = #{updateIdx},
                UPDATE_DATE = SYSDATE()
-         WHERE QNA_IDX = #{qnaIdx}
+         WHERE QA_IDX = #{qaIdx}
     </update>
 
     <select id="findAttachFileIdxByIdxQna" parameterType="int" resultType="Qna">

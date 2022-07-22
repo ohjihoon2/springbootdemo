@@ -35,9 +35,9 @@ $(function(){
     
     //Q&A 상세
     $('[name="detailBtn"]').click(function(){
-        var qnaIdx = $(this).data('val');
+        var qaIdx = $(this).data('val');
 
-        var res = $ajax.postAjax('/adm/qna/' + qnaIdx);
+        var res = $ajax.postAjax('/adm/qna/' + qaIdx);
         if(res == "error") {
             alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             return;
@@ -63,7 +63,7 @@ $(function(){
             '<h4>Q&A 상세</h4>' +
             '<div class="mb10"></div>' +
             '<form id="qnaDetailForm">' +
-            '<input id="qnaIdx" type="hidden" value="'+ res.config.qnaIdx +'">' +
+            '<input id="qaIdx" type="hidden" value="'+ res.config.qaIdx +'">' +
             '<table class="table-top">' +
             '<colgroup>' +
             '<col width="15%">' +
@@ -222,7 +222,7 @@ $(function(){
         if ($event.validationFocus("qaContent")) return;
 
         var data = {
-            parentIdx: $('#qnaIdx').val(),
+            parentIdx: $('#qaIdx').val(),
             qaSubject: $('#qaSubject').val(),
             qaContent: $('#qaContent').val(),
         };
@@ -233,9 +233,9 @@ $(function(){
     // 컨텐츠삭제
     $(document).on("click", "#qnaDel", function(e) {
         if(confirm("해당 Q&A를 삭제하시겠습니까?")) {
-            var qnaIdx = $('#qnaIdx').val();
+            var qaIdx = $('#qaIdx').val();
 
-            var res = $ajax.deleteAjax('/adm/content/'+ qnaIdx);
+            var res = $ajax.deleteAjax('/adm/content/'+ qaIdx);
             if(res == "error") {
                 alert('네트워크 통신 실패, 관리자에게 문의해주세요.');
             }
@@ -264,7 +264,7 @@ $(function(){
         if ($event.validationFocus("qaContent")) return;
 
         var data = {
-            parentIdx: $('#qnaIdx').val(),
+            parentIdx: $('#qaIdx').val(),
             qaSubject: $('#qaSubject').val(),
             qaContent: $('#qaContent').val(),
             attachFileIdx: $('#attachFileIdx').val(),
