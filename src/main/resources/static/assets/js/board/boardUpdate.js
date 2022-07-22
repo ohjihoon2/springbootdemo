@@ -63,7 +63,7 @@ $(function() {
 
     //목록으로
     $('#goList').click(function () {
-        $page.goPage('/board/'+ boardId)
+        history.back();
     });
 
 });

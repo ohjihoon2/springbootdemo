@@ -1,11 +1,97 @@
 @charset "utf-8";
 
-.top-btn-box {
-    width: 100%;
-    font-size: 21px;
+.qna-box {
+    padding: 20px 10px;
+    border: 1px solid #ededed;
+    margin-bottom: 40px;
 }
 
-.top-btn-box .qa-category {
+.top-btn-box {
+    width: 100%;
+    text-align: right;
+    min-height: 35px;
+}
+
+.top-btn-box .left {
+    float: left;
+    font-size: 24px;
+    min-height: 40px;
+}
+
+.control-box {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 40px;
+    font-weight: bold;
+    vertical-align: top;
+    float: right;
+}
+
+.control-box > i {
+    padding: 0 16px;
+    color: #bababa;
+}
+
+.control-box > ul {
+    position: absolute;
+    top: 45px;
+    right: -2px;
+    background: #fff;
+    border: 1px solid #b8bfc4;
+    z-index: 999;
+}
+
+.control-box > ul:before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    right: 13px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 6px 8px 6px;
+    border-color: transparent transparent #b8bfc4 transparent;
+}
+
+.control-box > ul:after {
+    content: "";
+    position: absolute;
+    top: -6px;
+    right: 13px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 6px 8px 6px;
+    border-color: transparent transparent #fff transparent;
+}
+
+.control-box > ul li {
+    border-bottom: 1px solid #f1f1f1;
+    padding: 10px;
+    float: inherit;
+    width: 90px;
+    margin: 0;
+    color: #6b757c;
+    text-align: left;
+    line-height: 15px;
+}
+
+.control-box > ul li button {
+    width: 100%;
+    border: 0;
+    background: #fff;
+    color: #6b757c;
+    text-align: left;
+}
+
+.control-box > ul li i {
+    float: right;
+    line-height: 20px;
+}
+
+.top-btn-box div .qa-category {
     display: inline-block;
     line-height: 23px;
     font-size: 0.6em;
@@ -13,6 +99,7 @@
     padding: 0 10px;
     border-radius: 3px;
     vertical-align: middle;
+    margin-right: 6px;
     margin-bottom: 4px;
 }
 
@@ -35,18 +122,11 @@
     min-height: 36px;
 }
 
-/* 팝업관련 */
-.popup-js-content table tbody tr.sel, .popup-js-content table tbody tr:hover {
-    cursor: pointer;
-    background: rgba(31,177,199,0.05);
-    color: #1fb1c7;
-}
-
 .border-bot {
     border-bottom: 1px solid #eee;
 }
 
-.board-info img {
+.qna-info img {
     width: 50px;
     height: 50px;
     border-radius: 25px;
@@ -54,13 +134,13 @@
     margin-right: 10px;
 }
 
-.board-info div {
+.qna-info div {
     display: inline-block;
     width: calc(100% - 64px);
     padding: 4px 0;
 }
 
-.board-info div p{
+.qna-info div p{
     font-size: 14px;
 }
 

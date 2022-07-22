@@ -26,50 +26,56 @@
 </script>
 <th:block th:replace="/fragments/header.html :: thHeader"></th:block>
 <section>
-    [[${qnaDetail[0]}]]
     <div class="section-wrap">
         <form id="qnaDetailForm">
             <div class="pt80"></div>
-            <div class="top-btn-box mb10">
-                <span class="qa-category text-color-primary" th:text="${qnaConfig.qaCategory}"></span>
-                [[${qnaDetail[0].qaSubject}]]
-            </div>
-            <div>
-                <ul class="qa-ul">
-                    <li class="border-bot">
+            <div th:each="detail, i : ${qnaDetail}" class="qna-box">
+                <div class="top-btn-box mb10">
+                    <div class="left">
+                        <span class="qa-category text-color-primary" th:text="${i.odd ? i.index == 0 ? qnaConfig.qaCategory : '추가질문' : i.index == 1 ? '답변' : '추가답변'}"></span>[[${detail.qaSubject}]]
+                    </div>
+                    <a class="control-box" th:if="${@compareAuth.getAuth('ADMIN') || boardDetail.createIdx == session.idx}">
+                        <i class="fa fa-ellipsis-v control-btn" aria-hidden="true"></i>
+                        <ul style="display: none;">
+                            <li><button id="boardUpdate" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 수정</button></li>
+                            <li th:if="${!@compareAuth.getAuth('ADMIN') && boardDetail.createIdx == session.idx}"><button id="boardDel" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button></li>
+                            <li th:if="${@compareAuth.getAuth('ADMIN')}"><button id="boardAdmDel" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button></li>
+                            <li th:if="${@compareAuth.getAuth('ADMIN')}"><button id="boardMovePopup" type="button"><i class="fa fa-arrows" aria-hidden="true"></i> 이동</button></li>
+                        </ul>
+                    </a>
+                </div>
+                <div>
+                    <ul class="qa-ul">
+                        <li class="border-bot">
+                            <div class="qna-info">
+                                <img th:src="@{/img/common/no_profile.gif}" >
+                                <div>
 
-                        <div class="board-info">
-                            <img th:src="@{/img/common/no_profile.gif}" >
-                            <div>
-
-                                <p th:text="${qnaDetail[0].createNicknm}" class="weight600"></p>
-                                <p>
-                                    <span><i class="fa fa-clock-o" aria-hidden="true"></i> [[${#dates.format(qnaDetail[0].createDate, 'yyyy. MM. dd. HH:mm')}]]</span>
-                                </p>
+                                    <p th:text="${detail.createNicknm}" class="weight600"></p>
+                                    <p>
+                                        <span><i class="fa fa-clock-o" aria-hidden="true"></i> [[${#dates.format(detail.createDate, 'yyyy. MM. dd. HH:mm')}]]</span>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                    <!--/*
-                                        <th:block th:if="${fileList.size() > 0}">
-                                            <li class="board-on-btn">
-                                                <button type="button" id="boardFileBtn" class="on">첨부파일 <span class="text-color-primary" th:text="${fileList.size() }"></span><span class="board-more"></span></button>
-                                            </li>
-                                            <li id="boardFile" class="board-on">
-                                                <th:block th:each="res : ${fileList}">
-                                                    <p><a th:href="'/file/download/'+ ${res.saveName}" th:text="${res.originalName}"></a></p>
-                                                </th:block>
-                                            </li>
-                                        </th:block>
-                                        <li th:utext="${boardDetail.boardContent}" class="board-content"></li>
-                                        */-->
-                </ul>
+                        </li>
+                        <th:block th:if="${fileList[i.index].size() > 0}">
+                            <li class="board-on-btn">
+                                <button type="button" class="on qna-file-btn">첨부파일 <span class="text-color-primary" th:text="${fileList[i.index].size() }"></span><span class="board-more"></span></button>
+                            </li>
+                            <li id="boardFile" class="board-on">
+                                <th:block th:each="res : ${fileList[i.index]}">
+                                    <p><a th:href="'/file/download/'+ ${res.saveName}" th:text="${res.originalName}"></a></p>
+                                </th:block>
+                            </li>
+                        </th:block>
+                        <li th:utext="${detail.qaContent}" class="board-content"></li>
+                    </ul>
+                </div>
             </div>
-            <!--/*
-            <div class="mb40"></div>
+            <div class="mb100"></div>
             <div class="bot-btn-box">
                 <button id="goList" type="button">목록</button>
             </div>
-            */-->
             <div class="mb100"></div>
         </form>
     </div>

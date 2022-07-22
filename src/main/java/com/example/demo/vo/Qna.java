@@ -10,7 +10,7 @@ public class Qna {
     private Integer parentIdx;
     private String qaSubject;
     private String qaContent;
-    private int attachFileIdx;
+    private Integer attachFileIdx;
     private int createIdx;
     private Date createDate;
     private int updateIdx;

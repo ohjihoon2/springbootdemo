@@ -2,16 +2,7 @@ $(function() {
     // 조회수
     boardHitUp();
 
-    // 컨트롤버튼 컨트롤
-    $(document).on("click", ".control-btn", function() {
-        if($(this).next('ul').css('display') == 'none') {
-            $('.control-btn').next('ul').hide();
-            $(this).next('ul').show();
-        }
-        else {
-            $(this).next('ul').hide();
-        }
-    });
+
 
     // 게시글 삭제(유저)
     $('#boardUpdate').click(function() {
@@ -124,13 +115,14 @@ $(function() {
     });
 
     // 첨부파일 숨김
-    $('#boardFileBtn').click(function() {
-        if($('#boardFile').css('display') == 'none') {
-            $('#boardFile').show();
+    $('.qna-file-btn').click(function() {
+        var li = $(this).closest('li').next('li');
+        if(li.css('display') == 'none') {
+            li.show();
             $(this).addClass('on');
         }
         else {
-            $('#boardFile').hide();
+            li.hide();
             $(this).removeClass('on');
         }
     });

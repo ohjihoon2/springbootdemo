@@ -255,7 +255,16 @@
             if(files != '' || thumb != '') {
                 contentType = false;
                 var data = new FormData();
-                data.append("param", new Blob([JSON.stringify(param)], {type: "application/json"}));
+
+                console.log(param);
+                if(param.length > 1) {
+                    for(var i = 0; i < param.length; i++) {
+                        data.append("param" + i.toString(), new Blob([JSON.stringify(param[i])], {type: "application/json"}));
+                    }
+                }
+                else {
+                    data.append("param", new Blob([JSON.stringify(param)], {type: "application/json"}));
+                }
                 if(files !='') {
                     for (var i = 0; i < $('#' + files)[0].files.length; i++) {
                         data.append('files', $('#' + files)[0].files[i]);
@@ -349,7 +358,9 @@
                 passwordChk: '비밀번호 확인',
                 newPassword: '새 비밀번호',
                 newPasswordChk: '새 비밀번호 확인',
+                qnaSubject: 'Q&A 제목',
                 qaSubject: 'Q&A답변 제목',
+                qnaContent: 'Q&A 내용',
                 qaContent: 'Q&A답변 내용',
                 faqNm: 'FAQ타입명',
                 masterIdx: 'FAQ타입',

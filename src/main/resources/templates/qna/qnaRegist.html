@@ -6,7 +6,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/board/boardRegist.css')"></th:block>
+<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/qna/qnaRegist.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
 <script>
     if (![[${@compareAuth.getAuth('USER')}]]) {
@@ -17,32 +17,35 @@
 <th:block th:replace="/fragments/header.html :: thHeader"></th:block>
 <section>
     <div class="section-wrap">
-        <form id="boardRegistForm">
+        <form id="qnaRegistForm">
             <div class="pt80"></div>
             <div class="top-btn-box">
-                <div class="left">게시물 추가</div>
+                <div class="left">Q&A 질문</div>
+                <span><input id="secretYn" type="checkbox"  checked/><label for="secretYn">비밀글</label></span>
+                <span><input id="qaEmailRecvYn" type="checkbox"  checked/><label for="qaEmailRecvYn">답변 메일받기</label></span>
             </div>
             <div class="mb10"></div>
-            <ul id="boardUl" class="board-ul">
+            <ul class="qna-ul">
+                <li>
+                    <label>분류</label>
+                    <select id="qaCategory">
+                        <th:block th:each="res : ${#strings.listSplit(qaCategoryList,';')}">
+                            <option th:text="${res}" th:value="${res}"></option>
+                        </th:block>
+                    </select>
+                </li>
                 <li>
                     <label>제목</label>
-                    <input id="boardSubject" type="text">
+                    <input id="qnaSubject" type="text">
                 </li>
-                <li>
-                    <label><i class="fa fa-image" aria-hidden="true"></i></label>
-                    <div>
-                        <input id="thumb" type="file" accept="image/jpeg, image/png, image/jpg, image/bmp">
-                    </div>
-                </li>
-<!--                여기-->
-                <li>
+                <li th:if="${@compareAuth.getAuth(qaFileLevel)}">
                     <label><i class="fa fa-folder-open" aria-hidden="true"></i></label>
                     <div>
                         <input id="files" type="file" multiple>
                     </div>
                 </li>
                 <li>
-                    <textarea id="boardContent"></textarea>
+                    <textarea id="qnaContent"></textarea>
                 </li>
             </ul>
             <div class="mb5"></div>
@@ -54,14 +57,10 @@
         </form>
     </div>
 </section>
-<!--/*
 <script>
-
-
-    var editorLevel = [[${@compareAuth.getAuth(boardMaster.editorLevel)}]];
+    var editorLevel = [[${@compareAuth.getAuth(qaEditorLevel)}]];
 </script>
-*/-->
 <th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
-<script th:src="@{/js/board/boardRegist.js}"></script>
+<script th:src="@{/js/qna/qnaRegist.js}"></script>
 </body>
 </html>

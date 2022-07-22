@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.vo.AttachFile;
 import com.example.demo.vo.Criteria;
 import com.example.demo.vo.Qna;
 import com.example.demo.vo.QnaConfig;
@@ -24,4 +25,6 @@ public interface QnaService {
     int updateQuestion(MultipartFile[] files, Qna qna);
 
     int additionalInsertQna(MultipartFile[] files, QnaConfig qnaConfig, Qna qna);
+
+    List<List<AttachFile>> findAttachFileIdxByIdxQna(int idx);
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -64,8 +65,8 @@ public class QnaServiceImpl implements QnaService {
             qna.setAttachFileIdx(idx);
         }
 
-        Qna qnaIdx = qnaMapper.insertQna(qna);
-        qnaConfig.setQnaIdx(qnaIdx.getIdx());
+        qnaMapper.insertQna(qna);
+        qnaConfig.setQnaIdx(qna.getIdx());
         qnaMapper.insertQnaConfig(qnaConfig);
 
         return result;
@@ -107,10 +108,22 @@ public class QnaServiceImpl implements QnaService {
             qna.setAttachFileIdx(idx);
         }
 
-        Qna qnaIdx = qnaMapper.insertQna(qna);
-        qnaConfig.setQnaIdx(qnaIdx.getIdx());
+        qnaMapper.insertQna(qna);
+        qnaConfig.setQnaIdx(qna.getIdx());
         qnaMapper.updateQnaConfig(qnaConfig);
 
         return result;
+    }
+
+    @Override
+    public List<List<AttachFile>> findAttachFileIdxByIdxQna(int idx) {
+        List<List<AttachFile>> resultList = new ArrayList<>();
+
+        List<Qna> attachFileIdxByIdxQnaList = qnaMapper.findAttachFileIdxByIdxQna(idx);
+        for (Qna qna : attachFileIdxByIdxQnaList) {
+            resultList.add(qnaMapper.findByAttachFileIdx(qna.getAttachFileIdx()));
+        }
+
+        return resultList;
     }
 }

@@ -175,4 +175,29 @@
                UPDATE_DATE = SYSDATE()
          WHERE QNA_IDX = #{qnaIdx}
     </update>
+
+    <select id="findAttachFileIdxByIdxQna" parameterType="int" resultType="Qna">
+        SELECT A.IDX AS IDX,
+               B.IDX AS ATTACH_FILE_IDX
+        FROM qna A
+                 LEFT JOIN ATTACH_FILE_MASTER B ON A.ATTACH_FILE_IDX = B.IDX
+        WHERE A.IDX = #{idx}
+           OR PARENT_IDX =#{idx}
+        ORDER BY A.IDX
+    </select>
+
+    <select id="findByAttachFileIdx" resultType="AttachFile" parameterType="int">
+        SELECT IDX,
+               FILE_SN,
+               ORIGINAL_NAME,
+               SAVE_NAME,
+               `SIZE`,
+               EXTENSION,
+               CREATE_IDX,
+               CREATE_DATE,
+               DELETE_YN,
+               DELETE_DATE
+        FROM attach_file
+        WHERE IDX = #{idx}
+    </select>
 </mapper>
