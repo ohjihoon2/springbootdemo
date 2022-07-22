@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
@@ -15,21 +16,26 @@ public class Criteria {
     private String searchType;
     private String searchKeyword;
     private Map<String, Object> paramMap;
+    private String startDate;
+    private String endDate;
 
 
 
     // 생성자로 무조건 실행된다.
     // 기본 페이지를 1페이지에 10개씩 페이징 처리
     public Criteria(){
-        this(1,10,null,null);
+        this(1,10,null,null,null,null);
     }
 
     //매개변수로 들어오는 값을 이용하여 페이징 처리
-    public Criteria(int pageNum, int amount, String searchType, String searchKeyword) {
+    public Criteria(int pageNum, int amount, String searchType, String searchKeyword, String startDate, String endDate) {
         this.pageNum = pageNum;
         this.amount = amount;
         this.searchType = searchType;
         this.searchKeyword = searchKeyword;
+        this.startDate = startDate;
+        this.endDate = endDate;
+
     }
 
     public void setPageNum(int pageNum) {

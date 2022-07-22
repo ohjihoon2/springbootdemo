@@ -57,7 +57,7 @@ public class FileUtil {
     }
 
     public List<AttachFile> uploadFiles(MultipartFile[] files, int attachFileIdx, int createIdx){
-
+        int cnt = 0;
         /* 파일이 비어있으면 비어있는 리스트 반환 */
         if(files[0].getSize() <1){
             return Collections.emptyList();
@@ -72,7 +72,9 @@ public class FileUtil {
             dir.mkdirs();
         }
 
-        int cnt = fileMapper.maxAttachIdx(attachFileIdx);
+        if(attachFileIdx != 0 ){
+            cnt = fileMapper.maxAttachIdx(attachFileIdx);
+        }
 
         /* 파일 개수만큼 forEach 실행 */
         for(MultipartFile file : files){

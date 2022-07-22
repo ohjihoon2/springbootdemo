@@ -18,6 +18,28 @@
         </if>
     </sql>
 
+    <sql id="criteriaPopup">
+        <if test="startDate != null and startDate != ''">
+            <![CDATA[ AND START_DATE >= #{startDate}]]>
+        </if>
+        <if test="endDate!= null and endDate != ''">
+            <![CDATA[ AND END_DATE <= #{endDate}]]>
+        </if>
+        <if test="searchType != null and searchKeyword != null">
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <foreach item="type" collection="typeArr">
+                    <trim prefix="OR">
+                        <choose>
+                            <when test="type=='N'.toString()">
+                                (POP_SUBJECT LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
     <insert id="insertMenuTree" parameterType="MenuTree">
         INSERT INTO menu_tree
             (
@@ -145,4 +167,60 @@
          WHERE IDX=#{idx}
     </delete>
 
+    <select id="findAllPopup" resultType="CustomMap" parameterType="Criteria">
+        SELECT ROWNUM_TB.*
+          FROM (
+                    SELECT @ROWNUM:=@ROWNUM+1 AS RN,
+                           IDX,
+                           POP_SUBJECT,
+                           ATTACH_FILE_IDX,
+                           START_DATE,
+                           END_DATE,
+                           USE_YN,
+                           CREATE_IDX,
+                           CREATE_DATE
+                      FROM popup,
+                           (SELECT @ROWNUM:=0) temp
+                     WHERE 1=1
+                      <include refid="criteriaPopup"/>
+               ) AS ROWNUM_TB
+         ORDER BY IDX desc
+         LIMIT #{pageStart},#{amount}
+    </select>
+
+    <select id="findByIdxPopup" parameterType="int" resultType="Popup">
+        SELECT IDX,
+               POP_SUBJECT,
+               ATTACH_FILE_IDX,
+               START_DATE,
+               END_DATE,
+               USE_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM popup
+         WHERE IDX =#{idx}
+    </select>
+
+    <insert id="insertPopup" parameterType="Popup">
+        INSERT INTO popup
+            (
+                POP_SUBJECT,
+                ATTACH_FILE_IDX,
+                START_DATE,
+                END_DATE,
+                CREATE_IDX,
+                CREATE_DATE
+            )
+        VALUES
+            (
+                #{popSubject},
+                #{attachFileIdx},
+                #{startDate},
+                #{endDate},
+                #{createIdx},
+                SYSDATE()
+            )
+    </insert>
 </mapper>

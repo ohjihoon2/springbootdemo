@@ -26,4 +26,10 @@ public interface AdminBasicMapper {
     int updateCssContent(Map<String, Object> paramMap);
 
     int deleteCssContent(Map<String, Object> paramMap);
+
+    List<Map<String, Object>> findAllPopup(Criteria criteria);
+
+    Popup findByIdxPopup(int idx);
+
+    int insertPopup(Popup popup);
 }

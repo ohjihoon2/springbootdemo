@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -172,4 +173,53 @@ public class AdminBasicController {
         return ResultStr.set(result);
     }
 
+    /**
+     * 팝업 리스트
+     * @param criteria
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/popup")
+    public String popupList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request,Model model) {
+        List<Map<String,Object>> resultList = adminService.findAllPopup(criteria);
+
+        model.addAttribute("resultList", resultList);
+        return "/adm/css";
+    }
+
+    /**
+     * 팝업 상세
+     * @param idx
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @PostMapping(value = "/popup/{idx}")
+    @ResponseBody
+    public Popup popupDetails(@PathVariable int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
+        return adminService.findByIdxPopup(idx);
+    }
+
+    /**
+     * 팝업 저장
+     * @param files
+     * @param popup
+     * @param response
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/popup")
+    @ResponseBody
+    public Map<String,Object> savePopup(MultipartFile[] files, @RequestPart("popup") Popup popup, HttpServletResponse response, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        popup.setCreateIdx(userIdx);
+
+        int result = adminService.insertPopup(files, popup);
+
+        return ResultStr.set(result);
+    }
 }
