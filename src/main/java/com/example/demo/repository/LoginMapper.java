@@ -36,4 +36,6 @@ public interface LoginMapper {
     int existByUserNicknm(String userNicknm);
 
     int existByUserEmail(String userEmail);
+
+    void updateLastLoginDate(String userId);
 }

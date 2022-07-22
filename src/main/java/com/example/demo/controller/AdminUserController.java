@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -229,7 +230,7 @@ public class AdminUserController {
      * resetPassword 받기
      * @return
      */
-    @PostMapping(value = "resetPassword")
+    @PostMapping(value = "/resetPassword")
     @ResponseBody
     public String getResetPassword(){
         String resetPwd = adminService.getResetPassword();
@@ -240,9 +241,69 @@ public class AdminUserController {
      * 비밀번호 변경 팝업
      * @return
      */
-    @GetMapping(value = "admin/password")
+    @GetMapping(value = "/admin/password")
     public String popupPassword(@SessionAttribute("idx") int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
         model.addAttribute("idx", idx);
         return "/adm/password";
     }
+
+    /**
+     * 접속자 통계 페이지
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/visitor")
+    public String visitorList(HttpServletResponse response, HttpServletRequest request, Model model) {
+
+        return "/adm/visitor";
+    }
+
+    /**
+     * 접속자 통계 리스트
+     * @param criteria
+     * @return
+     */
+    @PostMapping(value = "/visitor/statistics")
+    @ResponseBody
+    public Map<String,Object>  visitorStatistics(@ModelAttribute Criteria criteria){
+        Map<String, Object> resultMap = new HashMap<>();
+
+        List<Map<String,Object>> resultList = adminService.findAllVisitor(criteria);
+        int total = adminService.countVisitor(criteria);
+
+        // 웹 페이징 설정 처리
+        int webPageCount =DeviceCheck.getWebPageCount();
+        Page pageMaker = new Page(total, webPageCount, criteria);
+
+        resultMap.put("resultList", resultList);
+        resultMap.put("pageMaker", pageMaker);
+
+        return resultMap;
+
+    }
+
+    /**
+     * 접속자 통계 그래픽
+     * @param paramMap
+     * @return
+     */
+    @PostMapping(value = "/visitor/graphic")
+    @ResponseBody
+    public Map<String,Object>  visitorGraphic(@RequestBody Map<String, Object> paramMap){
+
+        Map<String, Object> resultMap = new HashMap<>();
+        String standard = paramMap.get("standard").toString();
+        List<Map<String,Object>> graphList = adminService.findByStandardGraph(standard);
+        List<Map<String,Object>> pieList = adminService.findByStandardPie(standard);
+
+        resultMap.put("graphList", graphList);
+        resultMap.put("pieList", pieList);
+
+        return resultMap;
+
+    }
+
+
 }

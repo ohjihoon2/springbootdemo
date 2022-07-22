@@ -66,7 +66,9 @@
                 <if test="visitRefer != null and visitRefer !=''">
                     VISIT_REFER,
                 </if>
-                VISIT_AGENT
+                VISIT_AGENT,
+                VISIT_OS,
+                VISIT_BROWSER
             )
         VALUES
             (
@@ -75,7 +77,9 @@
                 <if test="visitRefer != null and visitRefer !=''">
                     #{visitRefer},
                 </if>
-                #{visitAgent}
+                #{visitAgent},
+                #{visitOs},
+                #{visitBrowser}
             )
     </insert>
 </mapper>

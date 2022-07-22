@@ -24,8 +24,10 @@ public class CustomAuthenicationSuccessHandler extends SavedRequestAwareAuthenti
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         HttpSession session = request.getSession();
-
         String userId =  authentication.getPrincipal().toString();
+
+        loginService.updateLastLoginDate(userId);
+
         Map<String, Object> sessionMap = loginService.findUserNicknmVerificationYnEmailIdxByUserId(userId);
         session.setAttribute("idx", sessionMap.get("idx"));
         session.setAttribute("userNicknm", sessionMap.get("userNicknm"));

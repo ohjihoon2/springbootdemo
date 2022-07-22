@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -96,5 +97,41 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     public String getResetPassword() {
         return adminMapper.getResetPassword();
+    }
+
+    @Override
+    public List<Map<String, Object>> findAllVisitor(Criteria criteria) {
+        return adminMapper.findAllVisitor(criteria);
+    }
+
+    @Override
+    public int countVisitor(Criteria criteria) {
+        return adminMapper.countVisitor(criteria);
+    }
+
+    @Override
+    public List<Map<String, Object>> findByStandardGraph(String standard) {
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        if(standard.equals("D")){
+            mapList = adminMapper.findByStandardGraphDay();
+        }else if(standard.equals("M")){
+            mapList = adminMapper.findByStandardGraphMonth();
+        }else if(standard.equals("Y")){
+            mapList = adminMapper.findByStandardGraphYear();
+        }
+        return mapList;
+    }
+
+    @Override
+    public List<Map<String, Object>> findByStandardPie(String standard) {
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        if(standard.equals("D")){
+            mapList = adminMapper.findByStandardPieDay();
+        }else if(standard.equals("M")){
+            mapList = adminMapper.findByStandardPieMonth();
+        }else if(standard.equals("Y")){
+            mapList = adminMapper.findByStandardPieYear();
+        }
+        return mapList;
     }
 }

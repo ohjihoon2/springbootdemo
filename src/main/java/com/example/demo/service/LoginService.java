@@ -31,4 +31,6 @@ public interface LoginService extends UserDetailsService {
     int checkUserByUserNicknm(String userNicknm);
 
     int checkUserByUserEmail(String userEmail);
+
+    void updateLastLoginDate(String userId);
 }

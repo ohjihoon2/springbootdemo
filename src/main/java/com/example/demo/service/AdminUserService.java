@@ -31,4 +31,12 @@ public interface AdminUserService {
     int updateAdmin(Map<String, Object> paramMap);
 
     String getResetPassword();
+
+    List<Map<String, Object>> findAllVisitor(Criteria criteria);
+
+    int countVisitor(Criteria criteria);
+
+    List<Map<String, Object>> findByStandardGraph(String standard);
+
+    List<Map<String, Object>> findByStandardPie(String standard);
 }

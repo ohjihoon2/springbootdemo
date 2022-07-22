@@ -22,6 +22,7 @@ public class Users {
     private String verificationYn;
     private String marketingYn;
     private String profileYn;
+    private Date lastLoginDate;
     private Date createDate;
     private Date updateDate;
     private String deleteYn;
