@@ -126,4 +126,14 @@ public class QnaServiceImpl implements QnaService {
 
         return resultList;
     }
+
+    @Override
+    public List<AttachFile> findAttachFileIdxByMaxIdxQna(int idx) {
+        return qnaMapper.findByAttachFileIdx(idx);
+    }
+
+    @Override
+    public Map<String, Object> findByMaxIdxQna(int idx) {
+        return qnaMapper.findByMaxIdxQna(idx);
+    }
 }

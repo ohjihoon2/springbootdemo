@@ -157,13 +157,17 @@ public class QnaController {
         model.addAttribute("qaEditorLevel",configData.get("qaEditorLevel"));
 
         Map<String, Object> qnaConfig = qnaService.findByIdxQnaConfig(idx);
-        List<List<AttachFile>> fileList = qnaService.findAttachFileIdxByIdxQna(Integer.parseInt(qnaConfig.get("qaIdx").toString()));
 
-        List<Map<String,Object>> qnaDetail = qnaService.findByIdxQna(Integer.parseInt(qnaConfig.get("qaIdx").toString()));
+        if(qnaConfig.get("qaStatus").equals("A") || qnaConfig.get("qaStatus").equals("RA")){
+            Map<String,Object> qnaDetail = qnaService.findByMaxIdxQna(Integer.parseInt(qnaConfig.get("qaIdx").toString()));
+            List<AttachFile> fileList = qnaService.findAttachFileIdxByMaxIdxQna(Integer.parseInt(qnaDetail.get("attatchFileIdx").toString()));
+
+            model.addAttribute("qnaDetail", qnaDetail);
+            model.addAttribute("fileList", fileList);
+        }
 
         model.addAttribute("qnaConfig", qnaConfig);
-        model.addAttribute("fileList", fileList);
-        model.addAttribute("qnaDetail", qnaDetail);
+
 
         return "/qna/qnaUpdate";
     }

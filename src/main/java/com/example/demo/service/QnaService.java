@@ -27,4 +27,8 @@ public interface QnaService {
     int additionalInsertQna(MultipartFile[] files, QnaConfig qnaConfig, Qna qna);
 
     List<List<AttachFile>> findAttachFileIdxByIdxQna(int idx);
+
+    List<AttachFile> findAttachFileIdxByMaxIdxQna(int qaIdx);
+
+    Map<String, Object> findByMaxIdxQna(int qaIdx);
 }

@@ -200,4 +200,24 @@
         FROM attach_file
         WHERE IDX = #{idx}
     </select>
+
+    <select id="findByMaxIdxQna" resultType="CustomMap" parameterType="int">
+        SELECT A.IDX,
+               QA_SUBJECT,
+               QA_CONTENT,
+               ATTACH_FILE_IDX,
+               IF( A.CREATE_IDX IS NULL , NULL, IFNULL(B.USER_NICKNM,'탈퇴된 사용자')) AS CREATE_NICKNM,
+               A.CREATE_DATE,
+               C.USER_NICKNM AS UPDATE_NICKNM,
+               B.UPDATE_DATE
+        FROM qna A
+                 LEFT OUTER JOIN users B on A.CREATE_IDX = B.IDX
+                 LEFT OUTER JOIN users C on B.UPDATE_IDX = C.IDX
+        WHERE A.IDX = (
+                           SELECT MAX(IDX) AS IDX
+                             FROM qna
+                            WHERE IDX = #{idx}
+                               OR A.PARENT_IDX = #{idx}
+                      )
+    </select>
 </mapper>
