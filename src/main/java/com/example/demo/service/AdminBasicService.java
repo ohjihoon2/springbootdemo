@@ -31,4 +31,14 @@ public interface AdminBasicService {
     int updatePopup(MultipartFile[] webFiles, MultipartFile[] mobileFiles, Popup popup);
 
     int deletePopup(Map<String, Object> paramMap);
+
+    List<Map<String, Object>> findAllBanner(Criteria criteria);
+
+    Banner findByIdxBanner(int idx);
+
+    int insertBanner(MultipartFile[] webFiles, MultipartFile[] mobileFiles, Banner banner);
+
+    int updateBanner(MultipartFile[] webFiles, MultipartFile[] mobileFiles, Banner banner);
+
+    int deleteBanner(Map<String, Object> paramMap);
 }

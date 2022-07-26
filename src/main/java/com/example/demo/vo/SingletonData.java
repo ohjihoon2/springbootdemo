@@ -21,12 +21,12 @@ public class SingletonData {
 
     private List<MenuTree> menuOneList = new ArrayList<>();
     private Map<String, List<MenuTree>> menuTwoMap = new HashMap<>();
-    private List<Css> cssList 	= new ArrayList<Css>();
+    private List<Css> cssList = new ArrayList<>();
     private Map<String, Object> configData 	= new HashMap<>();
+    private List<Popup> popupList = new ArrayList<>();
+    private List<Banner> bannerList = new ArrayList<>();
 
 //    private List<SiteVO> siteList 	= new ArrayList<SiteVO>();		// 사이트 리스트
-//    private List<PopupVO> 		popupList 	= new ArrayList<PopupVO>();		// 팝업 리스트
-//    private Map<String, List<CustomBannerVO>> 	bannerList;
 
 
     public List<MenuTree>  getMenuTwoMap(String lvl){

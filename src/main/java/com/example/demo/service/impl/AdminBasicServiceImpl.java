@@ -133,4 +133,72 @@ public class AdminBasicServiceImpl implements AdminBasicService {
         return adminMapper.deletePopup(paramMap);
     }
 
+    @Override
+    public List<Map<String, Object>> findAllBanner(Criteria criteria) {
+        return adminMapper.findAllBanner(criteria);
+    }
+
+    @Override
+    public Banner findByIdxBanner(int idx) {
+        return adminMapper.findByIdxBanner(idx);
+    }
+
+    @Override
+    public int insertBanner(MultipartFile[] webFiles, MultipartFile[] mobileFiles, Banner banner) {
+
+        if(webFiles != null){
+
+            // 실제 파일 업로드
+            List<AttachFile> fileList = fileUtil.uploadFiles(webFiles, 0, banner.getCreateIdx());
+            // DB에 파일 저장
+            int idx = fileUtil.saveFile(fileList);
+
+            //attachFileIdx 저장
+            banner.setWebAttachFileIdx(idx);
+        }
+        if(mobileFiles != null){
+
+            // 실제 파일 업로드
+            List<AttachFile> fileList = fileUtil.uploadFiles(mobileFiles, 0, banner.getCreateIdx());
+            // DB에 파일 저장
+            int idx = fileUtil.saveFile(fileList);
+
+            //attachFileIdx 저장
+            banner.setMobileAttachFileIdx(idx);
+        }
+
+        return adminMapper.insertBanner(banner);
+    }
+
+    @Override
+    public int updateBanner(MultipartFile[] webFiles, MultipartFile[] mobileFiles, Banner banner) {
+        if(webFiles != null){
+
+            // 실제 파일 업로드
+            List<AttachFile> fileList = fileUtil.uploadFiles(webFiles, 0, banner.getCreateIdx());
+            // DB에 파일 저장
+            int idx = fileUtil.saveFile(fileList);
+
+            //attachFileIdx 저장
+            banner.setWebAttachFileIdx(idx);
+        }
+        if(mobileFiles != null){
+
+            // 실제 파일 업로드
+            List<AttachFile> fileList = fileUtil.uploadFiles(mobileFiles, 0, banner.getCreateIdx());
+            // DB에 파일 저장
+            int idx = fileUtil.saveFile(fileList);
+
+            //attachFileIdx 저장
+            banner.setMobileAttachFileIdx(idx);
+        }
+        return adminMapper.updateBanner(banner);
+    }
+
+    @Override
+    public int deleteBanner(Map<String, Object> paramMap) {
+        //TODO 파일 삭제
+        return adminMapper.deleteBanner(paramMap);
+    }
+
 }

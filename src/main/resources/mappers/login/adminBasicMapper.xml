@@ -40,6 +40,28 @@
         </if>
     </sql>
 
+    <sql id="criteriaBanner">
+        <if test="startDate != null and startDate != ''">
+            <![CDATA[ AND START_DATE >= #{startDate}]]>
+        </if>
+        <if test="endDate!= null and endDate != ''">
+            <![CDATA[ AND END_DATE <= #{endDate}]]>
+        </if>
+        <if test="searchType != null and searchKeyword != null">
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <foreach item="type" collection="typeArr">
+                    <trim prefix="OR">
+                        <choose>
+                            <when test="type=='N'.toString()">
+                                (BNR_SUBJECT LIKE CONCAT('%',#{searchKeyword},'%'))
+                            </when>
+                        </choose>
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
+    </sql>
+
     <insert id="insertMenuTree" parameterType="MenuTree">
         INSERT INTO menu_tree
             (
@@ -177,7 +199,6 @@
                            MOBILE_ATTACH_FILE_IDX,
                            POP_FIRST_ID,
                            POP_SECOND_ID,
-                           POP_POSITION,
                            START_DATE,
                            END_DATE,
                            USE_YN,
@@ -199,7 +220,6 @@
                MOBILE_ATTACH_FILE_IDX,
                POP_FIRST_ID,
                POP_SECOND_ID,
-               POP_POSITION,
                START_DATE,
                END_DATE,
                USE_YN,
@@ -219,7 +239,6 @@
                 MOBILE_ATTACH_FILE_IDX,
                 POP_FIRST_ID,
                 POP_SECOND_ID,
-                POP_POSITION,
                 START_DATE,
                 END_DATE,
                 CREATE_IDX,
@@ -232,7 +251,6 @@
                 #{mobileAttachFileIdx},
                 #{popFirstId},
                 #{popSecondId},
-                #{popPosition},
                 #{startDate},
                 #{endDate},
                 #{createIdx},
@@ -251,7 +269,6 @@
             </if>
                POP_FIRST_ID =#{popFirstId},
                POP_SECOND_ID =#{popSecondId},
-               POP_POSITION =#{popPosition},
                START_DATE = #{startDate},
                END_DATE = #{endDate},
                USE_YN = #{useYn},
@@ -263,5 +280,98 @@
     <delete id="deletePopup" parameterType="map">
         DELETE FROM popup
          WHERE IDX =#{idx}
+    </delete>
+
+    <select id="findAllBanner" parameterType="Criteria" resultType="CustomMap">
+        SELECT ROWNUM_TB.*
+          FROM (
+                    SELECT @ROWNUM:=@ROWNUM+1 AS RN,
+                           IDX,
+                           BNR_SUBJECT,
+                           WEB_ATTACH_FILE_IDX,
+                           MOBILE_ATTACH_FILE_IDX,
+                           BNR_FIRST_ID,
+                           BNR_SECOND_ID,
+                           BNR_POSITION,
+                           START_DATE,
+                           END_DATE,
+                           USE_YN,
+                           CREATE_IDX,
+                           CREATE_DATE
+                      FROM banner,
+                           (SELECT @ROWNUM:=0) temp
+                     WHERE 1=1
+                    <include refid="criteriaBanner"/>
+               ) AS ROWNUM_TB
+         ORDER BY IDX desc
+         LIMIT #{pageStart},#{amount}
+    </select>
+
+    <select id="findByIdxBanner" resultType="Banner" parameterType="int">
+        SELECT IDX,
+               BNR_SUBJECT,
+               WEB_ATTACH_FILE_IDX,
+               MOBILE_ATTACH_FILE_IDX,
+               BNR_FIRST_ID,
+               BNR_SECOND_ID,
+               BNR_POSITION,
+               START_DATE,
+               END_DATE,
+               USE_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM IDX = #{idx}
+    </select>
+
+    <insert id="insertBanner" parameterType="Banner">
+        INSERT INTO banner
+            (
+                BNR_SUBJECT,
+                WEB_ATTACH_FILE_IDX,
+                MOBILE_ATTACH_FILE_IDX,
+                BNR_FIRST_ID,
+                BNR_SECOND_ID,
+                BNR_POSITION,
+                START_DATE,
+                END_DATE,
+                CREATE_IDX,
+                CREATE_DATE
+            )
+        VALUES
+            (
+                #{bnrSubject},
+                #{webAttachFileIdx},
+                #{mobileAttachFileIdx},
+                #{bnrFirstId},
+                #{bnrSecondId},
+                #{bnrPosition},
+                #{startDate},
+                #{endDate},
+                #{createIdx},
+                SYSDATE()
+            )
+    </insert>
+
+    <update id="updateBanner" parameterType="Banner">
+        UPDATE banner
+           SET BNR_SUBJECT = #{bnrSubject},
+               WEB_ATTACH_FILE_IDX = #{webAttachFileIdx},
+               MOBILE_ATTACH_FILE_IDX = #{mobileAttachFileIdx},
+               BNR_FIRST_ID = #{bnrFirstId},
+               BNR_SECOND_ID = #{bnrSecondId},
+               BNR_POSITION = #{bnrPosition},
+               START_DATE = #{startDate},
+               END_DATE = #{endDate},
+               USE_YN = #{useYn},
+               UPDATE_IDX = #{updateIdx},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX = #{idx}
+    </update>
+
+    <delete id="deleteBanner" parameterType="map">
+        DELETE FROM banner
+         WHERE IDX=#{idx}
     </delete>
 </mapper>

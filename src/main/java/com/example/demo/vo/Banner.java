@@ -5,13 +5,14 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class Popup {
+public class Banner {
     private int idx;
-    private String popSubject;
+    private String bnrSubject;
     private Integer webAttachFileIdx;
     private Integer mobileAttachFileIdx;
-    private String popFirstId;
-    private String popSecondId;
+    private String bnrFirstId;
+    private String bnrSecondId;
+    private String bnrPosition;
     private String startDate;
     private String endDate;
     private String useYn;

@@ -36,4 +36,14 @@ public interface AdminBasicMapper {
     int updatePopup(Popup popup);
 
     int deletePopup(Map<String, Object> paramMap);
+
+    List<Map<String, Object>> findAllBanner(Criteria criteria);
+
+    Banner findByIdxBanner(int idx);
+
+    int insertBanner(Banner banner);
+
+    int updateBanner(Banner banner);
+
+    int deleteBanner(Map<String, Object> paramMap);
 }

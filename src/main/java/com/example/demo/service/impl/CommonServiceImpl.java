@@ -17,11 +17,6 @@ public class CommonServiceImpl implements CommonService {
     private final CommonMapper commonMapper;
 
     @Override
-    public int countAlarmByUserIdx(int userIdx) {
-        return commonMapper.countAlarmByUserIdx(userIdx);
-    }
-
-    @Override
     public void generateSingletonData() {
         // 동적메뉴
         this.refreshSingletonMenuInfo();
@@ -29,6 +24,10 @@ public class CommonServiceImpl implements CommonService {
         this.refreshSingletonCssInfo();
         // 사이트 설정
         this.refreshSingletonSystemConfigInfo();
+        // 팝업 리스트
+        this.refreshSingletonPopupInfo();
+
+        this.refreshSingletonBannerInfo();
 
     }
 
@@ -63,11 +62,22 @@ public class CommonServiceImpl implements CommonService {
     public void refreshSingletonSystemConfigInfo() {
         SingletonData singleton = SingletonData.getInstance();
         singleton.setConfigData(commonMapper.findSystemConfig());
-
     }
 
     @Override
     public int insertVisitor(Visitor visitor) {
         return commonMapper.insertVisitor(visitor);
+    }
+
+    @Override
+    public void refreshSingletonBannerInfo() {
+        SingletonData singleton = SingletonData.getInstance();
+        singleton.setBannerList(commonMapper.findBanner());
+    }
+
+    @Override
+    public void refreshSingletonPopupInfo() {
+        SingletonData singleton = SingletonData.getInstance();
+        singleton.setPopupList(commonMapper.findPopup());
     }
 }

@@ -1,13 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.vo.MenuTree;
 import com.example.demo.vo.Visitor;
 
-import java.util.List;
-
 public interface CommonService {
-
-    int countAlarmByUserIdx(int userIdx);
 
     void generateSingletonData();
 
@@ -17,5 +12,9 @@ public interface CommonService {
 
     void refreshSingletonSystemConfigInfo();
 
+    void refreshSingletonPopupInfo();
+
     int insertVisitor(Visitor visitor);
+
+    void refreshSingletonBannerInfo();
 }

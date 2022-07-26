@@ -186,7 +186,7 @@ public class AdminBasicController {
         List<Map<String,Object>> resultList = adminService.findAllPopup(criteria);
 
         model.addAttribute("resultList", resultList);
-        return "/adm/css";
+        return "/adm/popup";
     }
 
     /**
@@ -205,20 +205,23 @@ public class AdminBasicController {
 
     /**
      * 팝업 저장
-     * @param files
+     * @param webFiles
+     * @param mobileFiles
      * @param popup
-     * @param response
      * @param request
      * @return
      */
     @PostMapping(value = "/popup")
     @ResponseBody
-    public Map<String,Object> savePopup(MultipartFile[] webFiles,MultipartFile[] mobileFiles, @RequestPart("popup") Popup popup, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> savePopup(MultipartFile[] webFiles,MultipartFile[] mobileFiles, @RequestPart("popup") Popup popup, HttpServletRequest request) {
         HttpSession session = request.getSession();
-//        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
-        popup.setCreateIdx(1);
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        popup.setCreateIdx(userIdx);
 
         int result = adminService.insertPopup(webFiles,mobileFiles, popup);
+
+        // 팝업 갱신
+        commonService.refreshSingletonPopupInfo();
 
         return ResultStr.set(result);
     }
@@ -226,7 +229,8 @@ public class AdminBasicController {
     /**
      * 팝업 수정
      * @param idx
-     * @param files
+     * @param webFiles
+     * @param mobileFiles
      * @param popup
      * @param request
      * @return
@@ -235,11 +239,14 @@ public class AdminBasicController {
     @ResponseBody
     public Map<String,Object> updatePopup(@PathVariable int idx, MultipartFile[] webFiles, MultipartFile[] mobileFiles,@RequestPart("popup") Popup popup,  HttpServletRequest request) {
         HttpSession session = request.getSession();
-//        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
         popup.setIdx(idx);
-        popup.setUpdateIdx(1);
+        popup.setUpdateIdx(userIdx);
 
         int result = adminService.updatePopup(webFiles,mobileFiles, popup);
+
+        // 팝업 갱신
+        commonService.refreshSingletonPopupInfo();
 
         return ResultStr.set(result);
     }
@@ -256,7 +263,100 @@ public class AdminBasicController {
         paramMap.put("idx",idx);
 
         int result = adminService.deletePopup(paramMap);
+        // 팝업 갱신
+        commonService.refreshSingletonPopupInfo();
+        return ResultStr.set(result);
+    }
 
+    /**
+     * 배너 관리 리스트
+     * @param criteria
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/banner")
+    public String bannerList(@ModelAttribute Criteria criteria, HttpServletResponse response, HttpServletRequest request,Model model) {
+        List<Map<String,Object>> resultList = adminService.findAllBanner(criteria);
+
+        model.addAttribute("resultList", resultList);
+        return "/adm/banner";
+    }
+
+    /**
+     * 배너 상세
+     * @param idx
+     * @return
+     */
+    @PostMapping(value = "/banner/{idx}")
+    @ResponseBody
+    public Banner bannerDetails(@PathVariable int idx) {
+        return adminService.findByIdxBanner(idx);
+    }
+
+    /**
+     * 배너 저장
+     * @param webFiles
+     * @param mobileFiles
+     * @param banner
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/banner")
+    @ResponseBody
+    public Map<String,Object> saveBanner(MultipartFile[] webFiles,MultipartFile[] mobileFiles, @RequestPart("banner") Banner banner, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        banner.setCreateIdx(userIdx);
+
+        int result = adminService.insertBanner(webFiles,mobileFiles, banner);
+
+        // 배너 갱신
+        commonService.refreshSingletonBannerInfo();
+
+        return ResultStr.set(result);
+    }
+
+    /**
+     * 배너 수정
+     * @param idx
+     * @param webFiles
+     * @param mobileFiles
+     * @param banner
+     * @param request
+     * @return
+     */
+    @PatchMapping(value = "/banner/{idx}")
+    @ResponseBody
+    public Map<String,Object> updateBanner(@PathVariable int idx, MultipartFile[] webFiles, MultipartFile[] mobileFiles,@RequestPart("banner") Banner banner,  HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        banner.setIdx(idx);
+        banner.setUpdateIdx(userIdx);
+
+        int result = adminService.updateBanner(webFiles,mobileFiles, banner);
+
+        // 배너 갱신
+        commonService.refreshSingletonBannerInfo();
+
+        return ResultStr.set(result);
+    }
+
+    /**
+     * 배너 삭제
+     * @param idx
+     * @return
+     */
+    @DeleteMapping(value = "/banner/{idx}")
+    @ResponseBody
+    public Map<String,Object> deleteBanner(@PathVariable int idx) {
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("idx",idx);
+
+        int result = adminService.deleteBanner(paramMap);
+        // 배너 갱신
+        commonService.refreshSingletonBannerInfo();
         return ResultStr.set(result);
     }
 }

@@ -31,12 +31,6 @@
         ]]>
     </delete>
 
-    <select id="countAlarmByUserIdx" resultType="int" parameterType="int">
-        SELECT COUNT(*)
-          FROM alarm
-         WHERE RECEIVE_IDX = #{userIdx}
-    </select>
-
     <select id="findCssContent" resultType="Css">
         SELECT IDX,
                CSS_FIRST_ID,
@@ -82,4 +76,49 @@
                 #{visitBrowser}
             )
     </insert>
+
+    <select id="findPopup" resultType="Popup">
+        SELECT IDX,
+               POP_SUBJECT,
+               WEB_ATTACH_FILE_IDX,
+               MOBILE_ATTACH_FILE_IDX,
+               POP_FIRST_ID,
+               POP_SECOND_ID,
+               START_DATE,
+               END_DATE,
+               USE_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM popup
+         WHERE USE_YN = 'Y'
+         <![CDATA[
+           AND START_DATE <= date_format(SYSDATE(),'%Y%m%d')
+           AND END_DATE <= date_format(SYSDATE(),'%Y%m%d')
+         ]]>
+    </select>
+
+    <select id="findBanner" resultType="Banner">
+        SELECT IDX,
+               BNR_SUBJECT,
+               WEB_ATTACH_FILE_IDX,
+               MOBILE_ATTACH_FILE_IDX,
+               BNR_FIRST_ID,
+               BNR_SECOND_ID,
+               BNR_POSITION,
+               START_DATE,
+               END_DATE,
+               USE_YN,
+               CREATE_IDX,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE
+          FROM banner
+         WHERE USE_YN = 'Y'
+         <![CDATA[
+          AND START_DATE <= date_format(SYSDATE(),'%Y%m%d')
+          AND END_DATE <= date_format(SYSDATE(),'%Y%m%d')
+        ]]>
+    </select>
 </mapper>

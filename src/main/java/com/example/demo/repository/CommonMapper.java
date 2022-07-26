@@ -17,11 +17,13 @@ public interface CommonMapper {
 
     int deleteWithdrawUser();
 
-    int countAlarmByUserIdx(int userIdx);
-
     List<Css> findCssContent();
 
     Map<String, Object> findSystemConfig();
 
     int insertVisitor(Visitor visitor);
+
+    List<Popup> findPopup();
+
+    List<Banner> findBanner();
 }
