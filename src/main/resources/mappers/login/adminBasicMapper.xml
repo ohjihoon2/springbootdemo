@@ -173,7 +173,11 @@
                     SELECT @ROWNUM:=@ROWNUM+1 AS RN,
                            IDX,
                            POP_SUBJECT,
-                           ATTACH_FILE_IDX,
+                           WEB_ATTACH_FILE_IDX,
+                           MOBILE_ATTACH_FILE_IDX,
+                           POP_FIRST_ID,
+                           POP_SECOND_ID,
+                           POP_POSITION,
                            START_DATE,
                            END_DATE,
                            USE_YN,
@@ -191,7 +195,11 @@
     <select id="findByIdxPopup" parameterType="int" resultType="Popup">
         SELECT IDX,
                POP_SUBJECT,
-               ATTACH_FILE_IDX,
+               WEB_ATTACH_FILE_IDX,
+               MOBILE_ATTACH_FILE_IDX,
+               POP_FIRST_ID,
+               POP_SECOND_ID,
+               POP_POSITION,
                START_DATE,
                END_DATE,
                USE_YN,
@@ -207,7 +215,11 @@
         INSERT INTO popup
             (
                 POP_SUBJECT,
-                ATTACH_FILE_IDX,
+                WEB_ATTACH_FILE_IDX,
+                MOBILE_ATTACH_FILE_IDX,
+                POP_FIRST_ID,
+                POP_SECOND_ID,
+                POP_POSITION,
                 START_DATE,
                 END_DATE,
                 CREATE_IDX,
@@ -216,7 +228,11 @@
         VALUES
             (
                 #{popSubject},
-                #{attachFileIdx},
+                #{webAttachFileIdx},
+                #{mobileAttachFileIdx},
+                #{popFirstId},
+                #{popSecondId},
+                #{popPosition},
                 #{startDate},
                 #{endDate},
                 #{createIdx},
@@ -227,9 +243,15 @@
     <update id="updatePopup" parameterType="Popup">
         UPDATE popup
            SET POP_SUBJECT = #{popSubject},
-            <if test="attachFileIdx != null and attachFileIdx != ''">
-               ATTACH_FILE_IDX = #{attachFileIdx},
+            <if test="webAttachFileIdx != null and webAttachFileIdx != ''">
+               WEB_ATTACH_FILE_IDX =#{webAttachFileIdx},
             </if>
+            <if test="mobileAttachFileIdx != null and mobileAttachFileIdx != ''">
+                MOBILE_ATTACH_FILE_IDX =#{mobileAttachFileIdx},
+            </if>
+               POP_FIRST_ID =#{popFirstId},
+               POP_SECOND_ID =#{popSecondId},
+               POP_POSITION =#{popPosition},
                START_DATE = #{startDate},
                END_DATE = #{endDate},
                USE_YN = #{useYn},

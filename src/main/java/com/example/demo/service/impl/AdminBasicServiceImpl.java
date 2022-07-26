@@ -76,39 +76,60 @@ public class AdminBasicServiceImpl implements AdminBasicService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
-    public int insertPopup(MultipartFile[] files, Popup popup) {
+    public int insertPopup(MultipartFile[] webFiles,MultipartFile[] mobileFiles, Popup popup) {
 
-        if(files != null){
+        if(webFiles != null){
+
             // 실제 파일 업로드
-            List<AttachFile> fileList = fileUtil.uploadFiles(files, 0, popup.getCreateIdx());
-
+            List<AttachFile> fileList = fileUtil.uploadFiles(webFiles, 0, popup.getCreateIdx());
             // DB에 파일 저장
             int idx = fileUtil.saveFile(fileList);
 
             //attachFileIdx 저장
-            popup.setAttachFileIdx(idx);
+            popup.setWebAttachFileIdx(idx);
+        }
+        if(mobileFiles != null){
+
+            // 실제 파일 업로드
+            List<AttachFile> fileList = fileUtil.uploadFiles(mobileFiles, 0, popup.getCreateIdx());
+            // DB에 파일 저장
+            int idx = fileUtil.saveFile(fileList);
+
+            //attachFileIdx 저장
+            popup.setMobileAttachFileIdx(idx);
         }
 
         return adminMapper.insertPopup(popup);
     }
 
     @Override
-    public int updatePopup(MultipartFile[] files, Popup popup) {
-        if(files != null){
-            // 실제 파일 업로드
-            List<AttachFile> fileList = fileUtil.uploadFiles(files, 0, popup.getCreateIdx());
+    public int updatePopup(MultipartFile[] webFiles, MultipartFile[] mobileFiles,Popup popup) {
+        if(webFiles != null){
 
+            // 실제 파일 업로드
+            List<AttachFile> fileList = fileUtil.uploadFiles(webFiles, 0, popup.getCreateIdx());
             // DB에 파일 저장
             int idx = fileUtil.saveFile(fileList);
 
             //attachFileIdx 저장
-            popup.setAttachFileIdx(idx);
+            popup.setWebAttachFileIdx(idx);
+        }
+        if(mobileFiles != null){
+
+            // 실제 파일 업로드
+            List<AttachFile> fileList = fileUtil.uploadFiles(mobileFiles, 0, popup.getCreateIdx());
+            // DB에 파일 저장
+            int idx = fileUtil.saveFile(fileList);
+
+            //attachFileIdx 저장
+            popup.setMobileAttachFileIdx(idx);
         }
         return adminMapper.updatePopup(popup);
     }
 
     @Override
     public int deletePopup(Map<String, Object> paramMap) {
+        //TODO 파일 삭제
         return adminMapper.deletePopup(paramMap);
     }
 

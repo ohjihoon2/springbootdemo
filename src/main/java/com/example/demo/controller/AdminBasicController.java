@@ -213,12 +213,12 @@ public class AdminBasicController {
      */
     @PostMapping(value = "/popup")
     @ResponseBody
-    public Map<String,Object> savePopup(MultipartFile[] files, @RequestPart("popup") Popup popup, HttpServletResponse response, HttpServletRequest request) {
+    public Map<String,Object> savePopup(MultipartFile[] webFiles,MultipartFile[] mobileFiles, @RequestPart("popup") Popup popup, HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
-        popup.setCreateIdx(userIdx);
+//        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        popup.setCreateIdx(1);
 
-        int result = adminService.insertPopup(files, popup);
+        int result = adminService.insertPopup(webFiles,mobileFiles, popup);
 
         return ResultStr.set(result);
     }
@@ -233,13 +233,13 @@ public class AdminBasicController {
      */
     @PatchMapping(value = "/popup/{idx}")
     @ResponseBody
-    public Map<String,Object> updatePopup(@PathVariable int idx, MultipartFile[] files, @RequestPart("popup") Popup popup,  HttpServletRequest request) {
+    public Map<String,Object> updatePopup(@PathVariable int idx, MultipartFile[] webFiles, MultipartFile[] mobileFiles,@RequestPart("popup") Popup popup,  HttpServletRequest request) {
         HttpSession session = request.getSession();
 //        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
         popup.setIdx(idx);
         popup.setUpdateIdx(1);
 
-        int result = adminService.updatePopup(files, popup);
+        int result = adminService.updatePopup(webFiles,mobileFiles, popup);
 
         return ResultStr.set(result);
     }

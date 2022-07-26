@@ -8,7 +8,11 @@ import java.util.Date;
 public class Popup {
     private int idx;
     private String popSubject;
-    private int attachFileIdx;
+    private Integer webAttachFileIdx;
+    private Integer mobileAttachFileIdx;
+    private String popFirstId;
+    private String popSecondId;
+    private String popPosition;
     private String startDate;
     private String endDate;
     private String useYn;
