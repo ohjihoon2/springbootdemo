@@ -23,7 +23,7 @@ $(function() {
     //상세 이동(일반)
     $('#qnaTable tbody tr td').not('.off').click(function() {
         var idx = $(this).closest('tr').data('val');
-        $page.goPage('/qna/detail/' + idx)
+        $page.goPage('/qna/' + idx)
     });
 
     //글쓰기

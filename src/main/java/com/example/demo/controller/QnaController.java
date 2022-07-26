@@ -59,10 +59,10 @@ public class QnaController {
      * @param authentication
      * @return
      */
-    @GetMapping("/detail/{idx}")
+    @GetMapping("/{idx}")
     public String qnaDetail(@PathVariable("idx") int idx, HttpServletResponse response, HttpServletRequest request, Model model, Authentication authentication) {
         Map<String, Object> qnaConfig = qnaService.findByIdxQnaConfig(idx);
-        List<List<AttachFile>> fileList = qnaService.findAttachFileIdxByIdxQna(idx);
+        List<List<AttachFile>> fileList = qnaService.findAttachFileIdxByIdxQna(Integer.parseInt(qnaConfig.get("qaIdx").toString()));
 
         List<Map<String,Object>> qnaDetail = qnaService.findByIdxQna(Integer.parseInt(qnaConfig.get("qaIdx").toString()));
 
@@ -139,6 +139,33 @@ public class QnaController {
         int result = qnaService.additionalInsertQna(files,qnaConfig,qna);
 
         return ResultStr.setMulti(result);
+    }
+
+    /**
+     * qna 질문 수정 페이지
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
+    @GetMapping("/detail/{idx}")
+    public String updatePage(@PathVariable("idx") int idx,HttpServletResponse response, HttpServletRequest request, Model model) {
+
+        Map<String, Object> configData = SingletonData.getInstance().getConfigData();
+        model.addAttribute("qaCategoryList",configData.get("qaCategoryList"));
+        model.addAttribute("qaFileLevel",configData.get("qaFileLevel"));
+        model.addAttribute("qaEditorLevel",configData.get("qaEditorLevel"));
+
+        Map<String, Object> qnaConfig = qnaService.findByIdxQnaConfig(idx);
+        List<List<AttachFile>> fileList = qnaService.findAttachFileIdxByIdxQna(Integer.parseInt(qnaConfig.get("qaIdx").toString()));
+
+        List<Map<String,Object>> qnaDetail = qnaService.findByIdxQna(Integer.parseInt(qnaConfig.get("qaIdx").toString()));
+
+        model.addAttribute("qnaConfig", qnaConfig);
+        model.addAttribute("fileList", fileList);
+        model.addAttribute("qnaDetail", qnaDetail);
+
+        return "/qna/qnaUpdate";
     }
 
     /**

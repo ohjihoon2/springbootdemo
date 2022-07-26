@@ -122,6 +122,11 @@
     min-height: 36px;
 }
 
+.bot-btn-box > button:not(:last-child) {
+    margin-right: 5px;
+    background: #d3d3d3;
+}
+
 .border-bot {
     border-bottom: 1px solid #eee;
 }

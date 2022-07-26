@@ -6,66 +6,49 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/board/boardUpdate.css')"></th:block>
+<th:block th:replace="/fragments/head.html :: thHead(pageCss='/css/qna/qnaUpdate.css')"></th:block>
 <body ondragstart="return false" onselectstart="return false">
+<!--/*
 <script>
-    if("[[${boardMaster.useYn}]]" == "N") {
-        alert("사용이 불가능한 페이지입니다.");
-        window.history.back();
-    }
-    else if (![[${@compareAuth.getAuth(boardMaster.writeLevel)}]]) {
+    if (![[${@compareAuth.getAuth('USER')}]]) {
         alert("접근이 불가능한 페이지입니다.");
         window.history.back();
     }
-    else if("[[${boardDetail.deleteYn}]]" == "Y") {
-        alert("삭제 된 게시글입니다.");
-        window.history.back();
-    }
-    else if ("[[${session.idx}]]" != [[${boardDetail.createIdx}]]) {
-        if(![[${@compareAuth.getAuth('ADMIN')}]]) {
-            alert("수정 권한이 없는 페이지입니다.");
-            window.history.back();
-        }
-    }
 </script>
+*/-->
 <th:block th:replace="/fragments/header.html :: thHeader"></th:block>
 <section>
+
     <div class="section-wrap">
-        <form id="boardUpdateForm">
+        <form id="qnaRegistForm">
             <div class="pt80"></div>
             <div class="top-btn-box">
-                <div class="left">게시물 수정</div>
-                <span th:if="${@compareAuth.getAuth('ADMIN')}"><input id="notice" type="checkbox"/><label for="notice">공지</label></span>
+                <div class="left">Q&A 질문</div>
+                <span><input id="secretYn" type="checkbox"  checked/><label for="secretYn">비밀글</label></span>
+                <span><input id="qaEmailRecvYn" type="checkbox"  checked/><label for="qaEmailRecvYn">답변 메일받기</label></span>
             </div>
             <div class="mb10"></div>
-            <ul th:id="boardUl" class="board-ul">
+            <ul class="qna-ul">
+                <li>
+                    <label>분류</label>
+                    <select id="qaCategory">
+                        <th:block th:each="res : ${#strings.listSplit(qaCategoryList,';')}">
+                            <option th:text="${res}" th:value="${res}"></option>
+                        </th:block>
+                    </select>
+                </li>
                 <li>
                     <label>제목</label>
-                    <input id="boardSubject" type="text" th:value="${boardDetail.boardSubject}">
+                    <input id="qnaSubject" type="text">
                 </li>
-                <li>
-                    <label><i class="fa fa-image" aria-hidden="true"></i></label>
-                    <div>
-                        <input id="thumb" type="file" th:style="${boardDetail.thumbnailNm == null ? 'display:block;' : 'display:none;'}">
-                        <div class="file-list" th:if="${boardDetail.thumbnailNm != null}">
-                            [[${boardDetail.thumbnailNm}]]
-                            <button type="button" id="thumbnailDel">삭제</button>
-                        </div>
-                    </div>
-                </li>
-                <li th:if="${@compareAuth.getAuth(boardMaster.uploadLevel)}">
+                <li th:if="${@compareAuth.getAuth(qaFileLevel)}">
                     <label><i class="fa fa-folder-open" aria-hidden="true"></i></label>
                     <div>
                         <input id="files" type="file" multiple>
-                        <input id="attachFileIdx" type="hidden" th:value="${boardDetail.attachFileIdx}">
-                        <div class="file-list" th:each="res : ${fileList}">
-                            [[${res.originalName}]]
-                            <button type="button">삭제</button>
-                        </div>
                     </div>
                 </li>
                 <li>
-                    <textarea id="boardContent">[[${boardDetail.boardContent}]]</textarea>
+                    <textarea id="qnaContent"></textarea>
                 </li>
             </ul>
             <div class="mb5"></div>
@@ -78,13 +61,10 @@
     </div>
 </section>
 <script>
-    var masterIdx = "[[${boardMaster.idx}]]";
-    var idx = "[[${boardDetail.idx}]]";
-    var boardType = "[[${boardMaster.boardType}]]";
-    var boardId = "[[${boardMaster.boardId}]]";
-    var editorLevel = [[${@compareAuth.getAuth(boardMaster.writeLevel)}]];
+    var editorLevel = [[${@compareAuth.getAuth(qaEditorLevel)}]];
 </script>
+
 <th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
-<script th:src="@{/js/board/boardUpdate.js}"></script>
+<script th:src="@{/js/qna/qnaUpdate.js}"></script>
 </body>
 </html>

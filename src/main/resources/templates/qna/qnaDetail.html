@@ -29,67 +29,68 @@
     <div class="section-wrap">
         <form id="qnaDetailForm">
             <div class="pt80"></div>
-            <div th:each="detail, i : ${qnaDetail}" class="qna-box">
-                <div class="top-btn-box mb10">
-                    <div class="left">
-                        <span class="qa-category text-color-primary" th:text="${i.odd ? i.index == 0 ? qnaConfig.qaCategory : '추가질문' : i.index == 1 ? '답변' : '추가답변'}"></span>[[${detail.qaSubject}]]
+            <th:block th:each="detail, i : ${qnaDetail}">
+                <div class="mb20"></div>
+                <div class="qna-box">
+                    <div class="top-btn-box mb10">
+                        <div class="left">
+                            <span class="qa-category text-color-primary" th:text="${i.odd ? i.index == 0 ? qnaConfig.qaCategory : '추가질문' : i.index == 1 ? '답변' : '추가답변'}"></span>[[${detail.qaSubject}]]
+                        </div>
+                        <a class="control-box" th:if="${qnaConfig.createIdx == session.idx && i.index == 0}">
+                            <i id="controlBtn" class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                            <ul style="display: none;">
+                                <li th:if="${qnaConfig.qaStatus == 'Q' || qnaConfig.qaStatus == 'RQ'}"><button id="qnaUpdate" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 수정</button></li>
+                                <li><button id="qnaDel" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button></li>
+                            </ul>
+                        </a>
                     </div>
-                    <a class="control-box" th:if="${@compareAuth.getAuth('ADMIN') || boardDetail.createIdx == session.idx}">
-                        <i class="fa fa-ellipsis-v control-btn" aria-hidden="true"></i>
-                        <ul style="display: none;">
-                            <li><button id="boardUpdate" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 수정</button></li>
-                            <li th:if="${!@compareAuth.getAuth('ADMIN') && boardDetail.createIdx == session.idx}"><button id="boardDel" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button></li>
-                            <li th:if="${@compareAuth.getAuth('ADMIN')}"><button id="boardAdmDel" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button></li>
-                            <li th:if="${@compareAuth.getAuth('ADMIN')}"><button id="boardMovePopup" type="button"><i class="fa fa-arrows" aria-hidden="true"></i> 이동</button></li>
-                        </ul>
-                    </a>
-                </div>
-                <div>
-                    <ul class="qa-ul">
-                        <li class="border-bot">
-                            <div class="qna-info">
-                                <img th:src="@{/img/common/no_profile.gif}" >
-                                <div>
+                    <div>
+                        <ul class="qa-ul">
+                            <li class="border-bot">
+                                <div class="qna-info">
+                                    <img th:src="@{/img/common/no_profile.gif}" >
+                                    <div>
 
-                                    <p th:text="${detail.createNicknm}" class="weight600"></p>
-                                    <p>
-                                        <span><i class="fa fa-clock-o" aria-hidden="true"></i> [[${#dates.format(detail.createDate, 'yyyy. MM. dd. HH:mm')}]]</span>
-                                    </p>
+                                        <p th:text="${detail.createNicknm}" class="weight600"></p>
+                                        <p>
+                                            <span><i class="fa fa-clock-o" aria-hidden="true"></i> [[${#dates.format(detail.createDate, 'yyyy. MM. dd. HH:mm')}]]</span>
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <th:block th:if="${fileList[i.index].size() > 0}">
-                            <li class="board-on-btn">
-                                <button type="button" class="on qna-file-btn">첨부파일 <span class="text-color-primary" th:text="${fileList[i.index].size() }"></span><span class="board-more"></span></button>
                             </li>
-                            <li id="boardFile" class="board-on">
-                                <th:block th:each="res : ${fileList[i.index]}">
-                                    <p><a th:href="'/file/download/'+ ${res.saveName}" th:text="${res.originalName}"></a></p>
-                                </th:block>
-                            </li>
-                        </th:block>
-                        <li th:utext="${detail.qaContent}" class="board-content"></li>
-                    </ul>
+                            <th:block th:if="${fileList[i.index].size() > 0}">
+                                <li class="board-on-btn">
+                                    <button type="button" class="on qna-file-btn">첨부파일 <span class="text-color-primary" th:text="${fileList[i.index].size() }"></span><span class="board-more"></span></button>
+                                </li>
+                                <li id="boardFile" class="board-on">
+                                    <th:block th:each="res : ${fileList[i.index]}">
+                                        <p><a th:href="'/file/download/'+ ${res.saveName}" th:text="${res.originalName}"></a></p>
+                                    </th:block>
+                                </li>
+                            </th:block>
+                            <li th:utext="${detail.qaContent}" class="board-content"></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            </th:block>
             <div class="mb100"></div>
             <div class="bot-btn-box">
                 <button id="goList" type="button">목록</button>
+                <button th:if="${qnaConfig.qaStatus == 'A' || qnaConfig.qaStatus == 'RA'}" type="button">추가질문</button>
             </div>
             <div class="mb100"></div>
         </form>
     </div>
 </section>
-<!--/*
+
 <script>
-    var idx = "[[${boardDetail.idx}]]";
-    var boardId = "[[${boardMaster.boardId}]]";
-    var boardType = "[[${boardMaster.boardType}]]";
-    var admin = [[${@compareAuth.getAuth('ADMIN')}]] ;
-    var commentLevel = [[${@compareAuth.getAuth(boardMaster.commentLevel)}]];
+    var idx = "[[${qnaConfig.idx}]]";
+</script>
+<!--/*
     var sessionIdx;
     var sessionUserNicknm;
-</script>
+
+
 <th:block sec:authorize="isAuthenticated()">
     <script>
         var sessionIdx = [[${session.idx}]];
