@@ -136,4 +136,9 @@ public class QnaServiceImpl implements QnaService {
     public Map<String, Object> findByMaxIdxQna(int idx) {
         return qnaMapper.findByMaxIdxQna(idx);
     }
+
+    @Override
+    public int deleteQnaByUser(int idx) {
+        return qnaMapper.deleteQnaByUser(idx);
+    }
 }

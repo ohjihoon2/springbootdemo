@@ -220,4 +220,10 @@
                                OR A.PARENT_IDX = #{idx}
                       )
     </select>
+
+    <delete id="deleteQnaByUser" parameterType="int">
+        UPDATE qna_config
+           SET DELETE_YN = 'Y'
+         WHERE IDX = #{idx}
+    </delete>
 </mapper>

@@ -367,6 +367,7 @@
                A.QA_SUBJECT,
                B.QA_CATEGORY,
                B.QA_STATUS,
+               B.DELETE_YN,
                B.SECRET_YN,
                IF( A.CREATE_IDX IS NULL , NULL, IFNULL(C.USER_NICKNM,'탈퇴된 사용자')) AS CREATE_NICKNM,
                A.CREATE_DATE,
@@ -377,8 +378,9 @@
           LEFT OUTER JOIN users C ON A.CREATE_IDX = C.IDX
           LEFT OUTER JOIN users D ON B.UPDATE_IDX = D.IDX,
                (SELECT @ROWNUM:=0) temp
-         WHERE B.DELETE_YN = 'N'
+         WHERE 1=1
         <if test="paramMap.status != 'ALL'">
+            AND B.DELETE_YN = 'N'
             AND B.QA_STATUS IN('Q' , 'RQ')
         </if>
         <include refid="criteriaQna"/>
@@ -402,8 +404,9 @@
                      INNER JOIN qna_config B ON A.IDX = B.QA_IDX
                       LEFT OUTER JOIN users C ON A.CREATE_IDX = C.IDX
                       LEFT OUTER JOIN users D ON B.UPDATE_IDX = D.IDX
-                    WHERE B.DELETE_YN = 'N'
+                    WHERE 1=1
                     <if test="paramMap.status != 'ALL'">
+                        AND B.DELETE_YN = 'N'
                         AND B.QA_STATUS IN('Q' , 'RQ')
                     </if>
                     <include refid="criteriaQna"/>

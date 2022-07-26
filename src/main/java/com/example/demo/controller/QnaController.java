@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -183,7 +184,7 @@ public class QnaController {
      */
     @PatchMapping("/detail/{idx}")
     @ResponseBody
-    public Map<String, Object> qnaUpdate(@PathVariable("idx") int idx,MultipartFile[] files, @RequestPart("param") Qna qna, HttpServletResponse response, HttpServletRequest request, Model model, Authentication authentication) {
+    public Map<String, Object> updateQna(@PathVariable("idx") int idx,MultipartFile[] files, @RequestPart("param") Qna qna, HttpServletResponse response, HttpServletRequest request, Model model, Authentication authentication) {
         int result = 0;
 
         //qaIdx도 추가적으로 받아야함 - 변경할 qna의 idx
@@ -194,6 +195,20 @@ public class QnaController {
         result = qnaService.updateQuestion(files,qna);
 
         return ResultStr.setMulti(result);
+    }
+
+    /**
+     * qna 삭제
+     * @param idx
+     * @return
+     */
+    @DeleteMapping(value = "/detail/{idx}")
+    @ResponseBody
+    public Map<String,Object> deleteQna(@PathVariable int idx) {
+
+        int result = qnaService.deleteQnaByUser(idx);
+
+        return ResultStr.set(result);
     }
 
 }

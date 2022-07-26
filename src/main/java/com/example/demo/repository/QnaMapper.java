@@ -37,4 +37,6 @@ public interface QnaMapper {
     List<AttachFile> findByAttachFileIdx(Integer attachFileIdx);
 
     Map<String, Object> findByMaxIdxQna(int idx);
+
+    int deleteQnaByUser(int idx);
 }
