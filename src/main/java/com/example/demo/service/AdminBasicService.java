@@ -27,4 +27,8 @@ public interface AdminBasicService {
     Popup findByIdxPopup(int idx);
 
     int insertPopup(MultipartFile[] files, Popup popup);
+
+    int updatePopup(MultipartFile[] files, Popup popup);
+
+    int deletePopup(Map<String, Object> paramMap);
 }

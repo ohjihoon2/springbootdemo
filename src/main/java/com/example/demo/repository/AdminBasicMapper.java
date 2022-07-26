@@ -32,4 +32,8 @@ public interface AdminBasicMapper {
     Popup findByIdxPopup(int idx);
 
     int insertPopup(Popup popup);
+
+    int updatePopup(Popup popup);
+
+    int deletePopup(Map<String, Object> paramMap);
 }

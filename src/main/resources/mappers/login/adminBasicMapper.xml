@@ -223,4 +223,23 @@
                 SYSDATE()
             )
     </insert>
+
+    <update id="updatePopup" parameterType="Popup">
+        UPDATE popup
+           SET POP_SUBJECT = #{popSubject},
+            <if test="attachFileIdx != null and attachFileIdx != ''">
+               ATTACH_FILE_IDX = #{attachFileIdx},
+            </if>
+               START_DATE = #{startDate},
+               END_DATE = #{endDate},
+               USE_YN = #{useYn},
+               UPDATE_IDX = #{updateIdx},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX = #{idx}
+    </update>
+
+    <delete id="deletePopup" parameterType="map">
+        DELETE FROM popup
+         WHERE IDX =#{idx}
+    </delete>
 </mapper>

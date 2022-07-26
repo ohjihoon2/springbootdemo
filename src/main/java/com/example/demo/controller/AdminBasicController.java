@@ -222,4 +222,41 @@ public class AdminBasicController {
 
         return ResultStr.set(result);
     }
+
+    /**
+     * 팝업 수정
+     * @param idx
+     * @param files
+     * @param popup
+     * @param request
+     * @return
+     */
+    @PatchMapping(value = "/popup/{idx}")
+    @ResponseBody
+    public Map<String,Object> updatePopup(@PathVariable int idx, MultipartFile[] files, @RequestPart("popup") Popup popup,  HttpServletRequest request) {
+        HttpSession session = request.getSession();
+//        int userIdx = Integer.parseInt(String.valueOf(session.getAttribute("idx")));
+        popup.setIdx(idx);
+        popup.setUpdateIdx(1);
+
+        int result = adminService.updatePopup(files, popup);
+
+        return ResultStr.set(result);
+    }
+
+    /**
+     * 팝업 삭제
+     * @param idx
+     * @return
+     */
+    @DeleteMapping(value = "/popup/{idx}")
+    @ResponseBody
+    public Map<String,Object> deletePopup(@PathVariable int idx) {
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("idx",idx);
+
+        int result = adminService.deletePopup(paramMap);
+
+        return ResultStr.set(result);
+    }
 }

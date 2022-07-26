@@ -92,4 +92,24 @@ public class AdminBasicServiceImpl implements AdminBasicService {
         return adminMapper.insertPopup(popup);
     }
 
+    @Override
+    public int updatePopup(MultipartFile[] files, Popup popup) {
+        if(files != null){
+            // 실제 파일 업로드
+            List<AttachFile> fileList = fileUtil.uploadFiles(files, 0, popup.getCreateIdx());
+
+            // DB에 파일 저장
+            int idx = fileUtil.saveFile(fileList);
+
+            //attachFileIdx 저장
+            popup.setAttachFileIdx(idx);
+        }
+        return adminMapper.updatePopup(popup);
+    }
+
+    @Override
+    public int deletePopup(Map<String, Object> paramMap) {
+        return adminMapper.deletePopup(paramMap);
+    }
+
 }
