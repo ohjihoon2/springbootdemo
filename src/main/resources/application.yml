@@ -12,8 +12,8 @@ spring:
   datasource:
     driverClassName : net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     url: jdbc:log4jdbc:mariadb://218.48.191.246:23306/demo?allowMultiQueries=true
-    username: demo
-    password: demo
+    username: ENC(qbfghW4x/dQ=)
+    password: ENC(qbfghW4x/dQ=)
   messages:
     basename: errors
 server:
@@ -105,8 +105,8 @@ logging:
 spring.mail:
   host: smtp.gmail.com
   port: 587
-  username: koko5793@gmail.com
-  password: dlsgkr21
+  username: ENC(fuvmz2b8qwltB4w4AtQnxZQUaDAtG5KI)
+  password: ENC(0B2FLuuGCtfZCbGKSXj0vu8EonvKvCxk)
   properties:
     mail.smtp.auth: true
     mail.smtp.starttls.enable: true
@@ -154,3 +154,8 @@ server:
   servlet:
     session:
       timeout: 1800
+
+# 코드 암호화
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
