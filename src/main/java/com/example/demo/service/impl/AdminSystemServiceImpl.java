@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.config.JasyptConfig;
 import com.example.demo.repository.AdminSystemMapper;
 import com.example.demo.service.AdminSystemService;
 import com.example.demo.vo.Code;
@@ -9,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +18,7 @@ import java.util.Map;
 public class AdminSystemServiceImpl implements AdminSystemService {
 
     private final AdminSystemMapper adminMapper;
+    private final JasyptConfig jasyptConfig;
 
     @Override
     public List<Map<String,Object>> findAllCodeGroup(Criteria criteria) {
@@ -68,6 +69,8 @@ public class AdminSystemServiceImpl implements AdminSystemService {
 
     @Override
     public int updateSystemConfig(Map<String, Object> paramMap) {
+        paramMap.put("resetPassword",jasyptConfig.stringEncryptor().encrypt(paramMap.get("resetPassword").toString()));
+        paramMap.put("mailPassword",jasyptConfig.stringEncryptor().encrypt(paramMap.get("mailPassword").toString()));
         return adminMapper.updateSystemConfig(paramMap);
     }
 

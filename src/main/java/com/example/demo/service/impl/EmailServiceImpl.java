@@ -1,13 +1,10 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.config.MailConfig;
 import com.example.demo.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
@@ -22,10 +19,7 @@ import java.io.File;
 @Slf4j
 public class EmailServiceImpl implements EmailService {
 
-    private final JavaMailSender emailSender;
-
-    @Value("${spring.mail.username}")
-    String sendFrom;
+    private final MailConfig mailConfig;
 
     /**
      * 기본 메일 전송
@@ -44,7 +38,7 @@ public class EmailServiceImpl implements EmailService {
             final MimeMessageHelper message = new MimeMessageHelper(mimeMessage,true,"UTF-8");
 
             message.setTo(sendTo);
-            message.setFrom(sendFrom);	//env.getProperty("spring.mail.username")
+            message.setFrom(mailConfig.mailSender().getUsername());	//env.getProperty("spring.mail.username")
             message.setSubject(mailTitle);
             message.setText(mailContent, true); //ture : html 형식 사용
 
@@ -54,7 +48,7 @@ public class EmailServiceImpl implements EmailService {
         };
 
         try{
-            emailSender.send(preparator);
+            mailConfig.mailSender().send(preparator);
             log.debug("이메일 발송 완료");
         } catch (MailException e){
             log.debug("mailException = {}",e);
@@ -75,14 +69,14 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public boolean sendMailwithFile(String to, String subject, String text, String filePath) {
         // javax.mail.internet.MimeMessage
-        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessage message = mailConfig.mailSender().createMimeMessage();
 
         try {
             // org.springframework.mail.javamail.MimeMessageHelper
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setSubject(subject);
             helper.setText(text, true);
-            helper.setFrom(sendFrom);
+            helper.setFrom(mailConfig.mailSender().getUsername());
             helper.setTo(to);
 
             // 첨부 파일 처리
@@ -93,7 +87,7 @@ public class EmailServiceImpl implements EmailService {
                 }
             }
 
-            emailSender.send(message);
+            mailConfig.mailSender().send(message);
             log.debug("이메일 발송 완료");
             return true;
         } catch (MessagingException e) {

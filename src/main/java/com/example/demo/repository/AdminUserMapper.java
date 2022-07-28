@@ -33,8 +33,6 @@ public interface AdminUserMapper {
 
     int updateAdmin(Map<String, Object> paramMap);
 
-    String getResetPassword();
-
     String findPasswordByIdx(Map<String, Object> paramMap);
 
     List<Map<String, Object>> findAllVisitor(Criteria criteria);

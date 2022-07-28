@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.config.JasyptConfig;
 import com.example.demo.repository.AdminUserMapper;
 import com.example.demo.service.AdminUserService;
 import com.example.demo.vo.*;
@@ -16,6 +17,7 @@ import java.util.Map;
 public class AdminUserServiceImpl implements AdminUserService {
 
     private final AdminUserMapper adminMapper;
+    private final JasyptConfig jasyptConfig;
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -46,7 +48,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public int resetPassword(Map<String, Object> paramMap) {
-        String resetPassword = adminMapper.getResetPassword();
+        String resetPassword = jasyptConfig.stringEncryptor().decrypt(SingletonData.getInstance().getConfigData().get("resetPassword").toString());
         paramMap.put("userPwd",passwordEncoder.encode(resetPassword));
 
         return adminMapper.resetPassword(paramMap);
@@ -92,11 +94,6 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     public int updateAdmin(Map<String, Object> paramMap) {
         return adminMapper.updateAdmin(paramMap);
-    }
-
-    @Override
-    public String getResetPassword() {
-        return adminMapper.getResetPassword();
     }
 
     @Override

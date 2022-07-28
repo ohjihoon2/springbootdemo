@@ -252,11 +252,6 @@
         WHERE IDX = #{idx}
     </update>
 
-    <select id="getResetPassword" resultType="string">
-        SELECT RESET_PASSWORD
-          FROM config
-    </select>
-
     <select id="findAllVisitor" parameterType="Criteria" resultType="CustomMap">
         SELECT ROWNUM_TB.*
           FROM (

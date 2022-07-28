@@ -191,7 +191,6 @@ public class LoginServiceImpl implements LoginService {
             Map<String,Object> map = new HashMap<>();
             map.put("userId",userId);
             map.put("userPwd",passwordEncoder.encode(ranPw));
-            updateUserPwd(map);
 
             String email = users.getUserEmail();
 
@@ -203,6 +202,7 @@ public class LoginServiceImpl implements LoginService {
 
             if (emailService.sendMail(to, subject, text)) {
                 result = 1;
+                updateUserPwd(map);
             } else {
                 result = 0;
             }

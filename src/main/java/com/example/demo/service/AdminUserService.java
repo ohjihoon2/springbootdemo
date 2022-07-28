@@ -30,8 +30,6 @@ public interface AdminUserService {
 
     int updateAdmin(Map<String, Object> paramMap);
 
-    String getResetPassword();
-
     List<Map<String, Object>> findAllVisitor(Criteria criteria);
 
     int countVisitor(Criteria criteria);

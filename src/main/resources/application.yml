@@ -101,16 +101,6 @@ logging:
   file:
     path: D:/logs/demo.log
 
-# mail 설정
-spring.mail:
-  host: smtp.gmail.com
-  port: 587
-  username: ENC(fuvmz2b8qwltB4w4AtQnxZQUaDAtG5KI)
-  password: ENC(0B2FLuuGCtfZCbGKSXj0vu8EonvKvCxk)
-  properties:
-    mail.smtp.auth: true
-    mail.smtp.starttls.enable: true
-
 # paging 설정
 #pagehelper:
 #  # 사용할 DB 설정

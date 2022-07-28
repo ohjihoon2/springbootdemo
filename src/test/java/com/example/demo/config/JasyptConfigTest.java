@@ -1,16 +1,8 @@
 package com.example.demo.config;
 
-import static org.junit.Assert.*;
-
-import org.jasypt.encryption.StringEncryptor;
-import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
-import org.jasypt.salt.StringFixedSaltGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 

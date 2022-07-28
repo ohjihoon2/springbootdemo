@@ -1,9 +1,13 @@
 package com.example.demo.controller;
 
+import com.example.demo.config.JasyptConfig;
 import com.example.demo.service.AdminUserService;
 import com.example.demo.util.DeviceCheck;
 import com.example.demo.util.ResultStr;
-import com.example.demo.vo.*;
+import com.example.demo.vo.Criteria;
+import com.example.demo.vo.Page;
+import com.example.demo.vo.SingletonData;
+import com.example.demo.vo.Users;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -25,6 +29,7 @@ import java.util.Map;
 public class AdminUserController {
 
     private final AdminUserService adminService;
+    private final JasyptConfig jasyptConfig;
 
     /**
      * 유저 리스트
@@ -233,7 +238,7 @@ public class AdminUserController {
     @PostMapping(value = "/resetPassword")
     @ResponseBody
     public String getResetPassword(){
-        String resetPwd = adminService.getResetPassword();
+        String resetPwd = jasyptConfig.stringEncryptor().decrypt(SingletonData.getInstance().getConfigData().get("resetPassword").toString());
         return resetPwd;
     }
 

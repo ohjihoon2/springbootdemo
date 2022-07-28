@@ -194,7 +194,10 @@
                HOMEPAGE_NAME = #{homepageName},
                MAIN_SKIN_TYPE = #{mainSkinType},
                QA_FILE_LEVEL = #{qaFileLevel},
-               QA_EDITOR_LEVEL = #{qaEditorLevel}
+               QA_EDITOR_LEVEL = #{qaEditorLevel},
+               MAIL_TYPE = #{mailType},
+               MAIL_ADDRESS = #{mailAddress},
+               MAIL_PASSWORD = #{mailPassword}
     </update>
 
 </mapper>
