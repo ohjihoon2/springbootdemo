@@ -64,7 +64,10 @@ public class AdminSystemServiceImpl implements AdminSystemService {
 
     @Override
     public Map<String, Object> findSystemConfig() {
-        return adminMapper.findSystemConfig();
+        Map<String, Object> systemConfig = adminMapper.findSystemConfig();
+        String resetPassword = jasyptConfig.stringEncryptor().decrypt(systemConfig.get("resetPassword").toString());
+        systemConfig.put("reset_password",resetPassword);
+        return systemConfig;
     }
 
     @Override
