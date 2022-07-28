@@ -66,7 +66,9 @@ public class AdminSystemServiceImpl implements AdminSystemService {
     public Map<String, Object> findSystemConfig() {
         Map<String, Object> systemConfig = adminMapper.findSystemConfig();
         String resetPassword = jasyptConfig.stringEncryptor().decrypt(systemConfig.get("resetPassword").toString());
+        String mailPassword = jasyptConfig.stringEncryptor().decrypt(systemConfig.get("mailPassword").toString());
         systemConfig.put("reset_password",resetPassword);
+        systemConfig.put("mail_password",mailPassword);
         return systemConfig;
     }
 
