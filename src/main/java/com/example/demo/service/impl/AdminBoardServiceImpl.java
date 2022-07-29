@@ -25,9 +25,6 @@ public class AdminBoardServiceImpl implements AdminBoardService {
     private final EmailService emailService;
     private final FileUtil fileUtil;
 
-    @Value("${site.name}")
-    private String siteName;
-
     @Override
     public List<Map<String,Object>> findAllBoardMaster(Criteria criteria) {
         return adminMapper.findAllBoardMaster(criteria);
@@ -149,7 +146,7 @@ public class AdminBoardServiceImpl implements AdminBoardService {
                 if(qnaConfig.getQaEmailRecvYn().equals("Y")){
                     String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");
                     String to = adminMapper.findUserEmailByIdx(qnaConfig.getCreateIdx());
-                    String subject = "[ "+siteName+" Qna 답변처리]";
+                    String subject = "[ "+SingletonData.getInstance().getConfigData().get("homepageName")+" Qna 답변처리]";
                     String text = "안녕하세요.<br>" +
                             "회원님께서 질문하신 내용에 대한 답변이 등록되었습니다. <br>" +
                             "<b><a href=\""+domain+"\">홈페이지</a></b> Q&A에서 답변을 확인하세요.";
@@ -210,7 +207,7 @@ public class AdminBoardServiceImpl implements AdminBoardService {
             if(qnaConfig.getQaEmailRecvYn().equals("Y")){
                 String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");
                 String to = adminMapper.findUserEmailByIdx(qnaConfig.getCreateIdx());
-                String subject = "[ "+siteName+" Qna 답변 수정 처리]";
+                String subject = "[ "+SingletonData.getInstance().getConfigData().get("homepageName")+" Qna 답변 수정 처리]";
                 String text = "안녕하세요.<br>" +
                         "회원님께서 질문하신 내용에 대한 답변이 수정되었습니다. <br>" +
                         "<b><a href=\""+domain+"\">홈페이지</a></b> Q&A에서 답변을 확인하세요.";

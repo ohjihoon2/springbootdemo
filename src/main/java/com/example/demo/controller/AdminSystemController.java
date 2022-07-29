@@ -31,13 +31,11 @@ public class AdminSystemController {
 
     /**
      * SystemConfig 설정 페이지
-     * @param response
-     * @param request
      * @param model
      * @return
      */
     @GetMapping(value = "/config")
-    public String configDetails(HttpServletResponse response, HttpServletRequest request,Model model) {
+    public String configDetails(Model model) {
         Map<String, Object> resultMap = adminService.findSystemConfig();
         model.addAttribute("resultMap", resultMap);
         return "/adm/system/config";

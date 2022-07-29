@@ -29,7 +29,7 @@ public class AdminBasicController {
     private final CommonService commonService;
 
     @GetMapping(value = "/admIndex")
-    public String adminPage(Principal principal, Users users, HttpServletResponse response, HttpServletRequest request, Model model) {
+    public String adminPage() {
         return "/adm/admIndex";
     }
 

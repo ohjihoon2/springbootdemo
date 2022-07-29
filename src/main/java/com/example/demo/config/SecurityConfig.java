@@ -76,6 +76,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .csrf().ignoringAntMatchers("/sendVerificationMail") //csrf 예외 처리
                         .ignoringAntMatchers("/file/singleImageUploader") //csrf 예외 처리
+                        .ignoringAntMatchers("/adm/popup/**") //csrf 예외 처리
+                        .ignoringAntMatchers("/qna/**") //csrf 예외 처리
+                        .ignoringAntMatchers("/forgetPwd") //csrf 예외 처리
                         .ignoringAntMatchers("/"); //csrf 예외 처리
 //                .and()
 

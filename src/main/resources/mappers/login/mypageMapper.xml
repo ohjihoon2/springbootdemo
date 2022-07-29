@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.repository.MypageMapper">
+    <select id="findUserInfoByIdx" resultType="Users" parameterType="String">
+        SELECT IDX,
+               USER_ID,
+               USER_NM,
+               USER_NICKNM,
+               USER_EMAIL,
+               USER_PHONE,
+               ROLE_TYPE,
+               ADMIN_MEMO,
+               VERIFICATION_CODE,
+               VERIFICATION_YN,
+               MARKETING_YN,
+               PROFILE_YN,
+               LAST_LOGIN_DATE,
+               CREATE_DATE,
+               UPDATE_IDX,
+               UPDATE_DATE,
+               DELETE_YN
+          FROM USERS
+         WHERE IDX = #{idx}
+    </select>
+
     <update id="withdrawUser" parameterType="map">
         UPDATE users
            SET DELETE_YN = 'Y',
@@ -10,5 +32,37 @@
         <foreach collection="roleType" item="roleType" open="(" close=")" separator=",">
             #{roleType}
         </foreach>
+    </update>
+
+    <update id="updateNicknm" parameterType="map">
+        UPDATE users
+           SET USER_NICKNM = #{userNicknm},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX =#{idx}
+    </update>
+
+    <update id="updateVerificationCode" parameterType="map">
+        UPDATE users
+           SET VERIFICATION_CODE = #{VerificationCode},
+               UPDATE_DATE = SYSDATE()
+         WHERE USER_ID = #{userId}
+    </update>
+
+    <select id="findVerificationCodeByIdxCode" parameterType="map" resultType="int">
+        SELECT EXISTS(
+                       SELECT VERIFICATION_CODE
+                         FROM users
+                        WHERE IDX = #{idx}
+                          AND VERIFICATION_CODE = #{code}
+                   ) AS EXIST
+    </select>
+
+    <update id="updateEmail" parameterType="map">
+        UPDATE USERS
+           SET USER_EMAIL = #{userEmail},
+               UPDATE_IDX = #{idx},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX = #{idx}
+
     </update>
 </mapper>

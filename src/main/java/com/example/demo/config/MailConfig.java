@@ -1,8 +1,7 @@
 package com.example.demo.config;
 
-import com.example.demo.service.CommonService;
 import com.example.demo.vo.SingletonData;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -11,13 +10,10 @@ import java.util.Map;
 import java.util.Properties;
 
 @Configuration
+@RequiredArgsConstructor
 public class MailConfig {
 
-    @Autowired
-    private JasyptConfig jasyptConfig;
-
-    @Autowired
-    private CommonService commonService;
+    private final JasyptConfig jasyptConfig;
 
     public String username;
     public String password;
