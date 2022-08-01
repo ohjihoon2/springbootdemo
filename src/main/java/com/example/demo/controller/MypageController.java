@@ -1,9 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.AdminUserService;
+import com.example.demo.service.CommonService;
 import com.example.demo.service.LoginService;
 import com.example.demo.service.MypageService;
+import com.example.demo.util.RandomString;
 import com.example.demo.util.ResultStr;
+import com.example.demo.vo.SingletonData;
 import com.example.demo.vo.Users;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +31,7 @@ public class MypageController {
 
     private final MypageService mypageService;
     private final LoginService loginService;
+    private final CommonService commonService;
     private final AdminUserService adminUserService;
 
     /**
@@ -42,7 +46,6 @@ public class MypageController {
         String idx = session.getAttribute("idx").toString();
         Users user = mypageService.findUserInfoByIdx(idx);
         model.addAttribute("user", user);
-        System.out.println("MypageController.mypageMain");
         return "/mypage/mypageMain";
     }
 
@@ -78,8 +81,7 @@ public class MypageController {
     public Map<String,Object> updatePassword(@RequestBody Map<String, Object> paramMap, HttpServletRequest request) {
         String idx = request.getSession().getAttribute("idx").toString();
         paramMap.put("idx",idx);
-        //TODO 공통 로직으로 뺄지 고려
-        int result = adminUserService.updatePassword(paramMap);
+        int result = commonService.updatePassword(paramMap);
         return ResultStr.set(result);
     }
 
@@ -107,8 +109,7 @@ public class MypageController {
     @PostMapping(value = "/checkNicknm")
     @ResponseBody
     public String checkNicknm(@RequestBody HashMap<String, String> paraMap) {
-        //TODO 공통 로직으로 뺄지 고려
-        int result = loginService.checkUserByUserNicknm(paraMap.get("userNicknm"));
+        int result = commonService.checkUserByUserNicknm(paraMap.get("userNicknm"));
 
         if (result == 0) {
             return "success";
@@ -125,8 +126,7 @@ public class MypageController {
     @PostMapping(value = "/checkEmail")
     @ResponseBody
     public String checkEmail(@RequestBody HashMap<String, String> paraMap) {
-        //TODO 공통 로직으로 뺄지 고려
-        int result = loginService.checkUserByUserEmail(paraMap.get("userEmail"));
+        int result = commonService.checkUserByUserEmail(paraMap.get("userEmail"));
         if (result == 0) {
             return "success";
         } else {
@@ -140,9 +140,9 @@ public class MypageController {
      * @param request
      * @return
      */
-    @PostMapping(value = "/verification")
+    @PostMapping(value = "/verificationMail")
     @ResponseBody
-    public int verification(@RequestBody Map<String, Object> map, HttpServletRequest request){
+    public int verificationMail(@RequestBody Map<String, Object> map, HttpServletRequest request){
         return mypageService.sendVerificationMail(request,map);
     }
 
@@ -155,8 +155,8 @@ public class MypageController {
     @PatchMapping(value = "/email")
     @ResponseBody
     public Map<String,Object> updateEmail(@RequestBody Map<String, Object> paramMap, HttpServletRequest request) {
-        String idx = request.getSession().getAttribute("idx").toString();
-        paramMap.put("idx",idx);
+//        String idx = request.getSession().getAttribute("idx").toString();
+        paramMap.put("idx",16);
         int result = mypageService.updateEmail(paramMap);
         return ResultStr.set(result);
     }

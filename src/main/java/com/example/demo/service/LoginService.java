@@ -20,17 +20,13 @@ public interface LoginService extends UserDetailsService {
 
     Map<String, Object> findUserNicknmVerificationYnEmailIdxByUserId(String userId);
 
-    boolean updateVerificationCode(Map<String,Object> paramMap);
-
     Map<String, Object> verifyMail(String userId, String code);
-
-    int sendVerificationMail(HttpServletRequest request, Map<String, Object> map);
 
     int forgetPwd(String userNm, String userId);
 
-    int checkUserByUserNicknm(String userNicknm);
-
-    int checkUserByUserEmail(String userEmail);
-
     void updateLastLoginDate(String userId);
+
+    int reSendVerificationMail(HttpServletRequest request, Map<String, Object> map);
+
+    int otherVerificationMail(HttpServletRequest request, Map<String, Object> map);
 }

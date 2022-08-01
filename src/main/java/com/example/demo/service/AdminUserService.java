@@ -24,8 +24,6 @@ public interface AdminUserService {
 
     int countAdmin(Criteria criteria);
 
-    int updatePassword(Map<String, Object> paramMap);
-
     int insertAdmin(Map<String, Object> paramMap);
 
     int updateAdmin(Map<String, Object> paramMap);

@@ -94,8 +94,6 @@ public class FileController {
 
         int result = fileService.deleteBySaveNameAttachFile(saveName);
 
-        System.out.println("result = " + result);
-
         return ResultStr.set(result);
     }
 

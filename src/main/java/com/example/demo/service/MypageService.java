@@ -15,9 +15,7 @@ public interface MypageService {
 
     int updateNicknm(Map<String, Object> paramMap);
 
-    int sendVerificationMail(HttpServletRequest request, Map<String, Object> map);
-
-    boolean updateVerificationCode(Map<String,Object> paramMap);
-
     int updateEmail(Map<String, Object> paramMap);
+
+    int sendVerificationMail(HttpServletRequest request, Map<String, Object> map);
 }

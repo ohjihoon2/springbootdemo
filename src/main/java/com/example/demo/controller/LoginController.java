@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.service.CommonService;
 import com.example.demo.service.LoginService;
 import com.example.demo.vo.Users;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.Map;
 public class LoginController {
 
     private final LoginService loginService;
+    private final CommonService commonService;
 
     /**
      * 로그인 페이지
@@ -96,15 +98,27 @@ public class LoginController {
     }
 
     /**
-     * 인증 코드 메일 보내기
+     * 인증 코드 메일 다시 보내기
      * @param map
      * @param request
      * @return
      */
-    @PostMapping(value = "/sendVerificationMail")
+    @PostMapping(value = "/reVerificationMail")
     @ResponseBody
-    public int sendVerificationMail(@RequestBody Map<String, Object> map, HttpServletRequest request){
-        return loginService.sendVerificationMail(request,map);
+    public int reVerificationMail(@RequestBody Map<String, Object> map, HttpServletRequest request){
+        return loginService.reSendVerificationMail(request,map);
+    }
+
+    /**
+     * 인증 코드 다른 메일에 다시 보내기
+     * @param map
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/otherVerificationMail")
+    @ResponseBody
+    public int otherVerificationMail(@RequestBody Map<String, Object> map, HttpServletRequest request){
+        return loginService.otherVerificationMail(request,map);
     }
 
     /**
@@ -190,7 +204,7 @@ public class LoginController {
     @PostMapping(value = "/checkNicknm")
     @ResponseBody
     public String checkNicknm(@RequestBody HashMap<String, String> paraMap) {
-        int result = loginService.checkUserByUserNicknm(paraMap.get("userNicknm"));
+        int result = commonService.checkUserByUserNicknm(paraMap.get("userNicknm"));
         if (result == 0) {
             return "success";
         } else {
@@ -207,7 +221,7 @@ public class LoginController {
     @PostMapping(value = "/checkEmail")
     @ResponseBody
     public String checkEmail(@RequestBody HashMap<String, String> paraMap) {
-        int result = loginService.checkUserByUserEmail(paraMap.get("userEmail"));
+        int result = commonService.checkUserByUserEmail(paraMap.get("userEmail"));
         if (result == 0) {
             return "success";
         } else {

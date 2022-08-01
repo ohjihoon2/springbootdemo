@@ -194,19 +194,6 @@
                 ) AS CNT_TB
     </select>
 
-    <select id="findPasswordByIdx" parameterType="map" resultType="string">
-        SELECT USER_PWD
-          FROM users
-         WHERE IDX = #{idx}
-    </select>
-
-    <update id="updatePassword" parameterType="map">
-        UPDATE users
-           SET USER_PWD = #{newPwd},
-               UPDATE_DATE = SYSDATE()
-         WHERE IDX =#{idx}
-    </update>
-
     <insert id="insertAdmin" parameterType="map">
         INSERT INTO users
             (

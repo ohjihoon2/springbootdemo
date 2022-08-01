@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.config.JasyptConfig;
 import com.example.demo.service.AdminUserService;
+import com.example.demo.service.CommonService;
 import com.example.demo.util.DeviceCheck;
 import com.example.demo.util.ResultStr;
 import com.example.demo.vo.Criteria;
@@ -29,6 +30,7 @@ import java.util.Map;
 public class AdminUserController {
 
     private final AdminUserService adminService;
+    private final CommonService commonService;
     private final JasyptConfig jasyptConfig;
 
     /**
@@ -197,7 +199,7 @@ public class AdminUserController {
     @ResponseBody
     public Map<String,Object> updatePassword(@PathVariable int idx, @RequestBody Map<String, Object> paramMap, HttpServletResponse response, HttpServletRequest request) {
         paramMap.put("idx",idx);
-        int result = adminService.updatePassword(paramMap);
+        int result = commonService.updatePassword(paramMap);
         return ResultStr.set(result);
     }
 

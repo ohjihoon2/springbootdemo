@@ -41,13 +41,6 @@
          WHERE IDX =#{idx}
     </update>
 
-    <update id="updateVerificationCode" parameterType="map">
-        UPDATE users
-           SET VERIFICATION_CODE = #{VerificationCode},
-               UPDATE_DATE = SYSDATE()
-         WHERE USER_ID = #{userId}
-    </update>
-
     <select id="findVerificationCodeByIdxCode" parameterType="map" resultType="int">
         SELECT EXISTS(
                        SELECT VERIFICATION_CODE

@@ -27,15 +27,11 @@ public interface LoginMapper {
 
     Map<String, Object> findUserNicknmVerificationYnEmailIdxByUserId(String userId);
 
-    boolean updateVerificationCode(Map<String,Object> paramMap);
-
     int findVerificationCodeByUserIdCode(String userId, String code);
 
     int updateverificationYn(String userId, String code);
 
-    int existByUserNicknm(String userNicknm);
-
-    int existByUserEmail(String userEmail);
-
     void updateLastLoginDate(String userId);
+
+    int updateEmailOnly(Map<String, Object> map);
 }

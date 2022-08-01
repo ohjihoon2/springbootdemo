@@ -65,26 +65,6 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     @Override
-    public int updatePassword(Map<String, Object> paramMap) {
-        int result = 0 ;
-
-
-        String password = String.valueOf(paramMap.get("password"));
-        String newPassword = String.valueOf(paramMap.get("newPassword"));
-        String encodePassword = adminMapper.findPasswordByIdx(paramMap);
-
-        paramMap.put("newPwd",passwordEncoder.encode(newPassword));
-
-        if(passwordEncoder.matches(password, encodePassword)) {
-            if (adminMapper.updatePassword(paramMap) == 1) {
-                result = 1;
-            }
-        }
-
-        return result;
-    }
-
-    @Override
     public int insertAdmin(Map<String, Object> paramMap) {
         String password = String.valueOf(paramMap.get("password"));
         paramMap.put("userPwd",passwordEncoder.encode(password));

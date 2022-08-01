@@ -16,8 +16,6 @@ public interface MypageMapper {
 
     int updateNicknm(Map<String, Object> paramMap);
 
-    boolean updateVerificationCode(Map<String, Object> paramMap);
-
     int findVerificationCodeByIdxCode(Map<String, Object> paramMap);
 
     int updateEmail(Map<String, Object> paramMap);

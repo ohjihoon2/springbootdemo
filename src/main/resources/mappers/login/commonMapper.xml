@@ -117,8 +117,45 @@
           FROM banner
          WHERE USE_YN = 'Y'
          <![CDATA[
-          AND START_DATE <= date_format(SYSDATE(),'%Y%m%d')
-          AND END_DATE <= date_format(SYSDATE(),'%Y%m%d')
+           AND START_DATE <= date_format(SYSDATE(),'%Y%m%d')
+           AND END_DATE <= date_format(SYSDATE(),'%Y%m%d')
         ]]>
     </select>
+
+    <select id="findPasswordByIdx" parameterType="map" resultType="string">
+        SELECT USER_PWD
+          FROM users
+         WHERE IDX = #{idx}
+    </select>
+
+    <update id="updatePassword" parameterType="map">
+        UPDATE users
+           SET USER_PWD = #{newPwd},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX =#{idx}
+    </update>
+
+    <select id="existByUserNicknm" parameterType="string" resultType="int">
+        SELECT EXISTS(
+                       SELECT USER_NICKNM
+                         FROM users
+                        WHERE USER_NICKNM = #{userNicknm}
+                   )
+    </select>
+
+    <select id="existByUserEmail" parameterType="string" resultType="int">
+        SELECT EXISTS(
+                       SELECT USER_EMAIL
+                         FROM users
+                        WHERE USER_EMAIL = #{userEmail}
+                   )
+    </select>
+
+    <update id="updateVerificationCode" parameterType="map">
+        UPDATE users
+           SET VERIFICATION_CODE = #{VerificationCode},
+               UPDATE_DATE = SYSDATE()
+         WHERE USER_ID = #{userId}
+    </update>
+
 </mapper>

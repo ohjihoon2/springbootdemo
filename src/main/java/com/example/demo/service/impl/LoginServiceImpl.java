@@ -1,6 +1,8 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.repository.CommonMapper;
 import com.example.demo.repository.LoginMapper;
+import com.example.demo.service.CommonService;
 import com.example.demo.service.EmailService;
 import com.example.demo.service.LoginService;
 import com.example.demo.util.RandomString;
@@ -17,16 +19,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {
 
     private final LoginMapper loginMapper;
+    private final CommonService commonServive;
     private final EmailService emailService;
 
     @Override
@@ -64,10 +65,23 @@ public class LoginServiceImpl implements LoginService {
             user.setUserPwd(passwordEncoder.encode(user.getUserPwd()));
             user.setDeleteYn("N");
             if(loginMapper.saveUser(user) == 1){
-                Map<String, Object> map = new HashMap<>();
-                map.put("userId", user.getUserId());
-                map.put("userEmail", user.getUserEmail());
-                return sendVerificationMail(request, map);
+                Map<String, Object> mailMap = new HashMap<>();
+                String ranPw = RandomString.randomStr();
+                String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");
+                String userId = mailMap.get("userId").toString();
+                String subject = SingletonData.getInstance().getConfigData().get("homepageName") +" 인증 처리";
+
+                String text = "안녕하세요.<br>" +
+                        "하단에 링크 클릭 시 인증 처리 됩니다. <br>" +
+                        "<b><a href=\""+domain+"/verifyMail?userId="+userId+"&code="+ranPw+"\">링크</a></b> 입니다.";
+
+                mailMap.put("ranPw", ranPw);
+                mailMap.put("userId", userId);
+                mailMap.put("userEmail", user.getUserEmail());
+                mailMap.put("subject",subject);
+                mailMap.put("text",text);
+
+                return commonServive.sendVerificationMail(request, mailMap);
             }
 
         }
@@ -108,11 +122,6 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public boolean updateVerificationCode(Map<String,Object> paramMap) {
-        return loginMapper.updateVerificationCode(paramMap);
-    }
-
-    @Override
     @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
     public Map<String, Object> verifyMail(String userId, String code) {
         Map<String, Object> resultMap = new HashMap<>();
@@ -139,40 +148,6 @@ public class LoginServiceImpl implements LoginService {
         resultMap.put("result", result);
         resultMap.put("msg", msg);
         return resultMap;
-    }
-
-    @Override
-    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
-    public int sendVerificationMail(HttpServletRequest request, Map<String, Object> map) {
-        int result = 0;
-        String ranPw = RandomString.randomStr();
-        String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");
-        String userId = map.get("userId").toString();
-        String to = map.get("userEmail").toString();
-
-        String subject = SingletonData.getInstance().getConfigData().get("homepageName") +" 인증 처리";
-        String text = "안녕하세요.<br>" +
-                "하단에 링크 클릭 시 인증 처리 됩니다. <br>" +
-                "<b><a href=\""+domain+"/verifyMail?userId="+userId+"&code="+ranPw+"\">링크</a></b> 입니다.";
-
-        boolean res = emailService.sendMail(to, subject, text);
-
-        Map<String,Object> paraMap = new HashMap<>();
-
-        paraMap.put("VerificationCode",ranPw);
-        paraMap.put("userId",userId);
-
-        if (res) {
-            if(updateVerificationCode(paraMap)){
-                result = 1;
-            }else {
-                result = 0;
-            }
-        } else {
-            result = 0;
-        }
-
-        return result;
     }
 
     @Override
@@ -213,17 +188,56 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public int checkUserByUserNicknm(String userNicknm) {
-        return loginMapper.existByUserNicknm(userNicknm);
-    }
-
-    @Override
-    public int checkUserByUserEmail(String userEmail) {
-        return loginMapper.existByUserEmail(userEmail);
-    }
-
-    @Override
     public void updateLastLoginDate(String userId) {
         loginMapper.updateLastLoginDate(userId);
     }
+
+    @Override
+    public int reSendVerificationMail(HttpServletRequest request, Map<String, Object> map) {
+        Map<String,Object> mailMap = new HashMap<>();
+        String ranPw = RandomString.randomStr();
+        String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");
+        String userId = map.get("userId").toString();
+
+        String subject = SingletonData.getInstance().getConfigData().get("homepageName") +" 이메일 인증";
+        String text = "안녕하세요.<br>" +
+                "하단에 링크 클릭 시 인증 처리 됩니다. <br>" +
+                "<b><a href=\""+domain+"/verifyMail?userId="+userId+"&code="+ranPw+"\">링크</a></b> 입니다.";
+
+        mailMap.put("ranPw", ranPw);
+        mailMap.put("userId", userId);
+        mailMap.put("userEmail", map.get("userEmail"));
+        mailMap.put("subject",subject);
+        mailMap.put("text",text);
+
+        return commonServive.sendVerificationMail(request, mailMap);
+    }
+
+    @Override
+    public int otherVerificationMail(HttpServletRequest request, Map<String, Object> map) {
+        int result = 0;
+        Map<String,Object> mailMap = new HashMap<>();
+        String ranPw = RandomString.randomStr();
+        String domain = request.getRequestURL().toString().replace(request.getRequestURI(),"");
+        String userId = map.get("userId").toString();
+        String userEmail = map.get("userEmail").toString();
+
+        String subject = SingletonData.getInstance().getConfigData().get("homepageName") +" 이메일 변경 인증";
+        String text = "안녕하세요.<br>" +
+                "하단에 링크 클릭 시 인증 처리 됩니다. <br>" +
+                "<b><a href=\""+domain+"/verifyMail?userId="+userId+"&code="+ranPw+"\">링크</a></b> 입니다.";
+
+        mailMap.put("ranPw", ranPw);
+        mailMap.put("userId", userId);
+        mailMap.put("userEmail", userEmail);
+        mailMap.put("subject",subject);
+        mailMap.put("text",text);
+
+        if(commonServive.sendVerificationMail(request, mailMap) == 1){
+            result = loginMapper.updateEmailOnly(map);
+        }
+
+        return result;
+    }
+
 }
