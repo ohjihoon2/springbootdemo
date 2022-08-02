@@ -11,11 +11,15 @@ public interface MypageService {
 
     Users findUserInfoByIdx(String idx);
 
-    int updateProfile(MultipartFile[] files, String idx);
+    int updateProfile(MultipartFile file, String idx);
 
     int updateNicknm(Map<String, Object> paramMap);
 
     int updateEmail(Map<String, Object> paramMap);
 
     int sendVerificationMail(HttpServletRequest request, Map<String, Object> map);
+
+    int updatePhone(Map<String, Object> paramMap);
+
+    int deleteProfile(int idx);
 }

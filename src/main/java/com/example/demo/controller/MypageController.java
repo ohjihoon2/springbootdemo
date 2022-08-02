@@ -1,12 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.AdminUserService;
 import com.example.demo.service.CommonService;
-import com.example.demo.service.LoginService;
 import com.example.demo.service.MypageService;
-import com.example.demo.util.RandomString;
 import com.example.demo.util.ResultStr;
-import com.example.demo.vo.SingletonData;
 import com.example.demo.vo.Users;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,9 +25,7 @@ import java.util.Map;
 public class MypageController {
 
     private final MypageService mypageService;
-    private final LoginService loginService;
     private final CommonService commonService;
-    private final AdminUserService adminUserService;
 
     /**
      * 마이페이지 메인
@@ -49,14 +42,33 @@ public class MypageController {
         return "/mypage/mypageMain";
     }
 
-
+    /**
+     * 프로필 업로드
+     * @param profile
+     * @param response
+     * @param request
+     * @param model
+     * @return
+     */
     @PostMapping(value = "/profile")
     @ResponseBody
-    public Map<String,Object> updateProfile(MultipartFile[] files, HttpServletResponse response, HttpServletRequest request, Model model) {
-        //TODO 수정중
+    public Map<String,Object> updateProfile(MultipartFile profile, HttpServletResponse response, HttpServletRequest request, Model model) {
         int result = 0;
         String idx = request.getSession().getAttribute("idx").toString();
-        result = mypageService.updateProfile(files,idx);
+        result = mypageService.updateProfile(profile,idx);
+        return ResultStr.set(result);
+    }
+
+    /**
+     * 프로필 삭제
+     * @param request
+     * @return
+     */
+    @DeleteMapping(value = "/profile")
+    @ResponseBody
+    public Map<String,Object> deleteProfile(@SessionAttribute("idx") int idx,HttpServletRequest request) {
+        int result = 0;
+        result = mypageService.deleteProfile(idx);
         return ResultStr.set(result);
     }
 
@@ -65,7 +77,7 @@ public class MypageController {
      * @return
      */
     @GetMapping(value = "/password")
-    public String popupPassword(@SessionAttribute("idx") int idx, HttpServletResponse response, HttpServletRequest request, Model model) {
+    public String popupPassword(@SessionAttribute("idx") int idx, Model model) {
         model.addAttribute("idx", idx);
         return "/mypage/password";
     }
@@ -155,9 +167,24 @@ public class MypageController {
     @PatchMapping(value = "/email")
     @ResponseBody
     public Map<String,Object> updateEmail(@RequestBody Map<String, Object> paramMap, HttpServletRequest request) {
-//        String idx = request.getSession().getAttribute("idx").toString();
-        paramMap.put("idx",16);
+        String idx = request.getSession().getAttribute("idx").toString();
+        paramMap.put("idx",idx);
         int result = mypageService.updateEmail(paramMap);
+        return ResultStr.set(result);
+    }
+
+    /**
+     * 휴대전화 수정
+     * @param paramMap
+     * @param request
+     * @return
+     */
+    @PatchMapping(value = "/phone")
+    @ResponseBody
+    public Map<String,Object> updatePhone(@RequestBody Map<String, Object> paramMap, HttpServletRequest request) {
+        String idx = request.getSession().getAttribute("idx").toString();
+        paramMap.put("idx",idx);
+        int result = mypageService.updatePhone(paramMap);
         return ResultStr.set(result);
     }
 

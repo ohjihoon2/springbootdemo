@@ -38,13 +38,21 @@ public class FileUtil {
     @Value("${resources.thumbnail}")
     private String resourcesThumbnail;
 
+    /** 프로필 업로드 경로 */
+    @Value("${resources.profile}")
+    private String resourcesProfile;
+
     /** 다운로드 경로 */
     @Value("${file.downloadPath}")
     private String fileDownloadPath;
 
-    /** 다운로드 경로 */
+    /** 썸네일 경로 */
     @Value("${file.thumbnailPath}")
     private String fileThumbnailPath;
+
+    /** 프로필 경로 */
+    @Value("${file.profilePath}")
+    private String fileProfilePath;
 
     private final FileMapper fileMapper;
 
@@ -148,6 +156,17 @@ public class FileUtil {
         //현재 게시판에 존재하는 파일객체를 만듬
         File file = new File(fileThumbnailPath + saveFileName);
 
+        if(file.exists()) { // 파일이 존재하면
+            // 파일 삭제
+            file.delete();
+        }
+    }
+
+    public void deleteProfileFile(int idx){
+        //현재 게시판에 존재하는 파일객체를 만듬
+        File file = new File(fileProfilePath + idx);
+        System.out.println("file = " + file);
+        System.out.println("file.getName() = " + file.getName());
         if(file.exists()) { // 파일이 존재하면
             // 파일 삭제
             file.delete();
@@ -276,5 +295,25 @@ public class FileUtil {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public void uploadProfile(MultipartFile profile, String idx){
+
+        /* uploadPath에 해당하는 디렉터리가 존재하지 않으면, 부모 디렉터리를 포함한 모든 디렉터리를 생성 */
+        File dir = new File(resourcesProfile);
+
+        if(dir.exists() == false){
+            dir.mkdirs();
+        }
+
+        try {
+            File target = new File(fileProfilePath, idx);
+            profile.transferTo(target);
+
+        } catch (IOException e) {
+            throw new AttachFileException("[" + profile.getOriginalFilename() + "] failed to save file...");
+        } catch (Exception e) {
+            throw new AttachFileException("[" + profile.getOriginalFilename() + "] failed to save file...");
+        }
     }
 }

@@ -19,4 +19,10 @@ public interface MypageMapper {
     int findVerificationCodeByIdxCode(Map<String, Object> paramMap);
 
     int updateEmail(Map<String, Object> paramMap);
+
+    int updatePhone(Map<String, Object> paramMap);
+
+    int updateProfile(String idx);
+
+    int deleteProfile(int idx);
 }

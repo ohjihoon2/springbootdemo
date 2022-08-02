@@ -113,11 +113,13 @@ resources:
   uri_path: /images/**
 
   thumbnail: /upload/@project.name@/thumbnail
+  profile: /upload/@project.name@/profile
 
 
 file:
   downloadPath: D:/upload/@project.name@/
   thumbnailPath: D:/upload/@project.name@/thumbnail/
+  profilePath: D:/upload/@project.name@/profile/
 
 # 사이트명 -> 이메일에 사이트명 첨부
 site:

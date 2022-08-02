@@ -58,4 +58,28 @@
          WHERE IDX = #{idx}
 
     </update>
+
+    <update id="updatePhone" parameterType="map">
+        UPDATE USERS
+           SET USER_PHONE = #{userPhone},
+               UPDATE_IDX = #{idx},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX = #{idx}
+    </update>
+
+    <update id="updateProfile" parameterType="String">
+        UPDATE USERS
+           SET PROFILE_YN ='Y',
+               UPDATE_IDX = #{idx},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX = #{idx}
+    </update>
+
+    <update id="deleteProfile" parameterType="int">
+        UPDATE USERS
+           SET PROFILE_YN ='N',
+               UPDATE_IDX = #{idx},
+               UPDATE_DATE = SYSDATE()
+         WHERE IDX = #{idx}
+    </update>
 </mapper>

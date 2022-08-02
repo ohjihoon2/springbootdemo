@@ -2,8 +2,8 @@ package com.example.demo.service.impl;
 
 import com.example.demo.repository.MypageMapper;
 import com.example.demo.service.CommonService;
-import com.example.demo.service.EmailService;
 import com.example.demo.service.MypageService;
+import com.example.demo.util.FileUtil;
 import com.example.demo.util.RandomString;
 import com.example.demo.vo.SingletonData;
 import com.example.demo.vo.Users;
@@ -21,6 +21,8 @@ public class MypageServiceImpl implements MypageService {
 
     private final MypageMapper mypageMapper;
     private final CommonService commonServive;
+    private final FileUtil fileUtil;
+
 
     @Override
     public int withdrawUser(Map<String, Object> paramMap) {
@@ -33,9 +35,11 @@ public class MypageServiceImpl implements MypageService {
     }
 
     @Override
-    public int updateProfile(MultipartFile[] files, String idx) {
-        //TODO 이미지 로직
-        return 0;
+    public int updateProfile(MultipartFile profile, String idx) {
+        if(profile != null){
+            fileUtil.uploadProfile(profile, idx);
+        }
+        return mypageMapper.updateProfile(idx);
     }
 
     @Override
@@ -80,6 +84,17 @@ public class MypageServiceImpl implements MypageService {
         mailMap.put("text",text);
 
         return commonServive.sendVerificationMail(request, mailMap);
+    }
+
+    @Override
+    public int updatePhone(Map<String, Object> paramMap) {
+        return mypageMapper.updatePhone(paramMap);
+    }
+
+    @Override
+    public int deleteProfile(int idx) {
+        fileUtil.deleteProfileFile(idx);
+        return mypageMapper.deleteProfile(idx);
     }
 
 }

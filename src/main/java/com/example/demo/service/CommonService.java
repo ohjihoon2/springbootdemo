@@ -28,4 +28,5 @@ public interface CommonService {
     int checkUserByUserEmail(String userEmail);
 
     int sendVerificationMail(HttpServletRequest request, Map<String, Object> mailMap);
+
 }
