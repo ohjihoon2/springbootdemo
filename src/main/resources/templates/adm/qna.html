@@ -55,7 +55,7 @@
             <th:block th:each="res : ${resultList}">
                 <tr>
                     <td class="text-center" th:text="${#numbers.formatInteger(res.rn, 0)}"></td>
-                    <td class="text-center" th:text="${res.qaCategory}"></td>
+                    <td class="text-center">[[${res.qaCategory}]]</td>
                     <td th:text="${res.qaSubject}"></td>
                     <td class="text-center" th:text="${res.createNicknm}"></td>
                     <td class="text-center" th:text="${#dates.format(res.createDate, 'yyyy. MM. dd.')}"></td>

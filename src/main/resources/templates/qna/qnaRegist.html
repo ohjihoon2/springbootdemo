@@ -29,6 +29,7 @@
                 <li>
                     <label>분류</label>
                     <select id="qaCategory">
+                        <option value="">분류를 선택해주세요.</option>
                         <th:block th:each="res : ${#strings.listSplit(qaCategoryList,';')}">
                             <option th:text="${res}" th:value="${res}"></option>
                         </th:block>

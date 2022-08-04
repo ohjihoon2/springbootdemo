@@ -48,7 +48,7 @@
                    <tr th:data-val="${res.idx}" th:classappend="${i.even} ? 'even'">
                        <td class="text-center" th:text="${#numbers.formatInteger(res.rn, 0)}">
                        </td>
-                       <td class="text-center" th:text="${res.qaCategory}">
+                       <td class="text-center" th:text="${res.qaCategory == '' ? '질문' : res.qaCategory}">
                        </td>
                        <td class="flex">
                            <span th:text="${res.qaSubject}"></span>

@@ -22,16 +22,18 @@
     <div class="section-wrap">
         <form id="qnaRegistForm">
             <div class="pt80"></div>
+            [[${qnaConfig}]]
             <div class="top-btn-box">
-                <div class="left">Q&A 질문</div>
-                <span><input id="secretYn" type="checkbox"  checked/><label for="secretYn">비밀글</label></span>
-                <span><input id="qaEmailRecvYn" type="checkbox"  checked/><label for="qaEmailRecvYn">답변 메일받기</label></span>
+                <div class="left">Q&A [[${(qnaConfig.qaStatus == 'Q' || qnaConfig.qaStatus == 'RQ') ? '수정' : '추가질문'}]]</div>
+                <span><input id="secretYn" type="checkbox"  th:checked="${qnaConfig.secretYn == 'Y'}"/><label for="secretYn">비밀글</label></span>
+                <span><input id="qaEmailRecvYn" type="checkbox"  th:checked="${qnaConfig.qaEmailRecvYn == 'Y'}"/><label for="qaEmailRecvYn">답변 메일받기</label></span>
             </div>
             <div class="mb10"></div>
             <ul class="qna-ul">
                 <li>
                     <label>분류</label>
                     <select id="qaCategory">
+                        <option value="">분류를 선택해주세요.</option>
                         <th:block th:each="res : ${#strings.listSplit(qaCategoryList,';')}">
                             <option th:text="${res}" th:value="${res}"></option>
                         </th:block>

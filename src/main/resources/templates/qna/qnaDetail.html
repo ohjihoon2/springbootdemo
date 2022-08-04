@@ -34,7 +34,7 @@
                 <div class="qna-box">
                     <div class="top-btn-box mb10">
                         <div class="left">
-                            <span class="qa-category text-color-primary" th:text="${i.odd ? i.index == 0 ? qnaConfig.qaCategory : '추가질문' : i.index == 1 ? '답변' : '추가답변'}"></span>[[${detail.qaSubject}]]
+                            <span class="qa-category text-color-primary" th:text="${i.odd ? i.index == 0 ? qnaConfig.qaCategory == '' ? '질문' : qnaConfig.qaCategory : '추가질문' : i.index == 1 ? '답변' : '추가답변'}"></span>[[${detail.qaSubject}]]
                         </div>
                         <a class="control-box" th:if="${qnaConfig.createIdx == session.idx && i.index == 0}">
                             <i id="controlBtn" class="fa fa-ellipsis-v" aria-hidden="true"></i>
@@ -76,7 +76,7 @@
             <div class="mb100"></div>
             <div class="bot-btn-box">
                 <button id="goList" type="button">목록</button>
-                <button th:if="${qnaConfig.qaStatus == 'A' || qnaConfig.qaStatus == 'RA'}" type="button">추가질문</button>
+                <button id="additionalQuestion" th:if="${(qnaConfig.qaStatus == 'A' || qnaConfig.qaStatus == 'RA') && qnaConfig.createIdx == session.idx}" type="button">추가질문</button>
             </div>
             <div class="mb100"></div>
         </form>
@@ -86,18 +86,7 @@
 <script>
     var idx = "[[${qnaConfig.idx}]]";
 </script>
-<!--/*
-    var sessionIdx;
-    var sessionUserNicknm;
 
-
-<th:block sec:authorize="isAuthenticated()">
-    <script>
-        var sessionIdx = [[${session.idx}]];
-        var sessionUserNicknm = "[[${session.userNicknm}]]";
-    </script>
-</th:block>
-*/-->
 <th:block th:replace="/fragments/footer.html :: thFooter"></th:block>
 <script th:src="@{/js/qna/qnaDetail.js}"></script>
 </body>

@@ -210,5 +210,4 @@ public class QnaController {
 
         return ResultStr.set(result);
     }
-
 }

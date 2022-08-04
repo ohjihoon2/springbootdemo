@@ -332,6 +332,7 @@ table th, table td {
     line-height: 37px;
     overflow: hidden;
     text-overflow:ellipsis;
+    white-space:nowrap;
 }
 table th {
     background: #ededed;
